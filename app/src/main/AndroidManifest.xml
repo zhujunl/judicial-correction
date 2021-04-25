@@ -12,8 +12,32 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".SchemeFilterActivity">
+            <!-- Scheme -->
+            <intent-filter>
+                <data
+                    android:host="m.aliyun.com"
+                    android:scheme="miaxis"/>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+
+            <!-- App Links -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="m.aliyun.com"
+                    android:scheme="http"/>
+                <data
+                    android:host="m.aliyun.com"
+                    android:scheme="https"/>
             </intent-filter>
         </activity>
     </application>

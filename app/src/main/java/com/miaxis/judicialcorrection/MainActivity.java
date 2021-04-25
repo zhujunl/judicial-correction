@@ -1,11 +1,13 @@
 package com.miaxis.judicialcorrection;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.miaxis.judicialcorrection.ui.main.MainFragment;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+@Route(path = "/main/MainActivity")
 public class MainActivity extends AppCompatActivity {
 
     @Override
