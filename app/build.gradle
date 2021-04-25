@@ -63,6 +63,6 @@ android {
 
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
-    implementation project(path: ':M_tank')
+    implementation project(path: ':M_base')
 
 }
