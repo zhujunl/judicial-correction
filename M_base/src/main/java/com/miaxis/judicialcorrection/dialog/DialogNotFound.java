@@ -3,7 +3,7 @@ package com.miaxis.judicialcorrection.dialog;
 import android.content.Context;
 import android.view.Window;
 
-import com.miaxis.judicialcorrection.R;
+import com.miaxis.judicialcorrection.base.R;
 import com.miaxis.judicialcorrection.widget.countdown.CountDownListener;
 import com.miaxis.judicialcorrection.widget.countdown.CountDownTextView;
 
