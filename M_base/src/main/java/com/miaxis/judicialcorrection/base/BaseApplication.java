@@ -2,10 +2,10 @@ package com.miaxis.judicialcorrection.base;
 
 import android.app.Application;
 
-import com.miaxis.judicialcorrection.BuildConfig;
 
 import org.jetbrains.annotations.NotNull;
 
+import dagger.hilt.android.HiltAndroidApp;
 import timber.log.Timber;
 
 /**
@@ -14,6 +14,7 @@ import timber.log.Timber;
  * @author zhangyw
  * Created on 4/25/21.
  */
+//@HiltAndroidApp
 public class BaseApplication extends Application {
 
     @Override

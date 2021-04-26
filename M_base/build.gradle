@@ -1,6 +1,9 @@
-plugins {
-    id 'com.android.library'
-}
+apply plugin: 'com.android.library'
+apply plugin: 'dagger.hilt.android.plugin'
+
+//plugins {
+//    id 'com.android.library'
+//}
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -15,7 +18,7 @@ android {
         consumerProguardFiles "consumer-rules.pro"
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
+                arguments += [AROUTER_MODULE_NAME: project.getName()]
                 arguments += [
                         "room.schemaLocation":"$projectDir/schemas".toString(),
                         "room.incremental":"true",
@@ -25,9 +28,17 @@ android {
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'SERVER_URL', '"http://223.4.75.73:8090"'
+            buildConfigField 'int', 'TOKEN_TIMEOUT', '8*60*60*1000'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'SERVER_URL', '"http://223.4.75.73:8090"'
+            buildConfigField 'int', 'TOKEN_TIMEOUT', '2*60*60*1000'
         }
     }
 
@@ -52,7 +63,6 @@ dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
     api("com.squareup.okhttp3:okhttp:4.9.1")
-    api 'com.squareup.retrofit2:retrofit:2.9.0'
 
     api 'androidx.appcompat:appcompat:1.2.0'
     api 'com.google.android.material:material:1.2.1'
@@ -63,7 +73,9 @@ dependencies {
     api "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
     api "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
 
-    api 'com.google.code.gson:gson:2.8.6'
+    api 'com.google.code.gson:gson:2.8.5'
+    api "com.squareup.retrofit2:retrofit:2.3.0"
+    api "com.squareup.retrofit2:converter-gson:2.3.0"
 
     api 'com.alibaba:arouter-api:1.5.1'
 
@@ -86,4 +98,8 @@ dependencies {
 
     def rxjava_version = "3.0.12"
     api "io.reactivex.rxjava3:rxjava:$rxjava_version"
+
+    api "com.google.dagger:hilt-android:$hilt_version"
+    annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
+
 }

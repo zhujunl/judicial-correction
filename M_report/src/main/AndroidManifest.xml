@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.miaxis.judicialcorrection.base">
-
-
+    package="com.miaxis.judicialcorrection.report">
     <application>
-        <activity android:name=".TestActivity">
+        <activity android:name=".ReportActivity">
         </activity>
-
-
     </application>
 </manifest>

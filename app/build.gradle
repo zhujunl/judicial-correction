@@ -1,6 +1,5 @@
-plugins {
-    id 'com.android.application'
-}
+apply plugin: 'com.android.application'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -15,11 +14,11 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
-            }
-        }
+//        javaCompileOptions {
+//            annotationProcessorOptions {
+//                arguments += [AROUTER_MODULE_NAME: project.getName()]
+//            }
+//        }
     }
     signingConfigs {
         debug {
@@ -63,6 +62,7 @@ android {
 
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
-    implementation project(path: ':M_base')
-
+    implementation project(path: ':M_report')
+    api "com.google.dagger:hilt-android:$hilt_version"
+    annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
 }
