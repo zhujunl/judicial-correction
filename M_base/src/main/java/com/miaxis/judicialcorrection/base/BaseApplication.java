@@ -2,6 +2,8 @@ package com.miaxis.judicialcorrection.base;
 
 import android.app.Application;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.miaxis.judicialcorrection.BuildConfig;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -27,6 +29,9 @@ public class BaseApplication extends Application {
                     super.log(priority, "Mx"+tag, message, t);
                 }
             });
+            ARouter.openLog(); // 开启日志
+            ARouter.openDebug(); // 使用InstantRun的时候，需要打开该开关，上线之后关闭，否则有安全风险
         }
+        ARouter.init(this);
     }
 }

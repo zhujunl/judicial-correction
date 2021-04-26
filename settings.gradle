@@ -1,8 +1,9 @@
 include ':M_report'
+include ':M_face'
 rootProject.name = "司法矫正"
 //include ':application'
 include ':M_base'
-//include ':M_id'
+include ':M_id'
 //include ':lib_usbConnector'
 //include ':M_tank'
 include ':app'

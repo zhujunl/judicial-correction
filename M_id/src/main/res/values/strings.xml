@@ -1,0 +1,17 @@
+<resources>
+    <string name="read_id_title">Judicial Correction</string>
+
+
+    <string name="btn_confirm">确定</string>
+    <string name="btn_cancel">取消</string>
+
+    <string name="dialog_btn_confirm">确定</string>
+    <string name="dialog_btn_cancel">取消</string>
+
+
+    <string name="error_title">错误</string>
+
+
+    <string name="error_no_title">错误参数</string>
+
+</resources>
