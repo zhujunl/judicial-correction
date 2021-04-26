@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_title">智能自助矫正终端系统</string>
+    <string name="page_title_1">首次报道登记</string>
+
+    <string name="page_text_input_id_card">请输入身份证号</string>
+
+    <string name="btn_text_no_id_card_entry">无身份证入口</string>
+    <string name="btn_text_back_to_home">返回首页</string>
+
+    <string name="app_info">信息提示</string>
+
+    <string name="dialog_error_1">系统查无此人</string>
+    <string name="dialog_error_2">请联系现场工作人员处理\n（工作人员需确认前期登记的\n身份证号是否准确）！</string>
+    <string name="dialog_error_3">请您确认输入的身份证号\n（%s）是否正确。\n1.如有误，请重新输入！\n2.如无误，请联系现场工作人员处理！</string>
+    <string name="dialog_btn_re_input">确实输入有误，重新输入</string>
+
+
+</resources>
