@@ -1,4 +1,4 @@
-package com.miaxis.judicialcorrection;
+package com.miaxis.judicialcorrection.ui.main;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
@@ -23,6 +24,7 @@ import com.miaxis.judicialcorrection.databinding.MainActivityBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -48,24 +50,18 @@ public class MainActivity extends BaseBindingActivity<MainActivityBinding> {
         appDatabase.mainFuncDAO().loadFuncActive().observe(this, mainAdapter::submitList);
     }
 
-    @Override
-    protected void initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.initData(view, savedInstanceState);
-
-    }
-
     static class MainAdapter extends BaseDataBoundDiffAdapter<MainFunc, ItemMainBinding> {
 
         protected MainAdapter() {
             super(new DiffUtil.ItemCallback<MainFunc>() {
                 @Override
                 public boolean areItemsTheSame(@NonNull MainFunc oldItem, @NonNull MainFunc newItem) {
-                    return false;
+                    return oldItem.id == newItem.id;
                 }
 
                 @Override
                 public boolean areContentsTheSame(@NonNull MainFunc oldItem, @NonNull MainFunc newItem) {
-                    return false;
+                    return Objects.equals(oldItem, newItem);
                 }
             });
         }

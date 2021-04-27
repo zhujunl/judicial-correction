@@ -3,6 +3,8 @@ package com.miaxis.judicialcorrection.base.db.po;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
+
 /**
  * MainFuncItem
  *
@@ -39,5 +41,22 @@ public class MainFunc {
                 ", targetActivityURI='" + targetActivityURI + '\'' +
                 ", active=" + active +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MainFunc mainFunc = (MainFunc) o;
+        return id == mainFunc.id &&
+                resId == mainFunc.resId &&
+                active == mainFunc.active &&
+                Objects.equals(title, mainFunc.title) &&
+                Objects.equals(targetActivityURI, mainFunc.targetActivityURI);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, resId, title, targetActivityURI, active);
     }
 }
