@@ -53,7 +53,7 @@ public abstract class AppModule {
                 .addNetworkInterceptor(chain -> {
                     Request original = chain.request();
                     Request.Builder newBuilder = original.newBuilder();
-                    String value = "Bearer 6d5ecbc1-6973-4ad3-831d-9a0ddbf52792";
+                    String value = "Bearer d1a381f9-8485-4bbf-ad10-c5be681979e3";
                     if (!TextUtils.isEmpty(value)) {
                         newBuilder.addHeader("Authorization", value);
                     }

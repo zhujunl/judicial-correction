@@ -6,14 +6,14 @@ package com.miaxis.judicialcorrection.base.api.vo;
  * @email zyawei@live.com
  */
 public class User {
-    private int id;
+    private String id;
     private String xm;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -21,7 +21,7 @@ public interface ApiService {
 //    LiveData<ApiResult<User>> login(@Header("tenementCode") String tenementCode, @Query("rfid") String rfid, @Query("sn") String sn);
 
     @GET("/personInfo/list")
-    LiveData<ApiResult<List<Object>>> personList(
+    LiveData<ApiResult<List<User>>> personList(
             @Query("lastModifiedTime") String lastModifiedTime
     );
 

@@ -9,8 +9,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.miaxis.judicialcorrection.base.api.ApiResult;
 import com.miaxis.judicialcorrection.base.api.ApiService;
+import com.miaxis.judicialcorrection.base.api.vo.User;
 import com.miaxis.judicialcorrection.report.databinding.ActivityReportBinding;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -36,7 +40,7 @@ public class ReportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_report);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_report);
         binding.personList.setOnClickListener(v -> {
-            apiService.personList("2019/01/13 12:55:35").observe(this, userApiResult -> {
+            apiService.personList("2019/01/13 12:55:35").observe(this, (ApiResult<List<User>> userApiResult) -> {
                 Timber.i("result %s ",userApiResult);
                 runOnUiThread(()->{binding.test.setText(userApiResult.toString());});
             });
