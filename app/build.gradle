@@ -13,11 +13,11 @@ android {
         versionName rootProject.ext.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-//        javaCompileOptions {
-//            annotationProcessorOptions {
-//                arguments += [AROUTER_MODULE_NAME: project.getName()]
-//            }
-//        }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
     }
     signingConfigs {
         debug {
@@ -62,10 +62,13 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(path: ':M_report')
-    api "com.google.dagger:hilt-android:$hilt_version"
-    annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
     implementation project(path: ':M_id')
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+
+
+    annotationProcessor 'com.alibaba:arouter-compiler:1.5.1'
+    annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
     implementation project(path: ':M_face')
 }
