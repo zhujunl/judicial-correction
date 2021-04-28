@@ -12,7 +12,7 @@ import com.miaxis.judicialcorrection.base.db.po.MainFunc;
  * @author zhangyw
  * Created on 4/27/21.
  */
-@Database(entities = {MainFunc.class}, version = 1)
+@Database(entities = {MainFunc.class}, version = 1,exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract MainFuncDao mainFuncDAO();
 }
