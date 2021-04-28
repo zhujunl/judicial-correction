@@ -18,6 +18,8 @@ public class MXCameraErrorCode {
     public static final int CODE_FAIL_CAMERA_OPEN = BaseCode - 4;
     public static final int CODE_FAIL_PARAMETERS = BaseCode - 5;
 
+    public static final int CODE_FAIL_CAMERA_ID = BaseCode - 6;
+    public static final int CODE_FAIL_CAMERA_ID_NOT_FOUND = BaseCode - 7;
 
     public static final String MSG_SUCCESS = "success";
     public static final String MSG_FAIL = "fail";

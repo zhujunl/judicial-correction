@@ -1,9 +1,12 @@
 package com.miaxis.judicialcorrection.ui.main;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,26 +15,30 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialogFragment;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.DiffUtil;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.miaxis.faceid.FaceManager;
+import com.miaxis.finger.FingerManager;
+import com.miaxis.finger.FingerStrategy;
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
+import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundDiffAdapter;
 import com.miaxis.judicialcorrection.databinding.ActivityMainBinding;
 import com.miaxis.judicialcorrection.databinding.ItemMainFucBinding;
+import com.miaxis.judicialcorrection.face.VerifyPageActivity;
 
 import java.util.Objects;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @Route(path = "/main/MainActivity")
@@ -40,6 +47,10 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
 
     @Inject
     AppDatabase appDatabase;
+    @Inject
+    AppExecutors mAppExecutors;
+
+    ProgressDialog progressDialog;
 
     @Override
     protected int initLayout() {
@@ -61,8 +72,50 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
             }
             v.setTag(v.getId(), ct);
         });
+        init();
     }
 
+    private void init() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+        }
+        progressDialog.setTitle(getString(R.string.app_info));
+        progressDialog.setMessage(getString(R.string.app_init));
+        mAppExecutors.networkIO().execute(() -> {
+            runOnUiThread(() -> {
+                if (progressDialog != null) {
+                    progressDialog.show();
+                }
+            });
+            int init = FaceManager.getInstance().init(MainActivity.this);
+            FingerStrategy fingerStrategy = new FingerStrategy(MainActivity.this);
+            FingerManager.getInstance().init(fingerStrategy);
+            runOnUiThread(() -> {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+//                    if (init != 0) {
+//                        new AlertDialog.Builder(MainActivity.this)
+//                                .setTitle(R.string.app_info)
+//                                .setMessage("初始化失败：" + String.valueOf(init))
+//                                .show();
+//                    }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(MainActivity.this, VerifyPageActivity.class));
+                    }
+                },1000);
+            });
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        FaceManager.getInstance().free();
+        FingerManager.getInstance().release();
+    }
 
     public static class PasswordDialog extends AppCompatDialogFragment {
 

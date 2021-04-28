@@ -1,6 +1,5 @@
 package com.miaxis.judicialcorrection;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.miaxis.judicialcorrection.base.BaseApplication;
 
 import dagger.hilt.android.HiltAndroidApp;

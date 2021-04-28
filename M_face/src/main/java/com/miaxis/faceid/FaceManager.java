@@ -2,7 +2,6 @@ package com.miaxis.faceid;
 
 import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
 
 import org.zz.api.MXFaceInfoEx;
 import org.zz.jni.JustouchFaceApi;
@@ -12,7 +11,7 @@ import org.zz.tool.AssetsUtils;
 import java.io.File;
 
 /**
- * @author Admin
+ * @author Tank
  * @version $
  * @des
  * @updateAuthor $
@@ -63,13 +62,10 @@ public class FaceManager {
         if (initAlg == 0) {
             this.mMxImageTool = new mxImageTool();
         }
-        //        for (int i = 0; i < mFaceInfoExes.length; i++) {
-        //            mFaceInfoExes[i] = new MXFaceInfoEx();
-        //        }
         return initAlg;
     }
 
-    public String getLicense(String dstPath) {
+    private String getLicense(String dstPath) {
         if (dstPath == null || dstPath.isEmpty()) {
             return null;
         }
@@ -80,6 +76,16 @@ public class FaceManager {
         return new String(szLicenseData);
     }
 
+    public int initData(MXFaceInfoEx[] faceInfoExes) {
+        if (faceInfoExes != null) {
+            for (int i = 0; i < faceInfoExes.length; i++) {
+                faceInfoExes[i] = new MXFaceInfoEx();
+            }
+            return 0;
+        }
+        return -90;
+    }
+
     public int getFeatureSize() {
         if (this.mJustouchFaceApi == null) {
             return -99;
@@ -88,61 +94,60 @@ public class FaceManager {
     }
 
     public byte[] yuv2Rgb(byte[] yuv, int width, int height) {
+        if (this.mMxImageTool == null) {
+            return null;
+        }
         byte[] pRGBImage = new byte[width * height * 3];
         this.mMxImageTool.YUV2RGB(yuv, width, height, pRGBImage);
         return pRGBImage;
     }
 
-
-    //    public MXFaceInfoEx[] mFaceInfoExes = new MXFaceInfoEx[MXFaceInfoEx.iMaxFaceNum];
-    //    public int[] mFaceNumber = new int[1];
-    //    public int[] mFacesData = new int[MXFaceInfoEx.SIZE * MXFaceInfoEx.iMaxFaceNum];
-
-    //    public MXFaceInfoEx[] getFaceInfoExes() {
-    //        return mFaceInfoExes;
-    //    }
-
     public int getFaceNumber(int[] faceNumber) {
         return faceNumber[0];
     }
-
-    //    public int[] getFacesData() {
-    //        return mFacesData;
-    //    }
 
     //人脸检测
     public int detectFace(byte[] rgbFrameData, int frameWidth, int frameHeight, int[] faceNumber, int[] facesData, MXFaceInfoEx[] faceInfoExes) {
         if (this.mJustouchFaceApi == null) {
             return -99;
         }
+        if (rgbFrameData == null) {
+            return -98;
+        }
         int nRet = this.mJustouchFaceApi.detectFace(rgbFrameData, frameWidth, frameHeight, faceNumber, facesData);
         if (nRet != 0) {
             return nRet;
         }
         int num = faceNumber[0];
-        Log.d("人脸检测", "detectFace:size" + num);
-
-        if (num <= 0) {
-            return -1;
+        if (num < 0) {
+            faceNumber[0] = 0;
         }
         MXFaceInfoEx.Int2MXFaceInfoEx(num, facesData, faceInfoExes);
         return 0;
     }
 
     //人脸质量检测
-    public int getFaceQuality(byte[] rgbFrameData, int frameWidth, int frameHeight, int faceNum, MXFaceInfoEx[] faceInfo) {
+    public int getFaceQuality(byte[] rgbFrameData, int frameWidth, int frameHeight, int faceNum, int[] faces, MXFaceInfoEx[] faceInfo) {
         if (this.mJustouchFaceApi == null) {
             return -99;
         }
-        int[] faces = new int[MXFaceInfoEx.SIZE * faceNum];
-        MXFaceInfoEx.MXFaceInfoEx2Int(faceNum, faces, faceInfo);
-        return this.mJustouchFaceApi.faceQuality(rgbFrameData, frameWidth, frameHeight, faceNum, faces);
+        if (rgbFrameData == null) {
+            return -98;
+        }
+        int faceQuality = this.mJustouchFaceApi.faceQuality(rgbFrameData, frameWidth, frameHeight, faceNum, faces);
+        if (faceQuality == 0) {
+            MXFaceInfoEx.Int2MXFaceInfoEx(faceNum, faces, faceInfo);
+        }
+        return faceQuality;
     }
 
     //活体检测
     public int detectLiveness(byte[] rgbFrameData, int frameWidth, int frameHeight, int faceNumber, int[] facesData, MXFaceInfoEx[] faceInfoExes, boolean nir) {
         if (this.mJustouchFaceApi == null) {
             return -99;
+        }
+        if (rgbFrameData == null) {
+            return -98;
         }
         int livenessDetect;
         if (nir) {
@@ -161,6 +166,9 @@ public class FaceManager {
         if (this.mJustouchFaceApi == null) {
             return -99;
         }
+        if (rgbFrameData == null) {
+            return -98;
+        }
         if (mask) {
             return this.mJustouchFaceApi.maskFeatureExtract(rgbFrameData, frameWidth, frameHeight, faceNumber, faceData, pFeatureData);
         } else {
@@ -169,11 +177,18 @@ public class FaceManager {
     }
 
     //口罩检测
-    public int detectMask(byte[] rgbFrameData, int frameWidth, int frameHeight, int faceNumber, int[] faceData) {
+    public int detectMask(byte[] rgbFrameData, int frameWidth, int frameHeight, int faceNumber, int[] faceData, MXFaceInfoEx[] faceInfo) {
         if (this.mJustouchFaceApi == null) {
             return -99;
         }
-        return this.mJustouchFaceApi.maskDetect(rgbFrameData, frameWidth, frameHeight, faceNumber, faceData);
+        if (rgbFrameData == null) {
+            return -98;
+        }
+        int maskDetect = this.mJustouchFaceApi.maskDetect(rgbFrameData, frameWidth, frameHeight, faceNumber, faceData);
+        if (maskDetect == 0) {
+            MXFaceInfoEx.MXFaceInfoEx2Int(faceNumber, faceData, faceInfo);
+        }
+        return maskDetect;
     }
 
     //特征比对
@@ -187,43 +202,5 @@ public class FaceManager {
             return this.mJustouchFaceApi.featureMatch(pFaceFeatureA, pFaceFeatureB, fScore);
         }
     }
-
-    //人员注册
-    //    public int register(byte[] rgbFrameData, int nWidth, int nHeight) {
-    //        if (this.mJustouchFaceApi == null) {
-    //            return -99;
-    //        }
-    //        return this.mJustouchFaceApi.faceQuality4Reg(rgbFrameData, nWidth, nHeight, mFacesData);
-    //    }
-
-    //    //人脸追踪
-    //    public int trackFace(byte[] rgbFrameData, int frameWidth, int frameHeight, MXFaceInfoEx[] faceInfo, int[] faceSize) {
-    //        if (this.mJustouchFaceApi == null) {
-    //            return -99;
-    //        }
-    //        if (faceInfo == null) {
-    //            return -98;
-    //        }
-    //
-    //        if (faceSize == null) {
-    //            return -97;
-    //        }
-    //        if (rgbFrameData == null) {
-    //            return -96;
-    //        }
-    //        int[] faceNumber = new int[]{0};
-    //        int nRet = this.mJustouchFaceApi.trackFace(rgbFrameData, frameWidth, frameHeight, faceNumber, faces);
-    //        if (nRet != 0) {
-    //            return nRet;
-    //        }
-    //        int num = faceNumber[0];
-    //        faceSize[0] = num;
-    //        if (num <= 0) {
-    //            return -1;
-    //        }
-    //        Arrays.fill(faceInfo, 0);
-    //        MXFaceInfoEx.Int2MXFaceInfoEx(num, faces, faceInfo);
-    //        return 0;
-    //    }
 
 }

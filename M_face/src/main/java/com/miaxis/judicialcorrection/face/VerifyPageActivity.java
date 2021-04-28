@@ -7,15 +7,21 @@ import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.bumptech.glide.Glide;
 import com.miaxis.camera.CameraHelper;
+import com.miaxis.camera.CameraPreviewCallback;
 import com.miaxis.camera.MXCamera;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
+import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.face.databinding.ActivityVerifyBinding;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import dagger.hilt.android.AndroidEntryPoint;
 
 /**
  * @author Tank
@@ -25,14 +31,20 @@ import androidx.lifecycle.ViewModelProvider;
  * @updateDes
  */
 
+@AndroidEntryPoint
 @Route(path = "/activity/verifyPage")
-public class VerifyPageActivity extends BaseBindingActivity<ActivityVerifyBinding> {
+public class VerifyPageActivity extends BaseBindingActivity<ActivityVerifyBinding> implements CameraPreviewCallback {
 
     @Autowired(name = "Name")
     String title;
 
     @Autowired(name = "IdCardNumber")
     String idCardNumber;
+
+    VerifyPageModel mVerifyPageModel;
+
+    @Inject
+    AppExecutors mAppExecutors;
 
     @Override
     protected int initLayout() {
@@ -41,22 +53,41 @@ public class VerifyPageActivity extends BaseBindingActivity<ActivityVerifyBindin
 
     @Override
     protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        VerifyPageModel verifyPageModel = new ViewModelProvider(this).get(VerifyPageModel.class);
-        verifyPageModel.name.observe(this, s -> binding.tvName.setText(s));
-        verifyPageModel.idCardNumber.observe(this, s -> binding.tvIdCard.setText(s));
-        verifyPageModel.name.setValue(title);
-        verifyPageModel.idCardNumber.setValue(idCardNumber);
+        mVerifyPageModel = new ViewModelProvider(this).get(VerifyPageModel.class);
+        mVerifyPageModel.name.observe(this, s -> binding.tvName.setText(s));
+        mVerifyPageModel.idCardNumber.observe(this, s -> binding.tvIdCard.setText(s));
+        mVerifyPageModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));
+        mVerifyPageModel.fingerBitmap.observe(this, bitmap -> {
+            Glide.with(VerifyPageActivity.this).load(bitmap).error(R.mipmap.mipmap_error).into(binding.ivFinger);
+            binding.ivFinger.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Glide.with(VerifyPageActivity.this).load(R.mipmap.mipmap_bg_finger).into(binding.ivFinger);
+                    mVerifyPageModel.releaseFingerDevice();
+                    mVerifyPageModel.initFingerDevice(mAppExecutors);
+                    binding.ivFinger.setOnClickListener(null);
+                }
+            });
+        });
+        mVerifyPageModel.initFingerDevice(mAppExecutors);
+
+        mVerifyPageModel.name.setValue(title);
+        mVerifyPageModel.idCardNumber.setValue(idCardNumber);
+        //todo 身份证人脸特征数据
+        mVerifyPageModel.idCardFaceFeature.setValue(new byte[1]);
 
         binding.btnBackToHome.setOnClickListener(v -> finish());
-
         binding.svPreview.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(@NonNull SurfaceHolder holder) {
                 ZZResponse<?> init = CameraHelper.getInstance().init();
-                ZZResponse<MXCamera> mxCamera2 = CameraHelper.getInstance().createMXCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
-                if (ZZResponse.isSuccess(mxCamera2)) {
-                    mxCamera2.getData().setOrientation(90);
-                    mxCamera2.getData().start(holder);
+                if (ZZResponse.isSuccess(init)) {
+                    ZZResponse<MXCamera> mxCamera2 = CameraHelper.getInstance().createMXCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
+                    if (ZZResponse.isSuccess(mxCamera2)) {
+                        mxCamera2.getData().setOrientation(90);
+                        mxCamera2.getData().setPreviewCallback(VerifyPageActivity.this);
+                        mxCamera2.getData().start(holder);
+                    }
                 }
             }
 
@@ -69,15 +100,17 @@ public class VerifyPageActivity extends BaseBindingActivity<ActivityVerifyBindin
             public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
                 CameraHelper.getInstance().free();
             }
-
         });
-
     }
 
     @Override
-    protected boolean initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        //return TextUtils.isEmpty(title) || TextUtils.isEmpty(idCardNumber);
-        return false;
+    public void onPreview(int cameraId, byte[] frame, MXCamera camera, int width, int height) {
+        mVerifyPageModel.faceRecognize(cameraId, frame, camera, width, height);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mVerifyPageModel.releaseFingerDevice();
+    }
 }

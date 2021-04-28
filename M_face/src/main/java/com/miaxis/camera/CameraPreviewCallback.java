@@ -9,6 +9,6 @@ package com.miaxis.camera;
  */
 public interface CameraPreviewCallback {
 
-    void onPreview(int cameraId, byte[] frame, int width, int height);
+    void onPreview(int cameraId, byte[] frame, MXCamera camera, int width, int height);
 
 }

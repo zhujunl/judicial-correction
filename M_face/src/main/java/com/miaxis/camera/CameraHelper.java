@@ -85,7 +85,21 @@ public class CameraHelper {
     //        }
     //    }
 
-    private void addMXCamera(MXCamera mxCamera) {
+    public synchronized ZZResponse<MXCamera> find(int cameraId) {
+        if (cameraId < 0) {
+            return ZZResponse.CreateFail(MXCameraErrorCode.CODE_FAIL_CAMERA_ID, null);
+        }
+        if (this.mMXCameras != null) {
+            for (MXCamera mxCamera : this.mMXCameras) {
+                if (mxCamera.getCameraId() == cameraId) {
+                    return ZZResponse.CreateSuccess(mxCamera);
+                }
+            }
+        }
+        return ZZResponse.CreateFail(MXCameraErrorCode.CODE_FAIL_CAMERA_ID_NOT_FOUND, null);
+    }
+
+    private synchronized void addMXCamera(MXCamera mxCamera) {
         if (mxCamera == null) {
             return;
         }
@@ -94,7 +108,7 @@ public class CameraHelper {
         }
     }
 
-    public int resume() {
+    public synchronized int resume() {
         if (this.mMXCameras != null && !this.mMXCameras.isEmpty()) {
             for (MXCamera mxCamera : this.mMXCameras) {
                 if (mxCamera != null) {
@@ -105,7 +119,7 @@ public class CameraHelper {
         return 0;
     }
 
-    public int pause() {
+    public synchronized int pause() {
         if (this.mMXCameras != null && !this.mMXCameras.isEmpty()) {
             for (MXCamera mxCamera : this.mMXCameras) {
                 if (mxCamera != null) {
@@ -116,7 +130,7 @@ public class CameraHelper {
         return 0;
     }
 
-    public int stop() {
+    public synchronized int stop() {
         if (this.mMXCameras != null && !this.mMXCameras.isEmpty()) {
             for (MXCamera mxCamera : this.mMXCameras) {
                 if (mxCamera != null) {

@@ -3,6 +3,8 @@
     package="com.miaxis.judicialcorrection.face">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.usb.host" />
+
     <application>
 
         <activity android:name=".VerifyPageActivity" />

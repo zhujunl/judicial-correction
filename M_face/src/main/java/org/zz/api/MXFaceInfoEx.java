@@ -150,4 +150,5 @@ public class MXFaceInfoEx {
         }
         return 0;
     }
+
 }

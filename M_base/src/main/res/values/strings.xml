@@ -8,6 +8,7 @@
     <string name="btn_text_back_to_home">返回首页</string>
 
     <string name="app_info">信息提示</string>
+    <string name="app_init">程序初始化中，请稍后。</string>
 
     <string name="dialog_error_1">系统查无此人</string>
     <string name="dialog_error_2">请联系现场工作人员处理\n（工作人员需确认前期登记的\n身份证号是否准确）！</string>

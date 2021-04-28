@@ -1,5 +1,6 @@
 package com.miaxis.camera;
 
+import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.view.SurfaceHolder;
 
@@ -35,42 +36,29 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         return 0;
     }
 
-    //    public int init(int width, int height) {
-    //        int numberOfCameras = Camera.getNumberOfCameras();
-    //        if (numberOfCameras <= 0) {
-    //            return -1;
-    //        }
-    //        this.width = width;
-    //        this.height = height;
-    //        return 0;
-    //    }
+    public int getCameraId() {
+        return this.mCameraId;
+    }
 
     protected int open(int cameraId) {
-        if (this.mCamera == null) {
-            try {
-                this.mCameraId = cameraId;
-                this.mCamera = Camera.open(cameraId);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return -1;
-            }
-        } else {
-            this.mCamera.stopPreview();
+        if (this.mCamera != null) {
+            return -2;
         }
-        Camera.Parameters parameters = this.mCamera.getParameters();
+        Camera camera = null;
+        try {
+            this.mCameraId = cameraId;
+            camera = Camera.open(cameraId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+        Camera.Parameters parameters = camera.getParameters();
         Camera.Size previewSize = parameters.getPreviewSize();
         this.width = previewSize.width;
         this.height = previewSize.height;
+        this.buffer = new byte[((this.width * this.height) * ImageFormat.getBitsPerPixel(ImageFormat.NV21)) / 8];
+        this.mCamera = camera;
         return 0;
-        //        List<Camera.Size> supportedPreviewSizes = parameters.getSupportedPreviewSizes();
-        //        for (Camera.Size size : supportedPreviewSizes) {
-        //            if (size.width == this.width && size.height == this.height) {
-        //                parameters.setPreviewSize(this.width, this.height);
-        //                this.mCamera.setParameters(parameters);
-        //                return 0;
-        //            }
-        //        }
-        //        return -2;
     }
 
     public int setOrientation(int orientation) {
@@ -81,13 +69,23 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         return 0;
     }
 
+    private byte[] buffer;
 
     public int setPreviewCallback(CameraPreviewCallback frame) {
         if (this.mCamera == null) {
             return -1;
         }
-        this.mCamera.setPreviewCallback(this);
+        this.mCamera.setPreviewCallbackWithBuffer(this);
         this.mCameraPreviewCallback = frame;
+        getNextFrame();
+        return 0;
+    }
+
+    public int getNextFrame() {
+        if (this.mCamera == null) {
+            return -1;
+        }
+        this.mCamera.addCallbackBuffer(this.buffer);
         return 0;
     }
 
@@ -115,7 +113,6 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         }
         return 0;
     }
-
 
     public int start(SurfaceHolder holder) {
         if (this.mCamera == null) {
@@ -157,6 +154,7 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         try {
             this.mCamera.stopPreview();
             this.mCamera.setPreviewCallback(null);
+            this.mCamera.setPreviewCallbackWithBuffer(null);
             this.mCamera.release();
             this.mCamera = null;
             this.isPreview = false;
@@ -167,7 +165,6 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         return -2;
     }
 
-
     @Override
     public void onAutoFocus(boolean success, Camera camera) {
 
@@ -176,7 +173,7 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
         if (mCameraPreviewCallback != null) {
-            mCameraPreviewCallback.onPreview(mCameraId, data, width, height);
+            mCameraPreviewCallback.onPreview(mCameraId, data, this, this.width, this.height);
         }
     }
 
