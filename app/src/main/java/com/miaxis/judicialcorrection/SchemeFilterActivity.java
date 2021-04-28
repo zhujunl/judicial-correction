@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.alibaba.android.arouter.launcher.ARouter;
+import com.miaxis.judicialcorrection.dialog.DialogVerifyResult;
+
+import androidx.appcompat.app.AppCompatDialog;
 
 public class SchemeFilterActivity extends Activity {
 
@@ -20,11 +22,36 @@ public class SchemeFilterActivity extends Activity {
         //                finish();
         //            }
         //        });
-        ARouter.getInstance().build("/activity/readIDCard")
-                .withString("Title", "这是测试的")
-                .withBoolean("NoIdCardEnable", true)
-                .withBoolean("AutoCheckEnable", false)
-                .navigation(this, 0);
+
+
+        //        ARouter.getInstance().build("/activity/readIDCard")
+        //                .withString("Title", "这是测试的")
+        //                .withBoolean("NoIdCardEnable", false)
+        //                .withBoolean("AutoCheckEnable", false)
+        //                .navigation(this, 0);
+
+        //        ARouter.getInstance().build("/activity/verifyPage")
+        //                .withString("Name", "小名")
+        //                .withString("IdCardNumber", "11111111111111111X")
+        //                .navigation(this, 0);
+
+        new DialogVerifyResult(this, new DialogVerifyResult.ClickListener() {
+            @Override
+            public void onBackHome(AppCompatDialog appCompatDialog) {
+                finish();
+            }
+
+            @Override
+            public void onTryAgain(AppCompatDialog appCompatDialog) {
+                appCompatDialog.dismiss();
+            }
+
+            @Override
+            public void onTimeOut(AppCompatDialog appCompatDialog) {
+                finish();
+            }
+        }, new DialogVerifyResult.Builder()).show();
+
     }
 
     @Override

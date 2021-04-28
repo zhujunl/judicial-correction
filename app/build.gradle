@@ -57,6 +57,8 @@ android {
             dirs 'libs'
         }
     }
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
 }
 
 dependencies {
@@ -65,4 +67,5 @@ dependencies {
     api "com.google.dagger:hilt-android:$hilt_version"
     annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
     implementation project(path: ':M_id')
+    implementation project(path: ':M_face')
 }

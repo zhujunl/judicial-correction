@@ -30,6 +30,7 @@ public class BaseApplication extends Application {
             ARouter.openLog(); // 开启日志
             ARouter.openDebug(); // 使用InstantRun的时候，需要打开该开关，上线之后关闭，否则有安全风险
         }
+        Timber.e("DEBUG:" + BuildConfig.DEBUG);
         ARouter.init(this);
     }
 }

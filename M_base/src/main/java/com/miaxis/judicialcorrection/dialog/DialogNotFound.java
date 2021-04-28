@@ -1,13 +1,15 @@
 package com.miaxis.judicialcorrection.dialog;
 
 import android.content.Context;
-import android.view.Window;
 
 import com.miaxis.judicialcorrection.base.R;
+import com.miaxis.judicialcorrection.base.databinding.DialogNotFoundBinding;
+import com.miaxis.judicialcorrection.dialog.base.BaseDialog;
+import com.miaxis.judicialcorrection.dialog.base.BaseDialogListener;
 import com.miaxis.judicialcorrection.widget.countdown.CountDownListener;
-import com.miaxis.judicialcorrection.widget.countdown.CountDownTextView;
 
-import androidx.appcompat.app.AppCompatDialog;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 /**
  * @author Tank
@@ -16,29 +18,23 @@ import androidx.appcompat.app.AppCompatDialog;
  * @updateAuthor
  * @updateDes
  */
-public class DialogNotFound extends AppCompatDialog {
+public class DialogNotFound extends BaseDialog<DialogNotFoundBinding, DialogNotFound.ClickListener> {
 
-    public DialogNotFound(Context context) {
-        super(context);
-        setContentView(initLayout());
+    public DialogNotFound(Context context, ClickListener clickListener) {
+        super(context,clickListener);
         setCancelable(true);
         setCanceledOnTouchOutside(true);
-        Window window = getWindow();
-        if (window != null) {
-            window.setBackgroundDrawableResource(android.R.color.transparent);
-        }
     }
 
-    private int initLayout() {
+    @Override
+    public int initLayout() {
         return R.layout.dialog_not_found;
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        CountDownTextView cdtv_time = (CountDownTextView) findViewById(R.id.cdtv_time);
-        cdtv_time.setTime(10);
-        cdtv_time.setCountDownListener(new CountDownListener() {
+    public void initView() {
+        binding.cdtvTime.setTime(10);
+        binding.cdtvTime.setCountDownListener(new CountDownListener() {
             @Override
             public void onCountDownProgress(int progress) {
 
@@ -46,8 +42,28 @@ public class DialogNotFound extends AppCompatDialog {
 
             @Override
             public void onCountDownStop() {
-                dismiss();
+                if (listener != null) {
+                    listener.onTimeOut(DialogNotFound.this);
+                }
             }
         });
     }
+
+    @Override
+    public void initData() {
+
+    }
+
+    public interface ClickListener extends BaseDialogListener {
+
+    }
+
+    public class ModelNotFound extends ViewModel {
+
+        MutableLiveData<String> title=new MutableLiveData<>();
+
+        MutableLiveData<Boolean> autoCheckEnable=new MutableLiveData<>(false);
+
+    }
+
 }

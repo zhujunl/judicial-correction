@@ -14,5 +14,8 @@ public class ZZResponseCode {
     
     public static int CODE_SUCCESS = 0;
     public static String MSG_SUCCESS = "success";
-    
+
+
+    public static int CODE_ILLEGAL_PARAMETER = -1;
+    public static String MSG_ILLEGAL_PARAMETER = "illegal parameter";
 }

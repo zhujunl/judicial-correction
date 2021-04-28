@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Judicial Correction</string>
+    <!--    <string name="app_name">Judicial Correction</string>-->
+    <string name="app_name">司法矫正</string>
+
 </resources>

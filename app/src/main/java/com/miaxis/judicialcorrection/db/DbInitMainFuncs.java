@@ -1,9 +1,5 @@
 package com.miaxis.judicialcorrection.db;
 
-import androidx.annotation.NonNull;
-import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
@@ -14,6 +10,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 import dagger.Lazy;
 import timber.log.Timber;
 
@@ -41,7 +40,7 @@ public class DbInitMainFuncs extends RoomDatabase.Callback {
         super.onCreate(db);
         appExecutors.get().diskIO().execute(() -> {
             List<MainFunc> items = new ArrayList<>();
-            items.add(new MainFunc("首次报到登记", R.mipmap.main_enroll, "/null/null", true));
+            items.add(new MainFunc("首次报到登记", R.mipmap.main_enroll, "/activity/verifyPage", true));
             items.add(new MainFunc("日常报告", R.mipmap.main_report, "/report/ReportActivity", true));
             items.add(new MainFunc("集中教育", R.mipmap.main_edu_all, "/null/null", true));
             items.add(new MainFunc("个别教育", R.mipmap.main_edu_one, "/null/null", true));

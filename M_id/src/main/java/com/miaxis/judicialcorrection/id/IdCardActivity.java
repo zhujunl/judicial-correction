@@ -1,6 +1,7 @@
 package com.miaxis.judicialcorrection.id;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -51,5 +52,10 @@ public class IdCardActivity extends BaseBindingActivity {
                                 .navigation()
                 )
                 .commitNow();
+    }
+
+    @Override
+    protected boolean initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        return TextUtils.isEmpty(title);
     }
 }
