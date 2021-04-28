@@ -66,12 +66,12 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation project(path: ':M_report')
-    implementation project(path: ':M_id')
     implementation "com.google.dagger:hilt-android:$hilt_version"
-
-
     annotationProcessor 'com.alibaba:arouter-compiler:1.5.1'
     annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
+
+    implementation project(path: ':M_id')
     implementation project(path: ':M_face')
+    implementation project(path: ':M_report')
+    implementation project(path: ':M_enroll')
 }
