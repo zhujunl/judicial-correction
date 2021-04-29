@@ -9,6 +9,9 @@ import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.base.utils.LiveDataCallAdapterFactory;
 import com.miaxis.judicialcorrection.base.utils.gson.converter.GsonConverterFactory;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -19,9 +22,11 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.components.SingletonComponent;
 import okhttp3.Credentials;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import timber.log.Timber;
 
@@ -45,34 +50,12 @@ public abstract class AppModule {
 
     @Singleton
     @Provides
-    static OkHttpClient provideOkHttp() {
+    static OkHttpClient provideOkHttp(AutoTokenInterceptor autoTokenInterceptor) {
         return new OkHttpClient.Builder()
                 .connectTimeout(8000, TimeUnit.MILLISECONDS)
                 .readTimeout(8000, TimeUnit.MILLISECONDS)
                 .writeTimeout(8000, TimeUnit.MILLISECONDS)
-                .addNetworkInterceptor(chain -> {
-                    Request original = chain.request();
-                    Request.Builder newBuilder = original.newBuilder();
-                    String value = "Bearer d1a381f9-8485-4bbf-ad10-c5be681979e3";
-                    if (!TextUtils.isEmpty(value)) {
-                        newBuilder.addHeader("Authorization", value);
-                    }
-                    if (Objects.equals("POST", original.method())) {
-                        RequestBody bodyUnSign = original.body();
-                        assert bodyUnSign != null;
-                        newBuilder.post(bodyUnSign);
-                    } else if (Objects.equals("PUT", original.method())) {
-                        RequestBody bodyUnSign = original.body();
-                        assert bodyUnSign != null;
-                        newBuilder.put(bodyUnSign);
-                    } else {
-                        newBuilder.get();
-                    }
-                    Request request = newBuilder.build();
-                    Timber.v("OKHttp Request URL= [%s]", original.url());
-                    //Timber.v("OKHttp Request Header=[%s]\nURL= [%s]", request.headers(), request.url());
-                    return chain.proceed(request);
-                })
+                .addNetworkInterceptor(autoTokenInterceptor)
                 .build();
     }
 

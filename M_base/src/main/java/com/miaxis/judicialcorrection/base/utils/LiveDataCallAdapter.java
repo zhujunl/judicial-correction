@@ -48,7 +48,7 @@ public class LiveDataCallAdapter<R> implements CallAdapter<ApiResult<R>, LiveDat
                                 Timber.d("HttpResponse, Request :[%s]\nResponse :[%s]", call.request().url(), response.body());
                                 postValue(response.body());
                             } else {
-                                Timber.w("HttpResponse, Request :[%s]\nResponse :[%s]", call.request().url(), response.message());
+                                Timber.w("HttpResponse, Request :[%s]\nResponse :[%d],[%s]", call.request().url(),response.code(), response.message());
                                 ApiResult<R> apiResult = new ApiResult<>();
                                 apiResult.code = response.code();
                                 apiResult.msg = response.message();
