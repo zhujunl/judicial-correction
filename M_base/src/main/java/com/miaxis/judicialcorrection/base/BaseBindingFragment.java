@@ -47,6 +47,8 @@ public abstract class BaseBindingFragment<V extends ViewDataBinding> extends Fra
 
     protected abstract void initView(@NonNull V binding, @Nullable Bundle savedInstanceState);
 
+    protected abstract void initData(@NonNull V binding, @Nullable Bundle savedInstanceState);
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

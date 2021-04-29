@@ -46,6 +46,8 @@ public abstract class BaseBindingActivity<V extends ViewDataBinding> extends App
 
     protected abstract void initView(@NonNull V binding, @Nullable Bundle savedInstanceState);
 
+    protected abstract void initData(@NonNull V binding, @Nullable Bundle savedInstanceState);
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
