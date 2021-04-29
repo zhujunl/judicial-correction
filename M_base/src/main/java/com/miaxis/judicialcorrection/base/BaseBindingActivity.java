@@ -33,6 +33,7 @@ public abstract class BaseBindingActivity<V extends ViewDataBinding> extends App
         ARouter.getInstance().inject(this);
         binding = DataBindingUtil.setContentView(this, initLayout());
         initView(binding, savedInstanceState);
+        initData(binding, savedInstanceState);
     }
 
     protected void initWindow() {

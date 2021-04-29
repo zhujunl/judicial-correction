@@ -70,6 +70,10 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
             }
             v.setTag(v.getId(), ct);
         });
+    }
+
+    @Override
+    protected void initData(@NonNull ActivityMainBinding binding, @Nullable Bundle savedInstanceState) {
         init();
     }
 

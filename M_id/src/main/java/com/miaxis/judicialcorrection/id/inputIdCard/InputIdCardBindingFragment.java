@@ -11,6 +11,7 @@ import com.miaxis.judicialcorrection.id.R;
 import com.miaxis.judicialcorrection.id.databinding.FragmentInputIdCardBinding;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -77,6 +78,11 @@ public class InputIdCardBindingFragment extends BaseBindingFragment<FragmentInpu
 
         inputIDCardModel.title.setValue(title);
         inputIDCardModel.autoCheckEnable.setValue(autoCheckEnable);
+    }
+
+    @Override
+    protected void initData(@NonNull FragmentInputIdCardBinding binding, @Nullable Bundle savedInstanceState) {
+
     }
 
 }

@@ -51,6 +51,11 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
         // TODO: 4/28/21 司法局设置，正在沟通
     }
 
+    @Override
+    protected void initData(@NonNull ActivitySettingBinding binding, @Nullable Bundle savedInstanceState) {
+
+    }
+
     public static class MainAdapter extends BaseDataBoundDiffAdapter<MainFunc, ItemSettingFuncBinding> {
 
         @Inject

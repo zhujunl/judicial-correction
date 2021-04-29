@@ -98,6 +98,11 @@ public class VerifyPageFragment extends BaseBindingFragment<ActivityVerifyBindin
     }
 
     @Override
+    protected void initData(@NonNull ActivityVerifyBinding binding, @Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
     public void onPreview(int cameraId, byte[] frame, MXCamera camera, int width, int height) {
         mVerifyPageModel.faceRecognize(cameraId, frame, camera, width, height);
     }

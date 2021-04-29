@@ -1,14 +1,9 @@
 package com.miaxis.judicialcorrection.report;
 
 import android.os.Bundle;
-import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.api.ApiResult;
 import com.miaxis.judicialcorrection.base.api.ApiService;
 import com.miaxis.judicialcorrection.base.api.vo.User;
@@ -18,6 +13,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
@@ -29,21 +26,32 @@ import timber.log.Timber;
  */
 @AndroidEntryPoint
 @Route(path = "/report/ReportActivity")
-public class ReportActivity extends AppCompatActivity {
+public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> {
+
     @Inject
     ApiService apiService;
 
     ActivityReportBinding binding;
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_report);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_report);
+    protected int initLayout() {
+        return R.layout.activity_report;
+    }
+
+    @Override
+    protected void initView(@NonNull ActivityReportBinding binding, @Nullable Bundle savedInstanceState) {
         binding.personList.setOnClickListener(v -> {
             apiService.personList("2019/01/13 12:55:35").observe(this, (ApiResult<List<User>> userApiResult) -> {
-                Timber.i("result %s ",userApiResult);
-                runOnUiThread(()->{binding.test.setText(userApiResult.toString());});
+                Timber.i("result %s ", userApiResult);
+                runOnUiThread(() -> {
+                    binding.test.setText(userApiResult.toString());
+                });
             });
         });
+    }
+
+    @Override
+    protected void initData(@NonNull ActivityReportBinding binding, @Nullable Bundle savedInstanceState) {
+
     }
 }

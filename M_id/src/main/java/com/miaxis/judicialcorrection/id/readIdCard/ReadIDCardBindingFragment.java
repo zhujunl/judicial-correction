@@ -12,6 +12,7 @@ import com.miaxis.judicialcorrection.id.R;
 import com.miaxis.judicialcorrection.id.databinding.FragmentReadIdCardBinding;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -76,6 +77,11 @@ public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadI
         readIDCardModel.autoCheckEnable.setValue(autoCheckEnable);
         boolean init = ReadIdCardManager.getInstance().init(getActivity());
         Toast.makeText(getContext(), "init:" + init, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void initData(@NonNull FragmentReadIdCardBinding binding, @Nullable Bundle savedInstanceState) {
+
     }
 
     @Override

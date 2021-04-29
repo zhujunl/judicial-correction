@@ -41,6 +41,7 @@ public abstract class BaseBindingFragment<V extends ViewDataBinding> extends Fra
         super.onViewCreated(view, savedInstanceState);
         binding.setLifecycleOwner(this);
         initView(binding, savedInstanceState);
+        initData(binding, savedInstanceState);
     }
 
     protected abstract int initLayout();

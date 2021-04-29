@@ -53,4 +53,9 @@ public class IdCardActivity extends BaseBindingActivity<ActivityIdCardBinding> {
                 .commitNow();
     }
 
+    @Override
+    protected void initData(@NonNull ActivityIdCardBinding binding, @Nullable Bundle savedInstanceState) {
+
+    }
+
 }
