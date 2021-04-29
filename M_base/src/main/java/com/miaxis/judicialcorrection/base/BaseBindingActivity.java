@@ -1,5 +1,6 @@
 package com.miaxis.judicialcorrection.base;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -93,6 +94,22 @@ public abstract class BaseBindingActivity<V extends ViewDataBinding> extends App
         super.onDestroy();
         if (binding != null) {
             binding.unbind();
+        }
+    }
+
+    private ProgressDialog progressDialog;
+
+    protected void showLoading() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Loading .. ");
+        }
+        progressDialog.show();
+    }
+
+    protected void dismissLoading() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
         }
     }
 

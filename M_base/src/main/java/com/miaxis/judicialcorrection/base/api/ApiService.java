@@ -2,6 +2,7 @@ package com.miaxis.judicialcorrection.base.api;
 
 import androidx.lifecycle.LiveData;
 
+import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.api.vo.User;
 
 import java.util.List;
@@ -25,6 +26,10 @@ public interface ApiService {
             @Query("lastModifiedTime") String lastModifiedTime
     );
 
+    @GET("/personInfo/getByCard")
+    LiveData<ApiResult<PersonInfo>> login(
+            @Query("zjhm") String idCardNumber
+    );
 
 
 }

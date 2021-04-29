@@ -60,10 +60,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="85px"
             android:layout_marginTop="100px"
+            android:text="@{String.format(&quot;设备产品标识：%s&quot;,imei)}"
             android:textColor="#242E42"
             android:textSize="50px"
             android:textStyle="bold"
-            android:text="@{String.format(&quot;设备产品标识：%s&quot;,imei)}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             tools:text="设备产品标识：IMEIXXXX" />
@@ -90,6 +90,7 @@
             app:layout_constraintStart_toEndOf="@id/flag_addr"
             app:layout_constraintTop_toTopOf="@id/flag_addr" />
 
+
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spinner"
             android:layout_width="0dp"
@@ -101,6 +102,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/flag_addr" />
 
+        <View
+            android:id="@+id/flagActive"
+            android:layout_width="11px"
+            android:layout_height="41px"
+            android:layout_marginStart="85px"
+            android:layout_marginTop="160px"
+            android:background="#2850A3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/flag_addr" />
+
+        <TextView
+            android:id="@+id/titleActive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:text="授权激活码"
+            android:textColor="#ff393939"
+            android:textSize="30px"
+            app:layout_constraintBottom_toBottomOf="@id/flagActive"
+            app:layout_constraintStart_toEndOf="@id/flagActive"
+            app:layout_constraintTop_toTopOf="@id/flagActive" />
+
+        <EditText
+            android:id="@+id/etActiveCode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="85px"
+            android:layout_marginTop="50px"
+            android:layout_marginEnd="85px"
+            android:hint="请输入激活码"
+            android:imeOptions="actionDone"
+            android:inputType="textCapCharacters"
+            android:textSize="30px"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleActive" />
 
         <View
             android:id="@+id/flag_func"
@@ -110,7 +147,7 @@
             android:layout_marginTop="230px"
             android:background="#2850A3"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/flag_addr" />
+            app:layout_constraintTop_toBottomOf="@id/flagActive" />
 
         <TextView
             android:id="@+id/titleFunc"
@@ -128,17 +165,16 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="85px"
-            android:layout_marginEnd="85px"
-            app:layout_constraintTop_toBottomOf="@id/flag_func"
             android:layout_marginTop="54px"
+            android:layout_marginEnd="85px"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/flag_func"
+            app:spanCount="3"
             tools:itemCount="7"
-            tools:listitem="@layout/item_setting_func"
-            app:spanCount="3" />
-
+            tools:listitem="@layout/item_setting_func" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

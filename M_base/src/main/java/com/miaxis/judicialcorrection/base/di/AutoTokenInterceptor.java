@@ -1,0 +1,213 @@
+package com.miaxis.judicialcorrection.base.di;
+
+import android.content.Context;
+
+import androidx.lifecycle.Observer;
+
+import com.google.gson.Gson;
+import com.miaxis.judicialcorrection.base.BuildConfig;
+import com.miaxis.judicialcorrection.base.api.vo.Token;
+import com.miaxis.judicialcorrection.base.db.AppDatabase;
+import com.miaxis.judicialcorrection.base.db.po.JAuthInfo;
+import com.wondersgroup.om.AuthInfo;
+import com.wondersgroup.om.JZAuth;
+import com.wondersgroup.om.ResultListener;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import dagger.hilt.android.qualifiers.ApplicationContext;
+import okhttp3.Interceptor;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import timber.log.Timber;
+
+/**
+ * AutoTokenInterceptor
+ *
+ * @author zhangyw
+ * Created on 4/29/21.
+ */
+@Singleton
+public class AutoTokenInterceptor implements Interceptor {
+    private final JZAuth jzAuth;
+    private final Object authLock = new Object();
+    private final Object tokenLock = new Object();
+    private Token token = null;
+    private JAuthInfo jAuthInfo;
+
+    @Inject
+    public AutoTokenInterceptor(@ApplicationContext Context context, AppDatabase appDatabase) {
+        appDatabase.tokenAuthInfoDAO().loadAuthInfo().observeForever((JAuthInfo info) -> {
+            Timber.i("Auth Active Code Change : %s", info);
+            jAuthInfo = info;
+        });
+        jzAuth = JZAuth.getInstance();
+        jzAuth.setGlobalURL(BuildConfig.TOKEN_URL);
+        jzAuth.initialize(context);
+        if (BuildConfig.DEBUG) {
+            jzAuth.setDebug(true);
+        }
+    }
+
+    String getToken() throws IOException {
+        if (token == null || token.isExpires()) {
+            synchronized (tokenLock) {
+                if (token == null || token.isExpires()) {
+                    if (!jzAuth.checkAuth()) {
+                        registerJzAuth();
+                        Timber.i("getToken ，register success !");
+                    }
+                    refreshToken();
+                    Timber.i("getToken ，NEW  : %s", token);
+                }
+            }
+        }
+        return token.getBearerToken();
+    }
+
+
+    @NotNull
+    @Override
+    public Response intercept(@NotNull Chain chain) throws IOException {
+        Request original = chain.request();
+        Request.Builder newBuilder = original.newBuilder();
+        String token = getToken();
+        Timber.v("token : %s", token);
+        newBuilder.addHeader("Authorization", token);
+        if (Objects.equals("POST", original.method())) {
+            RequestBody bodyUnSign = original.body();
+            assert bodyUnSign != null;
+            newBuilder.post(bodyUnSign);
+        } else if (Objects.equals("PUT", original.method())) {
+            RequestBody bodyUnSign = original.body();
+            assert bodyUnSign != null;
+            newBuilder.put(bodyUnSign);
+        } else {
+            newBuilder.get();
+        }
+        Request request = newBuilder.build();
+        Timber.v("OKHttp Request URL= [%s]", original.url());
+        //Timber.v("OKHttp Request Header=[%s]\nURL= [%s]", request.headers(), request.url());
+        return chain.proceed(request);
+    }
+
+
+    void registerJzAuth() throws IOException {
+        if (jAuthInfo == null) {
+            throw new IOException("请输入激活码");
+        }
+        AuthInfo.getInstance().setActivationCode(jAuthInfo.activationCode);
+        AuthInfo.getInstance().setContact(jAuthInfo.contact);
+        AuthInfo.getInstance().setContactInformation(jAuthInfo.contactInformation);
+
+        AuthInfo.getInstance().setDeviceType(jAuthInfo.deviceType);
+        AuthInfo.getInstance().setVendor(jAuthInfo.vendor);
+        AuthInfo.getInstance().setDishiId(jAuthInfo.dishiId);
+        AuthInfo.getInstance().setDishiName(jAuthInfo.dishiName);
+        AuthInfo.getInstance().setQuxianId(jAuthInfo.quxianId);
+        AuthInfo.getInstance().setQuxianName(jAuthInfo.quxianName);
+
+        AuthInfo.getInstance().setCurrentVersion("1.0.0");
+        AuthInfo.getInstance().setClientName("clientName");
+        AuthInfo.getInstance().setLoc("测试地址");
+
+        final Exception[] errorR = new Exception[1];
+        final String[] resultR = new String[1];
+        JZAuth.getInstance().registerDevice(new ResultListener() {
+
+            @Override
+            public void onError(Exception error) {
+                synchronized (authLock) {
+                    errorR[0] = error;
+                    authLock.notify();
+                }
+            }
+
+            @Override
+            public void onResult(String result) {
+                synchronized (authLock) {
+                    resultR[0] = result;
+                    authLock.notify();
+                }
+            }
+        });
+
+        synchronized (authLock) {
+            try {
+                authLock.wait(9000);
+            } catch (InterruptedException e) {
+                throw new IOException("token server register timeout ! ");
+            }
+        }
+        Timber.i("3`");
+        if (errorR[0] != null) {
+            throw new IOException(errorR[0].getMessage());
+        } else if (resultR[0] != null) {
+            //{"desc":"非法参数vendor","result":"999"}
+            try {
+                JSONObject jsonObject = new JSONObject(resultR[0]);
+                Object result = jsonObject.get("result");
+                if (!Objects.equals("0", result) && !Objects.equals("1", result)) {
+                    throw new IOException("token server register error : " + resultR[0]);
+                }
+            } catch (JSONException e) {
+                throw new IOException("token server register error ! ");
+            }
+        } else {
+            throw new IOException("token server register error ! ");
+        }
+    }
+
+
+    void refreshToken() throws IOException {
+        final Exception[] errorR = new Exception[1];
+        final String[] resultR = new String[1];
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        JZAuth.getInstance().getToken(new ResultListener() {
+            @Override
+            public void onError(Exception error) {
+                synchronized (authLock) {
+                    errorR[0] = error;
+                    atomicBoolean.set(true);
+                    authLock.notify();
+                }
+            }
+
+            @Override
+            public void onResult(String result) {
+                synchronized (authLock) {
+                    resultR[0] = result;
+                    atomicBoolean.set(true);
+                    authLock.notify();
+                }
+            }
+        });
+        synchronized (authLock) {
+            if (!atomicBoolean.get()) {
+                try {
+                    authLock.wait(9000);
+                } catch (InterruptedException e) {
+                    throw new IOException("token server register timeout ");
+                }
+            }
+        }
+        if (errorR[0] != null) {
+            throw new IOException(errorR[0].getMessage());
+        } else if (resultR[0] != null) {
+            token = new Gson().fromJson(resultR[0], Token.class);
+            Timber.i("Got new token : %s", token);
+        } else {
+            throw new IOException("token server register timeout ");
+        }
+    }
+}

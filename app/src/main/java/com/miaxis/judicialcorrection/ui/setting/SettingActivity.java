@@ -3,13 +3,17 @@ package com.miaxis.judicialcorrection.ui.setting;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
+import com.miaxis.judicialcorrection.base.db.po.JAuthInfo;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundDiffAdapter;
@@ -23,7 +27,9 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DiffUtil;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
@@ -35,6 +41,8 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
     AppDatabase appDatabase;
     @Inject
     MainAdapter mainAdapter;
+    @Inject
+    AppExecutors appExecutors;
 
     @Override
     protected int initLayout() {
@@ -48,7 +56,39 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
         binding.btnBackToHome.setOnClickListener(v -> finish());
         binding.setImei(Build.SERIAL);
         appDatabase.mainFuncDAO().loadFuncAll().observe(this, mainAdapter::submitList);
+        appDatabase.tokenAuthInfoDAO().loadAuthInfo().observe(this, (JAuthInfo info) -> {
+            if (info != null && info.activationCode != null) {
+                Timber.i(" Query JAuthInfo == null ");
+                binding.etActiveCode.setText(info.activationCode);
+            }
+        });
+        binding.etActiveCode.setOnEditorActionListener((TextView v, int actionId, KeyEvent event) -> {
+            if (actionId == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
+                syncActiveCode();
+                return true;
+            }
+            return false;
+        });
         // TODO: 4/28/21 司法局设置，正在沟通
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        syncActiveCode();
+    }
+
+    void syncActiveCode(){
+        String aCode = binding.etActiveCode.getText().toString();
+        appExecutors.diskIO().execute(() -> {
+            JAuthInfo jAuthInfo = appDatabase.tokenAuthInfoDAO().loadAuthInfoSync();
+            if (jAuthInfo == null) {
+                Timber.i(" Change JAuthInfo == null ");
+                jAuthInfo = new JAuthInfo();
+            }
+            jAuthInfo.activationCode = aCode;
+            appDatabase.tokenAuthInfoDAO().insert(jAuthInfo);
+        });
     }
 
     @Override

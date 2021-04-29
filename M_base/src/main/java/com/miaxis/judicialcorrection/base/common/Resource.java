@@ -26,24 +26,54 @@ public final class Resource<T> {
     public final Status status;
     @Nullable
     public final T data;
+    public final int errorCode;
     @Nullable
-    public final String message;
+    public final String errorMessage;
 
-    private Resource(@NonNull Status status, @Nullable T data, @Nullable String message) {
+    private Resource(@NonNull Status status, @Nullable T data, @Nullable int errorCode, String errorMessage) {
         this.status = status;
         this.data = data;
-        this.message = message;
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
     }
 
     public static <T> Resource<T> success(@NonNull T data) {
-        return new Resource<>(SUCCESS, data, null);
+        return new Resource<>(SUCCESS, data, 0, null);
     }
 
-    public static <T> Resource<T> error(String msg, @Nullable T data) {
-        return new Resource<>(ERROR, data, msg);
+    public static <T> Resource<T> error(int errorCode, String errorMessage, @Nullable T data) {
+        return new Resource<>(ERROR, data, errorCode, errorMessage);
+    }
+
+    public static <T> Resource<T> copyError(Resource<?> resource) {
+        return new Resource<T>(ERROR, null,resource.errorCode, resource.errorMessage);
     }
 
     public static <T> Resource<T> loading(@Nullable T data) {
-        return new Resource<>(LOADING, data, null);
+        return new Resource<>(LOADING, data, 0, null);
     }
+
+
+    public boolean isSuccess() {
+        return status == SUCCESS;
+    }
+
+    public boolean isError() {
+        return status == ERROR;
+    }
+
+    public boolean isLoading() {
+        return status == LOADING;
+    }
+
+    @Override
+    public String toString() {
+        return "Resource{" +
+                "status=" + status +
+                ", date=" + data +
+                ", errorCode=" + errorCode +
+                ", errorMessage='" + errorMessage + '\'' +
+                '}';
+    }
+
 }
