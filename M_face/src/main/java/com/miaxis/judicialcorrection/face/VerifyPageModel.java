@@ -11,8 +11,11 @@ import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 
 import org.zz.api.MXFaceInfoEx;
 
+import javax.inject.Inject;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import timber.log.Timber;
 
 /**
@@ -23,6 +26,7 @@ import timber.log.Timber;
  * @updateDes
  */
 
+@HiltViewModel
 public class VerifyPageModel extends ViewModel {
 
     MutableLiveData<String> name = new MutableLiveData<>();
@@ -40,10 +44,10 @@ public class VerifyPageModel extends ViewModel {
     public int[] mFaceNumber = new int[1];
     public int[] mFacesData = new int[MXFaceInfoEx.SIZE * MXFaceInfoEx.iMaxFaceNum];
 
+    @Inject
     AppExecutors mAppExecutors;
 
-    public void initFingerDevice(AppExecutors executorService) {
-        mAppExecutors = executorService;
+    public void initFingerDevice() {
         mAppExecutors.networkIO().execute(() -> {
             FingerManager.getInstance().initDevice(fingerStatusListener);
         });
@@ -119,30 +123,35 @@ public class VerifyPageModel extends ViewModel {
     private final FingerManager.OnFingerStatusListener fingerStatusListener = result -> {
         Timber.e("FingerStatus:" + result);
         if (result) {
-            String device = FingerManager.getInstance().deviceInfo();
-            Timber.e("device:" + device);
-            if (TextUtils.isEmpty(device)) {
-                //fingerHint.set("未找到指纹设备");
-                Timber.e("未找到指纹设备");
-            } else {
-                Timber.e("请在指纹采集仪上按压指纹");
-                //fingerHint.set("请在指纹采集仪上按压指纹");
-                FingerManager.getInstance().setFingerListener(fingerReadListener);
-                readFinger();
+            result = readFinger();
+            if (!result) {
+                result = readFinger();
             }
-        } else {
-            //fingerHint.set("指纹初始化失败");
+        }
+        if (!result) {
             Timber.e("指纹初始化失败");
             FingerManager.getInstance().release();
         }
     };
 
-    private void readFinger() {
-        mAppExecutors.networkIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                FingerManager.getInstance().readFinger();
-            }
-        });
+    private boolean readFinger() {
+        String device = FingerManager.getInstance().deviceInfo();
+        Timber.e("device:" + device);
+        if (TextUtils.isEmpty(device)) {
+            //fingerHint.set("未找到指纹设备");
+            Timber.e("未找到指纹设备");
+            return false;
+        } else {
+            Timber.e("请在指纹采集仪上按压指纹");
+            //fingerHint.set("请在指纹采集仪上按压指纹");
+            FingerManager.getInstance().setFingerListener(fingerReadListener);
+            mAppExecutors.networkIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    FingerManager.getInstance().readFinger();
+                }
+            });
+            return true;
+        }
     }
 }

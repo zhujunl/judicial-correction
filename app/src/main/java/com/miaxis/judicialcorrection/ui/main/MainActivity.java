@@ -2,11 +2,9 @@ package com.miaxis.judicialcorrection.ui.main;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +26,6 @@ import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundDiffAdapter;
 import com.miaxis.judicialcorrection.databinding.ActivityMainBinding;
 import com.miaxis.judicialcorrection.databinding.ItemMainFucBinding;
-import com.miaxis.judicialcorrection.face.VerifyPageActivity;
 
 import java.util.Objects;
 
@@ -36,6 +33,7 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
@@ -94,18 +92,12 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
                 if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
-//                    if (init != 0) {
-//                        new AlertDialog.Builder(MainActivity.this)
-//                                .setTitle(R.string.app_info)
-//                                .setMessage("初始化失败：" + String.valueOf(init))
-//                                .show();
-//                    }
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startActivity(new Intent(MainActivity.this, VerifyPageActivity.class));
-                    }
-                },1000);
+                if (init != 0) {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle(R.string.app_info)
+                            .setMessage("初始化失败：" + String.valueOf(init))
+                            .show();
+                }
             });
         });
     }

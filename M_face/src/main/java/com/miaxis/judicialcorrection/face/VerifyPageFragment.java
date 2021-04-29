@@ -11,12 +11,9 @@ import com.bumptech.glide.Glide;
 import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.CameraPreviewCallback;
 import com.miaxis.camera.MXCamera;
-import com.miaxis.judicialcorrection.base.BaseBindingActivity;
-import com.miaxis.judicialcorrection.base.utils.AppExecutors;
+import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.face.databinding.ActivityVerifyBinding;
-
-import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,8 +29,8 @@ import dagger.hilt.android.AndroidEntryPoint;
  */
 
 @AndroidEntryPoint
-@Route(path = "/activity/verifyPage")
-public class VerifyPageActivity extends BaseBindingActivity<ActivityVerifyBinding> implements CameraPreviewCallback {
+@Route(path = "/page/verifyPage")
+public class VerifyPageFragment extends BaseBindingFragment<ActivityVerifyBinding> implements CameraPreviewCallback {
 
     @Autowired(name = "Name")
     String title;
@@ -42,9 +39,6 @@ public class VerifyPageActivity extends BaseBindingActivity<ActivityVerifyBindin
     String idCardNumber;
 
     VerifyPageModel mVerifyPageModel;
-
-    @Inject
-    AppExecutors mAppExecutors;
 
     @Override
     protected int initLayout() {
@@ -58,18 +52,18 @@ public class VerifyPageActivity extends BaseBindingActivity<ActivityVerifyBindin
         mVerifyPageModel.idCardNumber.observe(this, s -> binding.tvIdCard.setText(s));
         mVerifyPageModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));
         mVerifyPageModel.fingerBitmap.observe(this, bitmap -> {
-            Glide.with(VerifyPageActivity.this).load(bitmap).error(R.mipmap.mipmap_error).into(binding.ivFinger);
+            Glide.with(VerifyPageFragment.this).load(bitmap).error(R.mipmap.mipmap_error).into(binding.ivFinger);
             binding.ivFinger.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Glide.with(VerifyPageActivity.this).load(R.mipmap.mipmap_bg_finger).into(binding.ivFinger);
+                    Glide.with(VerifyPageFragment.this).load(R.mipmap.mipmap_bg_finger).into(binding.ivFinger);
                     mVerifyPageModel.releaseFingerDevice();
-                    mVerifyPageModel.initFingerDevice(mAppExecutors);
+                    mVerifyPageModel.initFingerDevice();
                     binding.ivFinger.setOnClickListener(null);
                 }
             });
         });
-        mVerifyPageModel.initFingerDevice(mAppExecutors);
+        mVerifyPageModel.initFingerDevice();
 
         mVerifyPageModel.name.setValue(title);
         mVerifyPageModel.idCardNumber.setValue(idCardNumber);
@@ -85,7 +79,7 @@ public class VerifyPageActivity extends BaseBindingActivity<ActivityVerifyBindin
                     ZZResponse<MXCamera> mxCamera2 = CameraHelper.getInstance().createMXCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
                     if (ZZResponse.isSuccess(mxCamera2)) {
                         mxCamera2.getData().setOrientation(90);
-                        mxCamera2.getData().setPreviewCallback(VerifyPageActivity.this);
+                        mxCamera2.getData().setPreviewCallback(VerifyPageFragment.this);
                         mxCamera2.getData().start(holder);
                     }
                 }
