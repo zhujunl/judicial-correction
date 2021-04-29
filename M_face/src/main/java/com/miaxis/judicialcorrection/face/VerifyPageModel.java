@@ -47,6 +47,10 @@ public class VerifyPageModel extends ViewModel {
     @Inject
     AppExecutors mAppExecutors;
 
+    @Inject
+    public VerifyPageModel() {
+    }
+
     public void initFingerDevice() {
         mAppExecutors.networkIO().execute(() -> {
             FingerManager.getInstance().initDevice(fingerStatusListener);
