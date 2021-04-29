@@ -4,13 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.DiffUtil;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.miaxis.judicialcorrection.R;
@@ -26,6 +20,10 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
@@ -45,7 +43,7 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
 
     @SuppressLint("HardwareIds")
     @Override
-    protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    protected void initView(@NonNull ActivitySettingBinding view, @Nullable Bundle savedInstanceState) {
         binding.recyclerView.setAdapter(mainAdapter);
         binding.btnBackToHome.setOnClickListener(v -> finish());
         binding.setImei(Build.SERIAL);

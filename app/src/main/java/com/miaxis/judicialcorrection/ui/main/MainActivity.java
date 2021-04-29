@@ -58,7 +58,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
     }
 
     @Override
-    protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    protected void initView(@NonNull ActivityMainBinding view, @Nullable Bundle savedInstanceState) {
         MainAdapter mainAdapter = new MainAdapter();
         binding.recyclerView.setAdapter(mainAdapter);
         appDatabase.mainFuncDAO().loadFuncActive().observe(this, mainAdapter::submitList);

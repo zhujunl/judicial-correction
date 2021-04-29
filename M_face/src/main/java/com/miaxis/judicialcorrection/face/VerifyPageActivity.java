@@ -52,7 +52,7 @@ public class VerifyPageActivity extends BaseBindingActivity<ActivityVerifyBindin
     }
 
     @Override
-    protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    protected void initView(@NonNull ActivityVerifyBinding view, @Nullable Bundle savedInstanceState) {
         mVerifyPageModel = new ViewModelProvider(this).get(VerifyPageModel.class);
         mVerifyPageModel.name.observe(this, s -> binding.tvName.setText(s));
         mVerifyPageModel.idCardNumber.observe(this, s -> binding.tvIdCard.setText(s));

@@ -1,13 +1,12 @@
 package com.miaxis.judicialcorrection.id;
 
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
+import com.miaxis.judicialcorrection.id.databinding.ActivityIdCardBinding;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +21,7 @@ import androidx.fragment.app.Fragment;
  */
 
 @Route(path = "/activity/readIDCard")
-public class IdCardActivity extends BaseBindingActivity {
+public class IdCardActivity extends BaseBindingActivity<ActivityIdCardBinding> {
 
     @Autowired(name = "Title")
     String title;
@@ -39,7 +38,7 @@ public class IdCardActivity extends BaseBindingActivity {
     }
 
     @Override
-    protected void initView(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    protected void initView(@NonNull ActivityIdCardBinding view, @Nullable Bundle savedInstanceState) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(
@@ -54,8 +53,4 @@ public class IdCardActivity extends BaseBindingActivity {
                 .commitNow();
     }
 
-    @Override
-    protected boolean initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        return TextUtils.isEmpty(title);
-    }
 }

@@ -1,7 +1,6 @@
 package com.miaxis.judicialcorrection.id.readIdCard;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,7 +12,6 @@ import com.miaxis.judicialcorrection.id.R;
 import com.miaxis.judicialcorrection.id.databinding.FragmentReadIdCardBinding;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -44,7 +42,7 @@ public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadI
     }
 
     @Override
-    protected void initView(@NonNull View view, Bundle savedInstanceState) {
+    protected void initView(@NonNull FragmentReadIdCardBinding view, Bundle savedInstanceState) {
         ReadIDCardModel readIDCardModel = new ViewModelProvider(this).get(ReadIDCardModel.class);
         readIDCardModel.title.observe(this, s -> binding.tvTitle.setText(String.valueOf(s)));
         readIDCardModel.noIdCardEnable.observe(this, aBoolean -> {
@@ -78,11 +76,6 @@ public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadI
         readIDCardModel.autoCheckEnable.setValue(autoCheckEnable);
         boolean init = ReadIdCardManager.getInstance().init(getActivity());
         Toast.makeText(getContext(), "init:" + init, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected boolean initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        return TextUtils.isEmpty(title);
     }
 
     @Override

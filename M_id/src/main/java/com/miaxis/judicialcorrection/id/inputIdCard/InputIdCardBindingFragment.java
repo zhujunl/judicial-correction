@@ -1,7 +1,6 @@
 package com.miaxis.judicialcorrection.id.inputIdCard;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -12,7 +11,6 @@ import com.miaxis.judicialcorrection.id.R;
 import com.miaxis.judicialcorrection.id.databinding.FragmentInputIdCardBinding;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -40,7 +38,7 @@ public class InputIdCardBindingFragment extends BaseBindingFragment<FragmentInpu
     }
 
     @Override
-    protected void initView(@NonNull View view, Bundle savedInstanceState) {
+    protected void initView(@NonNull FragmentInputIdCardBinding view, Bundle savedInstanceState) {
         InputIDCardModel inputIDCardModel = new ViewModelProvider(this).get(InputIDCardModel.class);
         inputIDCardModel.title.observe(this, s -> binding.tvTitle.setText(String.valueOf(s)));
         inputIDCardModel.autoCheckEnable.observe(this, new Observer<Boolean>() {
@@ -79,11 +77,6 @@ public class InputIdCardBindingFragment extends BaseBindingFragment<FragmentInpu
 
         inputIDCardModel.title.setValue(title);
         inputIDCardModel.autoCheckEnable.setValue(autoCheckEnable);
-    }
-
-    @Override
-    protected boolean initData(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        return TextUtils.isEmpty(title);
     }
 
 }
