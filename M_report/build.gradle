@@ -10,7 +10,7 @@ android {
     defaultConfig {
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments += [AROUTER_MODULE_NAME: project.getName()]
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
             }
         }
     }
@@ -31,10 +31,8 @@ android {
 }
 
 dependencies {
-
-    api project(path: ':M_base')
-    api "com.google.dagger:hilt-android:$hilt_version"
-    annotationProcessor 'com.alibaba:arouter-compiler:1.5.1'
+    implementation project(path: ':M_base')
+    annotationProcessor "com.alibaba:arouter-compiler:$arouter_version"
     annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
-
+    implementation "com.google.dagger:hilt-android:$hilt_version"
 }

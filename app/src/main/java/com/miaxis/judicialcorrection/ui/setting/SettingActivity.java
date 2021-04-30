@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
@@ -28,7 +27,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
 @AndroidEntryPoint
-@Route(path = "/setting/SettingActivity")
 public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding> {
 
     @Inject

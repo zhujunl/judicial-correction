@@ -13,7 +13,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.finger.FingerManager;
@@ -39,7 +38,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import dagger.hilt.android.AndroidEntryPoint;
 
-@Route(path = "/main/MainActivity")
 @AndroidEntryPoint
 public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
 

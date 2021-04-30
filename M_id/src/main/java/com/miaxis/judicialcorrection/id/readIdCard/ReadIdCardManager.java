@@ -10,8 +10,10 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.widget.Toast;
 
+import com.miaxis.judicialcorrection.base.api.ApiResult;
+import com.miaxis.judicialcorrection.bean.IdCard;
+import com.miaxis.judicialcorrection.bean.IdCardMsg;
 import com.sdt.Common;
-import com.sdt.IdCardMsg;
 import com.sdt.Sdtapi;
 import com.zz.jni.Wlt2BmpCall;
 
@@ -43,12 +45,11 @@ public class ReadIdCardManager {
      * ================================ 静态内部类单例 ================================
      **/
 
-    public interface ReadIdCardCallback {
-
-        void readIdCardCallback(int code, String message, IdCardMsg idCardMsg, Bitmap bitmap);
-
-    }
-
+    //    public interface ReadIdCardCallback {
+    //
+    //        void readIdCardCallback(int code, String message, IdCardMsg idCardMsg, Bitmap bitmap);
+    //
+    //    }
     public boolean init(Activity activity) {
         try {
             mSdtApi = new Sdtapi(activity);
@@ -71,7 +72,8 @@ public class ReadIdCardManager {
         }
     }
 
-    public void read(ReadIdCardCallback readIdCardCallback) {
+    public ApiResult<IdCard> read() {
+        ApiResult<IdCard> result = new ApiResult<>();
         mSdtApi.SDT_StartFindIDCard();//寻找身份证
         mSdtApi.SDT_SelectIDCard();//选取身份证
         byte[] pucPHMsg = new byte[1024];//头像
@@ -87,22 +89,30 @@ public class ReadIdCardManager {
                 IdCardMsg msg = new IdCardMsg();//身份证信息对象，存储身份证上的文字信息
                 ret = ReadBaseMsgToStr(msg);
                 if (ret == 0x90) {
+                    IdCard idCard = new IdCard();
+                    idCard.idCardMsg = msg;
                     byte[] bmp = new byte[38862];
                     Bitmap bitmap = GetImage(pucPHMsg, bmp);
                     if (bitmap != null) {
-                        readIdCardCallback.readIdCardCallback(0, null, msg, bitmap);
+                        idCard.face = bitmap;
+                        result.code = 0;
                     } else {
-                        readIdCardCallback.readIdCardCallback(-3, null, msg, null);
+                        result.code = 1;
                     }
+                    result.setData(idCard);
                 } else {
-                    readIdCardCallback.readIdCardCallback(-4, null, null, null);
+                    result.code = -4;
                 }
+                return result;
             } catch (Exception e) {
                 e.printStackTrace();
-                readIdCardCallback.readIdCardCallback(-2, e.getMessage(), null, null);
+                result.code = -2;
+                return result;
             }
         } else {
-            readIdCardCallback.readIdCardCallback(-1, "没有身份证", null, null);
+            result.code = -1;
+            result.msg = "没有身份证";
+            return result;
         }
     }
 

@@ -24,10 +24,42 @@ public abstract class BaseBindingFragment<V extends ViewDataBinding> extends Fra
 
     protected V binding;
 
+//    protected HashMap<String, Object> data = new HashMap<>();
+//
+//    public <T extends BaseBindingFragment<?>> T bind(String key, Object value) {
+//        if (key != null) {
+//            data.put(key, value);
+//        }
+//        return (T) this;
+//    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ARouter.getInstance().inject(this);
+//        try {
+//            Class<? extends BaseBindingFragment> aClass = getClass();
+//            if (!data.isEmpty()) {
+//                Set<Map.Entry<String, Object>> entries = data.entrySet();
+//                for (Map.Entry<String, Object> map : entries) {
+//                    String key = map.getKey();
+//                    Object value = map.getValue();
+//                    Field field = aClass.getDeclaredField(key);
+//                    if (field != null) {
+//                        boolean accessible = field.isAccessible();
+//                        if (!accessible) {
+//                            field.setAccessible(true);
+//                        }
+//                        field.set(this, value);
+//                        if (!accessible) {
+//                            field.setAccessible(false);
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -56,6 +88,14 @@ public abstract class BaseBindingFragment<V extends ViewDataBinding> extends Fra
         if (binding != null) {
             binding.unbind();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        if (data != null) {
+//            data.clear();
+//        }
     }
 
     protected void finish() {

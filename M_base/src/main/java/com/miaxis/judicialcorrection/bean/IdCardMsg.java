@@ -1,4 +1,4 @@
-package com.sdt;
+package com.miaxis.judicialcorrection.bean;
 
 /**
  * @author Tank

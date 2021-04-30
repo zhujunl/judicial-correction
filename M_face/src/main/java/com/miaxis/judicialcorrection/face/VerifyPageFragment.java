@@ -3,7 +3,6 @@ package com.miaxis.judicialcorrection.face;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
-import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -27,13 +26,15 @@ import dagger.hilt.android.AndroidEntryPoint;
  * @updateAuthor
  * @updateDes
  */
-
 @AndroidEntryPoint
 @Route(path = "/page/verifyPage")
 public class VerifyPageFragment extends BaseBindingFragment<ActivityVerifyBinding> implements CameraPreviewCallback {
 
-    @Autowired(name = "Name")
+    @Autowired(name = "Title")
     String title;
+
+    @Autowired(name = "Name")
+    String name;
 
     @Autowired(name = "IdCardNumber")
     String idCardNumber;
@@ -53,14 +54,11 @@ public class VerifyPageFragment extends BaseBindingFragment<ActivityVerifyBindin
         mVerifyPageModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));
         mVerifyPageModel.fingerBitmap.observe(this, bitmap -> {
             Glide.with(VerifyPageFragment.this).load(bitmap).error(R.mipmap.mipmap_error).into(binding.ivFinger);
-            binding.ivFinger.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Glide.with(VerifyPageFragment.this).load(R.mipmap.mipmap_bg_finger).into(binding.ivFinger);
-                    mVerifyPageModel.releaseFingerDevice();
-                    mVerifyPageModel.initFingerDevice();
-                    binding.ivFinger.setOnClickListener(null);
-                }
+            binding.ivFinger.setOnClickListener(v -> {
+                Glide.with(VerifyPageFragment.this).load(R.mipmap.mipmap_bg_finger).into(binding.ivFinger);
+                mVerifyPageModel.releaseFingerDevice();
+                mVerifyPageModel.initFingerDevice();
+                binding.ivFinger.setOnClickListener(null);
             });
         });
         mVerifyPageModel.initFingerDevice();
@@ -76,11 +74,11 @@ public class VerifyPageFragment extends BaseBindingFragment<ActivityVerifyBindin
             public void surfaceCreated(@NonNull SurfaceHolder holder) {
                 ZZResponse<?> init = CameraHelper.getInstance().init();
                 if (ZZResponse.isSuccess(init)) {
-                    ZZResponse<MXCamera> mxCamera2 = CameraHelper.getInstance().createMXCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
-                    if (ZZResponse.isSuccess(mxCamera2)) {
-                        mxCamera2.getData().setOrientation(90);
-                        mxCamera2.getData().setPreviewCallback(VerifyPageFragment.this);
-                        mxCamera2.getData().start(holder);
+                    ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().createMXCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
+                    if (ZZResponse.isSuccess(mxCamera)) {
+                        mxCamera.getData().setOrientation(90);
+                        mxCamera.getData().setPreviewCallback(VerifyPageFragment.this);
+                        mxCamera.getData().start(holder);
                     }
                 }
             }

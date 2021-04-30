@@ -15,9 +15,10 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments += [AROUTER_MODULE_NAME: project.getName()]
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
             }
         }
+
         ndk {
             abiFilters 'armeabi-v7a'// 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
         }
@@ -39,7 +40,6 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
         }
         release {
@@ -60,18 +60,16 @@ android {
             dirs 'libs'
         }
     }
-    aaptOptions.cruncherEnabled = false
-    aaptOptions.useNewCruncher = false
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation project(path: ':M_report')
-    implementation project(path: ':M_id')
+    implementation project(path: ':M_base')
+//    annotationProcessor "com.alibaba:arouter-compiler:$arouter_version"
+    annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
 
-
-    annotationProcessor 'com.alibaba:arouter-compiler:1.5.1'
-    annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation project(path: ':M_report')
+    implementation project(path: ':M_id')
     implementation project(path: ':M_face')
 }

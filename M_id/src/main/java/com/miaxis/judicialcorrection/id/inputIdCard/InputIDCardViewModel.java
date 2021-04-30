@@ -10,11 +10,8 @@ import androidx.lifecycle.ViewModel;
  * @updateAuthor
  * @updateDes
  */
-public class InputIDCardModel extends ViewModel {
+public class InputIDCardViewModel extends ViewModel {
 
     MutableLiveData<String> title=new MutableLiveData<>();
-
-    MutableLiveData<Boolean> autoCheckEnable=new MutableLiveData<>(false);
-
 
 }

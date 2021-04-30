@@ -1,6 +1,8 @@
 package com.miaxis.judicialcorrection.dialog;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.view.View;
 
 import com.miaxis.judicialcorrection.base.R;
 import com.miaxis.judicialcorrection.base.databinding.DialogNotFoundBinding;
@@ -8,8 +10,7 @@ import com.miaxis.judicialcorrection.dialog.base.BaseDialog;
 import com.miaxis.judicialcorrection.dialog.base.BaseDialogListener;
 import com.miaxis.judicialcorrection.widget.countdown.CountDownListener;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import androidx.annotation.NonNull;
 
 /**
  * @author Tank
@@ -18,12 +19,15 @@ import androidx.lifecycle.ViewModel;
  * @updateAuthor
  * @updateDes
  */
-public class DialogNotFound extends BaseDialog<DialogNotFoundBinding, DialogNotFound.ClickListener> {
+public class DialogNoButton extends BaseDialog<DialogNotFoundBinding, DialogNoButton.ClickListener> {
 
-    public DialogNotFound(Context context, ClickListener clickListener) {
-        super(context,clickListener);
+    private final Builder mBuilder;
+
+    public DialogNoButton(@NonNull Context context, ClickListener clickListener, @NonNull Builder builder) {
+        super(context, clickListener);
         setCancelable(true);
         setCanceledOnTouchOutside(true);
+        this.mBuilder = builder;
     }
 
     @Override
@@ -33,7 +37,7 @@ public class DialogNotFound extends BaseDialog<DialogNotFoundBinding, DialogNotF
 
     @Override
     public void initView() {
-        binding.cdtvTime.setTime(10);
+        binding.cdtvTime.setTime(mBuilder.timeOut);
         binding.cdtvTime.setCountDownListener(new CountDownListener() {
             @Override
             public void onCountDownProgress(int progress) {
@@ -43,10 +47,14 @@ public class DialogNotFound extends BaseDialog<DialogNotFoundBinding, DialogNotF
             @Override
             public void onCountDownStop() {
                 if (listener != null) {
-                    listener.onTimeOut(DialogNotFound.this);
+                    listener.onTimeOut(DialogNoButton.this);
                 }
             }
         });
+        binding.ivError.setImageResource(mBuilder.success ? R.mipmap.mipmap_success : R.mipmap.mipmap_error);
+        binding.tvTitle.setText(mBuilder.title);
+        binding.tvMessage.setVisibility(TextUtils.isEmpty(mBuilder.message) ? View.GONE : View.VISIBLE);
+        binding.tvMessage.setText(String.valueOf(mBuilder.message));
     }
 
     @Override
@@ -58,12 +66,15 @@ public class DialogNotFound extends BaseDialog<DialogNotFoundBinding, DialogNotF
 
     }
 
-    public class ModelNotFound extends ViewModel {
+    public static class Builder {
 
-        MutableLiveData<String> title=new MutableLiveData<>();
+        public boolean success = false;
+        public String title = "title";
+        public String message;
+        public int timeOut = 10;
 
-        MutableLiveData<Boolean> autoCheckEnable=new MutableLiveData<>(false);
-
+        public Builder() {
+        }
     }
 
 }
