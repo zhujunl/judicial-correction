@@ -2,8 +2,8 @@ package com.miaxis.judicialcorrection.id.readIdCard;
 
 import com.miaxis.judicialcorrection.base.api.ApiResult;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
-import com.miaxis.judicialcorrection.bean.IdCard;
-import com.miaxis.judicialcorrection.callback.ReadIdCardCallback;
+import com.miaxis.judicialcorrection.id.bean.IdCard;
+import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
 import javax.inject.Inject;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

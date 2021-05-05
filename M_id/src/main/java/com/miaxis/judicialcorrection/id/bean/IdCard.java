@@ -1,4 +1,4 @@
-package com.miaxis.judicialcorrection.bean;
+package com.miaxis.judicialcorrection.id.bean;
 
 import android.graphics.Bitmap;
 

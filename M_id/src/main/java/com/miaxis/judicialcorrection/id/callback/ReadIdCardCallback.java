@@ -1,7 +1,7 @@
-package com.miaxis.judicialcorrection.callback;
+package com.miaxis.judicialcorrection.id.callback;
 
 
-import com.miaxis.judicialcorrection.bean.IdCard;
+import com.miaxis.judicialcorrection.id.bean.IdCard;
 
 /**
  * @author Tank

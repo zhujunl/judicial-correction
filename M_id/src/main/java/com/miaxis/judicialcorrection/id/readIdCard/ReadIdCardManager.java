@@ -11,8 +11,8 @@ import android.hardware.usb.UsbManager;
 import android.widget.Toast;
 
 import com.miaxis.judicialcorrection.base.api.ApiResult;
-import com.miaxis.judicialcorrection.bean.IdCard;
-import com.miaxis.judicialcorrection.bean.IdCardMsg;
+import com.miaxis.judicialcorrection.id.bean.IdCard;
+import com.miaxis.judicialcorrection.id.bean.IdCardMsg;
 import com.sdt.Common;
 import com.sdt.Sdtapi;
 import com.zz.jni.Wlt2BmpCall;

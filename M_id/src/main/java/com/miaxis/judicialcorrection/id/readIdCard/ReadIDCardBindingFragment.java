@@ -7,7 +7,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
-import com.miaxis.judicialcorrection.callback.ReadIdCardCallback;
+import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
 import com.miaxis.judicialcorrection.id.R;
 import com.miaxis.judicialcorrection.id.databinding.FragmentReadIdCardBinding;
 
