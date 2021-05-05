@@ -20,12 +20,12 @@ import androidx.appcompat.app.AppCompatDialog;
  * @updateAuthor
  * @updateDes
  */
-public class DialogVerifyResult extends BaseDialog<DialogVerifyResultBinding, DialogVerifyResult.ClickListener> {
+public class DialogResult extends BaseDialog<DialogVerifyResultBinding, DialogResult.ClickListener> {
 
     private final Builder mBuilder;
 
-    public DialogVerifyResult(Context context, ClickListener clickListener,@NonNull Builder builder) {
-        super(context,clickListener);
+    public DialogResult(Context context, ClickListener clickListener, @NonNull Builder builder) {
+        super(context, clickListener);
         setCancelable(false);
         this.mBuilder = builder;
     }
@@ -40,13 +40,14 @@ public class DialogVerifyResult extends BaseDialog<DialogVerifyResultBinding, Di
         binding.btnTryAgain.setVisibility(this.mBuilder.success ? View.GONE : View.VISIBLE);
         binding.btnTryAgain.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onTryAgain(DialogVerifyResult.this);
+                listener.onTryAgain(DialogResult.this);
             }
         });
 
+        binding.btnBackHome.setVisibility(this.mBuilder.enableBackHome ? View.VISIBLE : View.GONE);
         binding.btnBackHome.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onBackHome(DialogVerifyResult.this);
+                listener.onBackHome(DialogResult.this);
             }
         });
 
@@ -59,7 +60,7 @@ public class DialogVerifyResult extends BaseDialog<DialogVerifyResultBinding, Di
             @Override
             public void onCountDownDone() {
                 if (listener != null) {
-                    listener.onTimeOut(DialogVerifyResult.this);
+                    listener.onTimeOut(DialogResult.this);
                 }
             }
         });
@@ -72,16 +73,20 @@ public class DialogVerifyResult extends BaseDialog<DialogVerifyResultBinding, Di
 
     public interface ClickListener extends BaseDialogListener {
 
+        /**
+         * 返回首页回调
+         */
         void onBackHome(AppCompatDialog appCompatDialog);
 
     }
 
     public static class Builder {
 
-        boolean success = false;
-        String title = "title";
-        String message = "message";
-        int countDownTime = 10;
+        public boolean success = false;
+        public String title = "title";
+        public String message = "message";
+        public int countDownTime = 10;
+        public boolean enableBackHome = true;
 
         public Builder() {
 

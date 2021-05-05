@@ -60,8 +60,6 @@ android {
             dirs 'libs'
         }
     }
-    aaptOptions.cruncherEnabled = false
-    aaptOptions.useNewCruncher = false
 }
 
 dependencies {

@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="829px"
-        android:layout_height="884px"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/bg_dialog">
 
@@ -34,7 +34,7 @@
             app:srcCompat="@mipmap/mipmap_error" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_error"
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="48px"
@@ -58,7 +58,7 @@
             android:textSize="37px"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_error" />
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
 
         <com.miaxis.judicialcorrection.widget.countdown.CountDownTextView
@@ -69,9 +69,11 @@
             android:layout_marginBottom="125px"
             android:textColor="@color/color_text_red"
             android:textSize="47px"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_message" />
+            app:layout_constraintTop_toBottomOf="@id/tv_message"
+            app:layout_goneMarginTop="48px" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -44,11 +44,11 @@ public class VerifyPageModel extends ViewModel {
     public int[] mFaceNumber = new int[1];
     public int[] mFacesData = new int[MXFaceInfoEx.SIZE * MXFaceInfoEx.iMaxFaceNum];
 
-    @Inject
     AppExecutors mAppExecutors;
 
     @Inject
-    public VerifyPageModel() {
+    public VerifyPageModel(AppExecutors appExecutors) {
+        this.mAppExecutors = appExecutors;
     }
 
     public void initFingerDevice() {
@@ -88,8 +88,7 @@ public class VerifyPageModel extends ViewModel {
                                         int matchFeature = FaceManager.getInstance().matchFeature(feature, temp, floats, mask);
                                         if (matchFeature == 0) {
                                             if (floats[0] >= 0.77) {
-
-
+                                                faceTips.postValue("核验通过");
                                             } else {
                                                 faceTips.postValue("人脸核验未通过");
                                             }
@@ -106,6 +105,8 @@ public class VerifyPageModel extends ViewModel {
                 } else if (faceNumber <= 0) {
                     faceTips.postValue("未检测到人脸");
                 }
+            }else {
+                faceTips.postValue("检测人脸失败");
             }
             camera.getNextFrame();
         });

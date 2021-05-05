@@ -14,7 +14,6 @@ import android.widget.BaseAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.common.Resource;
@@ -44,7 +43,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
 @AndroidEntryPoint
-@Route(path = "/setting/SettingActivity")
 public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding> {
 
     @Inject

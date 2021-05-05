@@ -3,35 +3,28 @@ package com.miaxis.judicialcorrection.report;
 import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
-import com.miaxis.judicialcorrection.base.api.ApiResult;
-import com.miaxis.judicialcorrection.base.api.ApiService;
-import com.miaxis.judicialcorrection.base.api.vo.User;
+import com.miaxis.judicialcorrection.bean.IdCard;
+import com.miaxis.judicialcorrection.callback.ReadIdCardCallback;
 import com.miaxis.judicialcorrection.report.databinding.ActivityReportBinding;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
 /**
- * TestActivity
+ * ReportActivity
  *
  * @author zhangyw
  * Created on 4/25/21.
  */
 @AndroidEntryPoint
 @Route(path = "/report/ReportActivity")
-public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> {
+public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> implements ReadIdCardCallback {
 
-    @Inject
-    ApiService apiService;
-
-    ActivityReportBinding binding;
+    String title = "日常报告";
 
     @Override
     protected int initLayout() {
@@ -40,18 +33,39 @@ public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> {
 
     @Override
     protected void initView(@NonNull ActivityReportBinding binding, @Nullable Bundle savedInstanceState) {
-        binding.personList.setOnClickListener(v -> {
-            apiService.personList("2019/01/13 12:55:35").observe(this, (ApiResult<List<User>> userApiResult) -> {
-                Timber.i("result %s ", userApiResult);
-                runOnUiThread(() -> {
-                    binding.test.setText(userApiResult.toString());
-                });
-            });
-        });
+        Fragment navigation = (Fragment) ARouter.getInstance()
+                .build("/page/readIDCard")
+                .withString("Title", title)
+                .withBoolean("NoIdCardEnable", true)
+                .navigation();
+        if (navigation != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.layout_root, navigation)
+                    .commitNow();
+        }
     }
 
     @Override
     protected void initData(@NonNull ActivityReportBinding binding, @Nullable Bundle savedInstanceState) {
 
     }
+
+    @Override
+    public void onIdCardRead(IdCard result) {
+        Timber.e("读取身份证：result:" + result);
+        Fragment navigation = (Fragment) ARouter.getInstance()
+                .build("/page/verifyPage")
+                .withString("Title", title)
+                .withString("Name", result.idCardMsg.name)
+                .withString("IdCardNumber", result.idCardMsg.id_num)
+                .navigation();
+        if (navigation != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.layout_root, navigation)
+                    .commitNow();
+        }
+    }
+
 }
