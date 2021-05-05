@@ -9,9 +9,9 @@ package com.miaxis.judicialcorrection.widget.countdown;
  */
 public interface CountDownListener {
 
-//    void onCountDownStart();
+    void onCountDownStart();
 
     void onCountDownProgress(int progress);
 
-    void onCountDownStop();
+    void onCountDownDone();
 }

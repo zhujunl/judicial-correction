@@ -12,6 +12,7 @@ import com.miaxis.judicialcorrection.base.databinding.DialogNotFoundWithIdCardBi
 import com.miaxis.judicialcorrection.dialog.base.BaseDialog;
 import com.miaxis.judicialcorrection.dialog.base.BaseDialogListener;
 import com.miaxis.judicialcorrection.widget.countdown.CountDownListener;
+import com.miaxis.judicialcorrection.widget.countdown.DefaultCountDownListener;
 
 /**
  * @author Tank
@@ -48,14 +49,9 @@ public class DialogIdCardNotFound extends BaseDialog<DialogNotFoundWithIdCardBin
             }
         });
         binding.cdtvTime.setTime(10);
-        binding.cdtvTime.setCountDownListener(new CountDownListener() {
+        binding.cdtvTime.setCountDownListener(new DefaultCountDownListener() {
             @Override
-            public void onCountDownProgress(int progress) {
-
-            }
-
-            @Override
-            public void onCountDownStop() {
+            public void onCountDownDone() {
                 if (listener!=null){
                     listener.onTimeOut(DialogIdCardNotFound.this);
                 }

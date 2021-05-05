@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.ApiService;
+import com.miaxis.judicialcorrection.base.api.NoAuthApiService;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.base.utils.LiveDataCallAdapterFactory;
 import com.miaxis.judicialcorrection.base.utils.gson.converter.GsonConverterFactory;
@@ -49,8 +50,9 @@ public abstract class AppModule {
 
 
     @Singleton
+    @AuthInterceptorOkHttpClient
     @Provides
-    static OkHttpClient provideOkHttp(AutoTokenInterceptor autoTokenInterceptor) {
+    static OkHttpClient provideAutoAuthOkHttp(AutoTokenInterceptor autoTokenInterceptor) {
         return new OkHttpClient.Builder()
                 .connectTimeout(8000, TimeUnit.MILLISECONDS)
                 .readTimeout(8000, TimeUnit.MILLISECONDS)
@@ -59,9 +61,10 @@ public abstract class AppModule {
                 .build();
     }
 
+
     @Singleton
     @Provides
-    static ApiService provideApiService(OkHttpClient okHttpClient) {
+    static ApiService provideApiService(@AuthInterceptorOkHttpClient OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(new LiveDataCallAdapterFactory())
@@ -69,5 +72,29 @@ public abstract class AppModule {
                 .client(okHttpClient)
                 .build()
                 .create(ApiService.class);
+    }
+
+
+    @Singleton
+    @Provides
+    @OtherInterceptorOkHttpClient
+    static OkHttpClient provideOtherOkHttp() {
+        return new OkHttpClient.Builder()
+                .connectTimeout(8000, TimeUnit.MILLISECONDS)
+                .readTimeout(8000, TimeUnit.MILLISECONDS)
+                .writeTimeout(8000, TimeUnit.MILLISECONDS)
+                .build();
+    }
+
+    @Singleton
+    @Provides
+    static NoAuthApiService provideNoAuthApiService(@OtherInterceptorOkHttpClient OkHttpClient okHttpClient) {
+        return new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(new LiveDataCallAdapterFactory())
+                .baseUrl(BuildConfig.SERVER_URL)
+                .client(okHttpClient)
+                .build()
+                .create(NoAuthApiService.class);
     }
 }

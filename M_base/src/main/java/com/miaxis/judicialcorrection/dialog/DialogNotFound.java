@@ -7,6 +7,7 @@ import com.miaxis.judicialcorrection.base.databinding.DialogNotFoundBinding;
 import com.miaxis.judicialcorrection.dialog.base.BaseDialog;
 import com.miaxis.judicialcorrection.dialog.base.BaseDialogListener;
 import com.miaxis.judicialcorrection.widget.countdown.CountDownListener;
+import com.miaxis.judicialcorrection.widget.countdown.DefaultCountDownListener;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -34,14 +35,10 @@ public class DialogNotFound extends BaseDialog<DialogNotFoundBinding, DialogNotF
     @Override
     public void initView() {
         binding.cdtvTime.setTime(10);
-        binding.cdtvTime.setCountDownListener(new CountDownListener() {
-            @Override
-            public void onCountDownProgress(int progress) {
-
-            }
+        binding.cdtvTime.setCountDownListener(new DefaultCountDownListener() {
 
             @Override
-            public void onCountDownStop() {
+            public void onCountDownDone() {
                 if (listener != null) {
                     listener.onTimeOut(DialogNotFound.this);
                 }

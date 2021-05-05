@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="color_background_app_title">#2850A3</color>
+    <color name="color_light_blue">#A1C0FF</color>
     <color name="color_background_edit_text">#FFFFFF</color>
     <color name="color_background_dialog">#FFFFFF</color>
 

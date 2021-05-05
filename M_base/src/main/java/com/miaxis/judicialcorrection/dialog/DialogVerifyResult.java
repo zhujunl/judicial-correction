@@ -8,6 +8,7 @@ import com.miaxis.judicialcorrection.base.databinding.DialogVerifyResultBinding;
 import com.miaxis.judicialcorrection.dialog.base.BaseDialog;
 import com.miaxis.judicialcorrection.dialog.base.BaseDialogListener;
 import com.miaxis.judicialcorrection.widget.countdown.CountDownListener;
+import com.miaxis.judicialcorrection.widget.countdown.DefaultCountDownListener;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialog;
@@ -52,16 +53,11 @@ public class DialogVerifyResult extends BaseDialog<DialogVerifyResultBinding, Di
         binding.ivError.setBackgroundResource(this.mBuilder.success ? R.mipmap.mipmap_success : R.mipmap.mipmap_error);
         binding.tvError.setText(this.mBuilder.title);
         binding.tvMessage.setText(this.mBuilder.message);
-
         binding.cdtvTime.setTime(this.mBuilder.countDownTime);
-        binding.cdtvTime.setCountDownListener(new CountDownListener() {
-            @Override
-            public void onCountDownProgress(int progress) {
-
-            }
+        binding.cdtvTime.setCountDownListener(new DefaultCountDownListener() {
 
             @Override
-            public void onCountDownStop() {
+            public void onCountDownDone() {
                 if (listener != null) {
                     listener.onTimeOut(DialogVerifyResult.this);
                 }
