@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48px"
+                android:text="是否有精神病："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16px"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="168px"
+                    android:layout_height="72px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="是" />
+
+                <RadioButton
+                    android:layout_width="168px"
+                    android:layout_height="72px"
+                    android:layout_marginStart="40px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="否" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48px"
+                android:text="文化程度："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48px"
+                android:text="个人联系电话："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48px"
+                android:text="政治面貌："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48px"
+                android:text="原工作单位："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48px"
+                android:text="单位联系电话："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48px"
+                android:text="是否三无人员："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16px"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="168px"
+                    android:layout_height="72px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="是" />
+
+                <RadioButton
+                    android:layout_width="168px"
+                    android:layout_height="72px"
+                    android:layout_marginStart="40px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="否" />
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="180px"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48px"
+                android:text="是否有精神病："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16px"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="168px"
+                    android:layout_height="72px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="是" />
+
+                <RadioButton
+                    android:layout_width="168px"
+                    android:layout_height="72px"
+                    android:layout_marginStart="40px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="否" />
+            </RadioGroup>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

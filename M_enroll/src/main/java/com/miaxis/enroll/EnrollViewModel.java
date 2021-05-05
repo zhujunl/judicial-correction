@@ -30,8 +30,8 @@ import timber.log.Timber;
 @HiltViewModel
 public class EnrollViewModel extends ViewModel {
 
+    private final EnrollRepo enrollRepo;
 
-    private EnrollRepo enrollRepo;
 
     @Inject
     public EnrollViewModel(EnrollRepo enrollRepo) {

@@ -1,23 +1,18 @@
 package com.miaxis.enroll;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.miaxis.enroll.databinding.ActivityEnrollBinding;
-import com.miaxis.enroll.guide.GuideNavigationController;
+import com.miaxis.enroll.guide.CaptureFuncFragment;
+import com.miaxis.enroll.guide.NvController;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
-import com.miaxis.judicialcorrection.id.readIdCard.ReadIDCardBindingFragment;
-
-import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
@@ -33,7 +28,7 @@ import timber.log.Timber;
 public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> {
 
 
-    private GuideNavigationController nvController;
+    private NvController nvController;
     private EnrollViewModel viewModel;
 
     @Override
@@ -48,13 +43,13 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> {
     @Override
     protected void initData(@NonNull ActivityEnrollBinding binding, @Nullable Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this).get(EnrollViewModel.class);
-        nvController = new GuideNavigationController(getSupportFragmentManager(), R.id.container);
+        nvController = new NvController(getSupportFragmentManager(), R.id.container);
         nvController.nvTo(new ReadIDFragment(), false);
         new Handler().postDelayed(() -> onCardRead("412822199109222410"), 1500);
     }
 
 
-    public GuideNavigationController getNvController() {
+    public NvController getNvController() {
         return nvController;
     }
 
@@ -72,7 +67,7 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> {
                 case SUCCESS:
                     dismissLoading();
                     if (personInfoResource.data == null) {
-                        nvController.nvTo(new InfoFuncFragment(), false);
+                        nvController.nvTo(new CaptureFuncFragment(), false);
                     } else {
                         nvController.nvTo(new GoHomeFragment(), false);
                     }

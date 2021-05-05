@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="居住地地址："
+            android:textColor="#393939"
+
+            android:textSize="30px" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_width="208px"
+                android:layout_height="72px"
+                android:layout_gravity="start"
+                android:autofillHints="选择省份" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_width="208px"
+                android:layout_height="72px"
+                android:layout_gravity="center"
+                android:autofillHints="选择市" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_width="208px"
+                android:layout_height="72px"
+                android:layout_gravity="end"
+                android:autofillHints="选择县区" />
+
+        </FrameLayout>
+
+
+        <EditText
+            android:layout_width="911px"
+            android:layout_height="72px"
+            android:background="@drawable/shape_et_bg"
+            android:hint="请输入除省、市、县（区）、乡镇街道以外的明细地址（如门牌号）"
+            android:textSize="24px" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48px"
+            android:text="户籍是否与居住地相同："
+            android:textColor="#393939"
+            android:textSize="30px" />
+
+
+        <RadioGroup
+            android:id="@+id/addrGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24px"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/addrT"
+                android:layout_width="226px"
+                android:layout_height="72px"
+                android:background="@drawable/select_rb"
+                android:button="@null"
+                android:gravity="center"
+                android:text="相同" />
+
+            <RadioButton
+                android:id="@+id/addrF"
+                android:layout_width="226px"
+                android:layout_height="72px"
+                android:layout_marginStart="40px"
+                android:background="@drawable/select_rb"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="不同" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48px"
+            android:text="居住地地址："
+            android:textColor="#393939"
+            android:textSize="30px" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_width="208px"
+                android:layout_height="72px"
+                android:layout_gravity="start"
+                android:autofillHints="选择省份" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_width="208px"
+                android:layout_height="72px"
+                android:layout_gravity="center"
+                android:autofillHints="选择市" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_width="208px"
+                android:layout_height="72px"
+                android:layout_gravity="end"
+                android:autofillHints="选择县区" />
+
+        </FrameLayout>
+
+
+        <EditText
+            android:layout_width="911px"
+            android:layout_height="72px"
+            android:background="@drawable/shape_et_bg"
+            android:hint="请输入除省、市、县（区）、乡镇街道以外的明细地址（如门牌号）"
+            android:textSize="24px" />
+
+    </LinearLayout>
+</layout>
