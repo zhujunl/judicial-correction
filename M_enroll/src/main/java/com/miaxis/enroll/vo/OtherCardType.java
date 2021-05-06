@@ -29,6 +29,7 @@ public class OtherCardType extends BaseObservable {
 
     public void setYwgatsfz(int ywgatsfz) {
         this.ywgatsfz = ywgatsfz;
+        notifyPropertyChanged(BR.ywgatsfz);
     }
 
     @Bindable

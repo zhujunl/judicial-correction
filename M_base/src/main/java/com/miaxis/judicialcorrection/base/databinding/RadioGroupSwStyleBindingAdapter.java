@@ -15,7 +15,7 @@ import androidx.databinding.InverseBindingListener;
  */
 public class RadioGroupSwStyleBindingAdapter {
 
-    @BindingAdapter("android:checkedButton")
+    //@BindingAdapter("android:checkedButton")
     public static void setSwitchRgChecked(RadioGroup view, int checked) {
         int id;
         if (checked == 1) {
@@ -26,15 +26,15 @@ public class RadioGroupSwStyleBindingAdapter {
         view.check(id);
     }
 
-    @InverseBindingAdapter(attribute = "android:checkedButton",event = "android:checkedButtonAttrChanged")
+    //@InverseBindingAdapter(attribute = "android:checkedButton",event = "android:checkedButtonAttrChanged")
     public static @IdRes int getSwitchRgChecked(RadioGroup view) {
         int checkedId = view.getCheckedRadioButtonId();
         int id = view.getChildAt(0).getId();
         return id == checkedId ? 1 : 0;
     }
 
-    @BindingAdapter(value = {"android:onCheckedChanged", "android:checkedButtonAttrChanged"},
-            requireAll = false)
+//    @BindingAdapter(value = {"android:onCheckedChanged", "android:checkedButtonAttrChanged"},
+//            requireAll = false)
     public static void setListeners(RadioGroup view, final RadioGroup.OnCheckedChangeListener listener,
                                     final InverseBindingListener attrChange) {
         if (attrChange == null) {
