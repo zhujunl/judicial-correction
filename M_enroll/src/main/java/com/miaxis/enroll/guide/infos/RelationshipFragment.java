@@ -75,7 +75,7 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
     public boolean checkData() {
         Timber.v("relationships %s", vm.relationships);
         if (TextUtils.isEmpty(vm.relationships.get(0).name)){
-            appHints.showHint("您没有填写社会关系");
+            appHints.toast("您没有填写社会关系");
             return true;
         }
         for (int i = 0; i < vm.relationships.size(); i++) {
@@ -121,32 +121,6 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
         @Override
         protected void bind(ItemFragmentRelationshipBinding binding, Family item) {
             binding.setData(item);
-            String rs = binding.getData().relationship;
-            if (TextUtils.isEmpty(rs)) {
-                binding.spinner.setSelection(0);
-            } else {
-                Resources res = binding.getRoot().getContext().getResources();
-                String[] city = res.getStringArray(R.array.relationship);
-                for (int i = 0; i < city.length; i++) {
-                    if (Objects.equals(city[i], rs)) {
-                        binding.spinner.setSelection(i);
-                        break;
-                    }
-                }
-            }
-            binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (position != 0) {
-                        binding.getData().relationship = parent.getSelectedItem().toString();
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
         }
     }
 }

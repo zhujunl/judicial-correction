@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel;
 import com.miaxis.enroll.vo.Family;
 import com.miaxis.enroll.vo.Job;
 import com.miaxis.enroll.vo.OtherCardType;
+import com.miaxis.enroll.vo.OtherInfo;
 import com.miaxis.judicialcorrection.base.api.ApiResult;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.common.Resource;
@@ -39,12 +40,17 @@ import timber.log.Timber;
 public class EnrollSharedViewModel extends ViewModel {
 
     @SuppressLint("SimpleDateFormat")
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    public MutableLiveData<IdCard> idCardLiveData = new MutableLiveData<>();
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+
+    /**
+     * 错误信息，主界面会dialog显示
+     */
     public MutableLiveData<String> errorMsgLiveData = new MutableLiveData<>();
-    public MutableLiveData<OtherCardType> otherCardTypeLiveData = new MutableLiveData<>();
-    public List<Job> jobs = new ArrayList<>();
-    public List<Family> relationships = new ArrayList<>();
+
+    /**
+     * 今天日期
+     */
     public LiveData<String> todayLiveData = new MutableLiveData<String>() {
         @Override
         protected void onActive() {
@@ -53,10 +59,35 @@ public class EnrollSharedViewModel extends ViewModel {
         }
     };
 
-
+    /**
+     * 当前选择的司法局
+     */
     public LiveData<JusticeBureau> justiceBureauLiveData;
 
-    MutableLiveData<Resource<?>> loadingStatusLiveData = new MutableLiveData<>();
+    /**
+     * 身份证信息
+     */
+    public MutableLiveData<IdCard> idCardLiveData = new MutableLiveData<>();
+
+    /**
+     * 其他类型的身份卡
+     */
+    public MutableLiveData<OtherCardType> otherCardTypeLiveData = new MutableLiveData<>();
+
+    /**
+     * 其他信息
+     */
+    public MutableLiveData<OtherInfo> otherInfoLiveData = new MutableLiveData<>();
+
+    /**
+     * 简历,list
+     */
+    public List<Job> jobs = new ArrayList<>();
+    /**
+     * 社会关系,list
+     */
+    public List<Family> relationships = new ArrayList<>();
+
 
     private final EnrollRepo enrollRepo;
     private final AppExecutors appExecutors;
@@ -67,6 +98,7 @@ public class EnrollSharedViewModel extends ViewModel {
         this.appExecutors = appExecutors;
         justiceBureauLiveData = appDatabase.justiceBureauDao().load();
         otherCardTypeLiveData.setValue(new OtherCardType());
+        otherInfoLiveData.setValue(new OtherInfo());
     }
 
     public LiveData<Resource<PersonInfo>> login(String idCardNumber) {
@@ -89,6 +121,7 @@ public class EnrollSharedViewModel extends ViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        Timber.i("result %s",otherCardTypeLiveData.getValue());
+        Timber.i("其他身份证 : %s", otherCardTypeLiveData.getValue());
+        Timber.i("其他信息 : %s", otherInfoLiveData.getValue());
     }
 }
