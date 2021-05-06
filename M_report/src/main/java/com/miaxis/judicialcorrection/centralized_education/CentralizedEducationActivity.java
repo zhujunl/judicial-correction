@@ -1,8 +1,7 @@
-package com.miaxis.judicialcorrection.report;
+package com.miaxis.judicialcorrection.centralized_education;
 
 import android.os.Bundle;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
@@ -18,20 +17,18 @@ import com.miaxis.judicialcorrection.id.readIdCard.ReadIDCardBindingFragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
-import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
 /**
- * ReportActivity
+ * FocusActivity
+ * 集中教育
  *
  * @author zhangyw
  * Created on 4/25/21.
  */
-@AndroidEntryPoint
-@Route(path = "/report/ReportActivity")
-public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> implements ReadIdCardCallback, VerifyCallback {
+public class CentralizedEducationActivity extends BaseBindingActivity<ActivityReportBinding> implements ReadIdCardCallback, VerifyCallback {
 
-    String title = "日常报告";
+    String title = "集中教育";
 
     @Override
     protected int initLayout() {
@@ -80,9 +77,10 @@ public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> i
             }
         }, new DialogResult.Builder(
                 ZZResponse.isSuccess(response),
-                ZZResponse.isSuccess(response) ? title + "成功" : "验证失败",
-                ZZResponse.isSuccess(response) ? "系统将自动返回" + title + "身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
+                ZZResponse.isSuccess(response) ? title + "签到成功" : "验证失败",
+                ZZResponse.isSuccess(response) ? "系统将自动返回"+title+"身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
                 10, true
         )).show();
     }
+
 }

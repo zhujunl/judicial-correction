@@ -25,7 +25,6 @@ import dagger.hilt.android.AndroidEntryPoint;
  * @updateAuthor tangkai
  * @updateDes
  */
-
 @AndroidEntryPoint
 @Route(path = "/page/readIDCard")
 public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadIdCardBinding> {
@@ -37,6 +36,11 @@ public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadI
     boolean noIdCardEnable;
 
     ReadIdCardViewModel mReadIdCardViewModel;
+
+    public ReadIDCardBindingFragment(String title, boolean noIdCardEnable) {
+        this.title = title;
+        this.noIdCardEnable = noIdCardEnable;
+    }
 
     @Override
     protected int initLayout() {
