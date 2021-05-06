@@ -5,21 +5,30 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
+import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.JAuthInfo;
+import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
+import com.miaxis.judicialcorrection.base.repo.JusticeBureauRepo;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
+import com.miaxis.judicialcorrection.base.utils.AppToast;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundDiffAdapter;
 import com.miaxis.judicialcorrection.databinding.ActivitySettingBinding;
 import com.miaxis.judicialcorrection.databinding.ItemSettingFuncBinding;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -34,7 +43,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
 @AndroidEntryPoint
-@Route(path = "/setting/SettingActivity")
 public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding> {
 
     @Inject
@@ -43,6 +51,11 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
     MainAdapter mainAdapter;
     @Inject
     AppExecutors appExecutors;
+    @Inject
+    JusticeBureauRepo justiceBureauRepo;
+    @Inject
+    AppToast appToast;
+    JusticeBureau mJusticeBureau;
 
     @Override
     protected int initLayout() {
@@ -69,8 +82,48 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
             }
             return false;
         });
-        // TODO: 4/28/21 司法局设置，正在沟通
+        justiceBureauRepo.getMyJusticeBureau().observe(this, justiceBureau -> {
+            // 暂时先这样
+            mJusticeBureau = justiceBureau;
+            Timber.i("getMyJusticeBureau %s", justiceBureau);
+        });
+        justiceBureauRepo.getAllJusticeBureau().observe(this, (Resource<List<JusticeBureau>> listResource) -> {
+            if (listResource.isError()) {
+                appToast.show("Error:" + listResource.errorMessage);
+            } else if (listResource.isSuccess()) {
+                int select = -1;
+                String[] mItems = new String[listResource.data.size() + 1];
+                mItems[0]="请选择";
+                for (int i = 0; i < listResource.data.size(); i++) {
+                    JusticeBureau justiceBureau = listResource.data.get(i);
+                    mItems[i+1] = justiceBureau.getTeamName();
+                    if (mJusticeBureau != null && Objects.equals(justiceBureau.getTeamId(), mJusticeBureau.getTeamId())) {
+                        select = i;
+                    }
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mItems);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                binding.spinner.setAdapter(adapter);
+                binding.spinner.setSelection(select);
+                binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        JusticeBureau justiceBureau = listResource.data.get(position);
+                        Timber.i("onItemSelected %d ,[%s]", position, justiceBureau);
+                        if (position != 0) {
+                            appExecutors.diskIO().execute(() -> justiceBureauRepo.setMyJusticeBureau(justiceBureau));
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+            }
+        });
     }
+
 
     @Override
     protected void onPause() {
@@ -78,7 +131,7 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
         syncActiveCode();
     }
 
-    void syncActiveCode(){
+    void syncActiveCode() {
         String aCode = binding.etActiveCode.getText().toString();
         appExecutors.diskIO().execute(() -> {
             JAuthInfo jAuthInfo = appDatabase.tokenAuthInfoDAO().loadAuthInfoSync();

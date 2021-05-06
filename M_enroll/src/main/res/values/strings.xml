@@ -1,0 +1,74 @@
+<resources>
+    <!--    <string name="app_name">Judicial Correction</string>-->
+
+    <string-array name="job">
+        <item>请选择</item>
+        <item>国家工作人员</item>
+        <item>现役军人</item>
+        <item>工人</item>
+        <item>农民</item>
+    </string-array>
+    <string-array name="relationship">
+        <item>请选择</item>
+        <item>直系亲属</item>
+        <item>监护人</item>
+        <item>旁系亲属</item>
+        <item>矫正小组成员</item>
+        <item>基层自治组织成员</item>
+        <item>基层自治组织成员</item>
+        <item>工作关系</item>
+        <item>朋友</item>
+        <item>其他</item>
+    </string-array>
+    <string-array name="culture">
+        <item>文盲</item>
+        <item>小学</item>
+        <item>初中</item>
+        <item>高中</item>
+        <item>大专</item>
+        <item>本科</item>
+        <item>硕士</item>
+        <item>博士及以上（包含博士）</item>
+        <item>中专和中技</item>
+        <item>其他</item>
+    </string-array>
+    <string-array name="marriage">
+        <item>未婚</item>
+        <item>已婚</item>
+        <item>离异</item>
+        <item>丧偶</item>
+    </string-array>
+
+    <string-array name="political">
+        <item>中共党员</item>
+        <item>中共预备党员</item>
+        <item>共青团员</item>
+        <item>民革党员</item>
+        <item>民盟盟员</item>
+        <item>民建会员</item>
+        <item>民进会员</item>
+        <item>农工党党员</item>
+        <item>致公党党员</item>
+        <item>九三学社社员</item>
+        <item>台盟盟员</item>
+        <item>无党派民主人士</item>
+        <item>群众</item>
+    </string-array>
+    <string-array name="study">
+        <item>就学</item>
+        <item>就业</item>
+        <item>务农</item>
+        <item>无业</item>
+    </string-array>  <string-array name="country">
+        <item>中国籍</item>
+        <item>外国籍</item>
+        <item>无国籍</item>
+        <item>大陆</item>
+        <item>城镇户籍</item>
+        <item>农村户籍</item>
+        <item>其他</item>
+        <item>澳门</item>
+        <item>台湾</item>
+        <item>香港</item>
+    </string-array>
+</resources>

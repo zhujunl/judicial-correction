@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 
+import com.miaxis.judicialcorrection.widget.countdown.CountDownTextView;
+
 import java.text.DecimalFormat;
 
 import timber.log.Timber;

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="time"
+            type="int" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_app_background_glass" />
+
+        <include
+            android:id="@+id/tv_app_title"
+            layout="@layout/layout_app_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="165px"
+            android:gravity="center"
+            android:textColor="@color/color_text_title"
+            android:textSize="68px"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_app_title"
+            tools:text="@string/page_title_1" />
+
+
+        <TextView
+            android:id="@+id/tvTimeDownHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="62px"
+            android:gravity="center"
+            android:text="请完成以下信息的采集"
+            android:textColor="#5F5F5F"
+            android:textSize="40px"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <com.miaxis.judicialcorrection.widget.countdown.CountDownTextView
+            android:id="@+id/tvTimeDown"
+            totalTime="@{15}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16px"
+            android:gravity="center"
+            android:textColor="#5F5F5F"
+            android:textSize="40px"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTimeDownHint"
+            tools:text="10s" />
+
+        <LinearLayout
+            android:id="@+id/groupBase"
+            android:layout_width="400px"
+            android:layout_height="260px"
+            android:layout_marginStart="115px"
+            android:layout_marginTop="83px"
+            android:background="#F1AE0D"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTimeDown">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="基本信息采集"
+                android:textColor="#FFFFFF"
+                android:textSize="47px"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12px"
+                android:text="未采集"
+                android:textColor="#FFFFFF"
+                android:textSize="36px"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/groupFinger"
+            android:layout_width="400px"
+            android:layout_height="260px"
+            android:layout_marginStart="115px"
+            android:layout_marginTop="59px"
+            android:background="#E65B48"
+            android:clickable="true"
+            android:focusable="true"
+
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/groupBase">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="指纹采集"
+                android:textColor="#FFFFFF"
+                android:textSize="47px"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12px"
+                android:text="未采集"
+                android:textColor="#FFFFFF"
+                android:textSize="36px"
+                android:textStyle="bold"
+
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/groupFace"
+            android:layout_width="400px"
+            android:layout_height="260px"
+            android:layout_marginTop="83px"
+            android:layout_marginEnd="115px"
+            android:background="#05DC38"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTimeDown">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="人脸采集"
+                android:textColor="#FFFFFF"
+                android:textSize="47px"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12px"
+                android:text="未采集"
+                android:textColor="#FFFFFF"
+
+                android:textSize="36px"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/groupSound"
+            android:layout_width="400px"
+            android:layout_height="260px"
+            android:layout_marginTop="59px"
+            android:layout_marginEnd="115px"
+            android:background="#17E0DD"
+            android:clickable="true"
+            android:focusable="true"
+
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/groupFace">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="声纹采集"
+                android:textColor="#FFFFFF"
+                android:textSize="47px"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12px"
+                android:text="未采集"
+                android:textColor="#FFFFFF"
+                android:textSize="36px"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back_to_home"
+            android:layout_width="809px"
+            android:layout_height="124px"
+            android:layout_marginTop="150px"
+            android:background="@drawable/bg_btn_back_to_home_blue"
+            android:gravity="center"
+            android:text="@string/btn_text_back_to_home"
+
+            android:textColor="@color/color_text_btn"
+            android:textSize="48px"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/groupSound"
+            app:layout_goneMarginTop="169px" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

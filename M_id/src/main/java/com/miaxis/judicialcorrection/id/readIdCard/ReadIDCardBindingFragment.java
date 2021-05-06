@@ -2,20 +2,21 @@ package com.miaxis.judicialcorrection.id.readIdCard;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
+import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
 import com.miaxis.judicialcorrection.id.R;
 import com.miaxis.judicialcorrection.id.databinding.FragmentReadIdCardBinding;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
+import dagger.hilt.android.AndroidEntryPoint;
 
 /**
  * @author Tank
@@ -25,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider;
  * @updateDes
  */
 
+@AndroidEntryPoint
 @Route(path = "/page/readIDCard")
 public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadIdCardBinding> {
 
@@ -34,8 +36,7 @@ public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadI
     @Autowired(name = "NoIdCardEnable")
     boolean noIdCardEnable;
 
-    @Autowired(name = "AutoCheckEnable")
-    boolean autoCheckEnable;
+    ReadIdCardViewModel mReadIdCardViewModel;
 
     @Override
     protected int initLayout() {
@@ -44,39 +45,36 @@ public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadI
 
     @Override
     protected void initView(@NonNull FragmentReadIdCardBinding view, Bundle savedInstanceState) {
-        ReadIDCardModel readIDCardModel = new ViewModelProvider(this).get(ReadIDCardModel.class);
-        readIDCardModel.title.observe(this, s -> binding.tvTitle.setText(String.valueOf(s)));
-        readIDCardModel.noIdCardEnable.observe(this, aBoolean -> {
+        mReadIdCardViewModel = new ViewModelProvider(this).get(ReadIdCardViewModel.class);
+        mReadIdCardViewModel.title.observe(this, s -> binding.tvTitle.setText(String.valueOf(s)));
+        mReadIdCardViewModel.noIdCardEnable.observe(this, aBoolean -> {
             binding.btnNoIdCardEntry.setVisibility(aBoolean ? View.VISIBLE : View.GONE);
-            binding.btnNoIdCardEntry.setOnClickListener(v -> getFragmentManager().beginTransaction().replace(
-                    R.id.layout_root,
-                    (Fragment) ARouter.getInstance()
-                            .build("/page/inputIDCard")
-                            .withString("Title", title)
-                            .withBoolean("AutoCheckEnable", autoCheckEnable)
-                            .navigation()
-            ).commitNow());
+            binding.btnNoIdCardEntry.setOnClickListener(v ->
+                    getFragmentManager().beginTransaction().replace(
+                            R.id.layout_root,
+                            (Fragment) ARouter.getInstance()
+                                    .build("/page/inputIDCard")
+                                    .withString("Title", title)
+                                    .navigation()
+                    ).commitNow());
         });
-        readIDCardModel.autoCheckEnable.observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
 
-            }
-        });
         binding.btnBackToHome.setOnClickListener(v -> {
             finish();
-            //                    ReadIdCardManager.getInstance().read(new ReadIdCardManager.ReadIdCardCallback() {
-            //                        @Override
-            //                        public void readIdCardCallback(int code, String message, IdCardMsg idCardMsg, Bitmap bitmap) {
-            //                            Timber.e("code:" + code + "   message:" + message + "  IdCardMsg:" + idCardMsg + "   Bitmap:" + (bitmap != null));
-            //                        }
-            //                    });
         });
-        readIDCardModel.title.setValue(title);
-        readIDCardModel.noIdCardEnable.setValue(noIdCardEnable);
-        readIDCardModel.autoCheckEnable.setValue(autoCheckEnable);
+        mReadIdCardViewModel.title.setValue(title);
+        mReadIdCardViewModel.noIdCardEnable.setValue(noIdCardEnable);
+
         boolean init = ReadIdCardManager.getInstance().init(getActivity());
-        Toast.makeText(getContext(), "init:" + init, Toast.LENGTH_SHORT).show();
+        if (init) {
+            FragmentActivity activity = getActivity();
+            if (activity instanceof ReadIdCardCallback) {
+                mReadIdCardViewModel.readIdCard((ReadIdCardCallback) activity);
+            }
+        } else {
+
+        }
+
     }
 
     @Override
@@ -87,6 +85,7 @@ public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadI
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mReadIdCardViewModel.stopRead();
         ReadIdCardManager.getInstance().free(getActivity());
     }
 }

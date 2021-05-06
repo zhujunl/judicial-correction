@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="job"
+            type="com.miaxis.enroll.vo.Job" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="72px"
+        android:layout_marginStart="32px"
+        android:layout_marginTop="0px"
+        android:layout_marginEnd="32px"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/startTime"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@={job.startTime}"
+            android:textColor="#393939"
+            android:textSize="24px"
+            tools:text="起始时间" />
+
+        <TextView
+            android:id="@+id/endTime"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@={job.endTime}"
+            android:textColor="#393939"
+            android:textSize="24px"
+            tools:text="结束时间" />
+
+        <EditText
+            android:id="@+id/companyEt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="#0000"
+            android:gravity="center"
+            android:text="@={job.company}"
+            android:textColor="#393939"
+            android:textSize="24px"
+            tools:text="原工作单位" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:entries="@array/job"
+            android:gravity="center"
+            android:text="职位"
+            android:textColor="#393939"
+            android:textSize="24px" />
+
+    </LinearLayout>
+</layout>

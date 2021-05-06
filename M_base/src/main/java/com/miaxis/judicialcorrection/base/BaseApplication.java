@@ -21,14 +21,14 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         if (BuildConfig.DEBUG) {
+            ARouter.openLog(); // 开启日志
+            ARouter.openDebug(); // 使用InstantRun的时候，需要打开该开关，上线之后关闭，否则有安全风险
             Timber.plant(new Timber.DebugTree() {
                 @Override
                 protected void log(int priority, String tag, @NotNull String message, Throwable t) {
                     super.log(priority, "Mx" + tag, message, t);
                 }
             });
-            ARouter.openLog(); // 开启日志
-            ARouter.openDebug(); // 使用InstantRun的时候，需要打开该开关，上线之后关闭，否则有安全风险
         }
         Timber.e("DEBUG:" + BuildConfig.DEBUG);
         ARouter.init(this);

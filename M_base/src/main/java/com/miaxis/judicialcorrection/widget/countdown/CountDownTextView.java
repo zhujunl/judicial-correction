@@ -1,5 +1,6 @@
 package com.miaxis.judicialcorrection.widget.countdown;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -7,6 +8,9 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.BindingAdapter;
+
+import timber.log.Timber;
 
 /**
  * @author Tank
@@ -16,6 +20,14 @@ import androidx.annotation.Nullable;
  * @updateDes
  */
 public class CountDownTextView extends androidx.appcompat.widget.AppCompatTextView {
+
+
+    @BindingAdapter("totalTime")
+    public static void setTotalTime(CountDownTextView view, int time) {
+        Timber.i("setTotalTime %d", time);
+        view.setTotalTime(time);
+    }
+
 
     public CountDownTextView(@NonNull Context context) {
         super(context);
@@ -40,12 +52,27 @@ public class CountDownTextView extends androidx.appcompat.widget.AppCompatTextVi
         this.mCountDownListener = countDownListener;
     }
 
+
+    @SuppressLint("SetTextI18n")
     public void setTime(int time) {
         this.start = time;
         setText(this.start + "s");
     }
 
+
+    @SuppressLint("SetTextI18n")
+    public void setTotalTime(int time) {
+        this.total = time;
+        this.start = time;
+        setText(this.start + "s");
+    }
+
+    public void reset() {
+        start = total;
+    }
+
     private int start = 60;
+    private int total = 60;
 
     private Handler mHandler;
     private Runnable mRunnable;
@@ -78,7 +105,7 @@ public class CountDownTextView extends androidx.appcompat.widget.AppCompatTextVi
                     loop();
                 } else {
                     if (mCountDownListener != null) {
-                        mCountDownListener.onCountDownStop();
+                        mCountDownListener.onCountDownDone();
                     }
                 }
             }

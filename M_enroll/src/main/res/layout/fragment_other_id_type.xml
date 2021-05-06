@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.miaxis.enroll.EnrollSharedViewModel" />
+
+        <import type="com.miaxis.judicialcorrection.base.databinding.Converter" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="270px"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30px"
+                android:gravity="end"
+                android:text="有无港澳台身份证 :"
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <!--            android:checkedButton="@{vm.otherCardTypeLiveData.ywgatsfz==1?@id/hkT:@id/hkF}"-->
+            <!--            android:checkedButton="@={vm.tempCheckedId}"-->
+            <!--            cbbbb="@={vm.tempCheckedId}"-->
+
+            <RadioGroup
+                android:id="@+id/hkGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkedButton="@={Converter.checkedToCheckId(hkGroup,vm.otherCardTypeLiveData.ywgatsfz)}"
+                android:orientation="horizontal"
+                tools:checkedButton="@id/hkF">
+
+                <RadioButton
+                    android:id="@+id/hkT"
+                    android:layout_width="226px"
+                    android:layout_height="72px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="有" />
+
+                <RadioButton
+                    android:id="@+id/hkF"
+                    android:layout_width="226px"
+                    android:layout_height="72px"
+                    android:layout_marginStart="40px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="无" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="270px"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30px"
+                android:gravity="end"
+                android:text="有无台胞证："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <RadioGroup
+                android:id="@+id/twGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkedButton="@={Converter.checkedToCheckId(twGroup,vm.otherCardTypeLiveData.ywtbz)}"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/twT"
+                    android:layout_width="226px"
+                    android:layout_height="72px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="有" />
+
+                <RadioButton
+                    android:id="@+id/twF"
+                    android:layout_width="226px"
+                    android:layout_height="72px"
+                    android:layout_marginStart="40px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="无" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="270px"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30px"
+                android:gravity="end"
+                android:text="有无护照："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <RadioGroup
+                android:id="@+id/passGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkedButton="@={Converter.checkedToCheckId(passGroup,vm.otherCardTypeLiveData.ywhz)}"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/passT"
+                    android:layout_width="226px"
+                    android:layout_height="72px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="有" />
+
+                <RadioButton
+                    android:id="@+id/passF"
+                    android:layout_width="226px"
+                    android:layout_height="72px"
+                    android:layout_marginStart="40px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="无" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="270px"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30px"
+                android:gravity="end"
+                android:text="有无港台澳通行证："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <RadioGroup
+                android:id="@+id/hkPassGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkedButton="@={Converter.checkedToCheckId(hkPassGroup,vm.otherCardTypeLiveData.ywgattxz)}"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/hkPassT"
+                    android:layout_width="226px"
+                    android:layout_height="72px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="有" />
+
+                <RadioButton
+                    android:id="@+id/hkPassF"
+                    android:layout_width="226px"
+                    android:layout_height="72px"
+                    android:layout_marginStart="40px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="无" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="270px"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30px"
+                android:gravity="end"
+                android:text="有无台湾通行证："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <RadioGroup
+                android:id="@+id/twPassGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/twPassT"
+                    android:layout_width="226px"
+                    android:layout_height="72px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="有" />
+
+                <RadioButton
+                    android:id="@+id/twPassF"
+                    android:layout_width="226px"
+                    android:layout_height="72px"
+                    android:layout_marginStart="40px"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="无" />
+            </RadioGroup>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

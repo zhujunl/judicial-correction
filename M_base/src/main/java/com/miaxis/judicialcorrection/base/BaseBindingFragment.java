@@ -1,11 +1,10 @@
 package com.miaxis.judicialcorrection.base;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.alibaba.android.arouter.launcher.ARouter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,12 +22,6 @@ import androidx.fragment.app.Fragment;
 public abstract class BaseBindingFragment<V extends ViewDataBinding> extends Fragment {
 
     protected V binding;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ARouter.getInstance().inject(this);
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,5 +54,4 @@ public abstract class BaseBindingFragment<V extends ViewDataBinding> extends Fra
     protected void finish() {
         getActivity().finish();
     }
-
 }

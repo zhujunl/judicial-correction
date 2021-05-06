@@ -2,6 +2,7 @@ package com.miaxis.judicialcorrection.ui.main;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,7 +14,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.finger.FingerManager;
@@ -26,6 +26,7 @@ import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundDiffAdapter;
 import com.miaxis.judicialcorrection.databinding.ActivityMainBinding;
 import com.miaxis.judicialcorrection.databinding.ItemMainFucBinding;
+import com.miaxis.judicialcorrection.ui.setting.SettingActivity;
 
 import java.util.Objects;
 
@@ -39,7 +40,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import dagger.hilt.android.AndroidEntryPoint;
 
-@Route(path = "/main/MainActivity")
 @AndroidEntryPoint
 public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
 
@@ -146,7 +146,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
         void checkPassword(String pwd) {
             dismiss();
             if ("666666".equals(pwd)) {
-                ARouter.getInstance().build("/setting/SettingActivity").navigation();
+                startActivity(new Intent(getActivity(), SettingActivity.class));
             } else {
                 Toast.makeText(getContext(), "密码输入错误!", Toast.LENGTH_SHORT).show();
             }

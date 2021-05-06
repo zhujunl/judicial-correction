@@ -4,8 +4,6 @@
 
 
     <application>
-        <activity android:name=".TestActivity">
-        </activity>
 
 
     </application>
