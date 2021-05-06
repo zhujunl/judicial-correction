@@ -14,9 +14,12 @@ import com.miaxis.enroll.R;
 import com.miaxis.enroll.databinding.FragmentCaptureBaseInfoBinding;
 import com.miaxis.enroll.databinding.ItemFragmentBaseInfoBinding;
 import com.miaxis.enroll.guide.infos.AddressFragment;
+import com.miaxis.enroll.guide.infos.BaseInfoFragment;
 import com.miaxis.enroll.guide.infos.BaseMsgFragment;
-import com.miaxis.enroll.guide.infos.IdTypeInfoFragment;
+import com.miaxis.enroll.guide.infos.OtherIdTypeFragment;
 import com.miaxis.enroll.guide.infos.OtherInfoFragment;
+import com.miaxis.enroll.guide.infos.RelationshipFragment;
+import com.miaxis.enroll.guide.infos.ResumeFragment;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.utils.AppToast;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundAdapter;
@@ -52,7 +55,7 @@ public class CaptureBaseInfoFragment extends BaseBindingFragment<FragmentCapture
     }
 
     private final List<NvListItem> listItems = new ArrayList<>();
-    private final int pageCount = 5;
+    private final int pageCount = 6;
     private int currentPageIndex = -1;
     private MyProgressAdapter adapter;
     private NvController controller;
@@ -61,9 +64,11 @@ public class CaptureBaseInfoFragment extends BaseBindingFragment<FragmentCapture
     protected void initData(@NonNull FragmentCaptureBaseInfoBinding binding, @Nullable Bundle savedInstanceState) {
 
         listItems.add(new NvListItem("基础信息\n登记", BaseMsgFragment.class, 0, pageCount));
-        listItems.add(new NvListItem("身份证件\n信息", IdTypeInfoFragment.class, 1, pageCount));
+        listItems.add(new NvListItem("身份证件\n信息", OtherIdTypeFragment.class, 1, pageCount));
         listItems.add(new NvListItem("居住地\n信息", AddressFragment.class, 2, pageCount));
-        listItems.add(new NvListItem("其他基本\n信息", OtherInfoFragment.class, 3, pageCount));
+        listItems.add(new NvListItem("个人简历\n信息", ResumeFragment.class, 3, pageCount));
+        listItems.add(new NvListItem("家庭成员及\n社会关系", RelationshipFragment.class, 4, pageCount));
+        listItems.add(new NvListItem("其他基本\n信息", OtherInfoFragment.class, 5, pageCount));
 
         controller = new NvController(getChildFragmentManager(), R.id.infoContainer);
         adapter = new MyProgressAdapter();
@@ -75,17 +80,25 @@ public class CaptureBaseInfoFragment extends BaseBindingFragment<FragmentCapture
     }
 
     void nextPage() {
+        Fragment top = controller.top();
+        if (top instanceof BaseInfoFragment<?>) {
+            if (!((BaseInfoFragment<?>) top).checkData()) {
+                return;
+            }
+        }
+        if (currentPageIndex == pageCount-1) {
+            submitAll();
+            return;
+        }
+
         currentPageIndex++;
+
         // 控制导航
         for (int i = 0; i < listItems.size(); i++) {
             listItems.get(i).current = currentPageIndex;
         }
         adapter.submitList(listItems);
         // 控制按钮
-        if (currentPageIndex == pageCount-1) {
-            currentPageIndex--;
-            submitAll();
-        }
         refreshControlBtn();
         // 控制页面
         try {
@@ -110,19 +123,19 @@ public class CaptureBaseInfoFragment extends BaseBindingFragment<FragmentCapture
     }
 
     void refreshControlBtn() {
-        if (currentPageIndex == 0 || currentPageIndex == pageCount - 1 - 1) {
+        if (currentPageIndex == 0 || currentPageIndex == pageCount  - 1) {
             binding.preBtn.setVisibility(View.GONE);
         } else {
             binding.preBtn.setVisibility(View.VISIBLE);
         }
-        if (currentPageIndex == pageCount - 1 - 1) {
+        if (currentPageIndex == pageCount- 1) {
             binding.nextBtn.setText("提交");
         }
     }
 
 
     private void submitAll() {
-        // TODO: 5/4/21
+        appToast.show("submitAll");
     }
 
     static class MyProgressAdapter extends BaseDataBoundAdapter<NvListItem, ItemFragmentBaseInfoBinding> {
@@ -135,7 +148,7 @@ public class CaptureBaseInfoFragment extends BaseBindingFragment<FragmentCapture
 
         @Override
         protected void bind(ItemFragmentBaseInfoBinding binding, NvListItem item) {
-            Timber.i("bind : %s", item);
+            //Timber.i("bind : %s", item);
             binding.setData(item);
         }
 

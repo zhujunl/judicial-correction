@@ -5,6 +5,10 @@ import androidx.fragment.app.FragmentManager;
 
 import com.miaxis.enroll.R;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import timber.log.Timber;
@@ -23,6 +27,14 @@ public class NvController {
     public NvController(FragmentManager fragmentManager, int containId) {
         this.fragmentManager = fragmentManager;
         this.containId = containId;
+    }
+
+
+    public Fragment top() {
+        List<Fragment> fragments = fragmentManager.getFragments();
+        if (fragments.size() == 0)
+            return null;
+        return fragments.get(fragments.size() - 1);
     }
 
     public void back() {

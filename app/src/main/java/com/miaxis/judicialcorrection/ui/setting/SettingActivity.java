@@ -91,11 +91,12 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
             if (listResource.isError()) {
                 appToast.show("Error:" + listResource.errorMessage);
             } else if (listResource.isSuccess()) {
-                int select = 0;
+                int select = -1;
                 String[] mItems = new String[listResource.data.size() + 1];
+                mItems[0]="请选择";
                 for (int i = 0; i < listResource.data.size(); i++) {
                     JusticeBureau justiceBureau = listResource.data.get(i);
-                    mItems[i] = justiceBureau.getTeamName();
+                    mItems[i+1] = justiceBureau.getTeamName();
                     if (mJusticeBureau != null && Objects.equals(justiceBureau.getTeamId(), mJusticeBureau.getTeamId())) {
                         select = i;
                     }

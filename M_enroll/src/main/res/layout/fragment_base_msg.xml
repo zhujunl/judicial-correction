@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.miaxis.enroll.EnrollSharedViewModel" />
     </data>
 
     <LinearLayout
@@ -25,9 +29,15 @@
                 android:textColor="#393939"
                 android:textSize="30px" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="706px"
-                android:layout_height="72px" />
+                android:layout_height="72px"
+                tools:text="司法所"
+                android:gravity="center_vertical"
+                android:paddingStart="16px"
+                android:paddingEnd="16px"
+                android:text="@{vm.justiceBureauLiveData.teamName}"
+                android:background="@drawable/shape_et_bg" />
 
         </LinearLayout>
 
@@ -48,6 +58,11 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="706px"
                 android:layout_height="72px"
+                android:gravity="center_vertical"
+                android:paddingStart="16px"
+                android:paddingEnd="16px"
+                android:text="@{vm.idCardLiveData.idCardMsg.name}"
+                tools:text="张三"
                 android:background="@drawable/shape_et_bg" />
 
         </LinearLayout>
@@ -69,6 +84,11 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="706px"
                 android:layout_height="72px"
+                android:gravity="center_vertical"
+                android:paddingStart="16px"
+                android:paddingEnd="16px"
+                android:text="@{vm.idCardLiveData.idCardMsg.sex}"
+                tools:text="男"
                 android:background="@drawable/shape_et_bg" />
 
         </LinearLayout>
@@ -90,6 +110,11 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="706px"
                 android:layout_height="72px"
+                android:gravity="center_vertical"
+                android:paddingStart="16px"
+                android:paddingEnd="16px"
+                android:text="@{vm.idCardLiveData.idCardMsg.nation_str}"
+                tools:text="汉"
                 android:background="@drawable/shape_et_bg" />
 
         </LinearLayout>
@@ -111,6 +136,11 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="706px"
                 android:layout_height="72px"
+                android:gravity="center_vertical"
+                android:paddingStart="16px"
+                android:paddingEnd="16px"
+                android:text="@{vm.idCardLiveData.idCardMsg.id_num}"
+                tools:text="11011020200101000X"
                 android:background="@drawable/shape_et_bg" />
 
         </LinearLayout>
@@ -132,6 +162,11 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="706px"
                 android:layout_height="72px"
+                android:gravity="center_vertical"
+                android:paddingStart="16px"
+                android:paddingEnd="16px"
+                android:text="@{vm.todayLiveData}"
+                tools:text="2021-05-05"
                 android:background="@drawable/shape_et_bg" />
 
         </LinearLayout>

@@ -1,16 +1,15 @@
 package com.miaxis.enroll;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
+
+import com.miaxis.enroll.databinding.FragmentReadIdBinding;
+import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 
 import dagger.hilt.android.AndroidEntryPoint;
+
 
 /**
  * GoHomeFragment
@@ -19,15 +18,20 @@ import dagger.hilt.android.AndroidEntryPoint;
  * Created on 4/28/21.
  */
 @AndroidEntryPoint
-public class ReadIDFragment extends Fragment {
+public class ReadIDFragment extends BaseBindingFragment<FragmentReadIdBinding> {
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = DataBindingUtil.inflate(inflater, R.layout.fragment_read_id, container, false).getRoot();
-        root.findViewById(R.id.btn_back_to_home).setOnClickListener(v -> {
-            getActivity().finish();
-        });
-        return root;
+    protected int initLayout() {
+        return R.layout.fragment_read_id;
+    }
+
+    @Override
+    protected void initView(@NonNull FragmentReadIdBinding binding, @Nullable Bundle savedInstanceState) {
+        binding.btnBackToHome.setOnClickListener(v -> finish());
+    }
+
+    @Override
+    protected void initData(@NonNull FragmentReadIdBinding binding, @Nullable Bundle savedInstanceState) {
+
     }
 }

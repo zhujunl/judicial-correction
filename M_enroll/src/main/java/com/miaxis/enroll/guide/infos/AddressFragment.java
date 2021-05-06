@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint;
  * Created on 5/4/21.
  */
 @AndroidEntryPoint
-public class AddressFragment extends BaseBindingFragment<FragmentAddressBinding> {
+public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
     @Override
     protected int initLayout() {
         return R.layout.fragment_address;

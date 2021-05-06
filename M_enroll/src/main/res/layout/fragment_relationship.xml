@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.miaxis.enroll.EnrollSharedViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="家庭成员及社会关系至少两条或以上"
+            android:layout_marginStart="32px"
+            android:textColor="#757575"
+            android:textSize="22px" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="72px"
+            android:layout_marginStart="32px"
+            android:layout_marginTop="24px"
+            android:layout_marginEnd="32px"
+            android:background="#2850A3"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="姓名"
+                android:textColor="#fff"
+                android:textSize="24px" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:text="关系"
+                android:textColor="#fff"
+                android:textSize="24px" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2.5"
+                android:gravity="center"
+                android:text="工作单位及家庭地址"
+                android:textColor="#fff"
+                android:textSize="24px" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="联系电话"
+                android:textColor="#fff"
+                android:textSize="24px" />
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_fragment_relationship" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/addLine"
+            android:layout_width="305px"
+            android:layout_height="90px"
+            android:text="添加行"
+            android:gravity="center"
+            android:paddingStart="48px"
+            android:paddingEnd="48px"
+            android:drawableStart="@drawable/add"
+            android:textColor="#fff"
+            android:textSize="40px"
+            android:layout_marginTop="64px"
+            android:layout_marginStart="32px"
+            android:background="@drawable/bg_btn_back_to_home_blue"/>
+
+    </LinearLayout>
+</layout>

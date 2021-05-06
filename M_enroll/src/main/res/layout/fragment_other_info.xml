@@ -3,6 +3,9 @@
 
     <data>
 
+        <variable
+            name="data"
+            type="com.miaxis.enroll.vo.OtherInfo" />
     </data>
 
 
@@ -22,30 +25,34 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48px"
+                android:layout_marginTop="16px"
                 android:text="是否有精神病："
                 android:textColor="#393939"
                 android:textSize="30px" />
 
 
             <RadioGroup
-                android:layout_width="wrap_content"
+                android:layout_width="366px"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16px"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:layout_width="168px"
+                    android:id="@+id/yes"
+                    android:layout_width="0dp"
                     android:layout_height="72px"
+                    android:layout_weight="1"
                     android:background="@drawable/select_rb"
                     android:button="@null"
                     android:gravity="center"
                     android:text="是" />
 
                 <RadioButton
-                    android:layout_width="168px"
+                    android:id="@+id/no"
+                    android:layout_width="0dp"
                     android:layout_height="72px"
                     android:layout_marginStart="40px"
+                    android:layout_weight="1"
                     android:background="@drawable/select_rb"
                     android:button="@null"
                     android:checked="true"
@@ -56,69 +63,137 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48px"
+                android:layout_marginTop="16px"
                 android:text="文化程度："
                 android:textColor="#393939"
                 android:textSize="30px" />
 
+            <FrameLayout
+                android:layout_width="366px"
+                android:layout_height="72px"
+                android:layout_marginTop="16px"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerCulture"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:entries="@array/culture"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48px"
+                android:layout_marginTop="16px"
                 android:text="个人联系电话："
                 android:textColor="#393939"
                 android:textSize="30px" />
 
+            <EditText
+                android:id="@+id/etPhone"
+                android:layout_width="366px"
+                android:layout_height="72px"
+                android:layout_marginTop="16px"
+                android:background="@drawable/shape_et_bg"
+                android:hint="输入电话"
+                android:imeOptions="actionDone"
+                android:inputType="textCapCharacters"
+                android:paddingStart="32px"
+                android:textSize="30px" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48px"
+                android:layout_marginTop="16px"
                 android:text="政治面貌："
                 android:textColor="#393939"
                 android:textSize="30px" />
 
+            <FrameLayout
+                android:layout_width="366px"
+                android:layout_height="72px"
+                android:layout_marginTop="16px"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerPolitical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:entries="@array/political"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48px"
+                android:layout_marginTop="16px"
                 android:text="原工作单位："
                 android:textColor="#393939"
                 android:textSize="30px" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48px"
-                android:text="单位联系电话："
-                android:textColor="#393939"
+            <EditText
+                android:id="@+id/etJobOld"
+                android:layout_width="366px"
+                android:layout_height="72px"
+                android:layout_marginTop="16px"
+                android:background="@drawable/shape_et_bg"
+                android:imeOptions="actionDone"
+                android:inputType="textCapCharacters"
+                android:paddingStart="32px"
                 android:textSize="30px" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48px"
+                android:layout_marginTop="16px"
+                android:text="单位联系电话："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <EditText
+                android:id="@+id/etJobPhone"
+                android:layout_width="366px"
+                android:layout_height="72px"
+                android:layout_marginTop="16px"
+                android:background="@drawable/shape_et_bg"
+                android:hint="输入电话"
+                android:imeOptions="actionDone"
+                android:inputType="textCapCharacters"
+                android:paddingStart="32px"
+                android:textSize="30px" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16px"
                 android:text="是否三无人员："
                 android:textColor="#393939"
                 android:textSize="30px" />
 
             <RadioGroup
-                android:layout_width="wrap_content"
+                android:layout_width="366px"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16px"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:layout_width="168px"
+                    
+                    android:layout_width="0dp"
                     android:layout_height="72px"
+                    android:layout_weight="1"
                     android:background="@drawable/select_rb"
                     android:button="@null"
                     android:gravity="center"
                     android:text="是" />
 
                 <RadioButton
-                    android:layout_width="168px"
+                    
+                    android:layout_width="0dp"
                     android:layout_height="72px"
                     android:layout_marginStart="40px"
+                    android:layout_weight="1"
                     android:background="@drawable/select_rb"
                     android:button="@null"
                     android:checked="true"
@@ -131,37 +206,41 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="180px"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48px"
+                android:layout_marginTop="16px"
                 android:text="是否有精神病："
                 android:textColor="#393939"
                 android:textSize="30px" />
 
 
             <RadioGroup
-                android:layout_width="wrap_content"
+                android:layout_width="366px"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16px"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:layout_width="168px"
+                    
+                    android:layout_width="0dp"
                     android:layout_height="72px"
+                    android:layout_weight="1"
                     android:background="@drawable/select_rb"
                     android:button="@null"
                     android:gravity="center"
                     android:text="是" />
 
                 <RadioButton
-                    android:layout_width="168px"
+                    
+                    android:layout_width="0dp"
                     android:layout_height="72px"
                     android:layout_marginStart="40px"
+                    android:layout_weight="1"
                     android:background="@drawable/select_rb"
                     android:button="@null"
                     android:checked="true"
@@ -169,6 +248,150 @@
                     android:text="否" />
             </RadioGroup>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16px"
+                android:text="婚姻状况："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <FrameLayout
+                android:layout_width="366px"
+                android:layout_height="72px"
+                android:layout_marginTop="16px"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerMarriage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:entries="@array/marriage"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16px"
+                android:text="就业就学情况："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <FrameLayout
+                android:layout_width="366px"
+                android:layout_height="72px"
+                android:layout_marginTop="16px"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerStudy"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:entries="@array/study"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16px"
+                android:text="原政治面貌："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <FrameLayout
+                android:layout_width="366px"
+                android:layout_height="72px"
+                android:layout_marginTop="16px"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerPoliticalOld"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:entries="@array/political"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16px"
+                android:text="现工作单位："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <EditText
+                android:id="@+id/etJob"
+                android:layout_width="366px"
+                android:layout_height="72px"
+                android:layout_marginTop="16px"
+                android:background="@drawable/shape_et_bg"
+                android:imeOptions="actionDone"
+                android:inputType="textCapCharacters"
+                android:paddingStart="32px"
+                android:textSize="30px" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16px"
+                android:text="国籍（户籍）："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <FrameLayout
+                android:layout_width="366px"
+                android:layout_height="72px"
+                android:layout_marginTop="16px"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerCounty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:entries="@array/country"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16px"
+                android:text="有无违法犯罪记录："
+                android:textColor="#393939"
+                android:textSize="30px" />
+
+            <RadioGroup
+                android:layout_width="366px"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16px"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    
+                    android:layout_width="0dp"
+                    android:layout_height="72px"
+                    android:layout_weight="1"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="有" />
+
+                <RadioButton
+                    
+                    android:layout_width="0dp"
+                    android:layout_height="72px"
+                    android:layout_marginStart="40px"
+                    android:layout_weight="1"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="无" />
+            </RadioGroup>
 
         </LinearLayout>
 

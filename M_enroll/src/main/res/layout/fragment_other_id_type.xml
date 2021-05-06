@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.miaxis.enroll.EnrollSharedViewModel" />
+
+        <import type="com.miaxis.judicialcorrection.base.databinding.Converter" />
     </data>
 
     <LinearLayout
@@ -27,11 +33,17 @@
                 android:textColor="#393939"
                 android:textSize="30px" />
 
+            <!--            android:checkedButton="@{vm.otherCardTypeLiveData.ywgatsfz==1?@id/hkT:@id/hkF}"-->
+            <!--            android:checkedButton="@={vm.tempCheckedId}"-->
+            <!--            cbbbb="@={vm.tempCheckedId}"-->
+
             <RadioGroup
                 android:id="@+id/hkGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:checkedButton="@={Converter.checkedToCheckId(hkGroup,vm.otherCardTypeLiveData.ywgatsfz)}"
+                android:orientation="horizontal"
+                tools:checkedButton="@id/hkF">
 
                 <RadioButton
                     android:id="@+id/hkT"
@@ -49,7 +61,6 @@
                     android:layout_marginStart="40px"
                     android:background="@drawable/select_rb"
                     android:button="@null"
-                    android:checked="true"
                     android:gravity="center"
                     android:text="无" />
             </RadioGroup>
@@ -75,6 +86,7 @@
                 android:id="@+id/twGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkedButton="@={Converter.checkedToCheckId(twGroup,vm.otherCardTypeLiveData.ywtbz)}"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -119,6 +131,7 @@
                 android:id="@+id/passGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkedButton="@={Converter.checkedToCheckId(passGroup,vm.otherCardTypeLiveData.ywhz)}"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -155,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="30px"
                 android:gravity="end"
-                android:text="有无港澳通行证："
+                android:text="有无港台澳通行证："
                 android:textColor="#393939"
                 android:textSize="30px" />
 
@@ -163,6 +176,7 @@
                 android:id="@+id/hkPassGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkedButton="@={Converter.checkedToCheckId(hkPassGroup,vm.otherCardTypeLiveData.ywgattxz)}"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -192,7 +206,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40px"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="270px"
@@ -230,6 +245,5 @@
                     android:text="无" />
             </RadioGroup>
         </LinearLayout>
-
     </LinearLayout>
 </layout>

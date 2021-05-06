@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint;
  * Created on 5/4/21.
  */
 @AndroidEntryPoint
-public class OtherInfoFragment extends BaseBindingFragment<FragmentOtherInfoBinding> {
+public class OtherInfoFragment extends BaseInfoFragment<FragmentOtherInfoBinding> {
     @Override
     protected int initLayout() {
         return R.layout.fragment_other_info;

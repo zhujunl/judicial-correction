@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.miaxis.enroll.vo.Family" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="72px"
+        android:layout_marginStart="32px"
+        android:layout_marginTop="0px"
+        android:layout_marginEnd="32px"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/nameEt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#0000"
+            android:gravity="center"
+            android:text="@={data.name}"
+            android:textColor="#393939"
+            android:inputType="text"
+            android:imeOptions="actionNext"
+            android:textSize="24px"
+            tools:text="张三" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:entries="@array/relationship"
+            android:gravity="center"
+            android:textColor="#393939"
+            android:textSize="24px" />
+
+
+        <EditText
+            android:id="@+id/jobEt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5"
+            android:background="#0000"
+            android:gravity="center"
+            android:text="@={data.job}"
+            android:textColor="#393939"
+            android:textSize="24px"
+            android:inputType="text"
+            android:imeOptions="actionNext"
+            tools:text="原工作单位地址址址址" />
+
+        <EditText
+            android:id="@+id/companyEt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:background="#0000"
+            android:gravity="center"
+            android:inputType="number"
+            android:imeOptions="actionDone"
+            android:text="@={data.phone}"
+            android:textColor="#393939"
+            android:textSize="24px"
+            tools:text="18699998888" />
+
+
+    </LinearLayout>
+</layout>
