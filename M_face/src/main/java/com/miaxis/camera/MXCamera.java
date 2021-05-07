@@ -81,6 +81,21 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         return 0;
     }
 
+    public int takePicture(Camera.PictureCallback jpeg) {
+        if (this.mCamera == null) {
+            return -1;
+        }
+
+        if (!this.isPreview) {
+            return -2;
+        }
+        this.mCamera.takePicture(() -> {
+        }, (data, camera) -> {
+        }, jpeg);
+        return 0;
+    }
+
+
     public int getNextFrame() {
         if (this.mCamera == null) {
             return -1;

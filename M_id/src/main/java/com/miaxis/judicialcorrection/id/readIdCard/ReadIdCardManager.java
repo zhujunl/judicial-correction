@@ -91,14 +91,15 @@ public class ReadIdCardManager {
                 if (ret == 0x90) {
                     IdCard idCard = new IdCard();
                     idCard.idCardMsg = msg;
-                    byte[] bmp = new byte[38862];
-                    Bitmap bitmap = GetImage(pucPHMsg, bmp);
-                    if (bitmap != null) {
-                        idCard.face = bitmap;
-                        result.code = 0;
-                    } else {
-                        result.code = 1;
-                    }
+                    //byte[] bmp = new byte[38862];
+                    //Bitmap bitmap = GetImage(pucPHMsg, bmp);
+                    //if (bitmap != null) {
+                    //  idCard.face = bitmap;
+                    //  result.code = 0;
+                    //} else {
+                    //  result.code = 1;
+                    //}
+                    result.code = 0;
                     result.setData(idCard);
                 } else {
                     result.code = -4;

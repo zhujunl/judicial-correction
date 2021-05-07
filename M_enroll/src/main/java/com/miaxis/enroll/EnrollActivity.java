@@ -1,14 +1,6 @@
 package com.miaxis.enroll;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
-import android.os.Handler;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.ObservableInt;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.miaxis.enroll.databinding.ActivityEnrollBinding;
@@ -17,11 +9,13 @@ import com.miaxis.enroll.guide.NvController;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
-import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
 import com.miaxis.judicialcorrection.id.readIdCard.ReadIdCardManager;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;

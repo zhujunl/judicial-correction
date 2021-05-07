@@ -3,19 +3,21 @@ package com.miaxis.judicialcorrection.id.readIdCard;
 import android.os.Bundle;
 import android.view.View;
 
-import com.alibaba.android.arouter.facade.annotation.Autowired;
-import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
-import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
+import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.id.R;
+import com.miaxis.judicialcorrection.id.bean.IdCard;
+import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
 import com.miaxis.judicialcorrection.id.databinding.FragmentReadIdCardBinding;
+import com.miaxis.judicialcorrection.id.inputIdCard.InputIdCardBindingFragment;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
+import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 
 /**
@@ -26,14 +28,14 @@ import dagger.hilt.android.AndroidEntryPoint;
  * @updateDes
  */
 @AndroidEntryPoint
-@Route(path = "/page/readIDCard")
 public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadIdCardBinding> {
 
-    @Autowired(name = "Title")
     String title;
 
-    @Autowired(name = "NoIdCardEnable")
     boolean noIdCardEnable;
+
+    @Inject
+    Lazy<AppHints> appHintsLazy;
 
     ReadIdCardViewModel mReadIdCardViewModel;
 
@@ -56,10 +58,7 @@ public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadI
             binding.btnNoIdCardEntry.setOnClickListener(v ->
                     getFragmentManager().beginTransaction().replace(
                             R.id.layout_root,
-                            (Fragment) ARouter.getInstance()
-                                    .build("/page/inputIDCard")
-                                    .withString("Title", title)
-                                    .navigation()
+                            new InputIdCardBindingFragment(title)
                     ).commitNow());
         });
 
@@ -73,7 +72,28 @@ public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadI
         if (init) {
             FragmentActivity activity = getActivity();
             if (activity instanceof ReadIdCardCallback) {
-                mReadIdCardViewModel.readIdCard((ReadIdCardCallback) activity);
+                ReadIdCardCallback readIdCardCallback = (ReadIdCardCallback) activity;
+                mReadIdCardViewModel.readIdCard(result -> {
+                    readIdCardCallback.onIdCardRead(result);
+                    mReadIdCardViewModel.login(result.idCardMsg.id_num).observe(ReadIDCardBindingFragment.this, personInfoResource -> {
+                        switch (personInfoResource.status) {
+                            case LOADING:
+                                showLoading();
+                                break;
+                            case ERROR:
+                                dismissLoading();
+                                readIdCardCallback.onLogin(null);
+                                appHintsLazy.get().showError("Error:" + personInfoResource.errorMessage);
+                                break;
+                            case SUCCESS:
+                                dismissLoading();
+                                personInfoResource.data.setIdCardNumber(result.idCardMsg.id_num);
+                                readIdCardCallback.onLogin(personInfoResource.data);
+                                break;
+                        }
+                    });
+
+                });
             }
         } else {
 
@@ -91,5 +111,13 @@ public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadI
         super.onDestroyView();
         mReadIdCardViewModel.stopRead();
         ReadIdCardManager.getInstance().free(getActivity());
+    }
+
+    public interface ReadIdCallback {
+
+        /**
+         * 读身份证回调
+         */
+        void onIdCardRead(IdCard result);
     }
 }

@@ -1,10 +1,15 @@
 package com.miaxis.judicialcorrection.id.readIdCard;
 
 import com.miaxis.judicialcorrection.base.api.ApiResult;
+import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
+import com.miaxis.judicialcorrection.base.common.Resource;
+import com.miaxis.judicialcorrection.base.repo.PersonRepo;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
-import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
+
 import javax.inject.Inject;
+
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import dagger.hilt.android.lifecycle.HiltViewModel;
@@ -27,26 +32,29 @@ public class ReadIdCardViewModel extends ViewModel {
 
     AppExecutors mAppExecutors;
 
+    private final PersonRepo personRepo;
+
     @Inject
-    public ReadIdCardViewModel(AppExecutors appExecutors) {
+    public ReadIdCardViewModel(AppExecutors appExecutors, PersonRepo personRepo) {
         this.mAppExecutors = appExecutors;
+        this.personRepo = personRepo;
     }
 
-    private ReadIdCardCallback mReadIdCardCallback;
+    private ReadIDCardBindingFragment.ReadIdCallback mReadIdCallback;
 
-    public void readIdCard(ReadIdCardCallback readIdCardCallback) {
-        this.mReadIdCardCallback = readIdCardCallback;
+    public void readIdCard(ReadIDCardBindingFragment.ReadIdCallback callback) {
+        this.mReadIdCallback = callback;
         this.mAppExecutors.networkIO().execute(new Runnable() {
             @Override
             public void run() {
                 boolean success = false;
-                while (mReadIdCardCallback != null && !success) {
+                while (mReadIdCallback != null && !success) {
                     ApiResult<IdCard> read = ReadIdCardManager.getInstance().read();
                     Timber.e("读取身份证：" + read);
                     if (success = read.isSuccessful()) {
                         mAppExecutors.mainThread().execute(() -> {
-                            if (mReadIdCardCallback != null) {
-                                mReadIdCardCallback.onIdCardRead(read.getData());
+                            if (mReadIdCallback != null) {
+                                mReadIdCallback.onIdCardRead(read.getData());
                             }
                             stopRead();
                         });
@@ -56,8 +64,38 @@ public class ReadIdCardViewModel extends ViewModel {
         });
     }
 
+
+
+    //private ReadIdCardCallback mReadIdCardCallback;
+
+//    public void readIdCard(ReadIdCardCallback readIdCardCallback) {
+//        this.mReadIdCardCallback = readIdCardCallback;
+//        this.mAppExecutors.networkIO().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                boolean success = false;
+//                while (mReadIdCardCallback != null && !success) {
+//                    ApiResult<IdCard> read = ReadIdCardManager.getInstance().read();
+//                    Timber.e("读取身份证：" + read);
+//                    if (success = read.isSuccessful()) {
+//                        mAppExecutors.mainThread().execute(() -> {
+//                            if (mReadIdCardCallback != null) {
+//                                mReadIdCardCallback.onIdCardRead(read.getData());
+//                            }
+//                            stopRead();
+//                        });
+//                    }
+//                }
+//            }
+//        });
+//    }
+
+    public LiveData<Resource<PersonInfo>> login(String idCardNumber) {
+        return personRepo.personInfo(idCardNumber);
+    }
+
     public void stopRead() {
-        this.mReadIdCardCallback = null;
+        this.mReadIdCallback = null;
     }
 
 }

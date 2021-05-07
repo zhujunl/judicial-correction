@@ -3,7 +3,7 @@ package com.miaxis.judicialcorrection.leave;
 import android.os.Bundle;
 
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
-import com.miaxis.judicialcorrection.leave.databinding.FragmentLeaveListBinding;
+import com.miaxis.judicialcorrection.leave.databinding.FragmentLeaveCancelBinding;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,20 +16,20 @@ import androidx.fragment.app.FragmentActivity;
  * @updateAuthor
  * @updateDes
  */
-public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveListBinding> {
+public class LeaveCancelFragment extends BaseBindingFragment<FragmentLeaveCancelBinding> {
 
-    private String title = "请假申请";
+    private String title = "销假";
 
-    public LeaveApplyFragment() {
+    public LeaveCancelFragment() {
     }
 
     @Override
     protected int initLayout() {
-        return R.layout.fragment_leave_apply;
+        return R.layout.fragment_leave_cancel;
     }
 
     @Override
-    protected void initView(@NonNull FragmentLeaveListBinding binding, @Nullable Bundle savedInstanceState) {
+    protected void initView(@NonNull FragmentLeaveCancelBinding binding, @Nullable Bundle savedInstanceState) {
         binding.tvTitle.setText(String.valueOf(this.title));
         binding.btnBackToHome.setOnClickListener(v -> finish());
 
@@ -38,7 +38,7 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveListBin
     }
 
     @Override
-    protected void initData(@NonNull FragmentLeaveListBinding binding, @Nullable Bundle savedInstanceState) {
+    protected void initData(@NonNull FragmentLeaveCancelBinding binding, @Nullable Bundle savedInstanceState) {
 
     }
 

@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="data"
+            type="com.miaxis.judicialcorrection.leave.bean.ApplyData" />
 
     </data>
 
@@ -46,7 +49,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
 
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ll_text"
             android:layout_width="978px"
             android:layout_height="179px"
@@ -60,26 +63,53 @@
             app:layout_constraintTop_toBottomOf="@id/tv_title">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_name"
+                android:id="@+id/tv_name_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15px"
                 android:gravity="center"
                 android:text="姓名："
                 android:textColor="#3C3C3C"
-                android:textSize="30px" />
+                android:textSize="30px"
+                app:layout_constraintBottom_toTopOf="@+id/tv_id_card_title"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{data.name}"
+                android:textColor="#3C3C3C"
+                android:textSize="30px"
+                app:layout_constraintBottom_toTopOf="@+id/tv_id_card_title"
+                app:layout_constraintLeft_toRightOf="@+id/tv_name_title"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_id_card_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="身份证号："
+                android:textColor="#3C3C3C"
+                android:textSize="30px"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name_title" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_id_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15px"
                 android:gravity="center"
-                android:text="身份证号："
+                android:text="@{data.idCardNumber}"
                 android:textColor="#3C3C3C"
-                android:textSize="30px" />
+                android:textSize="30px"
+                app:layout_constraintLeft_toRightOf="@+id/tv_id_card_title"
+                app:layout_constraintTop_toTopOf="@+id/tv_id_card_title" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/id_view"
@@ -139,6 +169,7 @@
             android:gravity="center_vertical"
             android:paddingStart="10px"
             android:paddingEnd="26px"
+            android:text="@={data.applyTime}"
             android:textColor="#393939"
             android:textSize="27px"
             app:layout_constraintRight_toRightOf="parent"
@@ -181,6 +212,7 @@
             android:gravity="center_vertical"
             android:paddingStart="10px"
             android:paddingEnd="26px"
+            android:text="@={data.startTime}"
             android:textColor="#393939"
             android:textSize="27px"
             app:layout_constraintRight_toRightOf="parent"
@@ -222,6 +254,7 @@
             android:gravity="center_vertical"
             android:paddingStart="10px"
             android:paddingEnd="26px"
+            android:text="@={data.endTime}"
             android:textColor="#393939"
             android:textSize="27px"
             app:layout_constraintRight_toRightOf="parent"
@@ -261,8 +294,10 @@
             android:background="@drawable/bg_text_input"
             android:gravity="center_vertical"
             android:hint="根据请假开始时间和结束时间自动计算"
+            android:inputType="number"
             android:paddingStart="10px"
             android:paddingEnd="26px"
+            android:text="@={data.days}"
             android:textColor="#393939"
             android:textColorHint="#999999"
             android:textSize="27px"

@@ -3,6 +3,7 @@ package com.miaxis.judicialcorrection.leave;
 import android.os.Bundle;
 
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
+import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.face.VerifyPageFragment;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
@@ -49,10 +50,16 @@ public class LeaveActivity extends BaseBindingActivity<ActivityLeaveBinding> imp
     @Override
     public void onIdCardRead(IdCard result) {
         Timber.e("读取身份证：result:" + result);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.layout_root, new VerifyPageFragment(title, result.idCardMsg.name, result.idCardMsg.id_num))
-                .commitNow();
+    }
+
+    @Override
+    public void onLogin( PersonInfo personInfo) {
+        if (personInfo != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.layout_root, new VerifyPageFragment(title, personInfo))
+                    .commitNow();
+        }
     }
 
     @Override

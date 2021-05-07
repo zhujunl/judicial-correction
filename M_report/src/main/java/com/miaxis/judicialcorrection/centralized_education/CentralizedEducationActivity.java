@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
+import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.databinding.ActivityReportBinding;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
@@ -51,10 +52,17 @@ public class CentralizedEducationActivity extends BaseBindingActivity<ActivityRe
     @Override
     public void onIdCardRead(IdCard result) {
         Timber.e("读取身份证：result:" + result);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.layout_root, new VerifyPageFragment(title, result.idCardMsg.name, result.idCardMsg.id_num))
-                .commitNow();
+
+    }
+
+    @Override
+    public void onLogin(PersonInfo personInfo) {
+        if (personInfo != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.layout_root, new VerifyPageFragment(title, personInfo))
+                    .commitNow();
+        }
     }
 
     @Override
@@ -78,7 +86,7 @@ public class CentralizedEducationActivity extends BaseBindingActivity<ActivityRe
         }, new DialogResult.Builder(
                 ZZResponse.isSuccess(response),
                 ZZResponse.isSuccess(response) ? title + "签到成功" : "验证失败",
-                ZZResponse.isSuccess(response) ? "系统将自动返回"+title+"身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
+                ZZResponse.isSuccess(response) ? "系统将自动返回" + title + "身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
                 10, true
         )).show();
     }

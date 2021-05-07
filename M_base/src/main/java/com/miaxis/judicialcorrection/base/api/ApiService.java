@@ -1,7 +1,5 @@
 package com.miaxis.judicialcorrection.base.api;
 
-import androidx.lifecycle.LiveData;
-
 import com.miaxis.judicialcorrection.base.api.vo.JusticeBureauList;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.api.vo.User;
@@ -9,9 +7,9 @@ import com.miaxis.judicialcorrection.base.api.vo.User;
 import java.util.List;
 import java.util.Map;
 
+import androidx.lifecycle.LiveData;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -44,7 +42,6 @@ public interface ApiService {
     LiveData<ApiResult<Object>> addJob(
             @Body() String json
     );
-
 
     @GET("/wegov/team/list")
     LiveData<ApiResult<JusticeBureauList>> justiceBureauList(

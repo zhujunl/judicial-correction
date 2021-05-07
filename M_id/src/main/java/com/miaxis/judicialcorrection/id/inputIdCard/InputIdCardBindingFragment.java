@@ -3,20 +3,23 @@ package com.miaxis.judicialcorrection.id.inputIdCard;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.alibaba.android.arouter.facade.annotation.Autowired;
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
+import com.miaxis.judicialcorrection.base.utils.AppHints;
+import com.miaxis.judicialcorrection.dialog.DialogNoButton;
+import com.miaxis.judicialcorrection.id.R;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
 import com.miaxis.judicialcorrection.id.bean.IdCardMsg;
 import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
-import com.miaxis.judicialcorrection.dialog.DialogNoButton;
-import com.miaxis.judicialcorrection.id.R;
 import com.miaxis.judicialcorrection.id.databinding.FragmentInputIdCardBinding;
+
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
+import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 
 /**
@@ -27,11 +30,16 @@ import dagger.hilt.android.AndroidEntryPoint;
  * @updateDes
  */
 @AndroidEntryPoint
-@Route(path = "/page/inputIDCard")
 public class InputIdCardBindingFragment extends BaseBindingFragment<FragmentInputIdCardBinding> {
 
-    @Autowired(name = "Title")
     String title;
+
+    @Inject
+    Lazy<AppHints> appHintsLazy;
+
+    public InputIdCardBindingFragment(String title) {
+        this.title = title;
+    }
 
     @Override
     protected int initLayout() {
@@ -70,6 +78,23 @@ public class InputIdCardBindingFragment extends BaseBindingFragment<FragmentInpu
                 idCardMsg.id_num = idCard;
                 idCardData.idCardMsg = idCardMsg;
                 readIdCardCallback.onIdCardRead(idCardData);
+                inputIDCardViewModel.login(idCardData.idCardMsg.id_num).observe(InputIdCardBindingFragment.this, personInfoResource -> {
+                    switch (personInfoResource.status) {
+                        case LOADING:
+                            showLoading();
+                            break;
+                        case ERROR:
+                            dismissLoading();
+                            readIdCardCallback.onLogin(null);
+                            appHintsLazy.get().showError("Error:" + personInfoResource.errorMessage);
+                            break;
+                        case SUCCESS:
+                            dismissLoading();
+                            personInfoResource.data.setIdCardNumber(idCardData.idCardMsg.id_num);
+                            readIdCardCallback.onLogin(personInfoResource.data);
+                            break;
+                    }
+                });
             }
         });
 

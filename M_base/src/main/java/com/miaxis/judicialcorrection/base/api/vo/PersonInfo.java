@@ -9,6 +9,7 @@ package com.miaxis.judicialcorrection.base.api.vo;
 public class PersonInfo {
     private String id;
     private String xm;
+    private String idCardNumber;
 
     public String getId() {
         return id;
@@ -26,11 +27,20 @@ public class PersonInfo {
         this.xm = xm;
     }
 
+    public String getIdCardNumber() {
+        return idCardNumber;
+    }
+
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
+    }
+
     @Override
     public String toString() {
-        return "Person{" +
+        return "PersonInfo{" +
                 "id='" + id + '\'' +
                 ", xm='" + xm + '\'' +
+                ", idCardNumber='" + idCardNumber + '\'' +
                 '}';
     }
 }

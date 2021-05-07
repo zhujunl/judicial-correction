@@ -52,19 +52,23 @@ public class CountDownTextView extends androidx.appcompat.widget.AppCompatTextVi
         this.mCountDownListener = countDownListener;
     }
 
-
     @SuppressLint("SetTextI18n")
     public void setTime(int time) {
         this.start = time;
-        setText(this.start + "s");
+        if (this.start > 0) {
+            setText(this.start + "s");
+            loop();
+        } else {
+            setText("");
+        }
     }
-
 
     @SuppressLint("SetTextI18n")
     public void setTotalTime(int time) {
         this.total = time;
         this.start = time;
         setText(this.start + "s");
+        loop();
     }
 
     public void reset() {
@@ -75,10 +79,10 @@ public class CountDownTextView extends androidx.appcompat.widget.AppCompatTextVi
     private int total = 60;
 
     private Handler mHandler;
-    private Runnable mRunnable;
 
     private void loop() {
         if (this.mHandler != null && this.mRunnable != null) {
+            this.mHandler.removeCallbacks(this.mRunnable);
             this.mHandler.postDelayed(this.mRunnable, 1000);
         }
     }
@@ -93,24 +97,25 @@ public class CountDownTextView extends androidx.appcompat.widget.AppCompatTextVi
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         this.mHandler = new Handler();
-        this.mRunnable = new Runnable() {
-            @Override
-            public void run() {
-                start--;
-                setText(start + "s");
+    }
+
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            start--;
+            setText(start + "s");
+            if (mCountDownListener != null) {
+                mCountDownListener.onCountDownProgress(start);
+            }
+            if (start > 0) {
+                loop();
+            } else {
                 if (mCountDownListener != null) {
-                    mCountDownListener.onCountDownProgress(start);
-                }
-                if (start > 0) {
-                    loop();
-                } else {
-                    if (mCountDownListener != null) {
-                        mCountDownListener.onCountDownDone();
-                    }
+                    mCountDownListener.onCountDownDone();
                 }
             }
-        };
-    }
+        }
+    };
 
     @Override
     protected void onWindowVisibilityChanged(int visibility) {

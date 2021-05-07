@@ -2,4 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.miaxis.judicialcorrection.leave">
 
+    <application>
+        <activity android:name=".LeaveActivity" />
+    </application>
+
 </manifest>

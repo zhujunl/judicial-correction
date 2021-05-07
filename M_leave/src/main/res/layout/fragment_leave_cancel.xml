@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.miaxis.judicialcorrection.leave.bean.ApplyData" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/tv_app_title"
+            layout="@layout/layout_app_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100px"
+            android:gravity="center"
+            android:text="销假"
+            android:textColor="@color/color_text_title"
+            android:textSize="68px"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_app_title" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back_to_home"
+            android:layout_width="235px"
+            android:layout_height="83px"
+            android:layout_marginTop="38px"
+            android:layout_marginEnd="32px"
+            android:background="@drawable/bg_btn_back_to_home"
+            android:gravity="center"
+            android:text="@string/btn_text_back_to_home"
+            android:textColor="@color/color_text_btn"
+            android:textSize="36px"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_text"
+            android:layout_width="978px"
+            android:layout_height="179px"
+            android:layout_marginTop="27px"
+            android:background="@drawable/bg_text_apply"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingStart="32px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_name_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="姓名："
+                android:textColor="#3C3C3C"
+                android:textSize="30px"
+                app:layout_constraintBottom_toTopOf="@+id/tv_id_card_title"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{data.name}"
+                android:textColor="#3C3C3C"
+                android:textSize="30px"
+                app:layout_constraintBottom_toTopOf="@+id/tv_id_card_title"
+                app:layout_constraintLeft_toRightOf="@+id/tv_name_title"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_id_card_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="身份证号："
+                android:textColor="#3C3C3C"
+                android:textSize="30px"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name_title" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_id_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{data.idCardNumber}"
+                android:textColor="#3C3C3C"
+                android:textSize="30px"
+                app:layout_constraintLeft_toRightOf="@+id/tv_id_card_title"
+                app:layout_constraintTop_toTopOf="@+id/tv_id_card_title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/id_view"
+            android:layout_width="11px"
+            android:layout_height="41px"
+            android:layout_marginTop="32px"
+            android:background="#2850A3"
+            app:layout_constraintLeft_toLeftOf="@id/ll_text"
+            app:layout_constraintTop_toBottomOf="@id/ll_text" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:gravity="center"
+            android:text="销假申请信息"
+            android:textColor="#393939"
+            android:textSize="36px"
+            app:layout_constraintBottom_toBottomOf="@id/id_view"
+            app:layout_constraintLeft_toRightOf="@id/id_view"
+            app:layout_constraintTop_toBottomOf="@id/ll_text"
+            app:layout_constraintTop_toTopOf="@id/id_view" />
+
+        <!--申请时间-->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5px"
+            android:text="*"
+            android:textColor="#F40707"
+            android:textSize="27px"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_cancel_time"
+            app:layout_constraintRight_toLeftOf="@+id/tv_cancel_time_title"
+            app:layout_constraintTop_toTopOf="@+id/tv_cancel_time" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_cancel_time_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="销假时间："
+            android:textColor="#393939"
+            android:textSize="27px"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_cancel_time"
+            app:layout_constraintRight_toLeftOf="@id/tv_cancel_time"
+            app:layout_constraintTop_toTopOf="@+id/tv_cancel_time" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_cancel_time"
+            android:layout_width="796px"
+            android:layout_height="72px"
+            android:layout_marginStart="5px"
+            android:layout_marginTop="43px"
+            android:layout_marginEnd="33px"
+            android:background="@drawable/bg_text_input"
+            android:drawableEnd="@mipmap/mipmap_calendar"
+            android:gravity="center_vertical"
+            android:paddingStart="10px"
+            android:paddingEnd="26px"
+            android:text="@={data.applyTime}"
+            android:textColor="#393939"
+            android:textSize="27px"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/id_view" />
+
+
+        <!--请假申请书：-->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_application_scan"
+            android:layout_width="249px"
+            android:layout_height="68px"
+            android:layout_marginTop="70px"
+            android:background="@drawable/bg_btn_scan_upload"
+            android:gravity="center"
+            android:text="扫描附件"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_cancel_time"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cancel_time" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_application_scan_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="外出凭证："
+            android:textColor="#393939"
+            android:textSize="27px"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"
+            app:layout_constraintRight_toLeftOf="@id/btn_application_scan"
+            app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5px"
+            android:text="*"
+            android:textColor="#F40707"
+            android:textSize="27px"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan_title"
+            app:layout_constraintRight_toLeftOf="@+id/btn_application_scan_title"
+            app:layout_constraintTop_toTopOf="@+id/btn_application_scan_title" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_scan_tips"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32px"
+            android:layout_marginEnd="79px"
+            android:text="（请将外出凭证放置扫描区进行扫描，如：交通费用，旅馆住宿费用/n凭证或有目的地背景的人像凭证）"
+            android:textColor="#999999"
+            android:textSize="24px"
+            app:layout_constraintLeft_toLeftOf="@+id/btn_application_scan"
+            app:layout_constraintRight_toRightOf="@+id/tv_cancel_time"
+            app:layout_constraintTop_toBottomOf="@+id/btn_application_scan" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_submit"
+            android:layout_width="421px"
+            android:layout_height="104px"
+            android:layout_marginTop="130px"
+            android:background="@drawable/bg_btn_back_to_home_green"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="#fff"
+            android:textSize="48px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_scan_tips" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
