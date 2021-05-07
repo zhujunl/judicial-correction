@@ -3,6 +3,7 @@ package com.miaxis.judicialcorrection.ui.setting;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.miaxis.judicialcorrection.R;
@@ -34,7 +37,10 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
@@ -51,16 +57,20 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
     JusticeBureauRepo justiceBureauRepo;
     @Inject
     AppToast appToast;
-    JusticeBureau mJusticeBureau;
+//    JusticeBureau mJusticeBureau;
 
     @Override
     protected int initLayout() {
         return R.layout.activity_setting;
     }
 
+    private static final String TAG = "MxSettingActivity";
+    SettingViewModel viewModel;
+
     @SuppressLint("HardwareIds")
     @Override
     protected void initView(@NonNull ActivitySettingBinding view, @Nullable Bundle savedInstanceState) {
+        viewModel = new ViewModelProvider(this).get(SettingViewModel.class);
         binding.recyclerView.setAdapter(mainAdapter);
         binding.btnBackToHome.setOnClickListener(v -> finish());
         binding.setImei(Build.SERIAL);
@@ -78,46 +88,91 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
             }
             return false;
         });
-        justiceBureauRepo.getMyJusticeBureau().observe(this, justiceBureau -> {
-            // 暂时先这样
-            mJusticeBureau = justiceBureau;
-            Timber.i("getMyJusticeBureau %s", justiceBureau);
-        });
-        justiceBureauRepo.getAllJusticeBureau().observe(this, (Resource<List<JusticeBureau>> listResource) -> {
-            if (listResource.isError()) {
-                appToast.show("Error:" + listResource.errorMessage);
-            } else if (listResource.isSuccess()) {
-                int select = -1;
-                String[] mItems = new String[listResource.data.size() + 1];
-                mItems[0]="请选择";
-                for (int i = 0; i < listResource.data.size(); i++) {
-                    JusticeBureau justiceBureau = listResource.data.get(i);
-                    mItems[i+1] = justiceBureau.getTeamName();
-                    if (mJusticeBureau != null && Objects.equals(justiceBureau.getTeamId(), mJusticeBureau.getTeamId())) {
-                        select = i;
-                    }
+//        justiceBureauRepo.getMyJusticeBureau().observe(this, justiceBureau -> {
+//            // 暂时先这样
+////            mJusticeBureau = justiceBureau;
+//            Timber.i("getMyJusticeBureau %s", justiceBureau);
+//        });
+
+        binding.spinnerShi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Object itemAtPosition = parent.getItemAtPosition(position);
+                Log.i(TAG, "市 选择: " + position + " - " + itemAtPosition);
+                if (itemAtPosition instanceof JusticeBureau) {
+                    viewModel.setShi((JusticeBureau) itemAtPosition);
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mItems);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                binding.spinner.setAdapter(adapter);
-                binding.spinner.setSelection(select);
-                binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        JusticeBureau justiceBureau = listResource.data.get(position);
-                        Timber.i("onItemSelected %d ,[%s]", position, justiceBureau);
-                        if (position != 0) {
-                            appExecutors.diskIO().execute(() -> justiceBureauRepo.setMyJusticeBureau(justiceBureau));
-                        }
-                    }
+            }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.i(TAG, "市 选择: null");
+                viewModel.setShi(null);
             }
         });
+
+        binding.spinnerXian.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Object itemAtPosition = parent.getItemAtPosition(position);
+                Log.i(TAG, "县选择: " + position + " - " + itemAtPosition);
+                if (itemAtPosition instanceof JusticeBureau) {
+                    viewModel.setXian((JusticeBureau) itemAtPosition);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                viewModel.setXian(null);
+                Log.i(TAG, "县选择: null");
+            }
+        });
+        binding.spinnerJiedao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Object itemAtPosition = parent.getItemAtPosition(position);
+                Log.i(TAG, "街道 选择: " + position + " - " + itemAtPosition);
+                if (itemAtPosition instanceof JusticeBureau) {
+                    viewModel.setJiedao((JusticeBureau) itemAtPosition);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                viewModel.setJiedao(null);
+                Log.i(TAG, "街道 选择: null");
+            }
+        });
+
+        viewModel.shiListLiveData.observe(this, listResource -> {
+            if (listResource.isSuccess()) {
+                Log.i(TAG, "市 列表: " + listResource.data);
+                SpAdapter adapter = new SpAdapter();
+                adapter.submitList(listResource.data);
+                binding.spinnerShi.setAdapter(adapter);
+            }
+        });
+        viewModel.xianListLiveData.observe(this, listResource -> {
+            if (listResource.isSuccess()) {
+                Log.i(TAG, "县 列表: " + listResource.data);
+                SpAdapter adapter = new SpAdapter();
+                adapter.submitList(listResource.data);
+                binding.spinnerXian.setAdapter(adapter);
+            }
+        });
+
+        viewModel.jiedaoListLiveData.observe(this, listResource -> {
+            if (listResource.isSuccess()) {
+                Log.i(TAG, "街道 列表: " + listResource.data);
+                SpAdapter adapter = new SpAdapter();
+                adapter.submitList(listResource.data);
+                binding.spinnerJiedao.setAdapter(adapter);
+                if (listResource.data==null){
+                    viewModel.setJiedao(null);
+                }
+            }
+        });
+        viewModel.setSheng(null);
     }
 
 
@@ -125,6 +180,14 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
     protected void onPause() {
         super.onPause();
         syncActiveCode();
+        syncJustice();
+    }
+
+    private void syncJustice() {
+        JusticeBureau shi = (JusticeBureau) binding.spinnerShi.getSelectedItem();
+        JusticeBureau xian = (JusticeBureau) binding.spinnerXian.getSelectedItem();
+        JusticeBureau jeidao = (JusticeBureau) binding.spinnerJiedao.getSelectedItem();
+        viewModel.addBureau(shi,xian,jeidao);
     }
 
     void syncActiveCode() {
@@ -144,6 +207,41 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
     protected void initData(@NonNull ActivitySettingBinding binding, @Nullable Bundle savedInstanceState) {
 
     }
+
+
+    public static class SpAdapter extends BaseAdapter {
+
+        private List<JusticeBureau> data;
+
+        public void submitList(List<JusticeBureau> data) {
+            this.data = data;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return data == null ? 0 : data.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return data.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @SuppressLint("ViewHolder")
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            TextView view = (TextView) LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_spinner_item, parent, false);
+            view.setText(data.get(position).getTeamName());
+            return view;
+        }
+    }
+
 
     public static class MainAdapter extends BaseDataBoundDiffAdapter<MainFunc, ItemSettingFuncBinding> {
 

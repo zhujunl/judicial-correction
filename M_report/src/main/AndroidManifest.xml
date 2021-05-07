@@ -7,4 +7,5 @@
         <activity android:name=".centralized_education.CentralizedEducationActivity" />
         <activity android:name=".individual_education.IndividualEducationActivity" />
     </application>
+
 </manifest>

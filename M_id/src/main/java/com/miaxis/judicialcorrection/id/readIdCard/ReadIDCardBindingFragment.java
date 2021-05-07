@@ -25,7 +25,6 @@ import dagger.hilt.android.AndroidEntryPoint;
  * @updateAuthor tangkai
  * @updateDes
  */
-
 @AndroidEntryPoint
 @Route(path = "/page/readIDCard")
 public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadIdCardBinding> {

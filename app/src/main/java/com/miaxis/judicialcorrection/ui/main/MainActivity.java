@@ -15,7 +15,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.finger.FingerManager;
 import com.miaxis.finger.FingerStrategy;
@@ -105,8 +104,6 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
                 }
             });
         });
-
-
     }
 
     @Override
@@ -159,7 +156,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
 
     static class MainAdapter extends BaseDataBoundDiffAdapter<MainFunc, ItemMainFucBinding> {
 
-        private Context mContext;
+        Context context;
 
         protected MainAdapter(Context context) {
             super(new DiffUtil.ItemCallback<MainFunc>() {
@@ -173,7 +170,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
                     return Objects.equals(oldItem, newItem);
                 }
             });
-            this.mContext = context;
+            this.context = context;
         }
 
         @Override
@@ -185,16 +182,15 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
         protected void bind(ItemMainFucBinding binding, MainFunc item) {
             binding.setData(item);
             binding.getRoot().setOnClickListener(v -> {
-                        //ARouter.getInstance().build(item.targetActivityURI).navigation();
-                        try {
-                            Class<?> aClass = Class.forName(item.targetActivityURI);
-                            Intent intent = new Intent(mContext, aClass);
-                            mContext.startActivity(intent);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-            );
+                //ARouter.getInstance().build(item.targetActivityURI).navigation();
+                try {
+                    Class<?> aClass = Class.forName(item.targetActivityURI);
+                    Intent intent = new Intent(context, aClass);
+                    context.startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         }
     }
 

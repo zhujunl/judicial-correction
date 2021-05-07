@@ -2,4 +2,9 @@
     <!--    <string name="app_name">Judicial Correction</string>-->
     <string name="app_name">司法矫正</string>
 
+
+
+    <string-array name="sheng">
+        <item>浙江省</item>
+    </string-array>
 </resources>

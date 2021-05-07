@@ -13,6 +13,9 @@ import com.miaxis.judicialcorrection.id.bean.IdCard;
 
 public interface ReadIdCardCallback {
 
+    /**
+     * 读身份证回调
+     */
     void onIdCardRead(IdCard result);
 
 }

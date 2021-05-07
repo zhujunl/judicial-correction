@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
-import com.miaxis.judicialcorrection.databinding.ActivityIndividualBinding;
+import com.miaxis.judicialcorrection.databinding.ActivityReportBinding;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
 import com.miaxis.judicialcorrection.face.VerifyPageFragment;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
@@ -25,17 +25,17 @@ import timber.log.Timber;
  * @author zhangyw
  * Created on 4/25/21.
  */
-public class IndividualEducationActivity extends BaseBindingActivity<ActivityIndividualBinding> implements ReadIdCardCallback, VerifyCallback {
+public class IndividualEducationActivity extends BaseBindingActivity<ActivityReportBinding> implements ReadIdCardCallback, VerifyCallback {
 
     String title = "个别教育";
 
     @Override
     protected int initLayout() {
-        return R.layout.activity_individual;
+        return R.layout.activity_report;
     }
 
     @Override
-    protected void initView(@NonNull ActivityIndividualBinding binding, @Nullable Bundle savedInstanceState) {
+    protected void initView(@NonNull ActivityReportBinding binding, @Nullable Bundle savedInstanceState) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.layout_root, new ReadIDCardBindingFragment(title, true))
@@ -43,7 +43,7 @@ public class IndividualEducationActivity extends BaseBindingActivity<ActivityInd
     }
 
     @Override
-    protected void initData(@NonNull ActivityIndividualBinding binding, @Nullable Bundle savedInstanceState) {
+    protected void initData(@NonNull ActivityReportBinding binding, @Nullable Bundle savedInstanceState) {
 
     }
 

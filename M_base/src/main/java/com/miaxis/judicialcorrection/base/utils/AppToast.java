@@ -28,13 +28,10 @@ public class AppToast {
 
     @SuppressLint("ShowToast")
     public Toast show(String text) {
-        if (toast == null) {
-            toast = Toast.makeText(context,text,Toast.LENGTH_SHORT);
-        } else {
+        if (toast != null) {
             toast.cancel();
-            toast.setText(text);
-            toast.setDuration(Toast.LENGTH_SHORT);
         }
+        toast = Toast.makeText(context,text,Toast.LENGTH_SHORT);
         toast.show();
         return toast;
     }
