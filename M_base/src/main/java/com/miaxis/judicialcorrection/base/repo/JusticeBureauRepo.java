@@ -5,6 +5,7 @@ import androidx.lifecycle.Transformations;
 import androidx.room.RoomDatabase;
 
 import com.miaxis.judicialcorrection.base.api.ApiResult;
+import com.miaxis.judicialcorrection.base.api.ApiService;
 import com.miaxis.judicialcorrection.base.api.NoAuthApiService;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
