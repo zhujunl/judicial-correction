@@ -8,6 +8,8 @@ import com.miaxis.camera.MXCamera;
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.finger.FingerManager;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
+import com.miaxis.judicialcorrection.common.response.ZZResponse;
+import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
 
 import org.zz.api.MXFaceInfoEx;
 
@@ -27,7 +29,7 @@ import timber.log.Timber;
  */
 
 @HiltViewModel
-public class VerifyPageModel extends ViewModel {
+public class VerifyPageViewModel extends ViewModel {
 
     MutableLiveData<String> name = new MutableLiveData<>();
 
@@ -35,10 +37,11 @@ public class VerifyPageModel extends ViewModel {
 
     MutableLiveData<String> faceTips = new MutableLiveData<>();
 
+    MutableLiveData<ZZResponse<VerifyInfo>> verifyStatus = new MutableLiveData<>();
+
     MutableLiveData<Bitmap> fingerBitmap = new MutableLiveData<>();
 
     MutableLiveData<byte[]> idCardFaceFeature = new MutableLiveData<>();
-
 
     public MXFaceInfoEx[] mFaceInfoExes = new MXFaceInfoEx[MXFaceInfoEx.iMaxFaceNum];
     public int[] mFaceNumber = new int[1];
@@ -47,7 +50,7 @@ public class VerifyPageModel extends ViewModel {
     AppExecutors mAppExecutors;
 
     @Inject
-    public VerifyPageModel(AppExecutors appExecutors) {
+    public VerifyPageViewModel(AppExecutors appExecutors) {
         this.mAppExecutors = appExecutors;
     }
 
@@ -69,45 +72,48 @@ public class VerifyPageModel extends ViewModel {
             if (detectFace == 0) {
                 int faceNumber = FaceManager.getInstance().getFaceNumber(mFaceNumber);
                 if (faceNumber == 1) {
-                    if ((mFaceInfoExes[0].x >= 100 && mFaceInfoExes[0].x <= 150) &&
-                            (mFaceInfoExes[0].y >= 100 && mFaceInfoExes[0].y <= 150) &&
-                            (mFaceInfoExes[0].width <= 400 && mFaceInfoExes[0].width >= 300) &&
-                            (mFaceInfoExes[0].height <= 500 && mFaceInfoExes[0].height >= 300)) {
-                        int faceQuality = FaceManager.getInstance().getFaceQuality(rgb, width, height, 1, mFacesData, mFaceInfoExes);
-                        if (faceQuality == 0) {
-                            if (mFaceInfoExes[0].quality >= 60) {
-                                int detectMask = FaceManager.getInstance().detectMask(rgb, width, height, 1, mFacesData, mFaceInfoExes);
-                                if (detectMask == 0) {
-                                    byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
-                                    boolean mask = mFaceInfoExes[0].mask >= 40;
-                                    int extractFeature = FaceManager.getInstance().extractFeature(rgb, width, height, 1, mFacesData, feature, mask);
-                                    if (extractFeature == 0) {
-                                        // TODO: 2021/4/28 模拟人脸比对
-                                        byte[] temp = new byte[FaceManager.getInstance().getFeatureSize()];
-                                        float[] floats = new float[1];
-                                        int matchFeature = FaceManager.getInstance().matchFeature(feature, temp, floats, mask);
-                                        if (matchFeature == 0) {
-                                            if (floats[0] >= 0.77) {
-                                                faceTips.postValue("核验通过");
-                                            } else {
-                                                faceTips.postValue("人脸核验未通过");
-                                            }
+                    //                    if ((mFaceInfoExes[0].x >= 100 && mFaceInfoExes[0].x <= 150) &&
+                    //                            (mFaceInfoExes[0].y >= 100 && mFaceInfoExes[0].y <= 150) &&
+                    //                            (mFaceInfoExes[0].width <= 400 && mFaceInfoExes[0].width >= 300) &&
+                    //                            (mFaceInfoExes[0].height <= 500 && mFaceInfoExes[0].height >= 300)) {
+                    int faceQuality = FaceManager.getInstance().getFaceQuality(rgb, width, height, 1, mFacesData, mFaceInfoExes);
+                    if (faceQuality == 0) {
+                        if (mFaceInfoExes[0].quality >= 40) {
+                            int detectMask = FaceManager.getInstance().detectMask(rgb, width, height, 1, mFacesData, mFaceInfoExes);
+                            if (detectMask == 0) {
+                                byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
+                                boolean mask = mFaceInfoExes[0].mask >= 40;
+                                int extractFeature = FaceManager.getInstance().extractFeature(rgb, width, height, 1, mFacesData, feature, mask);
+                                if (extractFeature == 0) {
+                                    // TODO: 2021/4/28 模拟人脸比对
+                                    byte[] temp = new byte[FaceManager.getInstance().getFeatureSize()];
+                                    float[] floats = new float[1];
+                                    int matchFeature = FaceManager.getInstance().matchFeature(feature, temp, floats, mask);
+                                    if (matchFeature == 0) {
+                                        if (floats[0] >= 0.77) {
+                                            faceTips.postValue("核验通过");
+                                            verifyStatus.postValue(ZZResponse.CreateSuccess(new VerifyInfo(name.getValue(), idCardNumber.getValue())));
+                                            return;
+                                        } else {
+                                            faceTips.postValue("人脸核验未通过");
                                         }
                                     }
                                 }
-                            } else {
-                                faceTips.postValue("人脸质量过低，当前：" + mFaceInfoExes[0].quality);
                             }
+                        } else {
+                            faceTips.postValue("人脸质量过低，当前：" + mFaceInfoExes[0].quality);
                         }
-                    } else {
-                        faceTips.postValue("请将人脸置于框内");
                     }
+                    //                    } else {
+                    //                        faceTips.postValue("请将人脸置于框内");
+                    //                    }
                 } else if (faceNumber <= 0) {
                     faceTips.postValue("未检测到人脸");
                 }
-            }else {
-                faceTips.postValue("检测人脸失败");
+            } else {
+                faceTips.postValue("未检测到人脸");
             }
+            SystemClock.sleep(200);
             camera.getNextFrame();
         });
     }
@@ -119,6 +125,7 @@ public class VerifyPageModel extends ViewModel {
             fingerBitmap.postValue(image);
             FingerManager.getInstance().releaseDevice();
             FingerManager.getInstance().setFingerListener(null);
+            verifyStatus.postValue(ZZResponse.CreateSuccess(new VerifyInfo(name.getValue(), idCardNumber.getValue())));
         } else {
             SystemClock.sleep(100);
             readFinger();

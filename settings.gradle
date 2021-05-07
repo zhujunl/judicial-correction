@@ -1,3 +1,4 @@
+include ':M_benefit'
 include ':M_enroll'
 include ':M_report'
 include ':M_face'
