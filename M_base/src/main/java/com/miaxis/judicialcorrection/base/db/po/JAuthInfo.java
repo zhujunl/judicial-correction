@@ -39,10 +39,10 @@ public class JAuthInfo {
     public String contact = "测试";
     public String contactInformation = "13300000000";
 
-    public String dishiId = "DEPT0000000000000000000000902949";
-    public String dishiName = "台州市司法局";
-    public String quxianId = "DEPT0000000000000000000000902966";
-    public String quxianName = "椒江区司法局";
+    public String dishiId;
+    public String dishiName;
+    public String quxianId;
+    public String quxianName;
 
     public String jiedaoId;
     public String jiedaoName;

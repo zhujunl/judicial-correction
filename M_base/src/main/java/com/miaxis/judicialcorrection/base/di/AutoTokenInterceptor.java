@@ -9,6 +9,7 @@ import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.vo.Token;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.JAuthInfo;
+import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
 import com.wondersgroup.om.AuthInfo;
 import com.wondersgroup.om.JZAuth;
 import com.wondersgroup.om.ResultListener;
@@ -18,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -43,13 +45,37 @@ public class AutoTokenInterceptor implements Interceptor {
     private final Object authLock = new Object();
     private final Object tokenLock = new Object();
     private Token token = null;
-    private JAuthInfo jAuthInfo;
+    private JAuthInfo jAuthInfo = new JAuthInfo();
 
     @Inject
     public AutoTokenInterceptor(@ApplicationContext Context context, AppDatabase appDatabase) {
         appDatabase.tokenAuthInfoDAO().loadAuthInfo().observeForever((JAuthInfo info) -> {
-            Timber.i("Auth Active Code Change : %s", info);
-            jAuthInfo = info;
+            jAuthInfo.activationCode = info.activationCode;
+            Timber.i("New JAuthInfo by A: %s", jAuthInfo);
+        });
+        appDatabase.justiceBureauDao().loadAll().observeForever((List<JusticeBureau> justiceBureaus) -> {
+            Timber.i("Auth Active justice Change :[%d], %s", justiceBureaus.size(),justiceBureaus);
+            if (jAuthInfo == null) {
+                return;
+            }
+            for (int i = 0; i < justiceBureaus.size(); i++) {
+                JusticeBureau jb = justiceBureaus.get(i);
+                switch (jb.getTeamLevel()) {
+                    case "TEAM_LEVEL_1":
+                        jAuthInfo.dishiId = jb.getTeamId();
+                        jAuthInfo.dishiName = jb.getTeamName();
+                        break;
+                    case "TEAM_LEVEL_2":
+                        jAuthInfo.quxianId = jb.getTeamId();
+                        jAuthInfo.quxianName = jb.getTeamName();
+                        break;
+                    case "TEAM_LEVEL_3":
+                        jAuthInfo.jiedaoId = jb.getTeamId();
+                        jAuthInfo.jiedaoName = jb.getTeamName();
+                        break;
+                }
+            }
+            Timber.i("New JAuthInfo B: %s", jAuthInfo);
         });
         jzAuth = JZAuth.getInstance();
         jzAuth.setGlobalURL(BuildConfig.TOKEN_URL);
