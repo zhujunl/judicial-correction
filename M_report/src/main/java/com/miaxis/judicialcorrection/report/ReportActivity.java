@@ -3,14 +3,21 @@ package com.miaxis.judicialcorrection.report;
 import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
+import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
+import com.miaxis.judicialcorrection.common.response.ZZResponse;
+import com.miaxis.judicialcorrection.databinding.ActivityReportBinding;
+import com.miaxis.judicialcorrection.dialog.DialogResult;
+import com.miaxis.judicialcorrection.face.VerifyPageFragment;
+import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
+import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
 import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
-import com.miaxis.judicialcorrection.report.databinding.ActivityReportBinding;
+import com.miaxis.judicialcorrection.id.readIdCard.ReadIDCardBindingFragment;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatDialog;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
@@ -22,7 +29,7 @@ import timber.log.Timber;
  */
 @AndroidEntryPoint
 @Route(path = "/report/ReportActivity")
-public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> implements ReadIdCardCallback {
+public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> implements ReadIdCardCallback, VerifyCallback {
 
     String title = "日常报告";
 
@@ -33,17 +40,10 @@ public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> i
 
     @Override
     protected void initView(@NonNull ActivityReportBinding binding, @Nullable Bundle savedInstanceState) {
-        Fragment navigation = (Fragment) ARouter.getInstance()
-                .build("/page/readIDCard")
-                .withString("Title", title)
-                .withBoolean("NoIdCardEnable", true)
-                .navigation();
-        if (navigation != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.layout_root, navigation)
-                    .commitNow();
-        }
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.layout_root, new ReadIDCardBindingFragment(title, true))
+                .commitNow();
     }
 
     @Override
@@ -54,18 +54,35 @@ public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> i
     @Override
     public void onIdCardRead(IdCard result) {
         Timber.e("读取身份证：result:" + result);
-        Fragment navigation = (Fragment) ARouter.getInstance()
-                .build("/page/verifyPage")
-                .withString("Title", title)
-                .withString("Name", result.idCardMsg.name)
-                .withString("IdCardNumber", result.idCardMsg.id_num)
-                .navigation();
-        if (navigation != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.layout_root, navigation)
-                    .commitNow();
-        }
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.layout_root, new VerifyPageFragment(title, result.idCardMsg.name, result.idCardMsg.id_num))
+                .commitNow();
     }
 
+    @Override
+    public void onVerify(ZZResponse<VerifyInfo> response) {
+        new DialogResult(this, new DialogResult.ClickListener() {
+            @Override
+            public void onBackHome(AppCompatDialog appCompatDialog) {
+                appCompatDialog.dismiss();
+                finish();
+            }
+
+            @Override
+            public void onTryAgain(AppCompatDialog appCompatDialog) {
+                appCompatDialog.dismiss();
+            }
+
+            @Override
+            public void onTimeOut(AppCompatDialog appCompatDialog) {
+                finish();
+            }
+        }, new DialogResult.Builder(
+                ZZResponse.isSuccess(response),
+                ZZResponse.isSuccess(response) ? title + "成功" : "验证失败",
+                ZZResponse.isSuccess(response) ? "系统将自动返回" + title + "身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
+                10, true
+        )).show();
+    }
 }

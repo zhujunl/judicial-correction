@@ -1,5 +1,7 @@
 package com.miaxis.enroll.vo;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Job
  *
@@ -7,9 +9,16 @@ package com.miaxis.enroll.vo;
  * Created on 5/5/21.
  */
 public class Job {
+
+    @SerializedName("pid")
+    public String pid;
+    @SerializedName("qs")
     public String startTime;
+    @SerializedName("zr")
     public String endTime;
+    @SerializedName("szdw")
     public String company;
+    @SerializedName("zw")
     public String job;
 
     @Override

@@ -2,14 +2,12 @@
     <!--    <string name="app_name">Judicial Correction</string>-->
 
     <string-array name="job">
-        <item>请选择</item>
         <item>国家工作人员</item>
         <item>现役军人</item>
         <item>工人</item>
         <item>农民</item>
     </string-array>
     <string-array name="relationship">
-        <item>请选择</item>
         <item>直系亲属</item>
         <item>监护人</item>
         <item>旁系亲属</item>
@@ -59,7 +57,8 @@
         <item>就业</item>
         <item>务农</item>
         <item>无业</item>
-    </string-array>  <string-array name="country">
+    </string-array>
+    <string-array name="country">
         <item>中国籍</item>
         <item>外国籍</item>
         <item>无国籍</item>

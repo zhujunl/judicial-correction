@@ -139,33 +139,6 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
                 });
                 datePickerDialog.show();
             });
-
-            String job = binding.getJob().job;
-            if (TextUtils.isEmpty(job)) {
-                binding.spinner.setSelection(0);
-            } else {
-                Resources res = binding.getRoot().getContext().getResources();
-                String[] city = res.getStringArray(R.array.job);
-                for (int i = 0; i < city.length; i++) {
-                    if (Objects.equals(city[i], job)) {
-                        binding.spinner.setSelection(i);
-                        break;
-                    }
-                }
-            }
-            binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (position != 0) {
-                        binding.getJob().job = parent.getSelectedItem().toString();
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
         }
     }
 }

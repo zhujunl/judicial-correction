@@ -33,6 +33,7 @@ android {
 dependencies {
     implementation project(path: ':M_base')
     implementation project(path: ':M_id')
+    implementation project(path: ':M_face')
     annotationProcessor "com.alibaba:arouter-compiler:$arouter_version"
     annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"

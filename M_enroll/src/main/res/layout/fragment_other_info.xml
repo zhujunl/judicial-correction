@@ -4,8 +4,10 @@
     <data>
 
         <variable
-            name="data"
-            type="com.miaxis.enroll.vo.OtherInfo" />
+            name="vm"
+            type="com.miaxis.enroll.EnrollSharedViewModel" />
+
+        <import type="com.miaxis.judicialcorrection.base.databinding.Converter" />
     </data>
 
 
@@ -32,13 +34,15 @@
 
 
             <RadioGroup
+                android:id="@+id/rgJSB"
                 android:layout_width="366px"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16px"
+                android:checkedButton="@={Converter.checkedToCheckId(rgJSB,vm.otherInfoLiveData.sfyjsb)}"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/yes"
+                    android:id="@+id/rbJSBT"
                     android:layout_width="0dp"
                     android:layout_height="72px"
                     android:layout_weight="1"
@@ -48,7 +52,7 @@
                     android:text="是" />
 
                 <RadioButton
-                    android:id="@+id/no"
+                    android:id="@+id/rbJSBF"
                     android:layout_width="0dp"
                     android:layout_height="72px"
                     android:layout_marginStart="40px"
@@ -76,6 +80,7 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinnerCulture"
+                    selection="@={vm.otherInfoLiveData.whcd}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:entries="@array/culture"
@@ -96,10 +101,10 @@
                 android:layout_height="72px"
                 android:layout_marginTop="16px"
                 android:background="@drawable/shape_et_bg"
-                android:hint="输入电话"
                 android:imeOptions="actionDone"
-                android:inputType="textCapCharacters"
+                android:inputType="number"
                 android:paddingStart="32px"
+                android:text="@={vm.otherInfoLiveData.grlxdh}"
                 android:textSize="30px" />
 
             <TextView
@@ -118,9 +123,11 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinnerPolitical"
+                    selection="@={vm.otherInfoLiveData.xzzmn}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:entries="@array/political"
+
                     android:spinnerMode="dropdown" />
             </FrameLayout>
 
@@ -141,6 +148,7 @@
                 android:imeOptions="actionDone"
                 android:inputType="textCapCharacters"
                 android:paddingStart="32px"
+                android:text="@={vm.otherInfoLiveData.ygzdw}"
                 android:textSize="30px" />
 
             <TextView
@@ -157,10 +165,10 @@
                 android:layout_height="72px"
                 android:layout_marginTop="16px"
                 android:background="@drawable/shape_et_bg"
-                android:hint="输入电话"
                 android:imeOptions="actionDone"
-                android:inputType="textCapCharacters"
+                android:inputType="number"
                 android:paddingStart="32px"
+                android:text="@={vm.otherInfoLiveData.dwlxdh}"
                 android:textSize="30px" />
 
 
@@ -173,13 +181,15 @@
                 android:textSize="30px" />
 
             <RadioGroup
+                android:id="@+id/rgSFSW"
                 android:layout_width="366px"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16px"
+                android:checkedButton="@={Converter.checkedToCheckId(rgSFSW,vm.otherInfoLiveData.sfswry)}"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    
+                    android:id="@+id/rbSWT"
                     android:layout_width="0dp"
                     android:layout_height="72px"
                     android:layout_weight="1"
@@ -189,7 +199,7 @@
                     android:text="是" />
 
                 <RadioButton
-                    
+                    android:id="@+id/rbSWF"
                     android:layout_width="0dp"
                     android:layout_height="72px"
                     android:layout_marginStart="40px"
@@ -214,19 +224,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16px"
-                android:text="是否有精神病："
+                android:text="是否有传染病："
                 android:textColor="#393939"
                 android:textSize="30px" />
 
 
             <RadioGroup
+                android:id="@+id/rgCYB"
                 android:layout_width="366px"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16px"
+                android:checkedButton="@={Converter.checkedToCheckId(rgCYB,vm.otherInfoLiveData.sfycrb)}"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    
+                    android:id="@+id/rbCYBT"
                     android:layout_width="0dp"
                     android:layout_height="72px"
                     android:layout_weight="1"
@@ -236,7 +248,7 @@
                     android:text="是" />
 
                 <RadioButton
-                    
+                    android:id="@+id/rbCYBF"
                     android:layout_width="0dp"
                     android:layout_height="72px"
                     android:layout_marginStart="40px"
@@ -264,6 +276,7 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinnerMarriage"
+                    selection="@={vm.otherInfoLiveData.hyzk}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:entries="@array/marriage"
@@ -286,6 +299,7 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinnerStudy"
+                    selection="@={vm.otherInfoLiveData.jyjxqk}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:entries="@array/study"
@@ -308,6 +322,7 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinnerPoliticalOld"
+                    selection="@={vm.otherInfoLiveData.yzzmm}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:entries="@array/political"
@@ -331,6 +346,7 @@
                 android:imeOptions="actionDone"
                 android:inputType="textCapCharacters"
                 android:paddingStart="32px"
+                android:text="@={vm.otherInfoLiveData.xgzdwName}"
                 android:textSize="30px" />
 
             <TextView
@@ -349,6 +365,7 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinnerCounty"
+                    selection="@={vm.otherInfoLiveData.gjName}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:entries="@array/country"
@@ -365,13 +382,15 @@
                 android:textSize="30px" />
 
             <RadioGroup
+                android:id="@+id/rgQK"
                 android:layout_width="366px"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16px"
+                android:checkedButton="@={Converter.checkedToCheckId(rgQK,vm.otherInfoLiveData.sfyqk)}"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    
+                    android:id="@+id/rbQKT"
                     android:layout_width="0dp"
                     android:layout_height="72px"
                     android:layout_weight="1"
@@ -381,7 +400,7 @@
                     android:text="有" />
 
                 <RadioButton
-                    
+                    android:id="@+id/rbQKF"
                     android:layout_width="0dp"
                     android:layout_height="72px"
                     android:layout_marginStart="40px"

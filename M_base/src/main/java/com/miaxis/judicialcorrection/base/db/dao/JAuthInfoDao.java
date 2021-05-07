@@ -1,15 +1,12 @@
 package com.miaxis.judicialcorrection.base.db.dao;
 
+import com.miaxis.judicialcorrection.base.db.po.JAuthInfo;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-
-import com.miaxis.judicialcorrection.base.db.po.JAuthInfo;
-import com.miaxis.judicialcorrection.base.db.po.MainFunc;
-
-import java.util.List;
 
 /**
  * MainFuncDAO
@@ -19,7 +16,6 @@ import java.util.List;
  */
 @Dao
 public interface JAuthInfoDao {
-
 
     @Query("SELECT * FROM auth_info")
     LiveData<JAuthInfo> loadAuthInfo();

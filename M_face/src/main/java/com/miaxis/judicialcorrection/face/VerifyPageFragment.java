@@ -12,10 +12,12 @@ import com.miaxis.camera.CameraPreviewCallback;
 import com.miaxis.camera.MXCamera;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
+import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.face.databinding.ActivityVerifyBinding;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -39,7 +41,13 @@ public class VerifyPageFragment extends BaseBindingFragment<ActivityVerifyBindin
     @Autowired(name = "IdCardNumber")
     String idCardNumber;
 
-    VerifyPageModel mVerifyPageModel;
+    VerifyPageViewModel mVerifyPageViewModel;
+
+    public VerifyPageFragment(String title, String name, String idCardNumber) {
+        this.title = title;
+        this.name = name;
+        this.idCardNumber = idCardNumber;
+    }
 
     @Override
     protected int initLayout() {
@@ -48,25 +56,33 @@ public class VerifyPageFragment extends BaseBindingFragment<ActivityVerifyBindin
 
     @Override
     protected void initView(@NonNull ActivityVerifyBinding view, @Nullable Bundle savedInstanceState) {
-        mVerifyPageModel = new ViewModelProvider(this).get(VerifyPageModel.class);
-        mVerifyPageModel.name.observe(this, s -> binding.tvName.setText(s));
-        mVerifyPageModel.idCardNumber.observe(this, s -> binding.tvIdCard.setText(s));
-        mVerifyPageModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));
-        mVerifyPageModel.fingerBitmap.observe(this, bitmap -> {
+        mVerifyPageViewModel = new ViewModelProvider(this).get(VerifyPageViewModel.class);
+        binding.tvTitle.setText(String.valueOf(title));
+        mVerifyPageViewModel.name.observe(this, s -> binding.tvName.setText(s));
+        mVerifyPageViewModel.idCardNumber.observe(this, s -> binding.tvIdCard.setText(s));
+        mVerifyPageViewModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));
+        mVerifyPageViewModel.verifyStatus.observe(this, response -> {
+            FragmentActivity activity = getActivity();
+            if (activity instanceof VerifyCallback) {
+                VerifyCallback callback = (VerifyCallback) activity;
+                callback.onVerify(response);
+            }
+        });
+        mVerifyPageViewModel.fingerBitmap.observe(this, bitmap -> {
             Glide.with(VerifyPageFragment.this).load(bitmap).error(R.mipmap.mipmap_error).into(binding.ivFinger);
             binding.ivFinger.setOnClickListener(v -> {
                 Glide.with(VerifyPageFragment.this).load(R.mipmap.mipmap_bg_finger).into(binding.ivFinger);
-                mVerifyPageModel.releaseFingerDevice();
-                mVerifyPageModel.initFingerDevice();
+                mVerifyPageViewModel.releaseFingerDevice();
+                mVerifyPageViewModel.initFingerDevice();
                 binding.ivFinger.setOnClickListener(null);
             });
         });
-        mVerifyPageModel.initFingerDevice();
+        mVerifyPageViewModel.initFingerDevice();
 
-        mVerifyPageModel.name.setValue(title);
-        mVerifyPageModel.idCardNumber.setValue(idCardNumber);
+        mVerifyPageViewModel.name.setValue(name);
+        mVerifyPageViewModel.idCardNumber.setValue(idCardNumber);
         //todo 身份证人脸特征数据
-        mVerifyPageModel.idCardFaceFeature.setValue(new byte[1]);
+        mVerifyPageViewModel.idCardFaceFeature.setValue(new byte[1]);
 
         binding.btnBackToHome.setOnClickListener(v -> finish());
         binding.svPreview.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -96,18 +112,30 @@ public class VerifyPageFragment extends BaseBindingFragment<ActivityVerifyBindin
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        CameraHelper.getInstance().pause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        CameraHelper.getInstance().resume();
+    }
+
+    @Override
     protected void initData(@NonNull ActivityVerifyBinding binding, @Nullable Bundle savedInstanceState) {
 
     }
 
     @Override
     public void onPreview(int cameraId, byte[] frame, MXCamera camera, int width, int height) {
-        mVerifyPageModel.faceRecognize(cameraId, frame, camera, width, height);
+        mVerifyPageViewModel.faceRecognize(cameraId, frame, camera, width, height);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mVerifyPageModel.releaseFingerDevice();
+        mVerifyPageViewModel.releaseFingerDevice();
     }
 }

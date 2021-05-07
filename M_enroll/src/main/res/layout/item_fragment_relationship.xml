@@ -33,13 +33,14 @@
             android:textSize="24px"
             tools:text="张三" />
 
-        <Spinner
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spinner"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.2"
             android:entries="@array/relationship"
             android:gravity="center"
+            selection="@={data.relationship}"
             android:textColor="#393939"
             android:textSize="24px" />
 
