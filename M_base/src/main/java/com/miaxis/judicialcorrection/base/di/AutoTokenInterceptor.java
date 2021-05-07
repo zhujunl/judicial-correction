@@ -1,6 +1,7 @@
 package com.miaxis.judicialcorrection.base.di;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.lifecycle.Observer;
 
@@ -45,16 +46,16 @@ public class AutoTokenInterceptor implements Interceptor {
     private final Object authLock = new Object();
     private final Object tokenLock = new Object();
     private Token token = null;
-    private JAuthInfo jAuthInfo = new JAuthInfo();
+    private final JAuthInfo jAuthInfo = new JAuthInfo();
 
     @Inject
     public AutoTokenInterceptor(@ApplicationContext Context context, AppDatabase appDatabase) {
         appDatabase.tokenAuthInfoDAO().loadAuthInfo().observeForever((JAuthInfo info) -> {
-            jAuthInfo.activationCode = info.activationCode;
+            jAuthInfo.activationCode = info == null ? null : info.activationCode;
             Timber.i("New JAuthInfo by A: %s", jAuthInfo);
         });
         appDatabase.justiceBureauDao().loadAll().observeForever((List<JusticeBureau> justiceBureaus) -> {
-            Timber.i("Auth Active justice Change :[%d], %s", justiceBureaus.size(),justiceBureaus);
+            Timber.i("Auth Active justice Change :[%d], %s", justiceBureaus.size(), justiceBureaus);
             if (jAuthInfo == null) {
                 return;
             }
@@ -129,7 +130,7 @@ public class AutoTokenInterceptor implements Interceptor {
 
 
     void registerJzAuth() throws IOException {
-        if (jAuthInfo == null) {
+        if (TextUtils.isEmpty(jAuthInfo.activationCode)) {
             throw new IOException("请输入激活码");
         }
         AuthInfo.getInstance().setActivationCode(jAuthInfo.activationCode);
