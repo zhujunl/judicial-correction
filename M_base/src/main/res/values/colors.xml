@@ -4,6 +4,7 @@
     <color name="color_light_blue">#A1C0FF</color>
     <color name="color_background_edit_text">#FFFFFF</color>
     <color name="color_background_dialog">#FFFFFF</color>
+    <color name="color_background_list_title">#E1E6EB</color>
 
     <color name="color_text_app_title">#FFFFFF</color>
     <color name="color_text_title">#2850A3</color>
@@ -11,10 +12,17 @@
     <color name="color_text_white">#FFFFFF</color>
     <color name="color_text_black">#393939</color>
     <color name="color_text_grey">#8A8A8F</color>
+    <color name="color_text_grey_1">#434343</color>
     <color name="color_text_red">#F33E3E</color>
+    <color name="color_text_orange">#FF721F</color>
+    <color name="color_text_blue">#2850A3</color>
 
 
     <color name="color_text_btn">#FFFFFF</color>
+
+    <color name="color_btn_apply_press">#EF620F</color>
+    <color name="color_btn_apply_unPress">#FF721F</color>
+
 
     <color name="color_btn_back_to_home_press">#E3812A</color>
     <color name="color_btn_back_to_home_unPress">#F3913A</color>

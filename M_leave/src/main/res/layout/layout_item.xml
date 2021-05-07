@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="com.miaxis.judicialcorrection.leave.bean.ItemData" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="80px">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_number"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@{String.valueOf(item.id)}"
+            android:textColor="@color/color_text_grey_1"
+            android:textSize="25px"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_name"
+            tools:text="1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@{String.valueOf(item.name)}"
+            android:textColor="@color/color_text_grey_1"
+            android:textSize="25px"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@+id/tv_number"
+            app:layout_constraintRight_toLeftOf="@id/tv_location"
+            tools:text="姓名" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_location"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@{String.valueOf(item.location)}"
+            android:textColor="@color/color_text_grey_1"
+            android:textSize="25px"
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintLeft_toRightOf="@+id/tv_name"
+            app:layout_constraintRight_toLeftOf="@id/tv_start_time"
+            tools:text="外出目的地" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_start_time"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@{String.valueOf(item.startTime)}"
+            android:textColor="@color/color_text_grey_1"
+            android:textSize="25px"
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintLeft_toRightOf="@+id/tv_location"
+            app:layout_constraintRight_toLeftOf="@id/tv_end_time"
+            tools:text="请假开始时间" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_end_time"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@{String.valueOf(item.endTime)}"
+            android:textColor="@color/color_text_grey_1"
+            android:textSize="25px"
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintLeft_toRightOf="@+id/tv_start_time"
+            app:layout_constraintRight_toLeftOf="@id/tv_status"
+            tools:text="请假结束时间" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_status"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text='@{item.status==0 ? "状态0":"状态1"}'
+            android:textColor="@color/color_text_grey_1"
+            android:textSize="25px"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@+id/tv_end_time"
+            app:layout_constraintRight_toLeftOf="@id/ll_operation"
+            tools:text="状态" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_operation"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintLeft_toRightOf="@+id/tv_status"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="销假"
+                android:textColor="@color/color_text_orange"
+                android:textSize="24px"
+                android:visibility="@{item.status==0 ? View.VISIBLE:View.INVISIBLE}" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_progress"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="进度查询"
+                android:textColor="@color/color_text_blue"
+                android:textSize="24px" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

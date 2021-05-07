@@ -7,7 +7,6 @@ import com.miaxis.judicialcorrection.base.R;
 import com.miaxis.judicialcorrection.base.databinding.DialogVerifyResultBinding;
 import com.miaxis.judicialcorrection.dialog.base.BaseDialog;
 import com.miaxis.judicialcorrection.dialog.base.BaseDialogListener;
-import com.miaxis.judicialcorrection.widget.countdown.CountDownListener;
 import com.miaxis.judicialcorrection.widget.countdown.DefaultCountDownListener;
 
 import androidx.annotation.NonNull;
@@ -90,6 +89,14 @@ public class DialogResult extends BaseDialog<DialogVerifyResultBinding, DialogRe
 
         public Builder() {
 
+        }
+
+        public Builder(boolean success, String title, String message, int countDownTime, boolean enableBackHome) {
+            this.success = success;
+            this.title = title;
+            this.message = message;
+            this.countDownTime = countDownTime;
+            this.enableBackHome = enableBackHome;
         }
     }
 

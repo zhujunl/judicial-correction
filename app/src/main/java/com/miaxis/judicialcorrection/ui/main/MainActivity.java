@@ -2,6 +2,7 @@ package com.miaxis.judicialcorrection.ui.main;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -57,7 +58,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
 
     @Override
     protected void initView(@NonNull ActivityMainBinding view, @Nullable Bundle savedInstanceState) {
-        MainAdapter mainAdapter = new MainAdapter();
+        MainAdapter mainAdapter = new MainAdapter(this);
         binding.recyclerView.setAdapter(mainAdapter);
         appDatabase.mainFuncDAO().loadFuncActive().observe(this, mainAdapter::submitList);
         binding.title.setOnClickListener(v -> {
@@ -104,6 +105,8 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
                 }
             });
         });
+
+
     }
 
     @Override
@@ -156,7 +159,9 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
 
     static class MainAdapter extends BaseDataBoundDiffAdapter<MainFunc, ItemMainFucBinding> {
 
-        protected MainAdapter() {
+        private Context mContext;
+
+        protected MainAdapter(Context context) {
             super(new DiffUtil.ItemCallback<MainFunc>() {
                 @Override
                 public boolean areItemsTheSame(@NonNull MainFunc oldItem, @NonNull MainFunc newItem) {
@@ -168,6 +173,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
                     return Objects.equals(oldItem, newItem);
                 }
             });
+            this.mContext = context;
         }
 
         @Override
@@ -178,8 +184,16 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
         @Override
         protected void bind(ItemMainFucBinding binding, MainFunc item) {
             binding.setData(item);
-            binding.getRoot().setOnClickListener(v ->
-                    ARouter.getInstance().build(item.targetActivityURI).navigation()
+            binding.getRoot().setOnClickListener(v -> {
+                        //ARouter.getInstance().build(item.targetActivityURI).navigation();
+                        try {
+                            Class<?> aClass = Class.forName(item.targetActivityURI);
+                            Intent intent = new Intent(mContext, aClass);
+                            mContext.startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
             );
         }
     }

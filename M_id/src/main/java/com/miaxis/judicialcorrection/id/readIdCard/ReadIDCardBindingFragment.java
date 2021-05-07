@@ -38,6 +38,11 @@ public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadI
 
     ReadIdCardViewModel mReadIdCardViewModel;
 
+    public ReadIDCardBindingFragment(String title, boolean noIdCardEnable) {
+        this.title = title;
+        this.noIdCardEnable = noIdCardEnable;
+    }
+
     @Override
     protected int initLayout() {
         return R.layout.fragment_read_id_card;

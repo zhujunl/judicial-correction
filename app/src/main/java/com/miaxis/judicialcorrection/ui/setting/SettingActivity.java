@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.miaxis.judicialcorrection.R;
@@ -36,9 +34,7 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DiffUtil;
-
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 

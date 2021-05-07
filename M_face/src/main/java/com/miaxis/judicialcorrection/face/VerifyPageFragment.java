@@ -41,6 +41,12 @@ public class VerifyPageFragment extends BaseBindingFragment<ActivityVerifyBindin
 
     VerifyPageModel mVerifyPageModel;
 
+    public VerifyPageFragment(String title, String name, String idCardNumber) {
+        this.title = title;
+        this.name = name;
+        this.idCardNumber = idCardNumber;
+    }
+
     @Override
     protected int initLayout() {
         return R.layout.activity_verify;
@@ -63,7 +69,7 @@ public class VerifyPageFragment extends BaseBindingFragment<ActivityVerifyBindin
         });
         mVerifyPageModel.initFingerDevice();
 
-        mVerifyPageModel.name.setValue(title);
+        mVerifyPageModel.name.setValue(name);
         mVerifyPageModel.idCardNumber.setValue(idCardNumber);
         //todo 身份证人脸特征数据
         mVerifyPageModel.idCardFaceFeature.setValue(new byte[1]);

@@ -4,10 +4,12 @@ import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
+import com.miaxis.judicialcorrection.databinding.ActivityReportBinding;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
 import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
-import com.miaxis.judicialcorrection.report.databinding.ActivityReportBinding;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;

@@ -1,9 +1,11 @@
 package com.miaxis.judicialcorrection.db;
 
+import com.miaxis.enroll.EnrollActivity;
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
+import com.miaxis.judicialcorrection.report.ReportActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +42,9 @@ public class DbInitMainFuncs extends RoomDatabase.Callback {
         super.onCreate(db);
         appExecutors.get().diskIO().execute(() -> {
             List<MainFunc> items = new ArrayList<>();
-            items.add(new MainFunc("首次报到登记", R.mipmap.main_enroll, "/enroll/EnrollActivity", true));
-            items.add(new MainFunc("日常报告", R.mipmap.main_report, "/report/ReportActivity", true));
-            items.add(new MainFunc("集中教育", R.mipmap.main_edu_all, "/null/null", true));
+            items.add(new MainFunc("首次报到登记", R.mipmap.main_enroll, EnrollActivity.class.getName(), true));
+            items.add(new MainFunc("日常报告", R.mipmap.main_report, ReportActivity.class.getName(), true));
+            items.add(new MainFunc("集中教育", R.mipmap.main_edu_all, EnrollActivity.class.getName(), true));
             items.add(new MainFunc("个别教育", R.mipmap.main_edu_one, "/null/null", true));
             items.add(new MainFunc("公益活动", R.mipmap.main_love, "/null/null", true));
             items.add(new MainFunc("请销假", R.mipmap.main_atten, "/null/null", true));
