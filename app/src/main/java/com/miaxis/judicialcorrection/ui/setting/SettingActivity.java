@@ -10,14 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DiffUtil;
 
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
-import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.JAuthInfo;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
@@ -33,13 +36,6 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DiffUtil;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
@@ -150,6 +146,8 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
                 SpAdapter adapter = new SpAdapter();
                 adapter.submitList(listResource.data);
                 binding.spinnerShi.setAdapter(adapter);
+                binding.spinnerShi.setSelection(getCheckedPosition(listResource.data,viewModel.shiChecked));
+
             }
         });
         viewModel.xianListLiveData.observe(this, listResource -> {
@@ -158,6 +156,8 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
                 SpAdapter adapter = new SpAdapter();
                 adapter.submitList(listResource.data);
                 binding.spinnerXian.setAdapter(adapter);
+                binding.spinnerXian.setSelection(getCheckedPosition(listResource.data,viewModel.xianChecked));
+
             }
         });
 
@@ -167,12 +167,25 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
                 SpAdapter adapter = new SpAdapter();
                 adapter.submitList(listResource.data);
                 binding.spinnerJiedao.setAdapter(adapter);
-                if (listResource.data==null){
+                binding.spinnerXian.setSelection(getCheckedPosition(listResource.data,viewModel.jiedaoChecked));
+                if (listResource.data == null) {
                     viewModel.setJiedao(null);
                 }
             }
         });
         viewModel.setSheng(null);
+    }
+
+    private int getCheckedPosition(List<JusticeBureau> justiceBureaus, JusticeBureau total) {
+        if (justiceBureaus == null || justiceBureaus.size() == 0 || total == null) {
+            return 0;
+        }
+        for (int i = 0; i < justiceBureaus.size(); i++) {
+            if (Objects.equals(justiceBureaus.get(i).getTeamId(), total.getTeamId())) {
+                return i;
+            }
+        }
+        return 0;
     }
 
 
@@ -187,7 +200,7 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
         JusticeBureau shi = (JusticeBureau) binding.spinnerShi.getSelectedItem();
         JusticeBureau xian = (JusticeBureau) binding.spinnerXian.getSelectedItem();
         JusticeBureau jeidao = (JusticeBureau) binding.spinnerJiedao.getSelectedItem();
-        viewModel.addBureau(shi,xian,jeidao);
+        viewModel.addBureau(shi, xian, jeidao);
     }
 
     void syncActiveCode() {

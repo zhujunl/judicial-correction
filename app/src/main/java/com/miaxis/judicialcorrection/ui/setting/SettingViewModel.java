@@ -21,6 +21,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import timber.log.Timber;
 
 /**
  * SettingViewModel
@@ -58,12 +59,33 @@ public class SettingViewModel extends ViewModel {
             return justiceBureauRepo.getAllJusticeBureau(input == null ? null : input.getTeamId());
         }
     });
-
+    JusticeBureau shiChecked;
+    JusticeBureau xianChecked;
+    JusticeBureau jiedaoChecked;
 
     @Inject
     public SettingViewModel(AppDatabase appDatabase) {
+        justiceLiveData = appDatabase.justiceBureauDao().loadAll();
+        justiceLiveData.observeForever(observer);
     }
-
+    LiveData<List<JusticeBureau>> justiceLiveData;
+    Observer<List<JusticeBureau>> observer = (List<JusticeBureau> justiceBureaus) -> {
+        Timber.i("loadAll  :[%d], %s", justiceBureaus.size(), justiceBureaus);
+        for (int i = 0; i < justiceBureaus.size(); i++) {
+            JusticeBureau jb = justiceBureaus.get(i);
+            switch (jb.getTeamLevel()) {
+                case "TEAM_LEVEL_1":
+                    shiChecked = jb;
+                    break;
+                case "TEAM_LEVEL_2":
+                    xianChecked = jb;
+                    break;
+                case "TEAM_LEVEL_3":
+                    jiedaoChecked = jb;
+                    break;
+            }
+        }
+    };
     public void setSheng(JusticeBureau justiceBureau) {
         mShengLiveData.postValue(justiceBureau);
     }
@@ -80,12 +102,13 @@ public class SettingViewModel extends ViewModel {
         mJiedaoLiveData.setValue(justiceBureau);
     }
 
-    public void addBureau(JusticeBureau shi,JusticeBureau xian,JusticeBureau jiedao){
-        justiceBureauRepo.addBureau(shi,xian,jiedao);
+    public void addBureau(JusticeBureau shi, JusticeBureau xian, JusticeBureau jiedao) {
+        justiceBureauRepo.addBureau(shi, xian, jiedao);
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
+        justiceLiveData.removeObserver(observer);
     }
 }
