@@ -59,12 +59,11 @@ public class DatePickDialog extends Dialog implements View.OnClickListener {
             dismiss();
         } else {
             if (this.mOnTimeSetListener != null) {
-                this.mOnTimeSetListener.onDateSet(
-                        mDp_date.getYear(),
-                        mDp_date.getMonth() + 1,
-                        mDp_date.getDayOfMonth(),
-                        this.mDp_time.getHour(),
-                        this.mDp_time.getMinute());
+                this.mOnTimeSetListener.onDateSet(this.mDp_date.getYear() + "-" +
+                        ((this.mDp_date.getMonth() + 1) < 10 ? ("0" + (this.mDp_date.getMonth() + 1)) : (this.mDp_date.getMonth() + 1)) + "-" +
+                        (this.mDp_date.getDayOfMonth() < 10 ? ("0" + this.mDp_date.getDayOfMonth()) : this.mDp_date.getDayOfMonth()) + " " +
+                        (this.mDp_time.getHour() < 10 ? ("0" + this.mDp_time.getHour()) : this.mDp_time.getHour()) + ":" +
+                        (this.mDp_time.getMinute() < 10 ? ("0" + this.mDp_time.getMinute()) : this.mDp_time.getMinute()));
             }
             dismiss();
         }
@@ -106,14 +105,15 @@ public class DatePickDialog extends Dialog implements View.OnClickListener {
      * The listener used to indicate the user has finished selecting a date.
      */
     public interface OnTimeSetListener {
-        /**
-         * @param year       the selected year
-         * @param month      the selected month (0-11 for compatibility with
-         *                   {@link Calendar#MONTH})
-         * @param dayOfMonth the selected day of the month (1-31, depending on
-         *                   month)
-         */
-        void onDateSet(int year, int month, int dayOfMonth, int hour, int minute);
+        //        /**
+        //         * @param year       the selected year
+        //         * @param month      the selected month (0-11 for compatibility with
+        //         *                   {@link Calendar#MONTH})
+        //         * @param dayOfMonth the selected day of the month (1-31, depending on
+        //         *                   month)
+        //         */
+        //        void onDateSet(int year, int month, int dayOfMonth, int hour, int minute);
+        void onDateSet(String date);
 
     }
 

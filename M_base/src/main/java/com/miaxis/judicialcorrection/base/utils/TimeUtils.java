@@ -15,7 +15,7 @@ import java.util.Date;
 public class TimeUtils {
 
     @SuppressLint("SimpleDateFormat")
-    public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//要转换的日期格式，根据实际调整""里面内容
+    public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static boolean isInTime(Date start, Date end) {
         try {
@@ -28,6 +28,23 @@ public class TimeUtils {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+    public static float getDays(String startTime, String endTime) {
+        try {
+            long start = dateFormat.parse(startTime).getTime();
+            long end = dateFormat.parse(endTime).getTime();
+            if (end - start >= 0) {
+                return (end - start) / 1000F / 60F / 60F / 24F;
+            }
+            return 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
         }
     }
 

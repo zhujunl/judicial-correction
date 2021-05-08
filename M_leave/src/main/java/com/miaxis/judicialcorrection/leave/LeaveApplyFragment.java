@@ -3,7 +3,10 @@ package com.miaxis.judicialcorrection.leave;
 import android.os.Bundle;
 
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
+import com.miaxis.judicialcorrection.base.utils.TimeUtils;
+import com.miaxis.judicialcorrection.dialog.DatePickDialog;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
+import com.miaxis.judicialcorrection.leave.bean.ApplyData;
 import com.miaxis.judicialcorrection.leave.databinding.FragmentLeaveApplyBinding;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +30,8 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
 
     private VerifyInfo verifyInfo;
 
+    private ApplyData applyData = new ApplyData();
+
     public LeaveApplyFragment(@NotNull VerifyInfo verifyInfo) {
         this.verifyInfo = verifyInfo;
     }
@@ -40,8 +45,41 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
     protected void initView(@NonNull FragmentLeaveApplyBinding binding, @Nullable Bundle savedInstanceState) {
         binding.tvTitle.setText(String.valueOf(this.title));
         binding.btnBackToHome.setOnClickListener(v -> finish());
-        binding.tvName.setText(verifyInfo.name);
-        binding.tvIdCard.setText(verifyInfo.idCardNumber);
+
+        applyData.name = verifyInfo.name;
+        applyData.idCardNumber = verifyInfo.idCardNumber;
+        binding.setData(applyData);
+
+
+        binding.tvApplyTime.setOnClickListener(v ->
+                new DatePickDialog(getContext(), binding.tvApplyTime::setText).show()
+        );
+
+        binding.tvApplyStartTime.setOnClickListener(v -> {
+                    new DatePickDialog(getContext(), date -> {
+                        applyData.startTime = date;
+                        applyData.days = (int) TimeUtils.getDays(applyData.startTime, applyData.endTime)+"";
+                    }).show();
+                }
+        );
+
+        binding.tvApplyEndTime.setOnClickListener(v -> {
+                    new DatePickDialog(getContext(), date -> {
+                        applyData.endTime = date;
+                        applyData.days = (int) TimeUtils.getDays(applyData.startTime, applyData.endTime)+"";
+                    }).show();
+                }
+        );
+
+        binding.tvApplyEndTime.setOnClickListener(v -> {
+                    new DatePickDialog(getContext(), date -> {
+                        applyData.endTime = date;
+                        applyData.days = (int) TimeUtils.getDays(applyData.startTime, applyData.endTime)+"";
+                    }).show();
+                }
+        );
+
+
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.miaxis.judicialcorrection.leave.bean;
 
-import java.util.Observable;
+import androidx.databinding.BaseObservable;
 
 /**
  * @author Tank
@@ -9,19 +9,18 @@ import java.util.Observable;
  * @updateAuthor
  * @updateDes
  */
-public class ApplyData extends Observable {
+public class ApplyData extends BaseObservable {
 
-    public String name = "XXX";
+    public String name;
 
-    public String idCardNumber = "XXX";
+    public String idCardNumber;
 
-    public String applyTime = "XXX";
+    public String applyTime;
 
-    public String startTime = "XXX";
+    public String startTime;
 
-    public String endTime = "XXX";
+    public String endTime;
 
-    public String days = "XXX";
-
+    public String days;
 
 }
