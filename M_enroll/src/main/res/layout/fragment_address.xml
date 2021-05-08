@@ -3,12 +3,17 @@
 
     <data>
 
+        <variable
+            name="vmAddr"
+            type="com.miaxis.enroll.guide.infos.AddressViewModel" />
+
     </data>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32px"
         android:orientation="vertical">
 
         <TextView
@@ -16,42 +21,84 @@
             android:layout_height="wrap_content"
             android:text="居住地地址："
             android:textColor="#393939"
-
             android:textSize="30px" />
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="72px"
             android:layout_marginTop="24px"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:layout_width="208px"
-                android:layout_height="72px"
-                android:layout_gravity="start"
-                android:autofillHints="选择省份" />
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg">
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:layout_width="208px"
-                android:layout_height="72px"
-                android:layout_gravity="center"
-                android:autofillHints="选择市" />
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerProvince"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:layout_width="208px"
-                android:layout_height="72px"
-                android:layout_gravity="end"
-                android:autofillHints="选择县区" />
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16px"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg">
 
-        </FrameLayout>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16px"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerDistrict"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16px"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerAgencies"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
 
 
-        <EditText
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etx"
             android:layout_width="911px"
             android:layout_height="72px"
+            android:layout_marginTop="16px"
             android:background="@drawable/shape_et_bg"
             android:hint="请输入除省、市、县（区）、乡镇街道以外的明细地址（如门牌号）"
+            android:imeOptions="actionDone"
+            android:inputType="textCapCharacters"
+            android:text="@={vmAddr.addrLiveData.gdjzdmx}"
             android:textSize="24px" />
 
 
@@ -93,46 +140,93 @@
         </RadioGroup>
 
         <TextView
+            android:id="@+id/addr2Title"
+            visibleGone="@{!vmAddr.addrSame}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="48px"
-            android:text="居住地地址："
+            android:text="户籍地地址："
             android:textColor="#393939"
             android:textSize="30px" />
 
-        <FrameLayout
+        <LinearLayout
+            android:id="@+id/addr2Spinner"
+            visibleGone="@{!vmAddr.addrSame}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="72px"
             android:layout_marginTop="24px"
+
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:layout_width="208px"
-                android:layout_height="72px"
-                android:layout_gravity="start"
-                android:autofillHints="选择省份" />
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg">
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:layout_width="208px"
-                android:layout_height="72px"
-                android:layout_gravity="center"
-                android:autofillHints="选择市" />
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerProvince2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:layout_width="208px"
-                android:layout_height="72px"
-                android:layout_gravity="end"
-                android:autofillHints="选择县区" />
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16px"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg">
 
-        </FrameLayout>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerCity2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
 
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16px"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg">
 
-        <EditText
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerDistrict2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16px"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerAgencies2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/addr2Et"
+            visibleGone="@{!vmAddr.addrSame}"
             android:layout_width="911px"
             android:layout_height="72px"
+            android:layout_marginTop="16px"
             android:background="@drawable/shape_et_bg"
             android:hint="请输入除省、市、县（区）、乡镇街道以外的明细地址（如门牌号）"
+            android:imeOptions="actionDone"
+            android:inputType="textCapCharacters"
+            android:text="@={vmAddr.addrLiveData.hjszdmx}"
             android:textSize="24px" />
 
     </LinearLayout>

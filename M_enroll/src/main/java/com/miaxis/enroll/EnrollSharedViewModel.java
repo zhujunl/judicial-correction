@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.miaxis.enroll.vo.Addr;
 import com.miaxis.enroll.vo.Family;
 import com.miaxis.enroll.vo.Job;
 import com.miaxis.enroll.vo.OtherCardType;
@@ -86,6 +87,7 @@ public class EnrollSharedViewModel extends ViewModel {
      */
     public MutableLiveData<OtherInfo> otherInfoLiveData = new MutableLiveData<>();
 
+
     /**
      * 简历,list
      */
@@ -99,13 +101,28 @@ public class EnrollSharedViewModel extends ViewModel {
     private final PersonRepo personRepo;
     private final EnrollRepo enrollRepo;
     private final AppExecutors appExecutors;
+    private Addr address;
 
     @Inject
     public EnrollSharedViewModel(PersonRepo personRepo, EnrollRepo enrollRepo, AppExecutors appExecutors, AppDatabase appDatabase) {
         this.personRepo = personRepo;
         this.enrollRepo = enrollRepo;
         this.appExecutors = appExecutors;
-        justiceBureauLiveData = appDatabase.justiceBureauDao().load();
+        justiceBureauLiveData = Transformations.map(appDatabase.justiceBureauDao().loadAll(), input -> {
+            for (int i = 0; i < input.size(); i++) {
+                JusticeBureau justiceBureau = input.get(i);
+                if (input.size() == 3 && Objects.equals("TEAM_LEVEL_3", justiceBureau.getTeamLevel())) {
+                    return justiceBureau;
+                }
+                if (input.size() == 2 && Objects.equals("TEAM_LEVEL_2", justiceBureau.getTeamLevel())) {
+                    return justiceBureau;
+                }
+                if (input.size() == 1) {
+                    return justiceBureau;
+                }
+            }
+            return null;
+        });
         otherCardTypeLiveData.setValue(new OtherCardType());
         otherInfoLiveData.setValue(new OtherInfo());
     }
@@ -122,7 +139,7 @@ public class EnrollSharedViewModel extends ViewModel {
                 ApiResult<IdCard> result = ReadIdCardManager.getInstance().read();
                 Timber.i("ID result %s", result);
                 if (result.isSuccessful()) {
-                    //result.getData().idCardMsg.id_num += String.valueOf(new Random(10000).nextInt());
+                    //result.getData().idCardMsg.id_num+="X8";
                     idCardLiveData.postValue(result.getData());
                     break;
                 }
@@ -130,9 +147,14 @@ public class EnrollSharedViewModel extends ViewModel {
         });
     }
 
+    public void setAddress(Addr address){
+        this.address = address;
+    }
 
     public LiveData<Resource<PersonInfo>> addPerson() {
-        return enrollRepo.addPerson(Objects.requireNonNull(justiceBureauLiveData.getValue()), Objects.requireNonNull(idCardLiveData.getValue()).idCardMsg, otherCardTypeLiveData.getValue(), otherInfoLiveData.getValue());
+        OtherInfo value = otherInfoLiveData.getValue();
+        Timber.i("addPerson %s",value);
+        return enrollRepo.addPerson(Objects.requireNonNull(justiceBureauLiveData.getValue()), Objects.requireNonNull(idCardLiveData.getValue()).idCardMsg, otherCardTypeLiveData.getValue(),address, otherInfoLiveData.getValue());
     }
 
     @Override
