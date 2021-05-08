@@ -114,14 +114,15 @@ public class EnrollSharedViewModel extends ViewModel {
         return personRepo.personInfo(idCardNumber);
     }
 
+    boolean isActive = true;
 
     public void readIdCard() {
         appExecutors.networkIO().execute(() -> {
-            while (true) {
+            while (isActive) {
                 ApiResult<IdCard> result = ReadIdCardManager.getInstance().read();
                 Timber.i("ID result %s", result);
                 if (result.isSuccessful()) {
-                    result.getData().idCardMsg.id_num += String.valueOf(new Random(10000).nextInt());
+                    //result.getData().idCardMsg.id_num += String.valueOf(new Random(10000).nextInt());
                     idCardLiveData.postValue(result.getData());
                     break;
                 }
@@ -139,5 +140,6 @@ public class EnrollSharedViewModel extends ViewModel {
         super.onCleared();
         Timber.i("其他身份证 : %s", otherCardTypeLiveData.getValue());
         Timber.i("其他信息 : %s", otherInfoLiveData.getValue());
+        isActive = false;
     }
 }
