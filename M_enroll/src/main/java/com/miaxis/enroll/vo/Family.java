@@ -11,6 +11,7 @@ public class Family {
     public String relationship;
     public String job;
     public String phone;
+    public String pid;
 
 
     @Override

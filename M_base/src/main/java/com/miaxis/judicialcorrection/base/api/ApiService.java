@@ -43,9 +43,13 @@ public interface ApiService {
     );
 
 
-    @POST("/personInfo/add")
+    @POST("/personInfo/resume/add")
     LiveData<ApiResult<Object>> addJob(
-            @Body() String json
+            @Body() RequestBody body
+    );
+  @POST("/personInfo/relationships/add")
+    LiveData<ApiResult<Object>> addRelationship(
+            @Body() RequestBody body
     );
 
 
