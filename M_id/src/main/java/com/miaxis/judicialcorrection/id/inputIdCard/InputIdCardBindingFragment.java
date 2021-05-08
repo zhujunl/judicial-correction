@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
+import com.miaxis.judicialcorrection.dialog.DialogIdCardNotFound;
 import com.miaxis.judicialcorrection.dialog.DialogNoButton;
 import com.miaxis.judicialcorrection.id.R;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
@@ -66,6 +67,7 @@ public class InputIdCardBindingFragment extends BaseBindingFragment<FragmentInpu
                     public void onTimeOut(AppCompatDialog appCompatDialog) {
                         appCompatDialog.dismiss();
                     }
+
                 }, builder).show();
                 return;
             }
@@ -90,6 +92,21 @@ public class InputIdCardBindingFragment extends BaseBindingFragment<FragmentInpu
                             break;
                         case SUCCESS:
                             dismissLoading();
+                            if (personInfoResource.data == null) {
+                                new DialogIdCardNotFound(getContext(), new DialogIdCardNotFound.ClickListener() {
+                                    @Override
+                                    public void onTryAgain(AppCompatDialog appCompatDialog) {
+                                        appCompatDialog.dismiss();
+                                    }
+
+                                    @Override
+                                    public void onTimeOut(AppCompatDialog appCompatDialog) {
+                                        appCompatDialog.dismiss();
+                                        finish();
+                                    }
+                                }, idCardData.idCardMsg.id_num).show();
+                                return;
+                            }
                             personInfoResource.data.setIdCardNumber(idCardData.idCardMsg.id_num);
                             readIdCardCallback.onLogin(personInfoResource.data);
                             break;

@@ -3,8 +3,6 @@ package com.miaxis.judicialcorrection.base.di;
 import android.content.Context;
 import android.text.TextUtils;
 
-import androidx.lifecycle.Observer;
-
 import com.google.gson.Gson;
 import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.vo.Token;
@@ -113,6 +111,7 @@ public class AutoTokenInterceptor implements Interceptor {
         newBuilder.addHeader("Authorization", token);
         if (Objects.equals("POST", original.method())) {
             RequestBody bodyUnSign = original.body();
+            Timber.v("OKHttp Request body= [%s]", new Gson().toJson(bodyUnSign));
             assert bodyUnSign != null;
             newBuilder.post(bodyUnSign);
         } else if (Objects.equals("PUT", original.method())) {

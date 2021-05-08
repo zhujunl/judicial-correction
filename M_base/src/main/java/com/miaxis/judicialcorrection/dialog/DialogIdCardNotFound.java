@@ -8,11 +8,13 @@ import android.text.style.ForegroundColorSpan;
 import android.view.Window;
 
 import com.miaxis.judicialcorrection.base.R;
-import com.miaxis.judicialcorrection.base.databinding.DialogNotFoundWithIdCardBinding;
+import com.miaxis.judicialcorrection.base.databinding.DialogIdCardNotFoundBinding;
 import com.miaxis.judicialcorrection.dialog.base.BaseDialog;
 import com.miaxis.judicialcorrection.dialog.base.BaseDialogListener;
-import com.miaxis.judicialcorrection.widget.countdown.CountDownListener;
+import com.miaxis.judicialcorrection.widget.countdown.CountDownTextView;
 import com.miaxis.judicialcorrection.widget.countdown.DefaultCountDownListener;
+
+import androidx.appcompat.widget.AppCompatTextView;
 
 /**
  * @author Tank
@@ -21,7 +23,7 @@ import com.miaxis.judicialcorrection.widget.countdown.DefaultCountDownListener;
  * @updateAuthor
  * @updateDes
  */
-public class DialogIdCardNotFound extends BaseDialog<DialogNotFoundWithIdCardBinding, DialogIdCardNotFound.ClickListener> {
+public class DialogIdCardNotFound extends BaseDialog<DialogIdCardNotFoundBinding, DialogIdCardNotFound.ClickListener> {
 
     private final String idCard;
 
@@ -38,32 +40,50 @@ public class DialogIdCardNotFound extends BaseDialog<DialogNotFoundWithIdCardBin
 
     @Override
     public int initLayout() {
-        return R.layout.dialog_not_found_with_id_card;
+        return R.layout.dialog_id_card_not_found;
     }
 
     @Override
     public void initView() {
-        binding.btnInput.setOnClickListener(v -> {
-            if (listener!=null){
+        findViewById(R.id.btn_input).setOnClickListener(v -> {
+            if (listener != null) {
                 listener.onTryAgain(DialogIdCardNotFound.this);
             }
         });
-        binding.cdtvTime.setTime(10);
-        binding.cdtvTime.setCountDownListener(new DefaultCountDownListener() {
+        //        binding.btnInput.setOnClickListener(v -> {
+        //            if (listener != null) {
+        //                listener.onTryAgain(DialogIdCardNotFound.this);
+        //            }
+        //        });
+        CountDownTextView cdtv_time = findViewById(R.id.cdtv_time);
+        cdtv_time.setTime(10);
+        cdtv_time.setCountDownListener(new DefaultCountDownListener() {
             @Override
             public void onCountDownDone() {
-                if (listener!=null){
+                if (listener != null) {
                     listener.onTimeOut(DialogIdCardNotFound.this);
                 }
             }
         });
+        //        binding.cdtvTime.setTime(10);
+        //        binding.cdtvTime.setCountDownListener(new DefaultCountDownListener() {
+        //            @Override
+        //            public void onCountDownDone() {
+        //                if (listener != null) {
+        //                    listener.onTimeOut(DialogIdCardNotFound.this);
+        //                }
+        //            }
+        //        });
         CharSequence charSequence = getContext().getResources().getText(R.string.dialog_error_3);
         String format = String.format(String.valueOf(charSequence), this.idCard);
         int splitLeft = format.indexOf("（");
         int splitRight = format.indexOf("）");
         SpannableStringBuilder style = new SpannableStringBuilder(format);
         style.setSpan(new ForegroundColorSpan(Color.RED), splitLeft + 1, splitRight, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.tvMessage.setText(style);
+        //        binding.tvMessage.setText(style);
+
+        AppCompatTextView tv_message = findViewById(R.id.tv_message);
+        tv_message.setText(style);
     }
 
     @Override

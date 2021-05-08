@@ -1,5 +1,9 @@
 package com.miaxis.judicialcorrection.leave;
 
+import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
+
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author Tank
  * @date 2021/5/7 14:11
@@ -12,7 +16,7 @@ public interface LeaveListener {
     /**
      * 请假申请
      */
-    void onApply();
+    void onApply(@NotNull VerifyInfo verifyInfo);
 
     /**
      * 销假

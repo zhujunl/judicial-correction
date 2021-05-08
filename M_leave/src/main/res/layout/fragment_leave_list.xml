@@ -69,7 +69,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_apply"
             tools:itemCount="10"
-            tools:listitem="@layout/layout_item" />
+            tools:listitem="@layout/layout_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

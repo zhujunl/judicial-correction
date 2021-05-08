@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
+import com.miaxis.judicialcorrection.dialog.DialogNoButton;
 import com.miaxis.judicialcorrection.id.R;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
 import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
@@ -15,6 +16,7 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import dagger.Lazy;
@@ -87,6 +89,28 @@ public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadI
                                 break;
                             case SUCCESS:
                                 dismissLoading();
+                                if (personInfoResource.data == null) {
+                                    DialogNoButton.Builder builder = new DialogNoButton.Builder();
+                                    builder.success = false;
+                                    builder.timeOut = 10;
+                                    builder.title = "系统查无此人";
+                                    builder.message="请联系现场工作人员处理\n" +
+                                            "（工作人员需确认前期登记的\n" +
+                                            "身份证号是否准确）！";
+                                    new DialogNoButton(getContext(), new DialogNoButton.ClickListener() {
+                                        @Override
+                                        public void onTryAgain(AppCompatDialog appCompatDialog) {
+                                            appCompatDialog.dismiss();
+                                        }
+
+                                        @Override
+                                        public void onTimeOut(AppCompatDialog appCompatDialog) {
+                                            appCompatDialog.dismiss();
+                                            finish();
+                                        }
+                                    }, builder).show();
+                                    return;
+                                }
                                 personInfoResource.data.setIdCardNumber(result.idCardMsg.id_num);
                                 readIdCardCallback.onLogin(personInfoResource.data);
                                 break;
@@ -96,9 +120,8 @@ public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadI
                 });
             }
         } else {
-
+            appHintsLazy.get().showError("初始身份证模块失败");
         }
-
     }
 
     @Override

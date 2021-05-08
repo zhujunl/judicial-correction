@@ -2,10 +2,11 @@ package com.miaxis.judicialcorrection.report;
 
 import android.os.Bundle;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
+import com.miaxis.judicialcorrection.base.common.Resource;
+import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.databinding.ActivityReportBinding;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
@@ -16,9 +17,13 @@ import com.miaxis.judicialcorrection.id.bean.IdCard;
 import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
 import com.miaxis.judicialcorrection.id.readIdCard.ReadIDCardBindingFragment;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
+import androidx.lifecycle.Observer;
+import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
@@ -29,10 +34,14 @@ import timber.log.Timber;
  * Created on 4/25/21.
  */
 @AndroidEntryPoint
-@Route(path = "/report/ReportActivity")
 public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> implements ReadIdCardCallback, VerifyCallback {
 
     String title = "日常报告";
+    @Inject
+    ReportRepo mReportRepo;
+
+    @Inject
+    Lazy<AppHints> appHintsLazy;
 
     @Override
     protected int initLayout() {
@@ -41,6 +50,10 @@ public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> i
 
     @Override
     protected void initView(@NonNull ActivityReportBinding binding, @Nullable Bundle savedInstanceState) {
+        readIdCard();
+    }
+
+    private void readIdCard(){
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.layout_root, new ReadIDCardBindingFragment(title, true))
@@ -70,27 +83,73 @@ public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> i
 
     @Override
     public void onVerify(ZZResponse<VerifyInfo> response) {
-        new DialogResult(this, new DialogResult.ClickListener() {
-            @Override
-            public void onBackHome(AppCompatDialog appCompatDialog) {
-                appCompatDialog.dismiss();
-                finish();
-            }
+        if (ZZResponse.isSuccess(response)) {
+            mReportRepo.reportAdd(response.getData().pid).observe(this, new Observer<Resource<Object>>() {
+                @Override
+                public void onChanged(Resource<Object> objectResource) {
+                    switch (objectResource.status) {
+                        case LOADING:
+                            showLoading(title, "正在获取" + title + "信息，请稍后");
+                            break;
+                        case ERROR:
+                            dismissLoading();
+                            appHintsLazy.get().showError("Error:" + objectResource.errorMessage);
+                            break;
+                        case SUCCESS:
+                            dismissLoading();
+                            DialogResult.Builder builder = new DialogResult.Builder();
+                            builder.success = true;
+                            builder.countDownTime = 10;
+                            builder.title = title+"成功！";
+                            builder.message = "系统将自动返回"+title+"身份证刷取页面";
+                            new DialogResult(ReportActivity.this, new DialogResult.ClickListener() {
+                                @Override
+                                public void onBackHome(AppCompatDialog appCompatDialog) {
+                                    appCompatDialog.dismiss();
+                                    finish();
+                                }
 
-            @Override
-            public void onTryAgain(AppCompatDialog appCompatDialog) {
-                appCompatDialog.dismiss();
-            }
+                                @Override
+                                public void onTryAgain(AppCompatDialog appCompatDialog) {
+                                }
 
-            @Override
-            public void onTimeOut(AppCompatDialog appCompatDialog) {
-                finish();
-            }
-        }, new DialogResult.Builder(
-                ZZResponse.isSuccess(response),
-                ZZResponse.isSuccess(response) ? title + "成功" : "验证失败",
-                ZZResponse.isSuccess(response) ? "系统将自动返回" + title + "身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
-                10, true
-        )).show();
+                                @Override
+                                public void onTimeOut(AppCompatDialog appCompatDialog) {
+                                    appCompatDialog.dismiss();
+                                    finish();
+                                }
+                            }, builder).show();
+                            break;
+                    }
+                }
+            });
+        } else {
+            DialogResult.Builder builder = new DialogResult.Builder();
+            builder.success = false;
+            builder.countDownTime = 10;
+            builder.title = "验证失败";
+            builder.message = "请联系现场工作人员处理\n" +
+                    "（工作人员需确认前期登记的\n" +
+                    "身份证号是否准确）！";
+            new DialogResult(this, new DialogResult.ClickListener() {
+                @Override
+                public void onBackHome(AppCompatDialog appCompatDialog) {
+                    appCompatDialog.dismiss();
+                    finish();
+                }
+
+                @Override
+                public void onTryAgain(AppCompatDialog appCompatDialog) {
+                    appCompatDialog.dismiss();
+                    readIdCard();
+                }
+
+                @Override
+                public void onTimeOut(AppCompatDialog appCompatDialog) {
+                    appCompatDialog.dismiss();
+                    finish();
+                }
+            }, builder).show();
+        }
     }
 }

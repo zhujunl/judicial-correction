@@ -2,6 +2,7 @@ package com.miaxis.judicialcorrection.base.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 
 import javax.inject.Inject;
 
@@ -36,6 +37,15 @@ public class AppHints {
                 .setPositiveButton("好的", (dialog, which) -> {
 
                 })
+                .setCancelable(false)
+                .show();
+    }
+
+    public void showError(String errMsg, DialogInterface.OnClickListener listener) {
+        new AlertDialog.Builder(context)
+                .setTitle("错误")
+                .setMessage(errMsg)
+                .setPositiveButton("好的",listener)
                 .setCancelable(false)
                 .show();
     }

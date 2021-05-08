@@ -7,10 +7,13 @@ import com.miaxis.judicialcorrection.leave.databinding.FragmentProgressBinding;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import dagger.hilt.android.AndroidEntryPoint;
 
 /**
  * 查询进度
  */
+
+@AndroidEntryPoint
 public class ProgressFragment extends BaseBindingFragment<FragmentProgressBinding> {
 
     private String title = "进度查询";

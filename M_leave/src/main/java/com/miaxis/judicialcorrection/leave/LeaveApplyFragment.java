@@ -3,11 +3,15 @@ package com.miaxis.judicialcorrection.leave;
 import android.os.Bundle;
 
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
-import com.miaxis.judicialcorrection.leave.databinding.FragmentLeaveListBinding;
+import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
+import com.miaxis.judicialcorrection.leave.databinding.FragmentLeaveApplyBinding;
+
+import org.jetbrains.annotations.NotNull;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
+import dagger.hilt.android.AndroidEntryPoint;
 
 /**
  * @author Tank
@@ -16,11 +20,15 @@ import androidx.fragment.app.FragmentActivity;
  * @updateAuthor
  * @updateDes
  */
-public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveListBinding> {
+@AndroidEntryPoint
+public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBinding> {
 
     private String title = "请假申请";
 
-    public LeaveApplyFragment() {
+    private VerifyInfo verifyInfo;
+
+    public LeaveApplyFragment(@NotNull VerifyInfo verifyInfo) {
+        this.verifyInfo = verifyInfo;
     }
 
     @Override
@@ -29,16 +37,15 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveListBin
     }
 
     @Override
-    protected void initView(@NonNull FragmentLeaveListBinding binding, @Nullable Bundle savedInstanceState) {
+    protected void initView(@NonNull FragmentLeaveApplyBinding binding, @Nullable Bundle savedInstanceState) {
         binding.tvTitle.setText(String.valueOf(this.title));
         binding.btnBackToHome.setOnClickListener(v -> finish());
-
-
-
+        binding.tvName.setText(verifyInfo.name);
+        binding.tvIdCard.setText(verifyInfo.idCardNumber);
     }
 
     @Override
-    protected void initData(@NonNull FragmentLeaveListBinding binding, @Nullable Bundle savedInstanceState) {
+    protected void initData(@NonNull FragmentLeaveApplyBinding binding, @Nullable Bundle savedInstanceState) {
 
     }
 
@@ -58,11 +65,11 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveListBin
         }
     }
 
-    private void apply() {
+    private void apply(VerifyInfo verifyInfo) {
         FragmentActivity activity = getActivity();
         if (activity instanceof LeaveListener) {
             LeaveListener listener = (LeaveListener) activity;
-            listener.onApply();
+            listener.onApply(verifyInfo);
         }
     }
 

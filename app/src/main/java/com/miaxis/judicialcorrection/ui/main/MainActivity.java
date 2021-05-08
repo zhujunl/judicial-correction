@@ -1,12 +1,14 @@
 package com.miaxis.judicialcorrection.ui.main;
 
+import android.Manifest;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +25,11 @@ import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
+import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundDiffAdapter;
 import com.miaxis.judicialcorrection.databinding.ActivityMainBinding;
 import com.miaxis.judicialcorrection.databinding.ItemMainFucBinding;
+import com.miaxis.judicialcorrection.dialog.DatePickDialog;
 import com.miaxis.judicialcorrection.ui.setting.SettingActivity;
 
 import java.util.Objects;
@@ -34,11 +38,16 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
+import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
+import timber.log.Timber;
+
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 @AndroidEntryPoint
 public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
@@ -48,7 +57,8 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
     @Inject
     AppExecutors mAppExecutors;
 
-    ProgressDialog progressDialog;
+    @Inject
+    Lazy<AppHints> appHintsLazy;
 
     @Override
     protected int initLayout() {
@@ -74,36 +84,53 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
 
     @Override
     protected void initData(@NonNull ActivityMainBinding binding, @Nullable Bundle savedInstanceState) {
+        String[] permissions = {
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.CAMERA,
+        };
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, permissions, 1);
+                return;
+            }
+        }
         init();
     }
 
     private void init() {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(this);
-        }
-        progressDialog.setTitle(getString(R.string.app_info));
-        progressDialog.setMessage(getString(R.string.app_init));
+        showLoading(getString(R.string.app_info), getString(R.string.app_init));
         mAppExecutors.networkIO().execute(() -> {
-            runOnUiThread(() -> {
-                if (progressDialog != null) {
-                    progressDialog.show();
-                }
-            });
             int init = FaceManager.getInstance().init(MainActivity.this);
             FingerStrategy fingerStrategy = new FingerStrategy(MainActivity.this);
             FingerManager.getInstance().init(fingerStrategy);
             runOnUiThread(() -> {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
+                dismissLoading();
                 if (init != 0) {
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setTitle(R.string.app_info)
-                            .setMessage("初始化失败：" + String.valueOf(init))
-                            .show();
+                    appHintsLazy.get().showError("初始化失败：" + init);
                 }
             });
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (grantResults[i] != PERMISSION_GRANTED) {//选择了“始终允许”
+                    appHintsLazy.get().showError("请授权", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    });
+                    return;
+                }
+            }
+            init();
+        }
     }
 
     @Override

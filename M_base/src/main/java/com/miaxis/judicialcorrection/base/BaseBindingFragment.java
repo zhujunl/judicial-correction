@@ -1,7 +1,5 @@
 package com.miaxis.judicialcorrection.base;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,18 +55,23 @@ public abstract class BaseBindingFragment<V extends ViewDataBinding> extends Fra
         getActivity().finish();
     }
 
-
-
     protected void showLoading() {
         FragmentActivity activity = getActivity();
-        if (activity instanceof BaseBindingActivity){
+        if (activity instanceof BaseBindingActivity) {
             ((BaseBindingActivity<?>) activity).showLoading();
+        }
+    }
+
+    protected void showLoading(String title, String message) {
+        FragmentActivity activity = getActivity();
+        if (activity instanceof BaseBindingActivity) {
+            ((BaseBindingActivity<?>) activity).showLoading(title, message);
         }
     }
 
     protected void dismissLoading() {
         FragmentActivity activity = getActivity();
-        if (activity instanceof BaseBindingActivity){
+        if (activity instanceof BaseBindingActivity) {
             ((BaseBindingActivity<?>) activity).dismissLoading();
         }
     }

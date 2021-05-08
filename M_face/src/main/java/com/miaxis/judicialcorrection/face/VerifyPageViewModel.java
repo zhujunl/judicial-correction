@@ -33,6 +33,8 @@ public class VerifyPageViewModel extends ViewModel {
 
     MutableLiveData<String> name = new MutableLiveData<>();
 
+    MutableLiveData<String> id = new MutableLiveData<>();
+
     MutableLiveData<String> idCardNumber = new MutableLiveData<>();
 
     MutableLiveData<String> faceTips = new MutableLiveData<>();
@@ -52,13 +54,16 @@ public class VerifyPageViewModel extends ViewModel {
     @Inject
     public VerifyPageViewModel(AppExecutors appExecutors) {
         this.mAppExecutors = appExecutors;
+        FaceManager.getInstance().initData(mFaceInfoExes);
     }
 
-    public void initFingerDevice() {
+    private OnFingerInitListener mOnFingerInitListener;
+
+    public void initFingerDevice(OnFingerInitListener onFingerInitListener) {
+        this.mOnFingerInitListener = onFingerInitListener;
         mAppExecutors.networkIO().execute(() -> {
             FingerManager.getInstance().initDevice(fingerStatusListener);
         });
-        FaceManager.getInstance().initData(mFaceInfoExes);
     }
 
     public void releaseFingerDevice() {
@@ -92,7 +97,7 @@ public class VerifyPageViewModel extends ViewModel {
                                     if (matchFeature == 0) {
                                         if (floats[0] >= 0.77) {
                                             faceTips.postValue("核验通过");
-                                            verifyStatus.postValue(ZZResponse.CreateSuccess(new VerifyInfo(name.getValue(), idCardNumber.getValue())));
+                                            verifyStatus.postValue(ZZResponse.CreateSuccess(new VerifyInfo(id.getValue(), name.getValue(), idCardNumber.getValue())));
                                             return;
                                         } else {
                                             faceTips.postValue("人脸核验未通过");
@@ -125,7 +130,7 @@ public class VerifyPageViewModel extends ViewModel {
             fingerBitmap.postValue(image);
             FingerManager.getInstance().releaseDevice();
             FingerManager.getInstance().setFingerListener(null);
-            verifyStatus.postValue(ZZResponse.CreateSuccess(new VerifyInfo(name.getValue(), idCardNumber.getValue())));
+            verifyStatus.postValue(ZZResponse.CreateSuccess(new VerifyInfo(id.getValue(), name.getValue(), idCardNumber.getValue())));
         } else {
             SystemClock.sleep(100);
             readFinger();
@@ -134,6 +139,9 @@ public class VerifyPageViewModel extends ViewModel {
 
     private final FingerManager.OnFingerStatusListener fingerStatusListener = result -> {
         Timber.e("FingerStatus:" + result);
+        if (this.mOnFingerInitListener != null) {
+            this.mOnFingerInitListener.onInit(result);
+        }
         if (result) {
             result = readFinger();
             if (!result) {
@@ -165,5 +173,9 @@ public class VerifyPageViewModel extends ViewModel {
             });
             return true;
         }
+    }
+
+    public interface OnFingerInitListener {
+        void onInit(boolean result);
     }
 }

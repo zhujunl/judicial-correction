@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -53,12 +54,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="48px"
             android:gravity="center"
-            android:text="@string/dialog_error_3"
             android:textColor="@color/color_text_grey"
             android:textSize="37px"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_error" />
+            app:layout_constraintTop_toBottomOf="@id/tv_error"
+            tools:text="@string/dialog_error_3" />
 
 
         <com.miaxis.judicialcorrection.widget.countdown.CountDownTextView

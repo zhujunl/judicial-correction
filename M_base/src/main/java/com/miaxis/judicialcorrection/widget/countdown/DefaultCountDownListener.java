@@ -19,6 +19,4 @@ public abstract class DefaultCountDownListener implements CountDownListener {
 
     }
 
-    @Override
-    public abstract void onCountDownDone();
 }

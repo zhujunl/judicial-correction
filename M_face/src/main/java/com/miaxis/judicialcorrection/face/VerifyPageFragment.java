@@ -10,14 +10,24 @@ import com.miaxis.camera.CameraPreviewCallback;
 import com.miaxis.camera.MXCamera;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
+import com.miaxis.judicialcorrection.base.common.Resource;
+import com.miaxis.judicialcorrection.base.repo.PersonRepo;
+import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
+import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
 import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.face.databinding.FragmentVerifyBinding;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import dagger.Lazy;
+import dagger.hilt.android.AndroidEntryPoint;
 
 /**
  * @author Tank
@@ -26,14 +36,20 @@ import androidx.lifecycle.ViewModelProvider;
  * @updateAuthor
  * @updateDes
  */
-
-public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBinding> implements CameraPreviewCallback {
+@AndroidEntryPoint
+public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBinding> implements CameraPreviewCallback, VerifyPageViewModel.OnFingerInitListener {
 
     String title;
 
     PersonInfo personInfo;
 
     VerifyPageViewModel mVerifyPageViewModel;
+
+    @Inject
+    Lazy<AppHints> appHintsLazy;
+
+    @Inject
+    PersonRepo mPersonRepo;
 
     public VerifyPageFragment(String title, @NonNull PersonInfo personInfo) {
         this.title = title;
@@ -64,42 +80,65 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
             binding.ivFinger.setOnClickListener(v -> {
                 Glide.with(VerifyPageFragment.this).load(R.mipmap.mipmap_bg_finger).into(binding.ivFinger);
                 mVerifyPageViewModel.releaseFingerDevice();
-                mVerifyPageViewModel.initFingerDevice();
+                mVerifyPageViewModel.initFingerDevice(VerifyPageFragment.this);
                 binding.ivFinger.setOnClickListener(null);
             });
         });
-        mVerifyPageViewModel.initFingerDevice();
+        mVerifyPageViewModel.initFingerDevice(this);
 
         mVerifyPageViewModel.name.setValue(personInfo.getXm());
         mVerifyPageViewModel.idCardNumber.setValue(personInfo.getIdCardNumber());
         //todo 身份证人脸特征数据
+        LiveData<Resource<Object>> mPersonRepoFace = mPersonRepo.getFace(personInfo.getId());
+        mPersonRepoFace.observe(this, new Observer<Resource<Object>>() {
+            @Override
+            public void onChanged(Resource<Object> objectResource) {
+
+            }
+        });
+
         mVerifyPageViewModel.idCardFaceFeature.setValue(new byte[1]);
 
         binding.btnBackToHome.setOnClickListener(v -> finish());
-        binding.svPreview.getHolder().addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(@NonNull SurfaceHolder holder) {
-                ZZResponse<?> init = CameraHelper.getInstance().init();
-                if (ZZResponse.isSuccess(init)) {
-                    ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().createMXCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
-                    if (ZZResponse.isSuccess(mxCamera)) {
-                        mxCamera.getData().setOrientation(90);
-                        mxCamera.getData().setPreviewCallback(VerifyPageFragment.this);
-                        mxCamera.getData().start(holder);
+
+        ZZResponse<?> init = CameraHelper.getInstance().init();
+        if (ZZResponse.isSuccess(init)) {
+            ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().createMXCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
+            if (ZZResponse.isSuccess(mxCamera)) {
+                binding.svPreview.getHolder().addCallback(new SurfaceHolder.Callback() {
+                    @Override
+                    public void surfaceCreated(@NonNull SurfaceHolder holder) {
+                        ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().find(Camera.CameraInfo.CAMERA_FACING_FRONT);
+                        if (ZZResponse.isSuccess(mxCamera)) {
+                            mxCamera.getData().setOrientation(90);
+                            mxCamera.getData().setPreviewCallback(VerifyPageFragment.this);
+                            mxCamera.getData().start(holder);
+                            return;
+                        }
+                        appHintsLazy.get().showError("摄像头初始化失败");
                     }
-                }
-            }
 
-            @Override
-            public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
+                    @Override
+                    public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
 
-            }
+                    }
 
-            @Override
-            public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
-                CameraHelper.getInstance().free();
+                    @Override
+                    public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
+                        CameraHelper.getInstance().free();
+                    }
+                });
+                return;
             }
-        });
+        }
+        appHintsLazy.get().showError("摄像头初始化失败");
+    }
+
+    @Override
+    public void onInit(boolean result) {
+        if (!result) {
+            appHintsLazy.get().showError("指纹设备初始化失败");
+        }
     }
 
     @Override
@@ -121,7 +160,8 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
 
     @Override
     public void onPreview(int cameraId, byte[] frame, MXCamera camera, int width, int height) {
-        mVerifyPageViewModel.faceRecognize(cameraId, frame, camera, width, height);
+//        mVerifyPageViewModel.faceRecognize(cameraId, frame, camera, width, height);
+        mVerifyPageViewModel.verifyStatus.postValue(ZZResponse.CreateSuccess(new VerifyInfo(personInfo.getId(),personInfo.getXm(), personInfo.getIdCardNumber())));
     }
 
     @Override

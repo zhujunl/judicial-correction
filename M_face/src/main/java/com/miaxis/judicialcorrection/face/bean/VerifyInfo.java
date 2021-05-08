@@ -9,13 +9,15 @@ package com.miaxis.judicialcorrection.face.bean;
  */
 public class VerifyInfo {
 
+    public String pid;
     public String name;
     public String idCardNumber;
 
     private VerifyInfo() {
     }
 
-    public VerifyInfo(String name, String idCardNumber) {
+    public VerifyInfo(String pid, String name, String idCardNumber) {
+        this.pid = pid;
         this.name = name;
         this.idCardNumber = idCardNumber;
     }

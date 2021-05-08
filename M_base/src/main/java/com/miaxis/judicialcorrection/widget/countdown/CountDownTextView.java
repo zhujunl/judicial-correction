@@ -9,7 +9,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
-
 import timber.log.Timber;
 
 /**
@@ -75,8 +74,8 @@ public class CountDownTextView extends androidx.appcompat.widget.AppCompatTextVi
         start = total;
     }
 
-    private int start = 60;
-    private int total = 60;
+    private int start = 10;
+    private int total = 10;
 
     private Handler mHandler;
 

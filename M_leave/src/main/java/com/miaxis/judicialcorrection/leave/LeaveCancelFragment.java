@@ -3,11 +3,13 @@ package com.miaxis.judicialcorrection.leave;
 import android.os.Bundle;
 
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
+import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
 import com.miaxis.judicialcorrection.leave.databinding.FragmentLeaveCancelBinding;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
+import dagger.hilt.android.AndroidEntryPoint;
 
 /**
  * @author Tank
@@ -16,6 +18,7 @@ import androidx.fragment.app.FragmentActivity;
  * @updateAuthor
  * @updateDes
  */
+@AndroidEntryPoint
 public class LeaveCancelFragment extends BaseBindingFragment<FragmentLeaveCancelBinding> {
 
     private String title = "销假";
@@ -58,11 +61,11 @@ public class LeaveCancelFragment extends BaseBindingFragment<FragmentLeaveCancel
         }
     }
 
-    private void apply() {
+    private void apply(VerifyInfo verifyInfo) {
         FragmentActivity activity = getActivity();
         if (activity instanceof LeaveListener) {
             LeaveListener listener = (LeaveListener) activity;
-            listener.onApply();
+            listener.onApply(verifyInfo);
         }
     }
 

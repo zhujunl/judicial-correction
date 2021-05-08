@@ -9,6 +9,9 @@ import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
+import com.miaxis.judicialcorrection.centralized_education.CentralizedEducationActivity;
+import com.miaxis.judicialcorrection.individual_education.IndividualEducationActivity;
+import com.miaxis.judicialcorrection.leave.LeaveActivity;
 import com.miaxis.judicialcorrection.report.ReportActivity;
 
 import java.io.BufferedReader;
@@ -54,10 +57,10 @@ public class DbInitMainFuncs extends RoomDatabase.Callback {
             List<MainFunc> items = new ArrayList<>();
             items.add(new MainFunc("首次报到登记", R.mipmap.main_enroll, EnrollActivity.class.getName(), true));
             items.add(new MainFunc("日常报告", R.mipmap.main_report, ReportActivity.class.getName(), true));
-            items.add(new MainFunc("集中教育", R.mipmap.main_edu_all, "/null/null", true));
-            items.add(new MainFunc("个别教育", R.mipmap.main_edu_one, "/null/null", true));
+            items.add(new MainFunc("集中教育", R.mipmap.main_edu_all, CentralizedEducationActivity.class.getName(), true));
+            items.add(new MainFunc("个别教育", R.mipmap.main_edu_one, IndividualEducationActivity.class.getName(), true));
             items.add(new MainFunc("公益活动", R.mipmap.main_love, "/null/null", true));
-            items.add(new MainFunc("请销假", R.mipmap.main_atten, "/null/null", true));
+            items.add(new MainFunc("请销假", R.mipmap.main_atten, LeaveActivity.class.getName(), true));
             items.add(new MainFunc("居住地变更", R.mipmap.main_addr, "/null/null", true));
             List<Long> longs = appDatabaseLazy.get().mainFuncDAO().insertFuncList(items);
             Timber.i("ids : %s ", longs);

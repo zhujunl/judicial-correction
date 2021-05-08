@@ -21,16 +21,12 @@ public abstract class BaseDialog<V extends ViewDataBinding, L extends BaseDialog
     protected V binding;
     protected L listener;
 
-    public BaseDialog(Context context) {
+    public BaseDialog(Context context, L listener) {
         super(context);
         Window window = getWindow();
         binding = DataBindingUtil.inflate(LayoutInflater.from(context), initLayout(), (ViewGroup) window.getDecorView(), false);
         setContentView(binding.getRoot());
         window.setBackgroundDrawableResource(android.R.color.transparent);
-    }
-
-    public BaseDialog(Context context, L listener) {
-        this(context);
         this.listener = listener;
     }
 

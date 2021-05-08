@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-import com.alibaba.android.arouter.launcher.ARouter;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +29,7 @@ public abstract class BaseBindingActivity<V extends ViewDataBinding> extends App
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initWindow();
-        ARouter.getInstance().inject(this);
+        //ARouter.getInstance().inject(this);
         binding = DataBindingUtil.setContentView(this, initLayout());
         initView(binding, savedInstanceState);
         initData(binding, savedInstanceState);
@@ -100,17 +98,31 @@ public abstract class BaseBindingActivity<V extends ViewDataBinding> extends App
     private ProgressDialog progressDialog;
 
     protected void showLoading() {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(this);
+        runOnUiThread(() -> {
+            if (progressDialog == null) {
+                progressDialog = new ProgressDialog(BaseBindingActivity.this);
+            }
             progressDialog.setTitle("Loading .. ");
-        }
-        progressDialog.show();
+            progressDialog.show();
+        });
+    }
+
+    protected void showLoading(String title, String message) {
+        runOnUiThread(() -> {
+            if (progressDialog == null) {
+                progressDialog = new ProgressDialog(BaseBindingActivity.this);
+            }
+            progressDialog.setTitle(String.valueOf(title));
+            progressDialog.setMessage(String.valueOf(message));
+            progressDialog.show();
+        });
     }
 
     protected void dismissLoading() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
+        runOnUiThread(() -> {
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        });
     }
-
 }

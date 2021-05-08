@@ -2,11 +2,14 @@ package com.miaxis.judicialcorrection.dialog;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.miaxis.judicialcorrection.base.R;
 import com.miaxis.judicialcorrection.base.databinding.DialogVerifyResultBinding;
 import com.miaxis.judicialcorrection.dialog.base.BaseDialog;
 import com.miaxis.judicialcorrection.dialog.base.BaseDialogListener;
+import com.miaxis.judicialcorrection.widget.countdown.CountDownTextView;
 import com.miaxis.judicialcorrection.widget.countdown.DefaultCountDownListener;
 
 import androidx.annotation.NonNull;
@@ -36,26 +39,27 @@ public class DialogResult extends BaseDialog<DialogVerifyResultBinding, DialogRe
 
     @Override
     public void initView() {
-        binding.btnTryAgain.setVisibility(this.mBuilder.success ? View.GONE : View.VISIBLE);
-        binding.btnTryAgain.setOnClickListener(v -> {
+        findViewById(R.id.btn_try_again).setVisibility(this.mBuilder.success ? View.GONE : View.VISIBLE);
+        findViewById(R.id.btn_try_again).setOnClickListener(v -> {
             if (listener != null) {
                 listener.onTryAgain(DialogResult.this);
             }
         });
-
-        binding.btnBackHome.setVisibility(this.mBuilder.enableBackHome ? View.VISIBLE : View.GONE);
-        binding.btnBackHome.setOnClickListener(v -> {
+        findViewById(R.id.btn_back_home).setVisibility(this.mBuilder.enableBackHome ? View.VISIBLE : View.GONE);
+        findViewById(R.id.btn_back_home).setOnClickListener(v -> {
             if (listener != null) {
                 listener.onBackHome(DialogResult.this);
             }
         });
-
-        binding.ivError.setBackgroundResource(this.mBuilder.success ? R.mipmap.mipmap_success : R.mipmap.mipmap_error);
-        binding.tvError.setText(this.mBuilder.title);
-        binding.tvMessage.setText(this.mBuilder.message);
-        binding.cdtvTime.setTime(this.mBuilder.countDownTime);
-        binding.cdtvTime.setCountDownListener(new DefaultCountDownListener() {
-
+        ImageView iv_error = findViewById(R.id.iv_error);
+        iv_error.setBackgroundResource(this.mBuilder.success ? R.mipmap.mipmap_success : R.mipmap.mipmap_error);
+        TextView tv_error = findViewById(R.id.tv_error);
+        tv_error.setText(this.mBuilder.title);
+        TextView tv_message = findViewById(R.id.tv_message);
+        tv_message.setText(this.mBuilder.message);
+        CountDownTextView cdtv_time = findViewById(R.id.cdtv_time);
+        cdtv_time.setTime(this.mBuilder.countDownTime);
+        cdtv_time.setCountDownListener(new DefaultCountDownListener() {
             @Override
             public void onCountDownDone() {
                 if (listener != null) {
@@ -63,6 +67,35 @@ public class DialogResult extends BaseDialog<DialogVerifyResultBinding, DialogRe
                 }
             }
         });
+
+
+        //        binding.btnTryAgain.setVisibility(this.mBuilder.success ? View.GONE : View.VISIBLE);
+        //        binding.btnTryAgain.setOnClickListener(v -> {
+        //            if (listener != null) {
+        //                listener.onTryAgain(DialogResult.this);
+        //            }
+        //        });
+        //
+        //        binding.btnBackHome.setVisibility(this.mBuilder.enableBackHome ? View.VISIBLE : View.GONE);
+        //        binding.btnBackHome.setOnClickListener(v -> {
+        //            if (listener != null) {
+        //                listener.onBackHome(DialogResult.this);
+        //            }
+        //        });
+        //
+        //        binding.ivError.setBackgroundResource(this.mBuilder.success ? R.mipmap.mipmap_success : R.mipmap.mipmap_error);
+        //        binding.tvError.setText(this.mBuilder.title);
+        //        binding.tvMessage.setText(this.mBuilder.message);
+        //        binding.cdtvTime.setTime(this.mBuilder.countDownTime);
+        //        binding.cdtvTime.setCountDownListener(new DefaultCountDownListener() {
+        //
+        //            @Override
+        //            public void onCountDownDone() {
+        //                if (listener != null) {
+        //                    listener.onTimeOut(DialogResult.this);
+        //                }
+        //            }
+        //        });
     }
 
     @Override
