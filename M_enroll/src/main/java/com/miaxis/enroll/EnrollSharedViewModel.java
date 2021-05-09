@@ -140,7 +140,7 @@ public class EnrollSharedViewModel extends ViewModel {
                 ApiResult<IdCard> result = ReadIdCardManager.getInstance().read();
                 Timber.i("ID result %s", result);
                 if (result.isSuccessful()) {
-                    result.getData().idCardMsg.id_num += ("X00" + new Random().nextInt(100));
+                    //result.getData().idCardMsg.id_num += ("Y" + new Random().nextInt(100));
                     idCardLiveData.postValue(result.getData());
                     break;
                 }

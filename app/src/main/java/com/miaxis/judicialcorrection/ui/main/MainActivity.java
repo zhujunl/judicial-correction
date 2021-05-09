@@ -172,7 +172,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
 
         void checkPassword(String pwd) {
             dismiss();
-            if ("666666".equals(pwd)) {
+            if ("123456".equals(pwd)) {
                 startActivity(new Intent(getActivity(), SettingActivity.class));
             } else {
                 Toast.makeText(getContext(), "密码输入错误!", Toast.LENGTH_SHORT).show();
