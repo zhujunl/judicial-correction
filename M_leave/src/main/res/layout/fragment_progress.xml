@@ -463,6 +463,7 @@
             android:layout_marginStart="10px"
             android:textColor="#393939"
             android:textSize="30px"
+            android:text="@{data.cancelTime}"
             app:layout_constraintBottom_toBottomOf="@+id/tv_cancel_time_title"
             app:layout_constraintLeft_toRightOf="@+id/tv_cancel_time_title"
             app:layout_constraintTop_toTopOf="@+id/tv_cancel_time_title"
