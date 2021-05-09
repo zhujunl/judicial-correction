@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.miaxis.judicialcorrection.leave.bean.ApplyData" />
+            type="com.miaxis.judicialcorrection.leave.cancel.CancelViewModel" />
 
     </data>
 
@@ -141,9 +141,9 @@
             android:text="*"
             android:textColor="#F40707"
             android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_cancel_time"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_cancel_time_title"
             app:layout_constraintRight_toLeftOf="@+id/tv_cancel_time_title"
-            app:layout_constraintTop_toTopOf="@+id/tv_cancel_time" />
+            app:layout_constraintTop_toTopOf="@+id/tv_cancel_time_title" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_cancel_time_title"
@@ -169,61 +169,61 @@
             android:gravity="center_vertical"
             android:paddingStart="10px"
             android:paddingEnd="26px"
-            android:text="@={data.applyTime}"
+            android:text="@={data.cancelTime}"
             android:textColor="#393939"
             android:textSize="27px"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/id_view" />
 
 
-        <!--请假申请书：-->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_application_scan"
-            android:layout_width="249px"
-            android:layout_height="68px"
-            android:layout_marginTop="70px"
-            android:background="@drawable/bg_btn_scan_upload"
-            android:gravity="center"
-            android:text="扫描附件"
-            app:layout_constraintLeft_toLeftOf="@+id/tv_cancel_time"
-            app:layout_constraintTop_toBottomOf="@+id/tv_cancel_time" />
+        <!--        &lt;!&ndash;请假申请书：&ndash;&gt;-->
+        <!--        <androidx.appcompat.widget.AppCompatButton-->
+        <!--            android:id="@+id/btn_application_scan"-->
+        <!--            android:layout_width="249px"-->
+        <!--            android:layout_height="68px"-->
+        <!--            android:layout_marginTop="70px"-->
+        <!--            android:background="@drawable/bg_btn_scan_upload"-->
+        <!--            android:gravity="center"-->
+        <!--            android:text="扫描附件"-->
+        <!--            app:layout_constraintLeft_toLeftOf="@+id/tv_cancel_time"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/tv_cancel_time" />-->
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/btn_application_scan_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="外出凭证："
-            android:textColor="#393939"
-            android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"
-            app:layout_constraintRight_toLeftOf="@id/btn_application_scan"
-            app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />
-
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5px"
-            android:text="*"
-            android:textColor="#F40707"
-            android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan_title"
-            app:layout_constraintRight_toLeftOf="@+id/btn_application_scan_title"
-            app:layout_constraintTop_toTopOf="@+id/btn_application_scan_title" />
+        <!--        <androidx.appcompat.widget.AppCompatTextView-->
+        <!--            android:id="@+id/btn_application_scan_title"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="外出凭证："-->
+        <!--            android:textColor="#393939"-->
+        <!--            android:textSize="27px"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"-->
+        <!--            app:layout_constraintRight_toLeftOf="@id/btn_application_scan"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />-->
 
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_scan_tips"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32px"
-            android:layout_marginEnd="79px"
-            android:text="（请将外出凭证放置扫描区进行扫描，如：交通费用，旅馆住宿费用/n凭证或有目的地背景的人像凭证）"
-            android:textColor="#999999"
-            android:textSize="24px"
-            app:layout_constraintLeft_toLeftOf="@+id/btn_application_scan"
-            app:layout_constraintRight_toRightOf="@+id/tv_cancel_time"
-            app:layout_constraintTop_toBottomOf="@+id/btn_application_scan" />
+        <!--        <androidx.appcompat.widget.AppCompatTextView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginEnd="5px"-->
+        <!--            android:text="*"-->
+        <!--            android:textColor="#F40707"-->
+        <!--            android:textSize="27px"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan_title"-->
+        <!--            app:layout_constraintRight_toLeftOf="@+id/btn_application_scan_title"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/btn_application_scan_title" />-->
+
+
+        <!--        <androidx.appcompat.widget.AppCompatTextView-->
+        <!--            android:id="@+id/tv_scan_tips"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="32px"-->
+        <!--            android:layout_marginEnd="79px"-->
+        <!--            android:text="（请将外出凭证放置扫描区进行扫描，如：交通费用，旅馆住宿费用/n凭证或有目的地背景的人像凭证）"-->
+        <!--            android:textColor="#999999"-->
+        <!--            android:textSize="24px"-->
+        <!--            app:layout_constraintLeft_toLeftOf="@+id/btn_application_scan"-->
+        <!--            app:layout_constraintRight_toRightOf="@+id/tv_cancel_time"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/btn_application_scan" />-->
 
 
         <androidx.appcompat.widget.AppCompatButton
@@ -238,7 +238,7 @@
             android:textSize="48px"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_scan_tips" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_cancel_time_title" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

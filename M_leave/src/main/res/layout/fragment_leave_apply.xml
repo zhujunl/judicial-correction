@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.miaxis.judicialcorrection.leave.bean.ApplyData" />
+            type="com.miaxis.judicialcorrection.leave.apply.ApplyViewModel" />
 
     </data>
 
@@ -169,7 +169,7 @@
             android:gravity="center_vertical"
             android:paddingStart="10px"
             android:paddingEnd="26px"
-            android:text="@={data.applyTime}"
+            android:text="@{data.applyTime}"
             android:textColor="#393939"
             android:textSize="27px"
             app:layout_constraintRight_toRightOf="parent"
@@ -212,7 +212,7 @@
             android:gravity="center_vertical"
             android:paddingStart="10px"
             android:paddingEnd="26px"
-            android:text="@={data.startTime}"
+            android:text="@{data.startTime}"
             android:textColor="#393939"
             android:textSize="27px"
             app:layout_constraintRight_toRightOf="parent"
@@ -254,7 +254,7 @@
             android:gravity="center_vertical"
             android:paddingStart="10px"
             android:paddingEnd="26px"
-            android:text="@={data.endTime}"
+            android:text="@{data.endTime}"
             android:textColor="#393939"
             android:textSize="27px"
             app:layout_constraintRight_toRightOf="parent"
@@ -269,9 +269,9 @@
             android:text="*"
             android:textColor="#F40707"
             android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/et_out_day_number"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_out_day_number"
             app:layout_constraintRight_toLeftOf="@+id/tv_out_day_title"
-            app:layout_constraintTop_toTopOf="@+id/et_out_day_number" />
+            app:layout_constraintTop_toTopOf="@+id/tv_out_day_number" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_out_day_title"
@@ -280,12 +280,12 @@
             android:text="外出天数："
             android:textColor="#393939"
             android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/et_out_day_number"
-            app:layout_constraintRight_toLeftOf="@id/et_out_day_number"
-            app:layout_constraintTop_toTopOf="@+id/et_out_day_number" />
+            app:layout_constraintBottom_toBottomOf="@+id/tv_out_day_number"
+            app:layout_constraintRight_toLeftOf="@id/tv_out_day_number"
+            app:layout_constraintTop_toTopOf="@+id/tv_out_day_number" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/et_out_day_number"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_out_day_number"
             android:layout_width="796px"
             android:layout_height="72px"
             android:layout_marginStart="5px"
@@ -297,7 +297,7 @@
             android:inputType="number"
             android:paddingStart="10px"
             android:paddingEnd="26px"
-            android:text="@={data.days}"
+            android:text="@{data.days}"
             android:textColor="#393939"
             android:textColorHint="#999999"
             android:textSize="27px"
@@ -337,7 +337,7 @@
             android:layout_marginEnd="33px"
             android:autofillHints="选择街道"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_out_day_number"
+            app:layout_constraintTop_toBottomOf="@id/tv_out_day_number"
             tools:background="@color/color_text_grey" />
 
         <androidx.appcompat.widget.AppCompatSpinner
@@ -372,23 +372,41 @@
             android:layout_marginEnd="20px"
             android:autofillHints="选择省份"
             app:layout_constraintBottom_toBottomOf="@id/sp_city"
-            app:layout_constraintLeft_toLeftOf="@+id/et_out_day_number"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_out_day_number"
             app:layout_constraintRight_toLeftOf="@id/sp_city"
             app:layout_constraintTop_toTopOf="@id/sp_city"
             tools:background="@color/color_text_grey" />
 
-        <!--外出目的地明细-->
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/sp_reason"
+        <!--外出目的地明细  -->
+        <!--        <androidx.appcompat.widget.AppCompatSpinner-->
+        <!--            android:id="@+id/sp_reason"-->
+        <!--            android:layout_width="318px"-->
+        <!--            android:layout_height="72px"-->
+        <!--            android:layout_gravity="start"-->
+        <!--            android:layout_marginTop="23px"-->
+        <!--            android:layout_marginEnd="33px"-->
+        <!--            android:autofillHints="请选择"-->
+        <!--            android:entries="@array/leave_type"-->
+        <!--            android:spinnerMode="dropdown"-->
+        <!--            app:layout_constraintRight_toRightOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/sp_street"-->
+        <!--            tools:background="@color/color_text_grey" />-->
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_reason"
             android:layout_width="318px"
             android:layout_height="72px"
             android:layout_gravity="start"
             android:layout_marginTop="23px"
             android:layout_marginEnd="33px"
-            android:autofillHints="请选择"
+            android:background="@drawable/bg_text_input"
+            android:gravity="center_vertical|start"
+            android:hint="请选择"
+            android:paddingStart="10px"
+            android:text="@={data.outType}"
+            android:textSize="24px"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sp_street"
-            tools:background="@color/color_text_grey" />
+            app:layout_constraintTop_toBottomOf="@id/sp_street" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
@@ -397,9 +415,9 @@
             android:text="*"
             android:textColor="#F40707"
             android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/sp_reason"
+            app:layout_constraintBottom_toBottomOf="@+id/et_reason"
             app:layout_constraintRight_toLeftOf="@+id/tv_out_reason_title"
-            app:layout_constraintTop_toTopOf="@+id/sp_reason" />
+            app:layout_constraintTop_toTopOf="@+id/et_reason" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_out_reason_title"
@@ -408,9 +426,9 @@
             android:text="外出理由类型："
             android:textColor="#393939"
             android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/sp_reason"
-            app:layout_constraintRight_toLeftOf="@id/sp_reason"
-            app:layout_constraintTop_toTopOf="@+id/sp_reason" />
+            app:layout_constraintBottom_toBottomOf="@+id/et_reason"
+            app:layout_constraintRight_toLeftOf="@id/et_reason"
+            app:layout_constraintTop_toTopOf="@+id/et_reason" />
 
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -422,12 +440,13 @@
             android:gravity="center_vertical"
             android:hint="如门牌号"
             android:paddingStart="10px"
+            android:text="@={data.details}"
             android:textColorHint="#999999"
             android:textSize="24px"
-            app:layout_constraintBottom_toBottomOf="@+id/sp_reason"
+            app:layout_constraintBottom_toBottomOf="@+id/et_reason"
             app:layout_constraintLeft_toLeftOf="@+id/sp_province"
             app:layout_constraintRight_toLeftOf="@+id/tv_out_reason_title"
-            app:layout_constraintTop_toTopOf="@+id/sp_reason" />
+            app:layout_constraintTop_toTopOf="@+id/et_reason" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
@@ -447,8 +466,12 @@
             android:layout_marginTop="23px"
             android:layout_marginEnd="33px"
             android:background="@drawable/bg_text_input"
+            android:paddingStart="10px"
+            android:paddingEnd="10px"
+            android:text="@={data.specificReasons}"
+            android:textSize="27px"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sp_reason" />
+            app:layout_constraintTop_toBottomOf="@+id/et_reason" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
@@ -465,7 +488,7 @@
             android:id="@+id/tv_out_specific_reasons_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="外出理由类型："
+            android:text="具体事由："
             android:textColor="#393939"
             android:textSize="27px"
             app:layout_constraintBottom_toBottomOf="@+id/et_specific_reasons"
@@ -473,17 +496,33 @@
             app:layout_constraintTop_toTopOf="@+id/et_specific_reasons" />
 
         <!--关系：-->
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/sp_relationship"
+        <!--        <androidx.appcompat.widget.AppCompatSpinner-->
+        <!--            android:id="@+id/sp_relationship"-->
+        <!--            android:layout_width="318px"-->
+        <!--            android:layout_height="72px"-->
+        <!--            android:layout_gravity="start"-->
+        <!--            android:layout_marginTop="23px"-->
+        <!--            android:layout_marginEnd="33px"-->
+        <!--            android:autofillHints="请选择"-->
+        <!--            app:layout_constraintRight_toRightOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/et_specific_reasons"-->
+        <!--            tools:background="@color/color_text_grey" />-->
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_relationship"
             android:layout_width="318px"
             android:layout_height="72px"
             android:layout_gravity="start"
             android:layout_marginTop="23px"
             android:layout_marginEnd="33px"
-            android:autofillHints="请选择"
+            android:background="@drawable/bg_text_input"
+            android:gravity="center_vertical|start"
+            android:hint="请输入"
+            android:paddingStart="10px"
+            android:text="@={data.relationShip}"
+            android:textSize="24px"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_specific_reasons"
-            tools:background="@color/color_text_grey" />
+            app:layout_constraintTop_toBottomOf="@id/et_specific_reasons" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
@@ -492,35 +531,37 @@
             android:text="*"
             android:textColor="#F40707"
             android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/sp_relationship"
+            app:layout_constraintBottom_toBottomOf="@+id/et_relationship"
             app:layout_constraintRight_toLeftOf="@+id/tv_relationship_title"
-            app:layout_constraintTop_toTopOf="@+id/sp_relationship" />
+            app:layout_constraintTop_toTopOf="@+id/et_relationship" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_relationship_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="外出理由类型："
+            android:text="关系："
             android:textColor="#393939"
             android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/sp_relationship"
-            app:layout_constraintRight_toLeftOf="@id/sp_relationship"
-            app:layout_constraintTop_toTopOf="@+id/sp_relationship" />
+            app:layout_constraintBottom_toBottomOf="@+id/et_relationship"
+            app:layout_constraintRight_toLeftOf="@id/et_relationship"
+            app:layout_constraintTop_toTopOf="@+id/et_relationship" />
 
         <!--临时监护人：-->
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_temporary_guardian"
-            android:layout_width="244px"
+            android:layout_width="0dp"
             android:layout_height="72px"
             android:layout_marginEnd="44px"
             android:background="@drawable/bg_text_input"
             android:gravity="center_vertical"
+            android:paddingStart="10px"
+            android:text="@={data.temporaryGuardian}"
             android:textColorHint="#999999"
             android:textSize="24px"
-            app:layout_constraintBottom_toBottomOf="@+id/sp_relationship"
+            app:layout_constraintBottom_toBottomOf="@+id/et_relationship"
             app:layout_constraintLeft_toLeftOf="@+id/et_specific_reasons"
             app:layout_constraintRight_toLeftOf="@+id/tv_relationship_title"
-            app:layout_constraintTop_toTopOf="@+id/sp_relationship" />
+            app:layout_constraintTop_toTopOf="@+id/et_relationship" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_temporary_guardian_title"
@@ -547,11 +588,15 @@
         <!--联系电话：-->
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_contact_number"
-            android:layout_width="244px"
+            android:layout_width="0dp"
             android:layout_height="72px"
             android:layout_marginTop="23px"
             android:background="@drawable/bg_text_input"
             android:gravity="center_vertical"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:paddingStart="10px"
+            android:text="@={data.contactNumber}"
             android:textColorHint="#999999"
             android:textSize="24px"
             app:layout_constraintLeft_toLeftOf="@+id/et_temporary_guardian"
@@ -581,69 +626,68 @@
             app:layout_constraintTop_toTopOf="@+id/et_contact_number" />
 
 
-        <!--请假申请书：-->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_application_scan"
-            android:layout_width="249px"
-            android:layout_height="68px"
-            android:layout_marginTop="23px"
-            android:background="@drawable/bg_btn_scan_upload"
-            app:layout_constraintLeft_toLeftOf="@+id/et_contact_number"
-            app:layout_constraintRight_toRightOf="@+id/et_contact_number"
-            app:layout_constraintTop_toBottomOf="@+id/et_contact_number" />
+        <!--        &lt;!&ndash;请假申请书：&ndash;&gt;-->
+        <!--        <androidx.appcompat.widget.AppCompatButton-->
+        <!--            android:id="@+id/btn_application_scan"-->
+        <!--            android:layout_width="249px"-->
+        <!--            android:layout_height="68px"-->
+        <!--            android:layout_marginTop="23px"-->
+        <!--            android:background="@drawable/bg_btn_scan_upload"-->
+        <!--            app:layout_constraintLeft_toLeftOf="@+id/et_contact_number"-->
+        <!--            app:layout_constraintRight_toRightOf="@+id/et_contact_number"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/et_contact_number" />-->
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="请假申请书："
-            android:textColor="#393939"
-            android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"
-            app:layout_constraintRight_toLeftOf="@id/btn_application_scan"
-            app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />
+        <!--        <androidx.appcompat.widget.AppCompatTextView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="请假申请书："-->
+        <!--            android:textColor="#393939"-->
+        <!--            android:textSize="27px"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"-->
+        <!--            app:layout_constraintRight_toLeftOf="@id/btn_application_scan"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />-->
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="（请将申请书放置扫描区进行扫描）"
-            android:textColor="#999999"
-            android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"
-            app:layout_constraintLeft_toRightOf="@+id/btn_application_scan"
-            app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />
+        <!--        <androidx.appcompat.widget.AppCompatTextView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="（请将申请书放置扫描区进行扫描）"-->
+        <!--            android:textColor="#999999"-->
+        <!--            android:textSize="27px"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"-->
+        <!--            app:layout_constraintLeft_toRightOf="@+id/btn_application_scan"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />-->
 
 
-        <!--请假申材料：-->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_application_materials_scan"
-            android:layout_width="249px"
-            android:layout_height="68px"
-            android:layout_marginTop="23px"
-            android:background="@drawable/bg_btn_scan_upload"
-            app:layout_constraintLeft_toLeftOf="@+id/btn_application_scan"
-            app:layout_constraintRight_toRightOf="@+id/btn_application_scan"
-            app:layout_constraintTop_toBottomOf="@+id/btn_application_scan" />
+        <!--        &lt;!&ndash;请假申材料：&ndash;&gt;-->
+        <!--        <androidx.appcompat.widget.AppCompatButton-->
+        <!--            android:id="@+id/btn_application_materials_scan"-->
+        <!--            android:layout_width="249px"-->
+        <!--            android:layout_height="68px"-->
+        <!--            android:layout_marginTop="23px"-->
+        <!--            android:background="@drawable/bg_btn_scan_upload"-->
+        <!--            app:layout_constraintLeft_toLeftOf="@+id/btn_application_scan"-->
+        <!--            app:layout_constraintRight_toRightOf="@+id/btn_application_scan"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/btn_application_scan" />-->
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="请假申请材料："
-            android:textColor="#393939"
-            android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_application_materials_scan"
-            app:layout_constraintRight_toLeftOf="@id/btn_application_materials_scan"
-            app:layout_constraintTop_toTopOf="@+id/btn_application_materials_scan" />
+        <!--        <androidx.appcompat.widget.AppCompatTextView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="请假申请材料："-->
+        <!--            android:textColor="#393939"-->
+        <!--            android:textSize="27px"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@+id/btn_application_materials_scan"-->
+        <!--            app:layout_constraintRight_toLeftOf="@id/btn_application_materials_scan"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/btn_application_materials_scan" />-->
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="（请将申请材料放置扫描区进行扫描）"
-            android:textColor="#999999"
-            android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_application_materials_scan"
-            app:layout_constraintLeft_toRightOf="@+id/btn_application_materials_scan"
-            app:layout_constraintTop_toTopOf="@+id/btn_application_materials_scan" />
-
+        <!--        <androidx.appcompat.widget.AppCompatTextView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="（请将申请材料放置扫描区进行扫描）"-->
+        <!--            android:textColor="#999999"-->
+        <!--            android:textSize="27px"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@+id/btn_application_materials_scan"-->
+        <!--            app:layout_constraintLeft_toRightOf="@+id/btn_application_materials_scan"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/btn_application_materials_scan" />-->
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_submit"
@@ -657,7 +701,7 @@
             android:textSize="48px"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_application_materials_scan" />
+            app:layout_constraintTop_toBottomOf="@+id/et_contact_number" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
