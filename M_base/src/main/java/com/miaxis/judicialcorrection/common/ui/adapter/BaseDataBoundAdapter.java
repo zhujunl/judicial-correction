@@ -30,6 +30,7 @@ public abstract class BaseDataBoundAdapter<DataType, V extends ViewDataBinding> 
 
     @Override
     public final void onBindViewHolder(@NonNull DataBoundViewHolder<V> holder, int position) {
+        getPosition(holder.binding, items.get(position),position);
         bind(holder.binding, items.get(position));
         holder.binding.executePendingBindings();
     }
@@ -46,6 +47,10 @@ public abstract class BaseDataBoundAdapter<DataType, V extends ViewDataBinding> 
     public void submitList(List<DataType> update) {
         items = update;
         notifyDataSetChanged();
+    }
+
+    public void getPosition(V binding, DataType item,int position) {
+
     }
 
     /**

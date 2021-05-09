@@ -53,16 +53,27 @@ public class DialogResult extends BaseDialog<DialogVerifyResultBinding, DialogRe
         binding.ivError.setBackgroundResource(this.mBuilder.success ? R.mipmap.mipmap_success : R.mipmap.mipmap_error);
         binding.tvError.setText(this.mBuilder.title);
         binding.tvMessage.setText(this.mBuilder.message);
-        binding.cdtvTime.setTime(this.mBuilder.countDownTime);
-        binding.cdtvTime.setCountDownListener(new DefaultCountDownListener() {
+        if (this.mBuilder.countDownTime!=0) {
+            binding.cdtvTime.setVisibility(View.VISIBLE);
+            binding.cdtvTime.setTime(this.mBuilder.countDownTime);
+            binding.cdtvTime.setCountDownListener(new DefaultCountDownListener() {
 
-            @Override
-            public void onCountDownDone() {
-                if (listener != null) {
-                    listener.onTimeOut(DialogResult.this);
+                @Override
+                public void onCountDownDone() {
+                    if (listener != null) {
+                        listener.onTimeOut(DialogResult.this);
+                    }
                 }
-            }
-        });
+            });
+        }else{
+            binding.cdtvTime.setVisibility(View.GONE);
+        }
+
+        if (mBuilder.isHideAllShowSucceed){
+            binding.tvMessage.setVisibility(View.GONE);
+            binding.btnTryAgain.setVisibility(View.INVISIBLE);
+            binding.btnBackHome.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -86,6 +97,7 @@ public class DialogResult extends BaseDialog<DialogVerifyResultBinding, DialogRe
         public String message = "message";
         public int countDownTime = 10;
         public boolean enableBackHome = true;
+        public boolean isHideAllShowSucceed = false;
 
         public Builder() {
 
@@ -97,6 +109,11 @@ public class DialogResult extends BaseDialog<DialogVerifyResultBinding, DialogRe
             this.message = message;
             this.countDownTime = countDownTime;
             this.enableBackHome = enableBackHome;
+        }
+
+        public Builder hideAllHideSucceedInfo(boolean isHideAllShowSucceed) {
+            this.isHideAllShowSucceed = isHideAllShowSucceed;
+            return this;
         }
     }
 

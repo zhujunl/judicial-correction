@@ -6,4 +6,5 @@ include ':M_face'
 include ':M_id'
 include ':M_base'
 include ':app'
+include ':M_live'
 rootProject.name = "司法矫正"

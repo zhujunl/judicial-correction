@@ -1,8 +1,14 @@
 package com.miaxis.judicialcorrection.base.databinding;
 
+import android.icu.text.SimpleDateFormat;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.databinding.InverseMethod;
+
+import java.util.Date;
+import java.util.Locale;
 
 import timber.log.Timber;
 
@@ -22,9 +28,9 @@ public class Converter {
     public static int checkedToCheckId(RadioGroup view, int checked) {
         int checkedId;
         if (checked == 1) {
-            checkedId= view.getChildAt(0).getId();
+            checkedId = view.getChildAt(0).getId();
         } else {
-            checkedId= view.getChildAt(1).getId();
+            checkedId = view.getChildAt(1).getId();
         }
         return checkedId;
     }
@@ -35,7 +41,14 @@ public class Converter {
      */
     public static int checkedIdToChecked(RadioGroup view, int checkedId) {
         int id0 = view.getChildAt(0).getId();
-        return (checkedId == id0 )? 1 : 0;
+        return (checkedId == id0) ? 1 : 0;
     }
 
+    public static String convertGMTToLocal(Date source) {
+        if (source==null){
+            return "";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", new Locale("English"));
+        return sdf.format(source);
+    }
 }

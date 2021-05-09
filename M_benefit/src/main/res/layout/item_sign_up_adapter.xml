@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="278px"
+        android:layout_marginBottom="66px"
+        android:layout_marginStart="51px"
+        android:layout_marginTop="0px"
+        android:layout_marginEnd="51px"
+        android:background="@drawable/bg_item_sign_up">
+
+
+        <TextView
+            android:id="@+id/tv_theme_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33px"
+            android:layout_marginTop="40px"
+            android:text="活动主题："
+            android:textColor="#333333"
+            android:textSize="28px"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/tv_theme_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40px"
+            android:layout_marginEnd="32px"
+            android:layout_toEndOf="@id/tv_theme_label"
+            android:textColor="#333333"
+            android:textSize="28px"
+            android:textStyle="bold"
+            tools:text="内容" />
+
+
+        <TextView
+            android:id="@+id/tv_activity_time_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_theme_label"
+            android:layout_marginStart="32px"
+            android:layout_marginTop="25px"
+            android:text="活动时间："
+            android:textColor="#666"
+            android:textSize="25px" />
+
+
+        <TextView
+            android:id="@+id/tv_activity_time_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_theme_label"
+            android:layout_marginTop="25px"
+            android:layout_toEndOf="@id/tv_activity_time_label"
+            android:textColor="#666"
+            android:textSize="25px"
+            tools:text="时间：" />
+
+
+        <TextView
+            android:id="@+id/tv_activity_time_long_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_activity_time_label"
+            android:layout_marginStart="32px"
+            android:layout_marginTop="18px"
+            android:text="活动时长："
+            android:textColor="#666"
+            android:textSize="25px" />
+
+
+        <TextView
+            android:id="@+id/tv_activity_time_long_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_activity_time_label"
+            android:layout_marginTop="18px"
+            android:layout_toEndOf="@id/tv_activity_time_long_label"
+            android:textColor="#666"
+            android:textSize="25px"
+            tools:text="3小时" />
+
+
+        <TextView
+            android:id="@+id/tv_activity_location_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_activity_time_long_label"
+            android:layout_marginStart="32px"
+            android:layout_marginTop="18px"
+            android:text="活动地点："
+            android:textColor="#666"
+            android:textSize="25px" />
+
+
+        <TextView
+            android:id="@+id/tv_activity_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_activity_time_long_label"
+            android:layout_marginTop="18px"
+            android:layout_marginEnd="100px"
+            android:layout_toEndOf="@id/tv_activity_location_label"
+            android:textColor="#666"
+            android:textSize="25px"
+            tools:text="各社区" />
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="160px"
+            android:layout_height="42px"
+            android:layout_below="@id/tv_activity_time_long_label"
+            android:layout_marginStart="30px"
+            android:layout_marginTop="15px"
+            android:layout_toEndOf="@id/tv_activity_location"
+            android:background="@drawable/bg_gray_oval_5"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textColor="#5C5A5A"
+            android:textSize="18px"
+            tools:text="集体劳动" />
+
+
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="236px"
+            android:layout_height="84px"
+            android:layout_below="@id/tv_activity_time_label"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="35px"
+            android:layout_marginEnd="20px"
+            android:background="@drawable/bg_gray_oval_5"
+            android:gravity="center"
+            android:textColor="#5C5A5A"
+            android:textSize="36px"
+            tools:text="已报名" />
+    </RelativeLayout>
+</layout>

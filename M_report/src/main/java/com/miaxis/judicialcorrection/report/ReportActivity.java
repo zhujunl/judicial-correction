@@ -15,7 +15,6 @@ import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
 import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
 import com.miaxis.judicialcorrection.id.readIdCard.ReadIDCardBindingFragment;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
@@ -93,4 +92,5 @@ public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> i
                 10, true
         )).show();
     }
+
 }

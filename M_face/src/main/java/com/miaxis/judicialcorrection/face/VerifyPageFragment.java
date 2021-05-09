@@ -19,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
 /**
  * @author Tank
  * @date 2021/4/26 4:40 PM
@@ -26,7 +28,7 @@ import androidx.lifecycle.ViewModelProvider;
  * @updateAuthor
  * @updateDes
  */
-
+@AndroidEntryPoint
 public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBinding> implements CameraPreviewCallback {
 
     String title;
