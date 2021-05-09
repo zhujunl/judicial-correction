@@ -14,6 +14,7 @@ import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.api.vo.SignUpContentBean;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
+import com.miaxis.judicialcorrection.base.utils.AppToast;
 import com.miaxis.judicialcorrection.benefit.PublicWelfareActivity;
 import com.miaxis.judicialcorrection.benefit.R;
 import com.miaxis.judicialcorrection.benefit.WelfareViewModel;
@@ -45,6 +46,9 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
     @Inject
     AppHints appHints;
 
+    @Inject
+    AppToast appToast;
+
     @Override
     protected int initLayout() {
         return R.layout.fragment_to_sign_up;
@@ -63,7 +67,11 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
         mAdapter = new SignUpAdapter();
         mAdapter.setChildItemClickListener(new ChildItemClickListener() {
             @Override
-            public void onItemClick(SignUpContentBean listBean) {
+            public void onItemClick(int position,SignUpContentBean listBean) {
+                if (listBean.isSignUpSucceed()){
+                    appToast.show("您已报名");
+                    return;
+                }
                 IdCard idCardBean = viewModel.idCard;
                 viewModel.mItemId=listBean.getId();
                 viewModel.getParticipate(listBean.getId()).observe(ToSignUpFragment.this, observer -> {
@@ -74,7 +82,6 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
                                 appCompatDialog.dismiss();
                                 finish();
                             }
-
                             @Override
                             public void onTryAgain(AppCompatDialog appCompatDialog) {
                                 appCompatDialog.dismiss();
@@ -82,13 +89,15 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
 
                             @Override
                             public void onTimeOut(AppCompatDialog appCompatDialog) {
-                                finish();
+                                listBean.setSignUpSucceed(true);
+                                mAdapter.notifyItemChanged(position);
+                                appCompatDialog.dismiss();
                             }
                         }, new DialogResult.Builder(
                                true,
                                 true ? "报名" + "成功" : "验证失败",
                                 true ? "系统将自动返回" + "公益活动" + "身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
-                                10, false
+                                3, false
                         ).hideAllHideSucceedInfo(true)).show();
                     }
                     if (observer.isError()){

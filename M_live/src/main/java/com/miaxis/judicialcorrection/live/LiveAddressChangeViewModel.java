@@ -8,22 +8,17 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import com.miaxis.judicialcorrection.base.api.ApiResult;
-import com.miaxis.judicialcorrection.base.api.vo.HistorySignUpBean;
 import com.miaxis.judicialcorrection.base.api.vo.LiveAddressChangeDetailsBean;
 import com.miaxis.judicialcorrection.base.api.vo.LiveAddressListBean;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
-import com.miaxis.judicialcorrection.base.api.vo.SignUpBean;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
-import com.miaxis.judicialcorrection.base.db.dao.PlaceDao;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
 import com.miaxis.judicialcorrection.base.db.po.Place;
 import com.miaxis.judicialcorrection.base.repo.JusticeBureauRepo;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.base.utils.numbers.HexStringUtils;
 import com.miaxis.judicialcorrection.bean.LiveAddressChangeBean;
-import com.miaxis.judicialcorrection.id.bean.IdCard;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,7 +27,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import timber.log.Timber;
 
 /**
  * EnroolViewModel
@@ -101,7 +95,7 @@ public class LiveAddressChangeViewModel extends ViewModel {
 
     public String currentTime(boolean isHaveT) {
         if (isHaveT) {
-            return HexStringUtils.converCurrentGMT();
+            return HexStringUtils.convertCurrentGMT();
         } else {
             return dateFormatNoT.format(new Date());
         }

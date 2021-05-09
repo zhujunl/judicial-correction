@@ -13,6 +13,15 @@ public class SignUpContentBean {
     private String sqfwnr;
     private String jiedaoName;
     private String jlr;
+    private boolean isSignUpSucceed=false;
+
+    public boolean isSignUpSucceed() {
+        return isSignUpSucceed;
+    }
+
+    public void setSignUpSucceed(boolean signUpSucceed) {
+        isSignUpSucceed = signUpSucceed;
+    }
 
     public String getJlr() {
         return jlr;

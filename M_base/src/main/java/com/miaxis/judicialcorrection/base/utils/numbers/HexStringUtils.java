@@ -78,7 +78,7 @@ public class HexStringUtils {
         return df1.format(date1);
     }
 
-    public static String converCurrentGMT(){
+    public static String convertCurrentGMT(){
         Date date = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         return df.format(date);

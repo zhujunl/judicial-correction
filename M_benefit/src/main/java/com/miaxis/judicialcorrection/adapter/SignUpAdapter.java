@@ -29,16 +29,22 @@ public class SignUpAdapter extends BaseQuickAdapter<SignUpContentBean, BaseDataB
             binding.tvThemeLabel.setText("活动主题：" + signUpBean.getSqfwnr());
             String time = HexStringUtils.convertGMTToLocal(signUpBean.getSqfwkssj()) + "至" + HexStringUtils.convertGMTToLocal(signUpBean.getSqfwjssj());
             binding.tvActivityTimeContent.setText(time);
-            binding.tvActivityTimeLongContent.setText(signUpBean.getSqfwsc()+"小时");
+            binding.tvActivityTimeLongContent.setText(signUpBean.getSqfwsc());
             binding.tvActivityLocation.setText(signUpBean.getSqfwdd());
 
-            binding.tvState.setTextColor(Color.parseColor("#FF721F"));
-            binding.tvState.setBackgroundResource(R.drawable.bg_button_un);
-            binding.tvState.setText("报名参加");
+            if (signUpBean.isSignUpSucceed()){
+                binding.tvState.setTextColor(Color.parseColor("#979797"));
+                binding.tvState.setBackgroundResource(R.drawable.bg_gray_button_box);
+                binding.tvState.setText("已报名");
+            }else {
+                binding.tvState.setTextColor(Color.parseColor("#FF721F"));
+                binding.tvState.setBackgroundResource(R.drawable.bg_button_un);
+                binding.tvState.setText("报名参加");
+            }
 
             binding.tvState.setOnClickListener(v -> {
                 if (listener != null) {
-                    listener.onItemClick(signUpBean);
+                    listener.onItemClick(bindingHolder.getAdapterPosition(),  signUpBean);
                 }
             });
         }

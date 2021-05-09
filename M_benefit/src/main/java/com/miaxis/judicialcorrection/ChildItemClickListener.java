@@ -5,5 +5,5 @@ import com.miaxis.judicialcorrection.base.api.vo.SignUpContentBean;
 
 public interface ChildItemClickListener {
 
-      void  onItemClick(SignUpContentBean bean);
+      void  onItemClick(int pisition,SignUpContentBean bean);
 }
