@@ -305,15 +305,24 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                     value.qrdszdName = model.cityList.getValue().get(binding.spCity.getSelectedItemPosition()).VALUE;
                 }
             }
-            if (model.smallTown.getValue() != null) {
+            if (model.smallTown.getValue() != null&&!model.smallTown.getValue().isEmpty()) {
                 value.qrdszx = model.smallTown.getValue().get(binding.spDistrict.getSelectedItemPosition()).ID + "";
                 value.qrdszxName = model.smallTown.getValue().get(binding.spDistrict.getSelectedItemPosition()).VALUE;
+            }else{
+                value.qrdszx=null;
+                value.qrdszxName=null;
             }
-            if ("浙江省".equals(value.qrdszdName)) {
-                if (model.street.getValue() != null) {
+            if ("浙江省".equals(value.qrdszsName)) {
+                if (model.street.getValue() != null&&!model.street.getValue().isEmpty()) {
                     value.qrdxz = model.street.getValue().get(binding.spStreet.getSelectedItemPosition()).ID + "";
                     value.qrdxzName = model.street.getValue().get(binding.spStreet.getSelectedItemPosition()).VALUE;
+                }else{
+                    value.qrdxz=null;
+                    value.qrdxzName=null;
                 }
+            } else {
+                value.qrdxz = null;
+                value.qrdxzName = null;
             }
             Object itemAtPosition = binding.spinnerJiedao.getSelectedItem();
             if (itemAtPosition instanceof JusticeBureau) {

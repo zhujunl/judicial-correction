@@ -19,6 +19,7 @@ import javax.inject.Singleton;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import timber.log.Timber;
 
 @Singleton
 public class LiveAddressChangeRepo {
@@ -35,6 +36,7 @@ public class LiveAddressChangeRepo {
 //        MultipartBody.Builder builder = new MultipartBody.Builder()
 //                .setType(MultipartBody.FORM);
         String toJson = new Gson().toJson(liveAddressChangeBean);
+        Timber.e("setLiveAddressChange %s",toJson);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
         LiveData<ApiResult<Object>> apiResultLiveData=  apiService.changeLiveAddress(body);
 
