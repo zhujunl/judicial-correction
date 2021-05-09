@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
+import com.miaxis.judicialcorrection.base.utils.AppToast;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundDiffAdapter;
 import com.miaxis.judicialcorrection.databinding.ActivityMainBinding;
 import com.miaxis.judicialcorrection.databinding.ItemMainFucBinding;
@@ -59,6 +61,9 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
 
     @Inject
     Lazy<AppHints> appHintsLazy;
+
+    @Inject
+    AppToast appToast;
 
     @Override
     protected int initLayout() {

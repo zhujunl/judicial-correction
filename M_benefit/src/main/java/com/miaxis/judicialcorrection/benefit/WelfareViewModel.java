@@ -43,34 +43,12 @@ import timber.log.Timber;
  */
 @HiltViewModel
 public class WelfareViewModel extends ViewModel {
-
-    @SuppressLint("SimpleDateFormat")
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
     public  IdCard idCard;
-    public  MutableLiveData<Boolean> mVerifyState=new MutableLiveData<>();
     public  MutableLiveData<String>  mStrPid=new MutableLiveData<>();
 
-
-    public  SignUpBean.ListBean listBeanItem;
-    /**
-     * 错误信息，主界面会dialog显示
-     */
-    public MutableLiveData<String> errorMsgLiveData = new MutableLiveData<>();
-
-    /**
-     * 今天日期
-     */
-    public LiveData<String> todayLiveData = new MutableLiveData<String>() {
-        @Override
-        protected void onActive() {
-            super.onActive();
-            setValue(dateFormat.format(new Date()));
-        }
-    };
-
-
     private final PublicWelfareRepo mPublicWelfareRepo;
+
+    public   String mItemId;
 
     @Inject
     public WelfareViewModel(PublicWelfareRepo publicWelfareRepo) {
@@ -83,7 +61,6 @@ public class WelfareViewModel extends ViewModel {
         return mPublicWelfareRepo.addSignUpParameter(page, 10);
     }
 
-
     /**
      * 得到历史
      */
@@ -92,9 +69,8 @@ public class WelfareViewModel extends ViewModel {
     }
 
     //参加活动
-    public LiveData<Resource<Object>> getParticipate(String pid, String servicePerformance,
-                                                     String serviceRepresentation) {
-        return mPublicWelfareRepo.participate(pid, servicePerformance, serviceRepresentation);
+    public LiveData<Resource<Object>> getParticipate(String gyldId) {
+        return mPublicWelfareRepo.participate(mStrPid.getValue(),gyldId);
     }
 
 

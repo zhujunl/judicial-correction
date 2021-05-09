@@ -8,12 +8,11 @@ import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 import com.miaxis.judicialcorrection.ChildItemClickListener;
 import com.miaxis.judicialcorrection.adapter.SignUpAdapter;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
-import com.miaxis.judicialcorrection.base.api.vo.SignUpBean;
+import com.miaxis.judicialcorrection.base.api.vo.SignUpContentBean;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.benefit.PublicWelfareActivity;
 import com.miaxis.judicialcorrection.benefit.R;
@@ -22,8 +21,6 @@ import com.miaxis.judicialcorrection.benefit.databinding.FragmentToSignUpBinding
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
 import com.miaxis.judicialcorrection.face.VerifyPageFragment;
-import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
-import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
 
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +41,6 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
     private int page = 1;
     private SignUpAdapter mAdapter;
     private boolean isRefresh = true;
-
 
     @Inject
     AppHints appHints;
@@ -67,16 +63,45 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
         mAdapter = new SignUpAdapter();
         mAdapter.setChildItemClickListener(new ChildItemClickListener() {
             @Override
-            public void onItemClick(SignUpBean.ListBean listBean) {
+            public void onItemClick(SignUpContentBean listBean) {
                 IdCard idCardBean = viewModel.idCard;
-                viewModel.listBeanItem=listBean;
-                if (idCardBean != null && getActivity() != null) {
-                    PersonInfo info = new PersonInfo();
-                    info.setXm(idCardBean.idCardMsg.name);
-                    info.setIdCardNumber(idCardBean.idCardMsg.id_num);
-                    ((PublicWelfareActivity) getActivity()).replaceFragment(
-                            new VerifyPageFragment("身份核验", info));
-                }
+                viewModel.mItemId=listBean.getId();
+                viewModel.getParticipate(listBean.getId()).observe(ToSignUpFragment.this, observer -> {
+                    if (observer.isSuccess()) {
+                        new DialogResult(getActivity(), new DialogResult.ClickListener() {
+                            @Override
+                            public void onBackHome(AppCompatDialog appCompatDialog) {
+                                appCompatDialog.dismiss();
+                                finish();
+                            }
+
+                            @Override
+                            public void onTryAgain(AppCompatDialog appCompatDialog) {
+                                appCompatDialog.dismiss();
+                            }
+
+                            @Override
+                            public void onTimeOut(AppCompatDialog appCompatDialog) {
+                                finish();
+                            }
+                        }, new DialogResult.Builder(
+                               true,
+                                true ? "报名" + "成功" : "验证失败",
+                                true ? "系统将自动返回" + "公益活动" + "身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
+                                10, false
+                        ).hideAllHideSucceedInfo(true)).show();
+                    }
+                    if (observer.isError()){
+                        appHints.showError("失败");
+                    }
+                });
+//                if (idCardBean != null && getActivity() != null) {
+//                    PersonInfo info = new PersonInfo();
+//                    info.setXm(idCardBean.idCardMsg.name);
+//                    info.setIdCardNumber(idCardBean.idCardMsg.id_num);
+//                    ((PublicWelfareActivity) getActivity()).replaceFragment(
+//                            new VerifyPageFragment("身份核验", info));
+//                }
             }
         });
     }
@@ -114,8 +139,12 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
                 if (isRefresh) {
                     if (listResource.data != null && listResource.data.getList() != null) {
                         mAdapter.setNewInstance(listResource.data.getList());
+                        if(listResource.data.getList().size()<10){
+                            mAdapter.getLoadMoreModule().loadMoreEnd();
+                        }
                     } else {
                         mAdapter.setNewInstance(new ArrayList<>());
+                        mAdapter.getLoadMoreModule().loadMoreEnd();
                     }
                 } else {
                     if (listResource.data != null && listResource.data.getList() != null) {

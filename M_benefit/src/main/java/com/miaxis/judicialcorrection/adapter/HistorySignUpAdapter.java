@@ -17,27 +17,30 @@ import com.miaxis.judicialcorrection.benefit.databinding.ItemSignUpAdapterBindin
 import org.jetbrains.annotations.NotNull;
 
 
-public class HistorySignUpAdapter extends BaseQuickAdapter<SignUpContentBean, BaseDataBindingHolder<ItemSignUpAdapterBinding>> implements LoadMoreModule {
+public class HistorySignUpAdapter extends BaseQuickAdapter< HistorySignUpBean.ListBean, BaseDataBindingHolder<ItemSignUpAdapterBinding>> implements LoadMoreModule {
 
     public HistorySignUpAdapter() {
         super(R.layout.item_sign_up_adapter);
     }
 
     @Override
-    protected void convert(@NotNull BaseDataBindingHolder<ItemSignUpAdapterBinding> bindingHolder, SignUpContentBean signUpBean) {
+    protected void convert(@NotNull BaseDataBindingHolder<ItemSignUpAdapterBinding> bindingHolder, HistorySignUpBean.ListBean signUpBean) {
         ItemSignUpAdapterBinding binding = bindingHolder.getDataBinding();
         if (binding != null) {
-            binding.tvThemeLabel.setText("活动主题：" + signUpBean.getSqfwnr());
-            String time = HexStringUtils.convertGMTToLocal(signUpBean.getSqfwkssj()) + "至" + HexStringUtils.convertGMTToLocal(signUpBean.getSqfwjssj());
-            binding.tvActivityTimeContent.setText(time);
-            binding.tvActivityTimeLongContent.setText(signUpBean.getSqfwsc());
-            binding.tvActivityLocation.setText(signUpBean.getJiedaoName());
-            if (!TextUtils.isEmpty(signUpBean.getJlr())) {
-                binding.tvType.setVisibility(View.VISIBLE);
+            if (signUpBean.getPublicActivityVo() != null) {
+                binding.tvThemeLabel.setText("活动主题："+signUpBean.getPublicActivityVo().getSqfwnr());
+                String time = HexStringUtils.convertGMTToLocal(signUpBean.getPublicActivityVo().getSqfwkssj()) + "至" + HexStringUtils.convertGMTToLocal(signUpBean.getPublicActivityVo().getSqfwjssj());
+                binding.tvActivityTimeContent.setText(time);
+                binding.tvActivityTimeLongContent.setText(signUpBean.getPublicActivityVo().getSqfwsc()+"小时");
+                binding.tvActivityLocation.setText(signUpBean.getPublicActivityVo().getSqfwdd());
+//                binding.tvType.setText(signUpBean.getPublicActivityVo().getJlr());
             } else {
-                binding.tvType.setVisibility(View.GONE);
+                binding.tvThemeLabel.setText("");
+                binding.tvActivityTimeContent.setText("");
+                binding.tvActivityTimeLongContent.setText("");
+                binding.tvActivityLocation.setText("");
+//                binding.tvType.setText("");
             }
-            binding.tvType.setText(signUpBean.getJlr());
 
             binding.tvState.setTextColor(Color.parseColor("#979797"));
             binding.tvState.setBackgroundResource(R.drawable.bg_gray_button_box);

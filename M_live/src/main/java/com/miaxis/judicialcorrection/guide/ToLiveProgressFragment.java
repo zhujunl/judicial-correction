@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
+import com.miaxis.judicialcorrection.live.LiveAddressChangeActivity;
 import com.miaxis.judicialcorrection.live.LiveAddressChangeViewModel;
 import com.miaxis.judicialcorrection.live.R;
 import com.miaxis.judicialcorrection.live.databinding.FragmentToLiveProgressBinding;
@@ -32,7 +33,9 @@ public class ToLiveProgressFragment extends BaseBindingFragment<FragmentToLivePr
     @Override
     protected void initView(@NonNull @NotNull FragmentToLiveProgressBinding binding, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         binding.btnBackToHome.setOnClickListener(v -> {
-            finish();
+            if (getActivity() != null) {
+                ((LiveAddressChangeActivity) getActivity()).replaceFragment(new LiveListFragment());
+            }
         });
     }
 

@@ -6,8 +6,8 @@ public class SignUpContentBean {
     private String id;
 
 
-    private Date sqfwkssj;
-    private Date sqfwjssj;
+    private String sqfwkssj;
+    private String sqfwjssj;
     private String sqfwsc;
     private String sqfwdd;
     private String sqfwnr;
@@ -30,19 +30,19 @@ public class SignUpContentBean {
         this.id = id;
     }
 
-    public Date getSqfwkssj() {
+    public String getSqfwkssj() {
         return sqfwkssj;
     }
 
-    public void setSqfwkssj(Date sqfwkssj) {
+    public void setSqfwkssj(String sqfwkssj) {
         this.sqfwkssj = sqfwkssj;
     }
 
-    public Date getSqfwjssj() {
+    public String getSqfwjssj() {
         return sqfwjssj;
     }
 
-    public void setSqfwjssj(Date sqfwjssj) {
+    public void setSqfwjssj(String sqfwjssj) {
         this.sqfwjssj = sqfwjssj;
     }
 

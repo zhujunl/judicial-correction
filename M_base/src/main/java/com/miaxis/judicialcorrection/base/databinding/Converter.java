@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.InverseMethod;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
 
@@ -44,11 +45,19 @@ public class Converter {
         return (checkedId == id0) ? 1 : 0;
     }
 
-    public static String convertGMTToLocal(Date source) {
+    public static String convertGMTToLocal(String source) {
         if (source==null){
             return "";
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", new Locale("English"));
-        return sdf.format(source);
+
+        SimpleDateFormat dff = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS",Locale.ENGLISH);//输入的被转化的时间格式
+        SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//需要转化成的时间格式
+        Date date1 = null;
+        try {
+            date1 = dff.parse(source);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return df1.format(date1);
     }
 }

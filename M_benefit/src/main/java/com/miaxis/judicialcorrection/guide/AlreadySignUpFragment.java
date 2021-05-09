@@ -82,6 +82,11 @@ public class AlreadySignUpFragment extends BaseBindingFragment<FragmentAlreadySi
                 if (isRefresh) {
                     if (listResource.data != null && listResource.data.getList() != null) {
                         mAdapter.setNewInstance(listResource.data.getList());
+                        if(listResource.data.getList().size()<10){
+                            mAdapter.getLoadMoreModule().loadMoreEnd();
+                        }
+                    }else{
+                        mAdapter.getLoadMoreModule().loadMoreEnd();
                     }
                 } else {
                     if (listResource.data != null && listResource.data.getList() != null) {

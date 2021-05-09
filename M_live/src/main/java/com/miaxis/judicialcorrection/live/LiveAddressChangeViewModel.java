@@ -21,6 +21,7 @@ import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
 import com.miaxis.judicialcorrection.base.db.po.Place;
 import com.miaxis.judicialcorrection.base.repo.JusticeBureauRepo;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
+import com.miaxis.judicialcorrection.base.utils.numbers.HexStringUtils;
 import com.miaxis.judicialcorrection.bean.LiveAddressChangeBean;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
 
@@ -100,7 +101,7 @@ public class LiveAddressChangeViewModel extends ViewModel {
 
     public String currentTime(boolean isHaveT) {
         if (isHaveT) {
-            return dateFormat.format(new Date());
+            return HexStringUtils.converCurrentGMT();
         } else {
             return dateFormatNoT.format(new Date());
         }

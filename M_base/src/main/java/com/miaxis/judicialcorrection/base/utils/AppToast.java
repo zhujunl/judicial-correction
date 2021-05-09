@@ -2,6 +2,10 @@ package com.miaxis.judicialcorrection.base.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Point;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import javax.inject.Inject;
@@ -31,8 +35,12 @@ public class AppToast {
         if (toast != null) {
             toast.cancel();
         }
-        toast = Toast.makeText(context,text,Toast.LENGTH_SHORT);
+        toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        Point screenWidthAndHeight = DensityUtils.getScreenWidthAndHeight(context);
+        int height = (int) (screenWidthAndHeight.y * 0.75);
+        toast.setGravity(Gravity.TOP, 0, height);
         toast.show();
         return toast;
     }
+
 }

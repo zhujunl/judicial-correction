@@ -10,7 +10,7 @@ public class LiveAddressChangeDetailsBean extends BaseObservable {
     public String id;
     public String pid;
     public String pname;
-    public Date sqsj;
+    public String sqsj;
     public String qrdszs;
     public String qrdszsName;
     public String qrdszd;
@@ -49,12 +49,11 @@ public class LiveAddressChangeDetailsBean extends BaseObservable {
         this.pname = pname;
     }
 
-
-    public Date getSqsj() {
+    public String getSqsj() {
         return sqsj;
     }
 
-    public void setSqsj(Date sqsj) {
+    public void setSqsj(String sqsj) {
         this.sqsj = sqsj;
     }
 

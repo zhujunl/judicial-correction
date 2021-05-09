@@ -115,9 +115,8 @@ public interface ApiService {
                                                                   @Query("rows") int rows, @Query("pid") String pid);
 
     //参与社区服务
-    @GET("/publicActivity/person/add")
-    LiveData<ApiResult<Object>> participate(@Query("pid") String pid, @Query("sqfwbx") String servicePerformance,
-                                            @Query("gyldId") String serviceRepresentation);
+    @POST("/publicActivity/person/add")
+    LiveData<ApiResult<Object>> participate(@Body() RequestBody body);
 
     //社区矫正对象居住地变更查询
     @GET("/placeChange/list")

@@ -94,21 +94,20 @@ public class PublicWelfareActivity extends BaseBindingActivity<ActivityPublicWel
     @Override
     public void onVerify(ZZResponse<VerifyInfo> response) {
         if (ZZResponse.isSuccess(response)) {
-            if (mWelfareViewModel.listBeanItem != null) {
-                mWelfareViewModel.getParticipate(mWelfareViewModel.listBeanItem.getPid(), mWelfareViewModel.listBeanItem.getSqfwbx(), mWelfareViewModel.listBeanItem.getGyldId()).observe(this, observer -> {
-                    if (observer.isSuccess()) {
-                        showDialog(response);
-                    } else {
-                        appHints.showHint(observer.errorMessage);
-                    }
-                });
-            }
+            mWelfareViewModel.getParticipate(mWelfareViewModel.mItemId).observe(this, observer -> {
+                if (observer.isSuccess()) {
+                    showDialog(response);
+                }
+                if (observer.isError()) {
+                    appHints.showHint(observer.errorMessage);
+                }
+            });
         } else {
             showDialog(response);
         }
     }
 
-    private void showDialog(ZZResponse<VerifyInfo> response) {
+    public void showDialog(ZZResponse<VerifyInfo> response) {
         new DialogResult(this, new DialogResult.ClickListener() {
             @Override
             public void onBackHome(AppCompatDialog appCompatDialog) {

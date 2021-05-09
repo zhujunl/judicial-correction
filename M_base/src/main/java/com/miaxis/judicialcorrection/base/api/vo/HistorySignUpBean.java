@@ -17,7 +17,7 @@ public class HistorySignUpBean {
 
     public String total;
 
-    private List<SignUpContentBean> list;
+    private List<ListBean> list;
 
 
     public String getTotal() {
@@ -28,12 +28,61 @@ public class HistorySignUpBean {
         this.total = total;
     }
 
-    public List<SignUpContentBean> getList() {
+    public List<ListBean> getList() {
         return list;
     }
 
-    public void setList(List<SignUpContentBean> list) {
+    public void setList(List<ListBean> list) {
         this.list = list;
+    }
+
+
+    public static class ListBean {
+        private String gyldId;
+        private String pid;
+        private String pname;
+        private String sqfwbx;
+        private SignUpContentBean publicActivityVo;
+
+        public String getGyldId() {
+            return gyldId;
+        }
+
+        public void setGyldId(String gyldId) {
+            this.gyldId = gyldId;
+        }
+
+        public String getPid() {
+            return pid;
+        }
+
+        public void setPid(String pid) {
+            this.pid = pid;
+        }
+
+        public String getPname() {
+            return pname;
+        }
+
+        public void setPname(String pname) {
+            this.pname = pname;
+        }
+
+        public String getSqfwbx() {
+            return sqfwbx;
+        }
+
+        public void setSqfwbx(String sqfwbx) {
+            this.sqfwbx = sqfwbx;
+        }
+
+        public SignUpContentBean getPublicActivityVo() {
+            return publicActivityVo;
+        }
+
+        public void setPublicActivityVo(SignUpContentBean publicActivityVo) {
+            this.publicActivityVo = publicActivityVo;
+        }
     }
 
 
