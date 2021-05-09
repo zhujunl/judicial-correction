@@ -48,10 +48,8 @@ public class LiveListFragment extends BaseBindingFragment<FragmentLiveListBindin
         binding.rvList.setAdapter(adapter);
         binding.tvApply.setOnClickListener(v -> {
             if (getActivity() != null) {
-                if (getActivity() != null) {
 //                    ((LiveAddressChangeActivity) getActivity()).replaceFragment(new VerifyPageFragment("居住地变更",model.personInfoMutableLiveData.getValue()));
-                    ((LiveAddressChangeActivity) getActivity()).replaceFragment(new LiveAddressFragment());
-                }
+                ((LiveAddressChangeActivity) getActivity()).replaceFragment(new LiveAddressFragment());
             }
         });
     }
@@ -76,7 +74,7 @@ public class LiveListFragment extends BaseBindingFragment<FragmentLiveListBindin
         }
         adapter.setChildItemClickListener(bean -> {
             if (getActivity() != null) {
-                model.mId=bean.getId();
+                model.mId = bean.getId();
                 ((LiveAddressChangeActivity) getActivity()).replaceFragment(new ToLiveProgressFragment());
             }
         });
@@ -104,10 +102,11 @@ public class LiveListFragment extends BaseBindingFragment<FragmentLiveListBindin
                 }
             });
         }
+
         @Override
         public void getPosition(LayoutLiveItemBinding binding, LiveAddressListBean.ListDTO item, int position) {
             super.getPosition(binding, item, position);
-            item.setPos(position+1);
+            item.setPos(position + 1);
         }
     }
 }

@@ -360,6 +360,9 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                         }
                     }, 2000);
                 }
+                if (observer.isError()){
+                    appHints.showError(observer.errorMessage);
+                }
             });
         }
     }
