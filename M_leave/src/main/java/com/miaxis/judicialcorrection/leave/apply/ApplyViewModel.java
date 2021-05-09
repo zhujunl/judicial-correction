@@ -107,15 +107,19 @@ public class ApplyViewModel extends ViewModel {
         if (TextUtils.isEmpty(endTime.get())) {
             return "请选择请假结束时间";
         }
+        Timber.e("mProvince:" + mProvince.getValue());
         if (mProvince.getValue() == null || TextUtils.isEmpty(mProvince.getValue().VALUE)) {
             return "请选择省份";
         }
+        Timber.e("mCity:" + mCity.getValue());
         if (mCity.getValue() == null || TextUtils.isEmpty(mCity.getValue().VALUE)) {
             return "请选择市";
         }
+        Timber.e("mDistrict:" + mDistrict.getValue());
         if (mDistrict.getValue() == null || TextUtils.isEmpty(mDistrict.getValue().VALUE)) {
             return "请选择县区";
         }
+        Timber.e("mAgencies:" + mAgencies.getValue());
         if (mAgencies.getValue() == null || TextUtils.isEmpty(mAgencies.getValue().VALUE)) {
             return "请选择乡镇街道";
         }

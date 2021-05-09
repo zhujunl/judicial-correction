@@ -25,11 +25,11 @@
             android:textSize="25px"
             app:layout_constraintHorizontal_weight="1.5"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/tv_name"
+            app:layout_constraintRight_toLeftOf="@id/tv_name_title"
             tools:text="1" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_name"
+            android:id="@+id/tv_name_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -50,7 +50,7 @@
             android:textColor="@color/color_text_grey_1"
             android:textSize="25px"
             app:layout_constraintHorizontal_weight="3"
-            app:layout_constraintLeft_toRightOf="@+id/tv_name"
+            app:layout_constraintLeft_toRightOf="@+id/tv_name_title"
             app:layout_constraintRight_toLeftOf="@id/tv_start_time"
             tools:text="矫正单位" />
 

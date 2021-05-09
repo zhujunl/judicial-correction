@@ -1,5 +1,6 @@
 package com.miaxis.judicialcorrection.leave;
 
+import com.miaxis.judicialcorrection.base.api.vo.Leave;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,11 +22,11 @@ public interface LeaveListener {
     /**
      * 销假
      */
-    void onCancel();
+    void onCancel(@NotNull VerifyInfo verifyInfo,@NotNull Leave.ListBean listBean);
 
     /**
      * 查询进度
      */
-    void onQueryProgress();
+    void onQueryProgress(@NotNull VerifyInfo verifyInfo,@NotNull Leave.ListBean listBean);
 
 }

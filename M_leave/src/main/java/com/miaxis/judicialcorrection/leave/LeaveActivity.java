@@ -3,6 +3,7 @@ package com.miaxis.judicialcorrection.leave;
 import android.os.Bundle;
 
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
+import com.miaxis.judicialcorrection.base.api.vo.Leave;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
@@ -13,7 +14,10 @@ import com.miaxis.judicialcorrection.id.bean.IdCard;
 import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
 import com.miaxis.judicialcorrection.id.readIdCard.ReadIDCardBindingFragment;
 import com.miaxis.judicialcorrection.leave.apply.LeaveApplyFragment;
+import com.miaxis.judicialcorrection.leave.cancel.LeaveCancelFragment;
 import com.miaxis.judicialcorrection.leave.databinding.ActivityLeaveBinding;
+import com.miaxis.judicialcorrection.leave.list.LeaveListFragment;
+import com.miaxis.judicialcorrection.leave.progress.ProgressFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,11 +46,12 @@ public class LeaveActivity extends BaseBindingActivity<ActivityLeaveBinding> imp
 
     @Override
     protected void initView(@NonNull ActivityLeaveBinding binding, @Nullable Bundle savedInstanceState) {
-        //readIdCard();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.layout_root, new LeaveApplyFragment(new VerifyInfo("11", "22", "33")))
-                .commitNow();
+        readIdCard();
+        // TODO: 2021/5/9 测试数据
+        //        getSupportFragmentManager()
+        //                .beginTransaction()
+        //                .replace(R.id.layout_root, new LeaveApplyFragment(new VerifyInfo("6bea3c121816477c922f8706424d77de", "接口添加测试1", "111111111111111112")))
+        //                .commitNow();
     }
 
     private void readIdCard() {
@@ -122,13 +127,19 @@ public class LeaveActivity extends BaseBindingActivity<ActivityLeaveBinding> imp
     }
 
     @Override
-    public void onCancel() {
-
+    public void onCancel(@NotNull VerifyInfo verifyInfo, Leave.@NotNull ListBean listBean) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.layout_root, new LeaveCancelFragment(verifyInfo, listBean))
+                .commitNow();
     }
 
     @Override
-    public void onQueryProgress() {
-
+    public void onQueryProgress(@NotNull VerifyInfo verifyInfo, Leave.@NotNull ListBean listBean) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.layout_root, new ProgressFragment(verifyInfo, listBean))
+                .commitNow();
     }
 
 }

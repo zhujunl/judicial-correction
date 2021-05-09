@@ -1,8 +1,6 @@
 package com.miaxis.judicialcorrection.base.api;
 
 import com.miaxis.judicialcorrection.base.api.vo.Education;
-import androidx.lifecycle.LiveData;
-
 import com.miaxis.judicialcorrection.base.api.vo.HistorySignUpBean;
 import com.miaxis.judicialcorrection.base.api.vo.JusticeBureauList;
 import com.miaxis.judicialcorrection.base.api.vo.Leave;
@@ -15,17 +13,11 @@ import com.miaxis.judicialcorrection.base.api.vo.User;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.RequestBody;
 import androidx.lifecycle.LiveData;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -35,8 +27,8 @@ import retrofit2.http.Query;
  * Created on 4/25/21.
  */
 public interface ApiService {
-//    @GET("/api/aidy-base/atm/enter/login/student/code")
-//    LiveData<ApiResult<User>> login(@Header("tenementCode") String tenementCode, @Query("rfid") String rfid, @Query("sn") String sn);
+    //    @GET("/api/aidy-base/atm/enter/login/student/code")
+    //    LiveData<ApiResult<User>> login(@Header("tenementCode") String tenementCode, @Query("rfid") String rfid, @Query("sn") String sn);
 
     @GET("/personInfo/list")
     LiveData<ApiResult<List<User>>> personList(
@@ -58,7 +50,8 @@ public interface ApiService {
     LiveData<ApiResult<Object>> addJob(
             @Body() RequestBody body
     );
-  @POST("/personInfo/relationships/add")
+
+    @POST("/personInfo/relationships/add")
     LiveData<ApiResult<Object>> addRelationship(
             @Body() RequestBody body
     );
@@ -104,7 +97,17 @@ public interface ApiService {
 
     @POST("/leave/add")
     LiveData<ApiResult<Object>> leaveAdd(
+            @Body() Map<String, Object> body
+    );
+
+    @POST("/leave/end")
+    LiveData<ApiResult<Object>> leaveEnd(
             @Body() Map<String, String> body
+    );
+
+    @GET("/leave/get")
+    LiveData<ApiResult<Leave.ListBean>> getLeave(
+            @Query("id") String id
     );
 
 
@@ -136,5 +139,5 @@ public interface ApiService {
     //社区对象变更采集 文件和参数一起上传
     @POST("/placeChange/add")
     LiveData<ApiResult<Object>> changeLiveAddress(@Body() RequestBody body);
-//            @Part() List<MultipartBody.Part > files);
+    //            @Part() List<MultipartBody.Part > files);
 }

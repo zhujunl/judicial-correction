@@ -21,10 +21,10 @@
             android:textSize="25px"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/tv_name" />
+            app:layout_constraintRight_toLeftOf="@id/tv_name_title" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_name"
+            android:id="@+id/tv_name_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -44,11 +44,11 @@
             android:textColor="@color/color_text_grey_1"
             android:textSize="25px"
             app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintLeft_toRightOf="@+id/tv_name"
-            app:layout_constraintRight_toLeftOf="@id/tv_start_time" />
+            app:layout_constraintLeft_toRightOf="@+id/tv_name_title"
+            app:layout_constraintRight_toLeftOf="@id/tv_start_time_title" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_start_time"
+            android:id="@+id/tv_start_time_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -57,10 +57,10 @@
             android:textSize="25px"
             app:layout_constraintHorizontal_weight="2"
             app:layout_constraintLeft_toRightOf="@+id/tv_location"
-            app:layout_constraintRight_toLeftOf="@id/tv_end_time" />
+            app:layout_constraintRight_toLeftOf="@id/tv_end_time_title" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_end_time"
+            android:id="@+id/tv_end_time_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -68,7 +68,7 @@
             android:textColor="@color/color_text_grey_1"
             android:textSize="25px"
             app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintLeft_toRightOf="@+id/tv_start_time"
+            app:layout_constraintLeft_toRightOf="@+id/tv_start_time_title"
             app:layout_constraintRight_toLeftOf="@id/tv_status" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -80,7 +80,7 @@
             android:textColor="@color/color_text_grey_1"
             android:textSize="25px"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toRightOf="@+id/tv_end_time"
+            app:layout_constraintLeft_toRightOf="@+id/tv_end_time_title"
             app:layout_constraintRight_toLeftOf="@id/tv_operation" />
 
         <androidx.appcompat.widget.AppCompatTextView

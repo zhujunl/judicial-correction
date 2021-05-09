@@ -63,7 +63,11 @@ public class DatePickDialog extends Dialog implements View.OnClickListener {
                         ((this.mDp_date.getMonth() + 1) < 10 ? ("0" + (this.mDp_date.getMonth() + 1)) : (this.mDp_date.getMonth() + 1)) + "-" +
                         (this.mDp_date.getDayOfMonth() < 10 ? ("0" + this.mDp_date.getDayOfMonth()) : this.mDp_date.getDayOfMonth()) + " " +
                         (this.mDp_time.getHour() < 10 ? ("0" + this.mDp_time.getHour()) : this.mDp_time.getHour()) + ":" +
-                        (this.mDp_time.getMinute() < 10 ? ("0" + this.mDp_time.getMinute()) : this.mDp_time.getMinute()));
+                        (this.mDp_time.getMinute() < 10 ? ("0" + this.mDp_time.getMinute()) : this.mDp_time.getMinute())
+                        + ":00");
+                //                this.mOnTimeSetListener.onDateSet(this.mDp_date.getYear() + "-" +
+                //                        ((this.mDp_date.getMonth() + 1) < 10 ? ("0" + (this.mDp_date.getMonth() + 1)) : (this.mDp_date.getMonth() + 1)) + "-" +
+                //                        (this.mDp_date.getDayOfMonth() < 10 ? ("0" + this.mDp_date.getDayOfMonth()) : this.mDp_date.getDayOfMonth()));
             }
             dismiss();
         }

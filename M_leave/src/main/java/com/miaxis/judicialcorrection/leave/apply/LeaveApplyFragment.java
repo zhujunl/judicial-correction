@@ -1,35 +1,29 @@
 package com.miaxis.judicialcorrection.leave.apply;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
-import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.db.po.Place;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.base.utils.TimeUtils;
 import com.miaxis.judicialcorrection.dialog.DatePickDialog;
+import com.miaxis.judicialcorrection.dialog.DialogResult;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
 import com.miaxis.judicialcorrection.leave.LeaveRepo;
 import com.miaxis.judicialcorrection.leave.R;
+import com.miaxis.judicialcorrection.leave.SpAdapter;
 import com.miaxis.judicialcorrection.leave.databinding.FragmentLeaveApplyBinding;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
+import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.ViewModelProvider;
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
@@ -71,7 +65,7 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
         mApplyViewModel = new ViewModelProvider(this).get(ApplyViewModel.class);
         binding.tvTitle.setText(String.valueOf(this.title));
         binding.btnBackToHome.setOnClickListener(v -> finish());
-
+        mApplyViewModel.applyTime.set(TimeUtils.getTime());
         binding.btnSubmit.setOnClickListener(v -> {
             String checkContent = mApplyViewModel.checkContent();
             if (!TextUtils.isEmpty(checkContent)) {
@@ -79,34 +73,53 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
             } else {
                 mLeaveRepo.leaveAdd(
                         verifyInfo.pid,
-                        mApplyViewModel.applyTime.get(),
+                        TimeUtils.dateToString(mApplyViewModel.applyTime.get()),
                         "",
                         mApplyViewModel.specificReasons.get(),
-                        mApplyViewModel.endTime.get(),
-                        mApplyViewModel.startTime.get(),
+                        TimeUtils.dateToString(mApplyViewModel.endTime.get()),
+                        TimeUtils.dateToString(mApplyViewModel.startTime.get()),
                         mApplyViewModel.days.get(),
-                        "否",
+                        "0",
                         mApplyViewModel.mAgencies.getValue().ID + "",
                         mApplyViewModel.details.get(),
                         mApplyViewModel.mProvince.getValue().ID + "",
                         mApplyViewModel.mDistrict.getValue().ID + "",
                         mApplyViewModel.mCity.getValue().ID + ""
-                ).observe(this, new Observer<Resource<Object>>() {
-                    @Override
-                    public void onChanged(Resource<Object> objectResource) {
-                        switch (objectResource.status) {
-                            case LOADING:
-                                showLoading(title, "正在提交" + title + "信息，请稍后");
-                                break;
-                            case ERROR:
-                                dismissLoading();
-                                appHintsLazy.get().showError("Error:" + objectResource.errorMessage);
-                                break;
-                            case SUCCESS:
-                                dismissLoading();
-                                adapter.setData(leaveResource.data);
-                                break;
-                        }
+                ).observe(this, objectResource -> {
+                    switch (objectResource.status) {
+                        case LOADING:
+                            showLoading(title, "正在提交" + title + "信息，请稍后");
+                            break;
+                        case ERROR:
+                            dismissLoading();
+                            appHintsLazy.get().showError("Error:" + objectResource.errorMessage);
+                            break;
+                        case SUCCESS:
+                            dismissLoading();
+                            new DialogResult(getContext(), new DialogResult.ClickListener() {
+                                @Override
+                                public void onBackHome(AppCompatDialog appCompatDialog) {
+                                    appCompatDialog.dismiss();
+                                    finish();
+                                }
+
+                                @Override
+                                public void onTryAgain(AppCompatDialog appCompatDialog) {
+                                    appCompatDialog.dismiss();
+                                }
+
+                                @Override
+                                public void onTimeOut(AppCompatDialog appCompatDialog) {
+                                    appCompatDialog.dismiss();
+                                    finish();
+                                }
+                            }, new DialogResult.Builder(
+                                    true,
+                                    "提交成功",
+                                    "",
+                                    3, false
+                            ).hideAllHideSucceedInfo(true)).show();
+                            break;
                     }
                 });
             }
@@ -116,9 +129,9 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
         mApplyViewModel.idCardNumber.set(verifyInfo.idCardNumber);
         binding.setData(mApplyViewModel);
 
-        binding.tvApplyTime.setOnClickListener(v ->
-                new DatePickDialog(getContext(), binding.tvApplyTime::setText).show()
-        );
+        //        binding.tvApplyTime.setOnClickListener(v ->
+        //                new DatePickDialog(getContext(), date -> mApplyViewModel.applyTime.set(date)).show()
+        //        );
 
         binding.tvApplyStartTime.setOnClickListener(v -> {
                     new DatePickDialog(getContext(), date -> {
@@ -147,31 +160,30 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
         // 户籍地
         mApplyViewModel.allProvince.observe(this, places -> {
             Timber.i("allProvince %s", places);
-            LeaveApplyFragment.SpAdapter adapter = new LeaveApplyFragment.SpAdapter();
+            SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spProvince.setAdapter(adapter);
         });
 
         mApplyViewModel.allCity.observe(this, places -> {
             Timber.i("allCity %s", places);
-            LeaveApplyFragment.SpAdapter adapter = new LeaveApplyFragment.SpAdapter();
+            SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spCity.setAdapter(adapter);
         });
         mApplyViewModel.allDistrict.observe(this, places -> {
             Timber.i("allDistrict %s", places);
-            LeaveApplyFragment.SpAdapter adapter = new LeaveApplyFragment.SpAdapter();
+            SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spDistrict.setAdapter(adapter);
         });
         mApplyViewModel.allAgencies.observe(this, places -> {
             Timber.i("allAgencies%s", places);
-            LeaveApplyFragment.SpAdapter adapter = new LeaveApplyFragment.SpAdapter();
+            SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spStreet.setAdapter(adapter);
         });
 
-        //居住地
         binding.spProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -236,37 +248,6 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
 
     }
 
-    public static class SpAdapter extends BaseAdapter {
 
-        private List<Place> data;
-
-        public void submitList(List<Place> data) {
-            this.data = data;
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public int getCount() {
-            return data == null ? 0 : data.size();
-        }
-
-        @Override
-        public Place getItem(int position) {
-            return data.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @SuppressLint("ViewHolder")
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView view = (TextView) LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_spinner_item, parent, false);
-            view.setText(getItem(position).VALUE);
-            return view;
-        }
-    }
 
 }

@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import androidx.lifecycle.LiveData;
+import timber.log.Timber;
 
 /**
  * EnrollRepo
@@ -32,36 +33,10 @@ public class LeaveRepo {
         this.apiService = apiService;
     }
 
-    public LiveData<Resource<Leave>> getReport(String pid, int page, int rows) {
+    public LiveData<Resource<Leave>> getLeaveList(String pid, int page, int rows) {
         LiveData<ApiResult<Leave>> login = apiService.getLeaveList(pid, page, rows);
         return ResourceConvertUtils.convertToResource(login);
     }
-
-    //{\r\n
-    // \"sqsj\": \"2021-04-08\", \r\n
-    // \"xjms\": \"\", \r\n
-    // \"pid\": \"c31Kp5rcrlmAG5DoQPMpwaTpguFvhgyh\", \r\n
-    // \"list\":
-    //
-    // [\r\n
-
-    // {\r\n
-    // \"wcmddxz\": \"86bccb890788455592caec817358811d\", \r\n
-    // \"wcmddmx\": \"上沙12巷10号码\", \r\n
-    // \"pid\": \"1a5aecea3ca1425fae2fa5a7ff936fbf\", \r\n
-    // \"wcmddszs\": \"440000\", \r\n
-    // \"wcmddszx\": \"441523\", \r\n
-    // \"wcmddszd\": \"441500\"\r\n
-    // }\r\n
-
-    // ], \r\n
-
-    // \"wcly\": \"外出办事\", \r\n
-    // \"jsrq\": \"2021-04-08\", \r\n
-    // \"id\": \"\", \r\n
-    // \"ksqr\": \"2021-04-08\", \r\n
-    // \"wcts\": \"1\", \r\n
-    // \"sfyxj\": \"0\"\r\n}",
 
     public LiveData<Resource<Object>> leaveAdd(String pid,
                                                String sqsj,
@@ -79,7 +54,7 @@ public class LeaveRepo {
                                                String wcmddszx,
                                                String wcmddszd
     ) {
-        HashMap<String, String> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sqsj", sqsj);
         hashMap.put("xjms", xjms);
         hashMap.put("pid", pid);
@@ -93,8 +68,7 @@ public class LeaveRepo {
         bean.wcmddszx = wcmddszx;
         bean.wcmddszd = wcmddszd;
         list.add(bean);
-        hashMap.put("list", new Gson().toJson(list));
-
+        hashMap.put("list", list);
 
         hashMap.put("wcly", wcly);
         hashMap.put("jsrq", jsrq);
@@ -102,9 +76,23 @@ public class LeaveRepo {
         hashMap.put("wcts", wcts);
         hashMap.put("sfyxj", sfyxj);
 
+        Timber.i("leaveAdd:%s", new Gson().toJson(hashMap));
         LiveData<ApiResult<Object>> login = apiService.leaveAdd(hashMap);
         return ResourceConvertUtils.convertToResource(login);
     }
+
+    public LiveData<Resource<Object>> leaveEnd(String id) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("id", id);
+        LiveData<ApiResult<Object>> login = apiService.leaveEnd(hashMap);
+        return ResourceConvertUtils.convertToResource(login);
+    }
+
+    public LiveData<Resource<Leave.ListBean>> getLeave(String id) {
+        LiveData<ApiResult<Leave.ListBean>> login = apiService.getLeave(id);
+        return ResourceConvertUtils.convertToResource(login);
+    }
+
 
     public static class Bean {
         public String pid;
