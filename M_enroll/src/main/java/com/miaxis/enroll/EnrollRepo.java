@@ -1,9 +1,13 @@
 package com.miaxis.enroll;
 
+import android.annotation.SuppressLint;
+
 import androidx.lifecycle.LiveData;
 
 import com.google.gson.Gson;
+import com.miaxis.enroll.guide.infos.RelationshipFragment;
 import com.miaxis.enroll.vo.Addr;
+import com.miaxis.enroll.vo.Family;
 import com.miaxis.enroll.vo.Job;
 import com.miaxis.enroll.vo.OtherCardType;
 import com.miaxis.enroll.vo.OtherInfo;
@@ -16,6 +20,8 @@ import com.miaxis.judicialcorrection.base.utils.ResourceConvertUtils;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
 import com.miaxis.judicialcorrection.id.bean.IdCardMsg;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +49,8 @@ public class EnrollRepo {
     }
 
     private final Gson gson = new Gson();
+    @SuppressLint("SimpleDateFormat")
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @SuppressWarnings("all")
     public LiveData<Resource<PersonInfo>> addPerson(JusticeBureau justiceBureau, IdCardMsg idCard, OtherCardType cardType, Addr addr, OtherInfo otherInfo) {
@@ -59,7 +67,8 @@ public class EnrollRepo {
         map.put("xb", idCard.sex);
         map.put("mz", idCard.nation_str);
         map.put("sfzh", idCard.id_num);
-        map.put("csrq", String.format("%s-%s-%s", idCard.birth_year, idCard.birth_month, idCard.birth_day));
+        Date date = new Date(Integer.parseInt(idCard.birth_year)-1900, Integer.parseInt(idCard.birth_month) - 1, Integer.parseInt(idCard.birth_day));
+        map.put("csrq", simpleDateFormat.format(date));
 
         String toJson = gson.toJson(map);
         Timber.v("addPerson %s", toJson);
@@ -69,10 +78,20 @@ public class EnrollRepo {
     }
 
     public LiveData<Resource<Object>> addJob(String pid, Job job) {
+        Timber.v("addJob [%s]，pid=[%s]", job, pid);
         job.pid = pid;
         String toJson = gson.toJson(job);
-        LiveData<ApiResult<Object>> apiResultLiveData = apiService.addJob(toJson);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
+        LiveData<ApiResult<Object>> apiResultLiveData = apiService.addJob(body);
         return ResourceConvertUtils.convertToResource(apiResultLiveData);
     }
 
+    public LiveData<Resource<Object>> addRelationship(String pid, Family family) {
+        Timber.v("addRelationship [%s]，pid=[%s]", family, pid);
+        family.pid = pid;
+        String toJson = gson.toJson(family);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
+        LiveData<ApiResult<Object>> apiResultLiveData = apiService.addRelationship(body);
+        return ResourceConvertUtils.convertToResource(apiResultLiveData);
+    }
 }

@@ -1,5 +1,6 @@
 package com.miaxis.enroll.guide.infos;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import com.miaxis.enroll.vo.Job;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundAdapter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -120,13 +123,15 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
             return position % 2;
         }
 
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         @Override
         protected void bind(ItemFragmentResumeBinding binding, Job item) {
             binding.setJob(item);
             binding.startTime.setOnClickListener(v -> {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(binding.getRoot().getContext());
                 datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
-                    item.startTime = String.format("%s-%s-%s", year, month + 1, dayOfMonth);
+                    item.startTime = simpleDateFormat.format(new Date(year-1900,month,dayOfMonth));
                     binding.invalidateAll();
                 });
                 datePickerDialog.show();
@@ -134,7 +139,7 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
             binding.endTime.setOnClickListener(v -> {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(binding.getRoot().getContext());
                 datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
-                    item.endTime = String.format("%s-%s-%s", year, month + 1, dayOfMonth);
+                    item.endTime = simpleDateFormat.format(new Date(year-1900,month,dayOfMonth));
                     binding.invalidateAll();
                 });
                 datePickerDialog.show();
