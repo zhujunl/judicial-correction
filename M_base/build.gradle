@@ -31,14 +31,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_URL', '"http://223.4.75.73:8090"'
             buildConfigField 'String', 'TOKEN_URL', '"http://223.4.75.73:9012"'
-            buildConfigField 'int', 'TOKEN_TIMEOUT', '8*60*60*1000'
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'SERVER_URL', '"http://223.4.75.73:8090"'
-            buildConfigField 'String', 'TOKEN_URL', '"http://10.1.192.238:9012"'
-            buildConfigField 'int', 'TOKEN_TIMEOUT', '2*60*60*1000'
+            buildConfigField 'String', 'SERVER_URL', '"http://10.249.0.85:9999"'
+            buildConfigField 'String', 'TOKEN_URL', '"http://10.1.192.238:9013"'
         }
     }
 

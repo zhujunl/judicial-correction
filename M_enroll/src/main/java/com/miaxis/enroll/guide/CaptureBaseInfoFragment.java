@@ -1,6 +1,7 @@
 package com.miaxis.enroll.guide;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.miaxis.enroll.EnrollActivity;
@@ -28,11 +30,14 @@ import com.miaxis.enroll.guide.infos.ResumeFragment;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.common.Resource;
+import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -158,27 +163,88 @@ public class CaptureBaseInfoFragment extends BaseBindingFragment<FragmentCapture
                     break;
                 case ERROR:
                     dismissLoading();
-                    appHints.showError("Error:" + personInfoResource.errorMessage);
+                    appHints.showError(personInfoResource.errorMessage);
                     break;
                 case SUCCESS:
-                    dismissLoading();
-                    appHints.toast("提交成功");
-                    FragmentActivity activity = getActivity();
-                    if (activity instanceof EnrollActivity) {
-                        ((EnrollActivity) activity).getNvController().back();
-                    }
+                    appHints.toast("添加成功，正在上次简历");
+                    submitOther(personInfoResource.data);
+
                     break;
             }
         });
     }
 
-    private void submitJobs(PersonInfo personInfo) {
+    CountDownLatch countDownLatch;
+    int jobsError;
+    int relationshipsError;
+    @Inject
+    AppExecutors appExecutors;
 
+    private void submitOther(PersonInfo personInfo) {
+        appExecutors.networkIO().execute(() -> {
+            int jobsCount = viewModel.jobs.size();
+            if (TextUtils.isEmpty(viewModel.jobs.get(0).startTime)) {
+                jobsCount = 0;
+            }
+            int relationshipsCount = viewModel.relationships.size();
+            if (TextUtils.isEmpty(viewModel.relationships.get(0).name)) {
+                relationshipsCount = 0;
+            }
+            countDownLatch = new CountDownLatch(jobsCount + relationshipsCount);
+            int finalJobsCount = jobsCount;
+            appExecutors.mainThread().execute(() -> {
+                for (int i = 0; i < finalJobsCount; i++) {
+                    viewModel.addJob(personInfo.getId(), viewModel.jobs.get(i)).observe(this, resource -> {
+                        if (!resource.isLoading()) {
+                            Timber.i("countDown..");
+                            countDownLatch.countDown();
+                            if (resource.isSuccess() || resource.data != null) {
+                                jobsError++;
+                            }
+                        }
+                    });
+                }
+            });
+
+            int finalRelationshipsCount = relationshipsCount;
+            appExecutors.mainThread().execute(() -> {
+                for (int i = 0; i < finalRelationshipsCount; i++) {
+                    viewModel.addRelationship(personInfo.getId(),viewModel.relationships.get(i)).observe(this, resource -> {
+                        if (!resource.isLoading()) {
+                            Timber.i("countDown..");
+                            countDownLatch.countDown();
+                            if (resource.isSuccess() || resource.data != null) {
+                                relationshipsError++;
+                            }
+                        }
+                    });
+                }
+            });
+
+            Timber.i("job count[%d/%d],relationship[%d/%d]",jobsError,jobsCount,relationshipsError,relationshipsCount);
+            String hint;
+            try {
+                countDownLatch.await(16, TimeUnit.SECONDS);
+                hint = "上传完成";
+//                if (jobsError+relationshipsError!=0){
+//                    hint=hint+ "，失败"+(jobsError+relationshipsError)+"个";
+//                }
+            } catch (InterruptedException e) {
+                hint = "上传简历/社会关系超时";
+            }
+            String finalHint = hint;
+            appExecutors.mainThread().execute(() -> {
+                appHints.toast(finalHint);
+                dismissLoading();
+                FragmentActivity activity = getActivity();
+                if (activity instanceof EnrollActivity) {
+                    ((EnrollActivity) activity).getNvController().back();
+                }
+            });
+
+        });
     }
 
-    private void submitRelationship(PersonInfo personInfo) {
-
-    }
     static class MyProgressAdapter extends BaseDataBoundAdapter<NvListItem, ItemFragmentBaseInfoBinding> {
 
         @Override

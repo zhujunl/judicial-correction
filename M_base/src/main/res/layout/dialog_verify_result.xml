@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="829px"
-        android:layout_height="884px"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/bg_dialog">
 

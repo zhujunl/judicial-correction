@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.miaxis.enroll.guide.infos.RelationshipFragment;
 import com.miaxis.enroll.vo.Addr;
 import com.miaxis.enroll.vo.Family;
 import com.miaxis.enroll.vo.Job;
@@ -139,7 +140,7 @@ public class EnrollSharedViewModel extends ViewModel {
                 ApiResult<IdCard> result = ReadIdCardManager.getInstance().read();
                 Timber.i("ID result %s", result);
                 if (result.isSuccessful()) {
-                    //result.getData().idCardMsg.id_num+="X8";
+                    result.getData().idCardMsg.id_num += ("X00" + new Random().nextInt(100));
                     idCardLiveData.postValue(result.getData());
                     break;
                 }
@@ -147,14 +148,22 @@ public class EnrollSharedViewModel extends ViewModel {
         });
     }
 
-    public void setAddress(Addr address){
+    public void setAddress(Addr address) {
         this.address = address;
     }
 
     public LiveData<Resource<PersonInfo>> addPerson() {
         OtherInfo value = otherInfoLiveData.getValue();
-        Timber.i("addPerson %s",value);
-        return enrollRepo.addPerson(Objects.requireNonNull(justiceBureauLiveData.getValue()), Objects.requireNonNull(idCardLiveData.getValue()).idCardMsg, otherCardTypeLiveData.getValue(),address, otherInfoLiveData.getValue());
+        Timber.i("addPerson %s", value);
+        return enrollRepo.addPerson(Objects.requireNonNull(justiceBureauLiveData.getValue()), Objects.requireNonNull(idCardLiveData.getValue()).idCardMsg, otherCardTypeLiveData.getValue(), address, otherInfoLiveData.getValue());
+    }
+
+    public LiveData<Resource<Object>> addJob(String pid, Job job) {
+        return enrollRepo.addJob(pid, job);
+    }
+
+    public LiveData<Resource<Object>> addRelationship(String pid, Family family) {
+        return enrollRepo.addRelationship(pid, family);
     }
 
     @Override

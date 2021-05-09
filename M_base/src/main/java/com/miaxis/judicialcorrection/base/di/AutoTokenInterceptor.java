@@ -68,10 +68,10 @@ public class AutoTokenInterceptor implements Interceptor {
                         jAuthInfo.quxianId = jb.getTeamId();
                         jAuthInfo.quxianName = jb.getTeamName();
                         break;
-                    case "TEAM_LEVEL_3":
-                        jAuthInfo.jiedaoId = jb.getTeamId();
-                        jAuthInfo.jiedaoName = jb.getTeamName();
-                        break;
+//                    case "TEAM_LEVEL_3":
+//                        jAuthInfo.jiedaoId = jb.getTeamId();
+//                        jAuthInfo.jiedaoName = jb.getTeamName();
+//                        break;
                 }
             }
             Timber.i("New JAuthInfo B: %s", jAuthInfo);

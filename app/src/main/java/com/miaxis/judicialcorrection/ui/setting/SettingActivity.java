@@ -157,7 +157,6 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
                 adapter.submitList(listResource.data);
                 binding.spinnerXian.setAdapter(adapter);
                 binding.spinnerXian.setSelection(getCheckedPosition(listResource.data,viewModel.xianChecked));
-
             }
         });
 

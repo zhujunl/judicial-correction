@@ -72,6 +72,10 @@ dependencies {
     implementation project(path: ':M_face')
     implementation project(path: ':M_report')
     implementation project(path: ':M_enroll')
+    implementation project(path: ':M_benefit')
+    implementation project(path: ':M_live')
+    implementation project(path: ':M_leave')
+
     implementation project(path: ':M_leave')
 
 }
