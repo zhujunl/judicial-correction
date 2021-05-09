@@ -174,7 +174,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15px"
             android:layout_marginTop="12px"
-            android:text="@{`变更理由：`+vm.LiveDetailsBean.jzdbgsy==null?`变更理由`:`变更理由`+vm.LiveDetailsBean.jzdbgsy}"
+            android:text="@{`变更理由：`+vm.LiveDetailsBean.jzdbgsy==null?`变更理由：`:`变更理由：`+vm.LiveDetailsBean.jzdbgsy}"
             android:textColor="#393939"
             android:textSize="30px"
             app:layout_constraintLeft_toRightOf="@id/view_label_two"
