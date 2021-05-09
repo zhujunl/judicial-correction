@@ -140,7 +140,7 @@ public class EnrollSharedViewModel extends ViewModel {
                 ApiResult<IdCard> result = ReadIdCardManager.getInstance().read();
                 Timber.i("ID result %s", result);
                 if (result.isSuccessful()) {
-                    result.getData().idCardMsg.id_num += ("X00" + new Random().nextInt(100));
+                    //result.getData().idCardMsg.id_num += ("Y" + new Random().nextInt(100));
                     idCardLiveData.postValue(result.getData());
                     break;
                 }
@@ -152,10 +152,19 @@ public class EnrollSharedViewModel extends ViewModel {
         this.address = address;
     }
 
+
+    public MediatorLiveData<PersonInfo> personInfoLiveData = new MediatorLiveData<>();
+
     public LiveData<Resource<PersonInfo>> addPerson() {
         OtherInfo value = otherInfoLiveData.getValue();
         Timber.i("addPerson %s", value);
-        return enrollRepo.addPerson(Objects.requireNonNull(justiceBureauLiveData.getValue()), Objects.requireNonNull(idCardLiveData.getValue()).idCardMsg, otherCardTypeLiveData.getValue(), address, otherInfoLiveData.getValue());
+        LiveData<Resource<PersonInfo>> resourceLiveData = enrollRepo.addPerson(Objects.requireNonNull(justiceBureauLiveData.getValue()), Objects.requireNonNull(idCardLiveData.getValue()).idCardMsg, otherCardTypeLiveData.getValue(), address, otherInfoLiveData.getValue());
+        return Transformations.map(resourceLiveData, input -> {
+            if (input.isSuccess() && input.data != null) {
+                personInfoLiveData.postValue(input.data);
+            }
+            return input;
+        });
     }
 
     public LiveData<Resource<Object>> addJob(String pid, Job job) {

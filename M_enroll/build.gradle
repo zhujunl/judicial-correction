@@ -36,6 +36,7 @@ dependencies {
 
     api project(path: ':M_base')
     api project(path: ':M_id')
+    api project(path: ':M_face')
     api "com.google.dagger:hilt-android:$hilt_version"
     annotationProcessor "com.alibaba:arouter-compiler:$arouter_version"
     annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"

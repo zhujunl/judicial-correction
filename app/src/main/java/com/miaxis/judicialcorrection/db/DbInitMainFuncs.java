@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.miaxis.enroll.EnrollActivity;
 import com.miaxis.judicialcorrection.R;
+import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
@@ -23,10 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+
 import dagger.Lazy;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import timber.log.Timber;
@@ -37,6 +42,7 @@ import timber.log.Timber;
  * @author zhangyw
  * Created on 4/27/21.
  */
+@Singleton
 public class DbInitMainFuncs extends RoomDatabase.Callback {
 
     @Inject
@@ -46,6 +52,9 @@ public class DbInitMainFuncs extends RoomDatabase.Callback {
     Lazy<AppExecutors> appExecutors;
 
     Context context;
+
+    public MutableLiveData<Resource<Integer>> progressLiveData = new MutableLiveData<>();
+
 
     @Inject
     public DbInitMainFuncs(@ApplicationContext Context context) {
@@ -77,15 +86,22 @@ public class DbInitMainFuncs extends RoomDatabase.Callback {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String s = "";
+            int size = 0;
+            int allSize = inputStream.available();
             while ((s = bufferedReader.readLine()) != null) {
                 Timber.i("sql : %s ", s);
+                size += (s.length() + 1);
                 if (!TextUtils.isEmpty(s)) {
                     db.execSQL(s);
                 }
+                int pro = size * 100 / allSize;
+                progressLiveData.postValue(Resource.loading(pro));
             }
             bufferedReader.close();
+            progressLiveData.postValue(Resource.success(100));
         } catch (Exception e) {
             e.printStackTrace();
+            progressLiveData.postValue(Resource.error(-1, e.getMessage(),0));
             Timber.e("sql : %s ", e.getMessage());
         }
         Timber.i("sql :finish");
