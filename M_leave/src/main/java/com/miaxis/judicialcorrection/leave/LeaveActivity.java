@@ -12,6 +12,7 @@ import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
 import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
 import com.miaxis.judicialcorrection.id.readIdCard.ReadIDCardBindingFragment;
+import com.miaxis.judicialcorrection.leave.apply.LeaveApplyFragment;
 import com.miaxis.judicialcorrection.leave.databinding.ActivityLeaveBinding;
 
 import org.jetbrains.annotations.NotNull;
@@ -41,10 +42,14 @@ public class LeaveActivity extends BaseBindingActivity<ActivityLeaveBinding> imp
 
     @Override
     protected void initView(@NonNull ActivityLeaveBinding binding, @Nullable Bundle savedInstanceState) {
-        readIdCard();
+        //readIdCard();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.layout_root, new LeaveApplyFragment(new VerifyInfo("11", "22", "33")))
+                .commitNow();
     }
 
-    private void readIdCard(){
+    private void readIdCard() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.layout_root, new ReadIDCardBindingFragment(title, true))
@@ -62,7 +67,7 @@ public class LeaveActivity extends BaseBindingActivity<ActivityLeaveBinding> imp
     }
 
     @Override
-    public void onLogin( PersonInfo personInfo) {
+    public void onLogin(PersonInfo personInfo) {
         if (personInfo != null) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -78,7 +83,7 @@ public class LeaveActivity extends BaseBindingActivity<ActivityLeaveBinding> imp
                     .beginTransaction()
                     .replace(R.id.layout_root, new LeaveListFragment(response.getData()))
                     .commitNow();
-        }else {
+        } else {
             DialogResult.Builder builder = new DialogResult.Builder();
             builder.success = false;
             builder.countDownTime = 10;

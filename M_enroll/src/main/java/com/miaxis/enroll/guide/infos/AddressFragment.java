@@ -2,7 +2,6 @@ package com.miaxis.enroll.guide.infos;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +9,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.miaxis.enroll.EnrollSharedViewModel;
 import com.miaxis.enroll.R;
@@ -24,6 +19,9 @@ import com.miaxis.judicialcorrection.base.db.po.Place;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
@@ -357,4 +355,5 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             return view;
         }
     }
+
 }
