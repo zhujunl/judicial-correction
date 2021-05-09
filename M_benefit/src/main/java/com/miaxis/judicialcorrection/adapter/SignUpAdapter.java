@@ -29,7 +29,7 @@ public class SignUpAdapter extends BaseQuickAdapter<SignUpContentBean, BaseDataB
             binding.tvThemeLabel.setText("活动主题：" + signUpBean.getSqfwnr());
             String time = HexStringUtils.convertGMTToLocal(signUpBean.getSqfwkssj()) + "至" + HexStringUtils.convertGMTToLocal(signUpBean.getSqfwjssj());
             binding.tvActivityTimeContent.setText(time);
-            binding.tvActivityTimeLongContent.setText(signUpBean.getSqfwsc()+"小时");
+            binding.tvActivityTimeLongContent.setText(signUpBean.getSqfwsc());
             binding.tvActivityLocation.setText(signUpBean.getSqfwdd());
 
             binding.tvState.setTextColor(Color.parseColor("#FF721F"));

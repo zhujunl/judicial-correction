@@ -31,7 +31,7 @@ public class HistorySignUpAdapter extends BaseQuickAdapter< HistorySignUpBean.Li
                 binding.tvThemeLabel.setText("活动主题："+signUpBean.getPublicActivityVo().getSqfwnr());
                 String time = HexStringUtils.convertGMTToLocal(signUpBean.getPublicActivityVo().getSqfwkssj()) + "至" + HexStringUtils.convertGMTToLocal(signUpBean.getPublicActivityVo().getSqfwjssj());
                 binding.tvActivityTimeContent.setText(time);
-                binding.tvActivityTimeLongContent.setText(signUpBean.getPublicActivityVo().getSqfwsc()+"小时");
+                binding.tvActivityTimeLongContent.setText(signUpBean.getPublicActivityVo().getSqfwsc());
                 binding.tvActivityLocation.setText(signUpBean.getPublicActivityVo().getSqfwdd());
 //                binding.tvType.setText(signUpBean.getPublicActivityVo().getJlr());
             } else {
