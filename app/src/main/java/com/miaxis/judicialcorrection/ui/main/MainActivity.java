@@ -22,6 +22,7 @@ import com.miaxis.finger.FingerManager;
 import com.miaxis.finger.FingerStrategy;
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
+import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
@@ -29,6 +30,7 @@ import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundDiffAdapter;
 import com.miaxis.judicialcorrection.databinding.ActivityMainBinding;
 import com.miaxis.judicialcorrection.databinding.ItemMainFucBinding;
+import com.miaxis.judicialcorrection.db.DbInitMainFuncs;
 import com.miaxis.judicialcorrection.dialog.DatePickDialog;
 import com.miaxis.judicialcorrection.ui.setting.SettingActivity;
 
@@ -42,7 +44,9 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DiffUtil;
+
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
@@ -59,6 +63,10 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
 
     @Inject
     Lazy<AppHints> appHintsLazy;
+
+
+    @Inject
+    DbInitMainFuncs dbInitMainFuncs;
 
     @Override
     protected int initLayout() {
@@ -79,6 +87,17 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
                 v.setTag(v.getId(), 0);
             }
             v.setTag(v.getId(), ct);
+        });
+
+        dbInitMainFuncs.progressLiveData.observe(this, integerResource -> {
+            if (integerResource.isLoading()) {
+                showLoading("正在初始化数据库", "进度:" + integerResource.data + "%");
+            } else if (integerResource.isSuccess()) {
+                dismissLoading();
+            } else {
+                appHintsLazy.get().showError(integerResource.errorMessage);
+                dismissLoading();
+            }
         });
     }
 
