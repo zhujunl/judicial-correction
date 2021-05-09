@@ -1,6 +1,12 @@
 package com.miaxis.judicialcorrection.base.utils.numbers;
 
 
+import android.icu.text.SimpleDateFormat;
+
+import java.text.ParseException;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * @date: 2018/12/28 8:34
  * @author: zhang.yw
@@ -16,19 +22,20 @@ public class HexStringUtils {
         }
     }
 
-    public static String bytesToHexString( byte[] bytes){
-        return bytesToHexString(bytes,bytes.length);
+    public static String bytesToHexString(byte[] bytes) {
+        return bytesToHexString(bytes, bytes.length);
     }
+
     /**
      * 将byte[] 数组转换为十六进制字符串，每个byte以空格分割
      * 使用{@link #hexStringToBytes(String)}可还原此byte[]
      *
-     * @param bytes byte array
+     * @param bytes  byte array
      * @param length length
      * @return HexString
      * @see #hexStringToBytes(String)
      */
-    public static String bytesToHexString(byte[] bytes,int length) {
+    public static String bytesToHexString(byte[] bytes, int length) {
         char[] hexChars = new char[length * 3];
         for (int j = 0; j < length; j++) {
             int v = bytes[j] & 0xFF;
@@ -54,5 +61,10 @@ public class HexStringUtils {
             bytes[i] = (byte) ((i0 << 4) | (i1 & 0xf));
         }
         return bytes;
+    }
+
+    public static String convertGMTToLocal(Date source) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", new Locale("English"));
+        return sdf.format(source);
     }
 }
