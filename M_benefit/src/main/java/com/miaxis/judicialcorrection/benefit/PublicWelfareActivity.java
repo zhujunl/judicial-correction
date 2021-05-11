@@ -100,11 +100,11 @@ public class PublicWelfareActivity extends BaseBindingActivity<ActivityPublicWel
         if (ZZResponse.isSuccess(response)) {
             mWelfareViewModel.mVerificationSignUp.postValue(true);
         } else {
-            showDialog(response);
+            showDialog();
         }
     }
 
-    public void showDialog(ZZResponse<VerifyInfo> response) {
+    public void showDialog() {
         new DialogResult(this, new DialogResult.ClickListener() {
             @Override
             public void onBackHome(AppCompatDialog appCompatDialog) {
@@ -122,11 +122,11 @@ public class PublicWelfareActivity extends BaseBindingActivity<ActivityPublicWel
                 finish();
             }
         }, new DialogResult.Builder(
-                ZZResponse.isSuccess(response),
-                ZZResponse.isSuccess(response) ? "报名" + "成功" : "验证失败",
-                ZZResponse.isSuccess(response) ? "系统将自动返回" + "公益活动" + "身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
+                false,
+                "验证失败",
+                "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
                 10, false
-        ).hideAllHideSucceedInfo(true)).show();
+        )).show();
 
 
     }
