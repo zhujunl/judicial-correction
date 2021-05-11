@@ -9,7 +9,8 @@ package com.miaxis.judicialcorrection.base.api.vo;
 public class PersonInfo {
     private String id;
     private String xm;
-    private String idCardNumber;
+    private String sfzh;
+    public boolean haveFaceImage;
 
     public String getId() {
         return id;
@@ -28,11 +29,11 @@ public class PersonInfo {
     }
 
     public String getIdCardNumber() {
-        return idCardNumber;
+        return sfzh;
     }
 
     public void setIdCardNumber(String idCardNumber) {
-        this.idCardNumber = idCardNumber;
+        this.sfzh = idCardNumber;
     }
 
     @Override
@@ -40,7 +41,7 @@ public class PersonInfo {
         return "PersonInfo{" +
                 "id='" + id + '\'' +
                 ", xm='" + xm + '\'' +
-                ", idCardNumber='" + idCardNumber + '\'' +
+                ", sfzh='" + sfzh + '\'' +
                 '}';
     }
 }

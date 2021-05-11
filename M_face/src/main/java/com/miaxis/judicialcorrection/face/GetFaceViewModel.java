@@ -30,7 +30,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
  */
 
 @HiltViewModel
-public class CapturePageViewModel extends ViewModel {
+public class GetFaceViewModel extends ViewModel {
 
     MutableLiveData<String> name = new MutableLiveData<>();
 
@@ -52,13 +52,13 @@ public class CapturePageViewModel extends ViewModel {
     CapturePageRepo mCapturePageRepo;
 
     @Inject
-    public CapturePageViewModel(CapturePageRepo capturePageRepo, AppExecutors appExecutors) {
+    public GetFaceViewModel(CapturePageRepo capturePageRepo, AppExecutors appExecutors) {
         this.mAppExecutors = appExecutors;
         this.mCapturePageRepo = capturePageRepo;
         FaceManager.getInstance().initData(mFaceInfoExes);
     }
 
-    public void getFace(int cameraId, byte[] frame, MXCamera camera, int width, int height, GetFacePageFragment.GetFaceCallback captureCallback) {
+    public void getFace(byte[] frame, MXCamera camera, int width, int height, GetFacePageFragment.GetFaceCallback captureCallback) {
         mAppExecutors.networkIO().execute(() -> {
             byte[] rgb = FaceManager.getInstance().yuv2Rgb(frame, width, height);
             int detectFace = FaceManager.getInstance().detectFace(rgb, width, height, mFaceNumber, mFacesData, mFaceInfoExes);
@@ -78,7 +78,6 @@ public class CapturePageViewModel extends ViewModel {
 //                                boolean mask = mFaceInfoExes[0].mask >= 40;
 //                            }
                             captureCallback.onFaceReady(camera);
-
                             return;
                         } else {
                             faceTips.postValue("人脸质量过低，当前：" + mFaceInfoExes[0].quality);
@@ -94,7 +93,9 @@ public class CapturePageViewModel extends ViewModel {
                 faceTips.postValue("未检测到人脸");
             }
             SystemClock.sleep(200);
-            camera.getNextFrame();
+            if (camera != null) {
+                camera.getNextFrame();
+            }
         });
     }
 

@@ -2,15 +2,6 @@ package com.miaxis.enroll;
 
 import android.annotation.SuppressLint;
 
-import androidx.arch.core.util.Function;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModel;
-
-import com.miaxis.enroll.guide.infos.RelationshipFragment;
 import com.miaxis.enroll.vo.Addr;
 import com.miaxis.enroll.vo.Family;
 import com.miaxis.enroll.vo.Job;
@@ -24,7 +15,6 @@ import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
 import com.miaxis.judicialcorrection.base.repo.PersonRepo;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
-import com.miaxis.judicialcorrection.id.bean.IdCardMsg;
 import com.miaxis.judicialcorrection.id.readIdCard.ReadIdCardManager;
 
 import java.text.SimpleDateFormat;
@@ -32,10 +22,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 import javax.inject.Inject;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import timber.log.Timber;
 
@@ -98,6 +92,8 @@ public class EnrollSharedViewModel extends ViewModel {
      */
     public List<Family> relationships = new ArrayList<>();
 
+    public boolean haveFaceImage;
+    public boolean haveIdInfo;
 
     private final PersonRepo personRepo;
     private final EnrollRepo enrollRepo;

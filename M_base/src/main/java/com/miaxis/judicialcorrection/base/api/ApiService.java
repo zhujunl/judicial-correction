@@ -17,6 +17,8 @@ import androidx.lifecycle.LiveData;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
@@ -49,6 +51,12 @@ public interface ApiService {
             @Body() RequestBody body
     );
 
+    @Multipart
+    @POST("/personInfo/uploadFaceImg")
+    LiveData<ApiResult<Object>> uploadFaceImg(
+            @Body() Map<String, String> body,
+            @Part("face") RequestBody face
+    );
 
     @POST("/personInfo/resume/add")
     LiveData<ApiResult<Object>> addJob(
@@ -67,7 +75,7 @@ public interface ApiService {
     );
 
     @GET("/personInfo/face")
-    LiveData<ApiResult<Object>> getFace(
+    Call<ResponseBody> getFace(
             @Query("id") String id
     );
 

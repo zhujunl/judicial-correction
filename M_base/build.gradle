@@ -31,6 +31,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_URL', '"http://223.4.75.73:8090"'
             buildConfigField 'String', 'TOKEN_URL', '"http://223.4.75.73:9012"'
+            //buildConfigField 'String', 'SERVER_URL', '"http://10.249.0.85:9999"'
+            //buildConfigField 'String', 'TOKEN_URL', '"http://10.249.0.85:9103"'
         }
         release {
             minifyEnabled false
