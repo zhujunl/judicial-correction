@@ -102,7 +102,7 @@ public class IndividualEducationActivity extends BaseBindingActivity<ActivityRep
                             dismissLoading();
                             DialogResult.Builder builder = new DialogResult.Builder();
                             builder.success = true;
-                            builder.countDownTime = 10;
+                            builder.countDownTime = 3;
                             builder.title = title + "成功！";
                             builder.message = "系统将自动返回" + title + "身份证刷取页面";
                             new DialogResult(IndividualEducationActivity.this, new DialogResult.ClickListener() {

@@ -79,9 +79,6 @@ public class LiveAddressChangeActivity extends BaseBindingActivity<ActivityLiveA
                 ZZResponse.isSuccess(response) ? "系统将自动返回" + title + "身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
                 ZZResponse.isSuccess(response) ? 3 : 10, true
         )).show();
-//        if (ZZResponse.isSuccess(response)) {
-//            replaceFragment(new LiveAddressFragment());
-//        }
     }
 
     @Override
@@ -90,13 +87,6 @@ public class LiveAddressChangeActivity extends BaseBindingActivity<ActivityLiveA
         PersonInfo info = new PersonInfo();
         info.setIdCardNumber(result.idCardMsg.id_num);
         info.setXm(result.idCardMsg.name);
-//        PersonInfo info=new PersonInfo();
-//        info.setIdCardNumber(result.idCardMsg.id_num);
-//        info.setXm(result.idCardMsg.name);
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.layout_root, new VerifyPageFragment(title,info))
-//                .commitNow();
     }
 
     @Override

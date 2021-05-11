@@ -214,10 +214,8 @@
             android:background="@drawable/bg_btn_back_to_home_blue"
             android:gravity="center"
             android:text="@string/btn_text_back_to_home"
-
             android:textColor="@color/color_text_btn"
             android:textSize="48px"
-            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/groupSound"

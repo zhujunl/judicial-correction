@@ -194,7 +194,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
         void checkPassword(String pwd) {
             dismiss();
             if ("123456".equals(pwd)) {
-                if (getActivity() != null) {
+                if (getActivity() != null&&getActivity() instanceof MainActivity) {
                     ((MainActivity) getActivity()).hideInputMethod();
                 }
                 startActivity(new Intent(getActivity(), SettingActivity.class));
