@@ -1,9 +1,15 @@
 package com.miaxis.camera;
 
 import android.graphics.ImageFormat;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.hardware.Camera;
+import android.os.Environment;
 import android.view.SurfaceHolder;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -192,5 +198,31 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         }
     }
 
-
+    /**
+     * @param data 摄像头视频流，NV21
+     */
+    public boolean getFrameImage(byte[] data, String savePath) {
+        try {
+            File file = new File(savePath);
+            if (!file.exists()) {
+                File parentFile = file.getParentFile();
+                if (parentFile != null && !parentFile.exists()) {
+                    boolean mkdirs = parentFile.mkdirs();
+                }
+            } else {
+                boolean delete = file.delete();
+            }
+            FileOutputStream filecon = new FileOutputStream(file);
+            YuvImage image = new YuvImage(data, ImageFormat.NV21, width, height, null);
+            //图像压缩
+            image.compressToJpeg(
+                    new Rect(0, 0, image.getWidth(),
+                            image.getHeight()),
+                    70, filecon);   // 将NV21格式图片，以质量70压缩成Jpeg，并得到JPEG数据流
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
