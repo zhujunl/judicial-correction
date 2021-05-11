@@ -1,15 +1,18 @@
 package com.miaxis.camera;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
-import android.os.Environment;
 import android.view.SurfaceHolder;
+
+import com.miaxis.utils.BitmapUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -58,10 +61,14 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
             e.printStackTrace();
             return -1;
         }
-        Camera.Parameters parameters = camera.getParameters();
-        Camera.Size previewSize = parameters.getPreviewSize();
-        this.width = previewSize.width;
-        this.height = previewSize.height;
+        try {
+            Camera.Parameters parameters = camera.getParameters();
+            Camera.Size previewSize = parameters.getPreviewSize();
+            this.width = previewSize.width;
+            this.height = previewSize.height;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.buffer = new byte[((this.width * this.height) * ImageFormat.getBitsPerPixel(ImageFormat.NV21)) / 8];
         this.mCamera = camera;
         return 0;
@@ -210,17 +217,24 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
                     boolean mkdirs = parentFile.mkdirs();
                 }
             } else {
-                boolean delete = file.delete();
+                boolean newFile = file.createNewFile();
             }
-            FileOutputStream filecon = new FileOutputStream(file);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
             YuvImage image = new YuvImage(data, ImageFormat.NV21, width, height, null);
             //图像压缩
-            image.compressToJpeg(
-                    new Rect(0, 0, image.getWidth(),
-                            image.getHeight()),
-                    70, filecon);   // 将NV21格式图片，以质量70压缩成Jpeg，并得到JPEG数据流
-            return true;
-        } catch (IOException e) {
+            boolean success = image.compressToJpeg(
+                    new Rect(0, 0, image.getWidth(), image.getHeight()),
+                    90, fileOutputStream);   // 将NV21格式图片，以质量70压缩成Jpeg，并得到JPEG数据流
+            if (!success) {
+                return false;
+            }
+            //将得到的照片进行270°旋转，使其竖直
+            Bitmap bitmap = BitmapFactory.decodeFile(savePath);
+            Matrix matrix = new Matrix();
+            matrix.preRotate(270);
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            return BitmapUtils.saveBitmap(bitmap, savePath);
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

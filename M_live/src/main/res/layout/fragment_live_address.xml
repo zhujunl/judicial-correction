@@ -130,6 +130,8 @@
             app:layout_constraintTop_toTopOf="@+id/tv_apply_time" />
 
 
+
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_apply_time"
             android:layout_width="796px"
@@ -146,6 +148,17 @@
             android:textSize="27px"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/id_view" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5px"
+        android:text="*"
+        android:textColor="#F40707"
+        android:textSize="27px"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_out_location_title"
+        app:layout_constraintRight_toLeftOf="@+id/tv_out_location_title"
+        app:layout_constraintTop_toTopOf="@+id/tv_out_location_title" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_out_location_title"

@@ -3,6 +3,8 @@ package com.miaxis.utils;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.miaxis.judicialcorrection.face.R;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
@@ -43,12 +45,9 @@ public class BitmapUtils {
         int bytes = bitmap.getByteCount();  //返回可用于储存此位图像素的最小字节数
         ByteBuffer buffer = ByteBuffer.allocate(bytes); //  使用allocate()静态方法创建字节缓冲区
         bitmap.copyPixelsToBuffer(buffer); // 将位图的像素复制到指定的缓冲区
-
         byte[] rgba = buffer.array();
         byte[] pixels = new byte[(rgba.length / 4) * 3];
-
         int count = rgba.length / 4;
-
         //Bitmap像素点的色彩通道排列顺序是RGBA
         for (int i = 0; i < count; i++) {
             pixels[i * 3] = rgba[i * 4];        //R
@@ -57,5 +56,6 @@ public class BitmapUtils {
         }
         return pixels;
     }
+
 
 }

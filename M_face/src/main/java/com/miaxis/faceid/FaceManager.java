@@ -2,8 +2,8 @@ package com.miaxis.faceid;
 
 import android.content.Context;
 
+import org.zz.api.MXFaceAPI;
 import org.zz.api.MXFaceInfoEx;
-import org.zz.jni.JustouchFaceApi;
 import org.zz.jni.mxImageTool;
 
 /**
@@ -15,8 +15,8 @@ import org.zz.jni.mxImageTool;
  */
 public class FaceManager {
 
+    private MXFaceAPI mMXFaceAPI;
     private mxImageTool mMxImageTool;
-    private JustouchFaceApi mJustouchFaceApi = new JustouchFaceApi();
 
     private FaceManager() {
     }
@@ -30,50 +30,24 @@ public class FaceManager {
     }
 
     public void free() {
-        if (this.mJustouchFaceApi != null) {
-            this.mJustouchFaceApi.freeAlg();
-            this.mJustouchFaceApi = null;
-        }
-        if (mMxImageTool != null) {
-            mMxImageTool = null;
+        if (this.mMXFaceAPI != null) {
+            this.mMXFaceAPI.mxFreeAlg();
+            this.mMXFaceAPI = null;
         }
     }
 
     public int init(Context context) {
-        this.mJustouchFaceApi = new JustouchFaceApi();
-        int initAlg = this.mJustouchFaceApi.initAlg(context, null, null);
-        if (initAlg == 0) {
-            this.mMxImageTool = new mxImageTool();
-        }
-        return initAlg;
+        this.mMXFaceAPI = new MXFaceAPI();
+        this.mMxImageTool = new mxImageTool();
+        return this.mMXFaceAPI.mxInitAlg(context, null, null);
     }
 
-    private String getLicense(String dstPath) {
-        if (dstPath == null || dstPath.isEmpty()) {
-            return null;
-        }
-        byte[] szLicenseData = FileDataUtils.ReadData(dstPath);
-        if (szLicenseData == null) {
-            return null;
-        }
-        return new String(szLicenseData);
-    }
-
-    public int initData(MXFaceInfoEx[] faceInfoExes) {
-        if (faceInfoExes != null) {
-            for (int i = 0; i < faceInfoExes.length; i++) {
-                faceInfoExes[i] = new MXFaceInfoEx();
-            }
-            return 0;
-        }
-        return -90;
-    }
 
     public int getFeatureSize() {
-        if (this.mJustouchFaceApi == null) {
+        if (this.mMXFaceAPI == null) {
             return -99;
         }
-        return this.mJustouchFaceApi.getFeatureSize();
+        return this.mMXFaceAPI.mxGetFeatureSize();
     }
 
     public byte[] yuv2Rgb(byte[] yuv, int width, int height) {
@@ -90,14 +64,14 @@ public class FaceManager {
     }
 
     //人脸检测
-    public int detectFace(byte[] rgbFrameData, int frameWidth, int frameHeight, int[] faceNumber, int[] facesData, MXFaceInfoEx[] faceInfoExes) {
-        if (this.mJustouchFaceApi == null) {
+    public int detectFace(byte[] rgbFrameData, int frameWidth, int frameHeight, int[] faceNumber, MXFaceInfoEx[] faceInfoExes) {
+        if (this.mMXFaceAPI == null) {
             return -99;
         }
         if (rgbFrameData == null) {
             return -98;
         }
-        int nRet = this.mJustouchFaceApi.detectFace(rgbFrameData, frameWidth, frameHeight, faceNumber, facesData);
+        int nRet = this.mMXFaceAPI.mxDetectFace(rgbFrameData, frameWidth, frameHeight, faceNumber, faceInfoExes);
         if (nRet != 0) {
             return nRet;
         }
@@ -105,65 +79,90 @@ public class FaceManager {
         if (num < 0) {
             faceNumber[0] = 0;
         }
-        MXFaceInfoEx.Int2MXFaceInfoEx(num, facesData, faceInfoExes);
         return 0;
     }
 
-    //人脸质量检测
-    public int getFaceQuality(byte[] rgbFrameData, int frameWidth, int frameHeight, int faceNum, int[] faces, MXFaceInfoEx[] faceInfo) {
-        if (this.mJustouchFaceApi == null) {
+    public int reg(byte[] rgbFrameData, int frameWidth, int frameHeight, int faceNum, MXFaceInfoEx[] faceInfo) {
+        if (this.mMXFaceAPI == null) {
             return -99;
         }
         if (rgbFrameData == null) {
             return -98;
         }
-        int faceQuality = this.mJustouchFaceApi.faceQuality(rgbFrameData, frameWidth, frameHeight, faceNum, faces);
-        if (faceQuality == 0) {
-            MXFaceInfoEx.Int2MXFaceInfoEx(faceNum, faces, faceInfo);
+        return this.mMXFaceAPI.mxFaceQuality4Reg(rgbFrameData, frameWidth, frameHeight, faceNum, faceInfo);
+    }
+
+    //人脸质量检测
+    public int getFaceQuality(byte[] rgbFrameData, int frameWidth, int frameHeight, int faceNum, MXFaceInfoEx[] faceInfo) {
+        if (this.mMXFaceAPI == null) {
+            return -99;
         }
-        return faceQuality;
+        if (rgbFrameData == null) {
+            return -98;
+        }
+        return this.mMXFaceAPI.mxFaceQuality(rgbFrameData, frameWidth, frameHeight, faceNum, faceInfo);
     }
 
     //提取特征
-    public int extractFeature(byte[] rgbFrameData, int frameWidth, int frameHeight, int faceNumber, int[] faceData, byte[] pFeatureData, boolean mask) {
-        if (this.mJustouchFaceApi == null) {
+    public int extractFeature(byte[] rgbFrameData, int frameWidth, int frameHeight, int faceNumber, byte[] pFeatureData, MXFaceInfoEx[] faceInfo, boolean mask) {
+        if (this.mMXFaceAPI == null) {
             return -99;
         }
         if (rgbFrameData == null) {
             return -98;
         }
         if (mask) {
-            return this.mJustouchFaceApi.maskFeatureExtract(rgbFrameData, frameWidth, frameHeight, faceNumber, faceData, pFeatureData);
+            return this.mMXFaceAPI.mxMaskFeatureExtract(rgbFrameData, frameWidth, frameHeight, faceNumber, faceInfo, pFeatureData);
         } else {
-            return this.mJustouchFaceApi.featureExtract(rgbFrameData, frameWidth, frameHeight, faceNumber, faceData, pFeatureData);
+            return this.mMXFaceAPI.mxFeatureExtract(rgbFrameData, frameWidth, frameHeight, faceNumber, faceInfo, pFeatureData);
         }
     }
 
     //口罩检测
-    public int detectMask(byte[] rgbFrameData, int frameWidth, int frameHeight, int faceNumber, int[] faceData, MXFaceInfoEx[] faceInfo) {
-        if (this.mJustouchFaceApi == null) {
+    public int detectMask(byte[] rgbFrameData, int frameWidth, int frameHeight, int faceNumber, MXFaceInfoEx[] faceInfo) {
+        if (this.mMXFaceAPI == null) {
             return -99;
         }
         if (rgbFrameData == null) {
             return -98;
         }
-        int maskDetect = this.mJustouchFaceApi.maskDetect(rgbFrameData, frameWidth, frameHeight, faceNumber, faceData);
-        if (maskDetect == 0) {
-            MXFaceInfoEx.MXFaceInfoEx2Int(faceNumber, faceData, faceInfo);
-        }
-        return maskDetect;
+        return this.mMXFaceAPI.mxMaskDetect(rgbFrameData, frameWidth, frameHeight, faceNumber, faceInfo);
     }
 
     //特征比对
     public int matchFeature(byte[] pFaceFeatureA, byte[] pFaceFeatureB, float[] fScore, boolean mask) {
-        if (this.mJustouchFaceApi == null) {
+        if (this.mMXFaceAPI == null) {
             return -99;
         }
         if (mask) {
-            return this.mJustouchFaceApi.maskFeatureMatch(pFaceFeatureA, pFaceFeatureB, fScore);
+            return this.mMXFaceAPI.mxMaskFeatureMatch(pFaceFeatureA, pFaceFeatureB, fScore);
         } else {
-            return this.mJustouchFaceApi.featureMatch(pFaceFeatureA, pFaceFeatureB, fScore);
+            return this.mMXFaceAPI.mxFeatureMatch(pFaceFeatureA, pFaceFeatureB, fScore);
         }
     }
+
+    public boolean flip(byte[] pRGBImage, int iRGBWidth, int iRGBHeight) {
+        if (this.mMxImageTool == null) {
+            return false;
+        }
+        int imageFlip = mMxImageTool.ImageFlip(pRGBImage, iRGBWidth, iRGBHeight, 1, pRGBImage);
+        return imageFlip == 1;
+    }
+
+    public byte[] getRgbFromFile(String strPathImgFile,int[] oX,int[] oY) {
+        // 获取图像大小
+        int nRet = mMxImageTool.ImageLoad(strPathImgFile, 3, null, oX, oY);
+        if (nRet != 1) {
+            return null;
+        }
+        // 得到图像大小后
+        byte[] pRGBBuff = new byte[oX[0] * oY[0] * 3];
+        nRet = mMxImageTool.ImageLoad(strPathImgFile, 3, pRGBBuff, oX, oY);
+        if (nRet == 1) {
+            return pRGBBuff;
+        }
+        return null;
+    }
+
 
 }

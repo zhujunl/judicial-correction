@@ -18,8 +18,8 @@ import javax.inject.Inject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import timber.log.Timber;
 
 /**
  * @author Tank
@@ -55,44 +55,43 @@ public class GetFaceViewModel extends ViewModel {
     public GetFaceViewModel(CapturePageRepo capturePageRepo, AppExecutors appExecutors) {
         this.mAppExecutors = appExecutors;
         this.mCapturePageRepo = capturePageRepo;
-        FaceManager.getInstance().initData(mFaceInfoExes);
+        for (int i = 0; i < MXFaceInfoEx.iMaxFaceNum; i++) {
+            mFaceInfoExes[i] = new MXFaceInfoEx();
+        }
     }
 
     public void getFace(byte[] frame, MXCamera camera, int width, int height, GetFacePageFragment.GetFaceCallback captureCallback) {
         mAppExecutors.networkIO().execute(() -> {
             byte[] rgb = FaceManager.getInstance().yuv2Rgb(frame, width, height);
-            int detectFace = FaceManager.getInstance().detectFace(rgb, width, height, mFaceNumber, mFacesData, mFaceInfoExes);
+            //FaceManager.getInstance().flip(rgb, width, height);
+            int detectFace = FaceManager.getInstance().detectFace(rgb, width, height, mFaceNumber, mFaceInfoExes);
+            Timber.e("face   detectFace:%s", detectFace);
             if (detectFace == 0) {
                 int faceNumber = FaceManager.getInstance().getFaceNumber(mFaceNumber);
+                Timber.e("face   faceNumber:%s", faceNumber);
                 if (faceNumber == 1) {
-                    //                    if ((mFaceInfoExes[0].x >= 100 && mFaceInfoExes[0].x <= 150) &&
-                    //                            (mFaceInfoExes[0].y >= 100 && mFaceInfoExes[0].y <= 150) &&
-                    //                            (mFaceInfoExes[0].width <= 400 && mFaceInfoExes[0].width >= 300) &&
-                    //                            (mFaceInfoExes[0].height <= 500 && mFaceInfoExes[0].height >= 300)) {
-                    int faceQuality = FaceManager.getInstance().getFaceQuality(rgb, width, height, 1, mFacesData, mFaceInfoExes);
-                    if (faceQuality == 0) {
-                        if (mFaceInfoExes[0].quality >= 30) {
-//                            int detectMask = FaceManager.getInstance().detectMask(rgb, width, height, 1, mFacesData, mFaceInfoExes);
-//                            if (detectMask == 0) {
-//                                byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
-//                                boolean mask = mFaceInfoExes[0].mask >= 40;
-//                            }
-                            captureCallback.onFaceReady(camera);
-                            return;
-                        } else {
-                            faceTips.postValue("人脸质量过低，当前：" + mFaceInfoExes[0].quality);
+                    if (mFaceInfoExes[0].width >= 200) {
+                        int faceQuality = FaceManager.getInstance().reg(rgb, width, height, 1, mFaceInfoExes);
+                        Timber.e("face   faceQuality:%s", faceQuality);
+                        if (faceQuality == 0) {
+                            Timber.e("face   quality:%s", mFaceInfoExes[0].quality);
+                            if (mFaceInfoExes[0].quality >= 45) {
+                                captureCallback.onFaceReady(camera);
+                                return;
+                            } else {
+                                faceTips.postValue("人脸质量过低，当前：" + mFaceInfoExes[0].quality);
+                            }
                         }
+                    } else {
+                        faceTips.postValue("人脸过小");
                     }
-                    //                    } else {
-                    //                        faceTips.postValue("请将人脸置于框内");
-                    //                    }
                 } else if (faceNumber <= 0) {
                     faceTips.postValue("未检测到人脸");
                 }
             } else {
-                faceTips.postValue("未检测到人脸");
+                faceTips.postValue("检测人脸失败");
             }
-            SystemClock.sleep(200);
+            SystemClock.sleep(100);
             if (camera != null) {
                 camera.getNextFrame();
             }

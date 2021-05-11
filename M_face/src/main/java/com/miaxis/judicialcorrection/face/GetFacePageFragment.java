@@ -13,7 +13,6 @@ import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
 import com.miaxis.judicialcorrection.face.callback.NavigationCallback;
-import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.face.databinding.FragmentCaptureBinding;
 import com.miaxis.utils.FileUtils;
 
@@ -116,7 +115,7 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
 
     @Override
     public void onPreview(int cameraId, byte[] frame, MXCamera camera, int width, int height) {
-        mGetFaceViewModel.getFace( frame, camera, width, height, new GetFaceCallback() {
+        mGetFaceViewModel.getFace(frame, camera, width, height, new GetFaceCallback() {
             @Override
             public void onFaceReady(MXCamera camera) {
                 File filePath = FileUtils.createFileParent(getContext());
@@ -140,10 +139,10 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
                             }
                         });
                     } else {
-                        showDialog();
+                        getActivity().runOnUiThread(() -> showDialog());
                     }
                 } else {
-                    appHintsLazy.get().showError("图片保存上传失败");
+                    getActivity().runOnUiThread(() -> appHintsLazy.get().showError("图片保存上传失败"));
                 }
             }
         });
@@ -166,7 +165,7 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
             public void onTimeOut(AppCompatDialog appCompatDialog) {
                 appCompatDialog.dismiss();
                 FragmentActivity activity = getActivity();
-                if (activity instanceof VerifyCallback) {
+                if (activity instanceof NavigationCallback) {
                     NavigationCallback callback = (NavigationCallback) activity;
                     callback.onNavigationCallBack();
                 }
@@ -184,7 +183,7 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
         /**
          * 人脸质量检测通过
          */
-        void onFaceReady( MXCamera camera);
+        void onFaceReady(MXCamera camera);
 
     }
 }

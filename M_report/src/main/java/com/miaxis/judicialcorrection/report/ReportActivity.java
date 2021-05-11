@@ -70,10 +70,11 @@ public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> i
         Timber.e("读取身份证：result:" + result);
 
     }
-
+    String id="";
     @Override
     public void onLogin(PersonInfo personInfo) {
         if (personInfo != null) {
+            id = personInfo.getId();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.layout_root, new VerifyPageFragment(title, personInfo))
@@ -84,7 +85,7 @@ public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> i
     @Override
     public void onVerify(ZZResponse<VerifyInfo> response) {
         if (ZZResponse.isSuccess(response)) {
-            mReportRepo.reportAdd(response.getData().pid).observe(this, new Observer<Resource<Object>>() {
+            mReportRepo.reportAdd(id).observe(this, new Observer<Resource<Object>>() {
                 @Override
                 public void onChanged(Resource<Object> objectResource) {
                     switch (objectResource.status) {

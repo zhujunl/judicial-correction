@@ -102,6 +102,7 @@
             android:layout_height="90px"
             android:layout_marginLeft="40px"
             android:layout_marginEnd="61px"
+            android:layout_marginBottom="61px"
             android:background="@drawable/bg_btn_try_again"
             android:gravity="center"
             android:text="@string/dialog_btn_verify_again"
@@ -114,7 +115,7 @@
             app:layout_constraintTop_toTopOf="@id/btn_back_home"
             app:layout_constraintWidth_max="461px"
             app:layout_constraintWidth_min="299px"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

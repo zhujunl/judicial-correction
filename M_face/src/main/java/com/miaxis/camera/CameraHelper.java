@@ -66,7 +66,6 @@ public class CameraHelper {
         }
     }
 
-
     //    public ZZResponse<MXCamera> createMXCamera(int cameraId, int width, int height) {
     //        MXCamera mxCamera = new MXCamera();
     //        int init = mxCamera.init(width, height);

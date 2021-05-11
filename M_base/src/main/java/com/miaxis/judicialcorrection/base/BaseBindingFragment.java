@@ -1,5 +1,6 @@
 package com.miaxis.judicialcorrection.base;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,14 @@ public abstract class BaseBindingFragment<V extends ViewDataBinding> extends Fra
         if (binding != null) {
             binding.unbind();
         }
+       Activity activity= getActivity();
+        if (activity instanceof BaseBindingActivity){
+            BaseBindingActivity baseBindingActivity= (BaseBindingActivity)activity;
+            if (baseBindingActivity!=null){
+                baseBindingActivity.hideInputMethod();
+            }
+        }
+
     }
 
     protected void finish() {

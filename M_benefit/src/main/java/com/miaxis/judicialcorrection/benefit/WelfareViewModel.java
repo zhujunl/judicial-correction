@@ -50,8 +50,6 @@ public class WelfareViewModel extends ViewModel {
 
     public String mItemId;
 
-    public MutableLiveData<Boolean> mVerificationSignUp = new MutableLiveData<>();
-
     @Inject
     public WelfareViewModel(PublicWelfareRepo publicWelfareRepo) {
         this.mPublicWelfareRepo = publicWelfareRepo;

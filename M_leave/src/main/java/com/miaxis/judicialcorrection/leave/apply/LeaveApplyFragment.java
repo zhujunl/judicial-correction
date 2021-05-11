@@ -149,14 +149,6 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
                 }
         );
 
-        binding.tvApplyEndTime.setOnClickListener(v -> {
-                    new DatePickDialog(getContext(), date -> {
-                        mApplyViewModel.endTime.set(date);
-                        mApplyViewModel.days.set((int) TimeUtils.getDays(mApplyViewModel.startTime.get(), mApplyViewModel.endTime.get()) + "");
-                    }).show();
-                }
-        );
-
         // 户籍地
         mApplyViewModel.allProvince.observe(this, places -> {
             Timber.i("allProvince %s", places);

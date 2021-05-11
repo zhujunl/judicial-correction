@@ -71,9 +71,12 @@ public class LeaveActivity extends BaseBindingActivity<ActivityLeaveBinding> imp
         Timber.e("读取身份证：result:" + result);
     }
 
+    private String pid = "";
+
     @Override
     public void onLogin(PersonInfo personInfo) {
         if (personInfo != null) {
+            pid = personInfo.getId();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.layout_root, new VerifyPageFragment(title, personInfo))
@@ -120,10 +123,15 @@ public class LeaveActivity extends BaseBindingActivity<ActivityLeaveBinding> imp
 
     @Override
     public void onApply(@NotNull VerifyInfo verifyInfo) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.layout_root, new LeaveApplyFragment(verifyInfo))
-                .commitNow();
+        try {
+            verifyInfo.pid = pid;
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.layout_root, new LeaveApplyFragment(verifyInfo))
+                    .commitNow();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

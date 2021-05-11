@@ -3,21 +3,13 @@ package com.miaxis.judicialcorrection.benefit;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialog;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.miaxis.enroll.guide.NvController;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.benefit.databinding.ActivityPublicWelfareBinding;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
-import com.miaxis.judicialcorrection.face.VerifyPageFragment;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
 import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.guide.ToSignUpFragment;
@@ -29,6 +21,11 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
@@ -43,6 +40,8 @@ public class PublicWelfareActivity extends BaseBindingActivity<ActivityPublicWel
 
     String title = "身份核验";
     private WelfareViewModel mWelfareViewModel;
+
+    public  boolean mVerificationSignUp;
 
     @Inject
     AppHints appHints;
@@ -98,7 +97,8 @@ public class PublicWelfareActivity extends BaseBindingActivity<ActivityPublicWel
     @Override
     public void onVerify(ZZResponse<VerifyInfo> response) {
         if (ZZResponse.isSuccess(response)) {
-            mWelfareViewModel.mVerificationSignUp.postValue(true);
+            mVerificationSignUp=true;
+            replaceFragment(new ToSignUpFragment());
         } else {
             showDialog();
         }
@@ -125,7 +125,7 @@ public class PublicWelfareActivity extends BaseBindingActivity<ActivityPublicWel
                 false,
                 "验证失败",
                 "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
-                10, false
+                10, true
         )).show();
 
 

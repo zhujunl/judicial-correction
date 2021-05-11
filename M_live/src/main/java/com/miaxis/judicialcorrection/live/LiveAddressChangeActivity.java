@@ -2,18 +2,11 @@ package com.miaxis.judicialcorrection.live;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialog;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
-import com.miaxis.judicialcorrection.face.VerifyPageFragment;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
 import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.guide.LiveAddressFragment;
@@ -25,6 +18,11 @@ import com.miaxis.judicialcorrection.live.databinding.ActivityLiveAddressChangeB
 
 import org.jetbrains.annotations.NotNull;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
@@ -68,6 +66,7 @@ public class LiveAddressChangeActivity extends BaseBindingActivity<ActivityLiveA
             @Override
             public void onTimeOut(AppCompatDialog appCompatDialog) {
                 if (ZZResponse.isSuccess(response)) {
+                    appCompatDialog.dismiss();
                     replaceFragment(new LiveAddressFragment());
                 } else {
                     finish();
@@ -75,7 +74,7 @@ public class LiveAddressChangeActivity extends BaseBindingActivity<ActivityLiveA
             }
         }, new DialogResult.Builder(
                 ZZResponse.isSuccess(response),
-                ZZResponse.isSuccess(response) ? title + "成功" : "验证失败",
+                ZZResponse.isSuccess(response) ?  "校验成功" : "验证失败",
                 ZZResponse.isSuccess(response) ? "系统将自动返回" + title + "身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
                 ZZResponse.isSuccess(response) ? 3 : 10, true
         )).show();

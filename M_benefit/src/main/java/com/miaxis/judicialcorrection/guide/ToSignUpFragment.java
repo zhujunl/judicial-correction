@@ -2,12 +2,6 @@ package com.miaxis.judicialcorrection.guide;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialog;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.miaxis.judicialcorrection.ChildItemClickListener;
 import com.miaxis.judicialcorrection.adapter.SignUpAdapter;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
@@ -29,6 +23,11 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import dagger.hilt.android.AndroidEntryPoint;
 
 /**
@@ -48,7 +47,7 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
     @Inject
     AppToast appToast;
 
-    private SignUpContentBean mItemListBean;
+    private SignUpContentBean mItemListBean=new SignUpContentBean();
 
     private int ItemCheckPosition;
 
@@ -80,6 +79,7 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
                 ItemCheckPosition = position;
                 if (idCardBean != null && getActivity() != null) {
                     PersonInfo info = new PersonInfo();
+                    info.setId(viewModel.mStrPid.getValue());
                     info.setXm(idCardBean.idCardMsg.name);
                     info.setIdCardNumber(idCardBean.idCardMsg.id_num);
                     ((PublicWelfareActivity) getActivity()).replaceFragment(
@@ -100,41 +100,46 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
             binding.tvIdCard.setText("身份证号：" + viewModel.idCard.idCardMsg.id_num);
         }
         setData();
-        viewModel.mVerificationSignUp.observe(this, observer -> {
-            if (!observer) {
-                return;
+        if (getActivity()!= null&&getActivity() instanceof PublicWelfareActivity) {
+
+            boolean b = ((PublicWelfareActivity) getActivity()).mVerificationSignUp;
+            if (b) {
+                ((PublicWelfareActivity) getActivity()).mVerificationSignUp=false;
+                viewModel.getParticipate(mItemListBean.getId()).observe(ToSignUpFragment.this, objectResource -> {
+                    if (objectResource.isSuccess()) {
+                        new DialogResult(getActivity(), new DialogResult.ClickListener() {
+                            @Override
+                            public void onBackHome(AppCompatDialog appCompatDialog) {
+                                appCompatDialog.dismiss();
+                                finish();
+                            }
+
+                            @Override
+                            public void onTryAgain(AppCompatDialog appCompatDialog) {
+                                appCompatDialog.dismiss();
+                            }
+
+                            @Override
+                            public void onTimeOut(AppCompatDialog appCompatDialog) {
+                                mItemListBean.setSignUpSucceed(true);
+                                mAdapter.notifyItemChanged(ItemCheckPosition);
+                                appCompatDialog.dismiss();
+                            }
+                        }, new DialogResult.Builder(
+                                true,
+                                true ? "报名" + "成功" : "验证失败",
+                                true ? "系统将自动返回" + "公益活动" + "身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
+                                3, false
+                        ).hideAllHideSucceedInfo(true)).show();
+                    }
+                    if (objectResource.isError()) {
+                        appHints.showError("失败");
+                    }
+                });
             }
-            viewModel.getParticipate(mItemListBean.getId()).observe(ToSignUpFragment.this, objectResource -> {
-                if (objectResource.isSuccess()) {
-                    viewModel.mVerificationSignUp.setValue(false);
-                    new DialogResult(getActivity(), new DialogResult.ClickListener() {
-                        @Override
-                        public void onBackHome(AppCompatDialog appCompatDialog) {
-                            appCompatDialog.dismiss();
-                            finish();
-                        }
-                        @Override
-                        public void onTryAgain(AppCompatDialog appCompatDialog) {
-                            appCompatDialog.dismiss();
-                        }
-                        @Override
-                        public void onTimeOut(AppCompatDialog appCompatDialog) {
-                            mItemListBean.setSignUpSucceed(true);
-                            mAdapter.notifyItemChanged(ItemCheckPosition);
-                            appCompatDialog.dismiss();
-                        }
-                    }, new DialogResult.Builder(
-                            true,
-                            true ? "报名" + "成功" : "验证失败",
-                            true ? "系统将自动返回" + "公益活动" + "身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
-                            3, false
-                    ).hideAllHideSucceedInfo(true)).show();
-                }
-                if (objectResource.isError()) {
-                    appHints.showError("失败");
-                }
-            });
-        });
+        }else{
+
+        }
     }
 
     /**
