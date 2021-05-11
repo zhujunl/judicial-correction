@@ -32,7 +32,7 @@ public class AssetsUtils {
                 } else {// 文件夹
                     String childRootDirFullPath = rootDirFullPath + "/" + string;
                     String childTargetDirFullPath = targetDirFullPath + "/" + string;
-                    boolean mkdirs = new File(childTargetDirFullPath).mkdirs();
+                    new File(childTargetDirFullPath).mkdirs();
                     copyFolderFromAssets(context, childRootDirFullPath, childTargetDirFullPath);
                 }
             }
@@ -44,24 +44,10 @@ public class AssetsUtils {
     }
 
     private static boolean isFileByName(String string) {
-        if (string == null) {
-            return false;
+        if (string.contains(".")) {
+            return true;
         }
-        return string.contains(".");
-    }
-
-    private static boolean isFileByPath(String path) {
-        if (path == null) {
-            return false;
-        }
-        return new File(path).isFile();
-    }
-
-    private static boolean isFile(File file) {
-        if (file == null) {
-            return false;
-        }
-        return file.isFile();
+        return false;
     }
 
     public static void copyAssetsToDst(Context context, String srcPath, String dstPath) {

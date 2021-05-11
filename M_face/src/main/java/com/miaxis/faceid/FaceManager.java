@@ -1,14 +1,10 @@
 package com.miaxis.faceid;
 
 import android.content.Context;
-import android.os.Environment;
 
 import org.zz.api.MXFaceInfoEx;
 import org.zz.jni.JustouchFaceApi;
 import org.zz.jni.mxImageTool;
-import org.zz.tool.AssetsUtils;
-
-import java.io.File;
 
 /**
  * @author Tank
@@ -19,10 +15,6 @@ import java.io.File;
  */
 public class FaceManager {
 
-    //    public static final String LicensePath = "/sdcard/miaxis/FaceId_ST/st_lic.txt";
-    public static final String LicensePath = Environment.getExternalStorageDirectory().getAbsolutePath() +
-            File.separator + "miaxis" + File.separator + "FaceId_ST" + File.separator + "st_lic.txt";
-    //    private MXFaceAPI mMxFaceAPI;
     private mxImageTool mMxImageTool;
     private JustouchFaceApi mJustouchFaceApi = new JustouchFaceApi();
 
@@ -48,17 +40,8 @@ public class FaceManager {
     }
 
     public int init(Context context) {
-        String dstPath = context.getFilesDir().getAbsolutePath() + File.separator + "MIAXISModelsV5";
-        if (!FileDataUtils.isExist(dstPath)) {
-            FileDataUtils.AddDirectory(dstPath);
-            AssetsUtils.copyFolderFromAssets(context, "MIAXISModelsV5", dstPath);
-        }
-        String license = getLicense(LicensePath);
-        if (license == null) {
-            return -1000;
-        }
         this.mJustouchFaceApi = new JustouchFaceApi();
-        int initAlg = this.mJustouchFaceApi.initAlg(context, dstPath, license);
+        int initAlg = this.mJustouchFaceApi.initAlg(context, null, null);
         if (initAlg == 0) {
             this.mMxImageTool = new mxImageTool();
         }
@@ -139,26 +122,6 @@ public class FaceManager {
             MXFaceInfoEx.Int2MXFaceInfoEx(faceNum, faces, faceInfo);
         }
         return faceQuality;
-    }
-
-    //活体检测
-    public int detectLiveness(byte[] rgbFrameData, int frameWidth, int frameHeight, int faceNumber, int[] facesData, MXFaceInfoEx[] faceInfoExes, boolean nir) {
-        if (this.mJustouchFaceApi == null) {
-            return -99;
-        }
-        if (rgbFrameData == null) {
-            return -98;
-        }
-        int livenessDetect;
-        if (nir) {
-            livenessDetect = this.mJustouchFaceApi.nirLivenessDetect(rgbFrameData, frameWidth, frameHeight, faceNumber, facesData);
-        } else {
-            livenessDetect = this.mJustouchFaceApi.visLivenessDetect(rgbFrameData, frameWidth, frameHeight, faceNumber, facesData);
-        }
-        if (livenessDetect == 0) {
-            MXFaceInfoEx.Int2MXFaceInfoEx(faceNumber, facesData, faceInfoExes);
-        }
-        return livenessDetect;
     }
 
     //提取特征

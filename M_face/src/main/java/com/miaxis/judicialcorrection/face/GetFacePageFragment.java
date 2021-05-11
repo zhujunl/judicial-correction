@@ -10,7 +10,6 @@ import com.miaxis.camera.MXCamera;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
-import com.miaxis.judicialcorrection.face.callback.CaptureCallback;
 import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.face.databinding.FragmentCaptureBinding;
 import com.miaxis.judicialcorrection.widget.countdown.CountDownListener;
@@ -34,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint;
  */
 
 @AndroidEntryPoint
-public class CapturePageFragment extends BaseBindingFragment<FragmentCaptureBinding> implements CameraPreviewCallback, CaptureCallback {
+public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBinding> implements CameraPreviewCallback {
 
     String title = "人像采集";
 
@@ -42,7 +41,7 @@ public class CapturePageFragment extends BaseBindingFragment<FragmentCaptureBind
 
     CapturePageViewModel mCapturePageViewModel;
 
-    public CapturePageFragment(@NonNull PersonInfo personInfo) {
+    public GetFacePageFragment(@NonNull PersonInfo personInfo) {
         this.personInfo = personInfo;
     }
 
@@ -65,7 +64,7 @@ public class CapturePageFragment extends BaseBindingFragment<FragmentCaptureBind
                 callback.onVerify(response);
             }
         });
-        mCapturePageViewModel.fingerBitmap.observe(this, bitmap -> {
+        mCapturePageViewModel.faceFile.observe(this, file -> {
 
         });
 
@@ -81,7 +80,7 @@ public class CapturePageFragment extends BaseBindingFragment<FragmentCaptureBind
                     ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().createMXCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
                     if (ZZResponse.isSuccess(mxCamera)) {
                         mxCamera.getData().setOrientation(90);
-                        mxCamera.getData().setPreviewCallback(CapturePageFragment.this);
+                        mxCamera.getData().setPreviewCallback(GetFacePageFragment.this);
                         mxCamera.getData().start(holder);
                     }
                 }
@@ -118,46 +117,55 @@ public class CapturePageFragment extends BaseBindingFragment<FragmentCaptureBind
 
     @Override
     public void onPreview(int cameraId, byte[] frame, MXCamera camera, int width, int height) {
-        mCapturePageViewModel.getFace(cameraId, frame, camera, width, height, this);
-    }
-
-    @Override
-    public void onFaceReady(MXCamera mxCamera) {
-        binding.tvTips.setTime(3);
-        binding.tvTips.setCountDownListener(new CountDownListener() {
+        mCapturePageViewModel.getFace(cameraId, frame, camera, width, height, new GetFaceCallback() {
             @Override
-            public void onCountDownStart() {
-
-            }
-
-            @Override
-            public void onCountDownProgress(int progress) {
-
-            }
-
-            @Override
-            public void onCountDownDone() {
-                mxCamera.takePicture(new Camera.PictureCallback() {
+            public void onFaceReady(MXCamera camera) {
+                binding.tvTips.setTime(3);
+                binding.tvTips.setCountDownListener(new CountDownListener() {
                     @Override
-                    public void onPictureTaken(byte[] data, Camera camera) {
-                        File file = new File("路径");
-                        try {
-                            if (!file.exists()) {
-                                File parentFile = file.getParentFile();
-                                if (parentFile != null) {
-                                    boolean mkdirs = parentFile.mkdirs();
+                    public void onCountDownStart() {
+
+                    }
+
+                    @Override
+                    public void onCountDownProgress(int progress) {
+
+                    }
+
+                    @Override
+                    public void onCountDownDone() {
+                        camera.takePicture(new Camera.PictureCallback() {
+                            @Override
+                            public void onPictureTaken(byte[] data, Camera camera) {
+                                File file = new File("路径");
+                                try {
+                                    if (!file.exists()) {
+                                        File parentFile = file.getParentFile();
+                                        if (parentFile != null) {
+                                            boolean mkdirs = parentFile.mkdirs();
+                                        }
+                                    }
+                                    FileOutputStream fileOutputStream = new FileOutputStream(file);
+                                    fileOutputStream.write(data);
+                                    fileOutputStream.flush();
+                                    fileOutputStream.close();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
                             }
-                            FileOutputStream fileOutputStream = new FileOutputStream(file);
-                            fileOutputStream.write(data);
-                            fileOutputStream.flush();
-                            fileOutputStream.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        });
                     }
                 });
             }
         });
+    }
+
+    public interface GetFaceCallback {
+
+        /**
+         * 人脸质量检测通过
+         */
+        void onFaceReady( MXCamera camera);
+
     }
 }

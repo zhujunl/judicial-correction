@@ -24,7 +24,7 @@ public class JustouchFaceApi {
      * 			 szLicense      - 输入，授权码
      * @return   0-成功，其他-失败
      * */
-    public native int initAlg(Object context,String path,String license);
+    public native int initAlg(Object context, String path, String license);
 
     /**
      * @author   chen.gs
@@ -52,7 +52,24 @@ public class JustouchFaceApi {
      * 			 pFaceInfo - 输出，人脸信息
      * @return   0-成功，其他-失败
      * */
-    public native int detectFace(byte[] pImage, int nWidth, int nHeight, int[] pFaceNum, int[] pFaceInfo);
+    public native int detectFace(byte[] pImage, int nWidth, int nHeight,
+                                 int[] pFaceNum, int[] pFaceInfo);
+
+    /**
+     *  @author     chen.gs
+     *  @category   双目摄像头活体检测
+     *  @paramp     pRgbImage		- 输入，可见光摄像头的图像数据
+     *              pNirImage		- 输入，近红外摄像头的图像数据
+     *              ImgWidth		- 输入，图像宽度
+     *              nImgHeight		- 输入，图像高度
+     *              pRgbFaceNum		- 输出，可见光摄像头图像的人脸检出数
+     *              pRgbFaceInfo	- 输出，可见光摄像头图像的人脸信息
+     *              pNirFaceNum		- 输出，近红外摄像头图像的人脸检出数
+     *              pNirFaceInfo	- 输出，近红外摄像头图像的人脸信息
+     *  @return     10000-活体，10001-假体，其他-图像质量不满足
+     */
+    public native int detectLive(byte[] pRgbImage, byte[] pNirImage, int nImgWidth, int nImgHeight,
+                                 int[] pRgbFaceNum,int[] pRgbFaceInfo,int[] pNirFaceNum, int[] pNirFaceInfo);
 
     /**
      * @author   chen.gs
@@ -66,7 +83,7 @@ public class JustouchFaceApi {
      * @return   0-成功，其他-失败
      * */
     public native int featureExtract(byte[] pImage, int nWidth, int nHeight,
-                                      int pFaceNum, int[] pFaceInfo, byte[] pFaceFea);
+                                     int pFaceNum, int[] pFaceInfo, byte[] pFaceFea);
 
     /**
      * @author   chen.gs
@@ -89,7 +106,7 @@ public class JustouchFaceApi {
      * @return   0-成功，其他-失败
      * */
     public native int faceQuality(byte[] pImage, int nWidth, int nHeight,
-                                     int pFaceNum, int[] pFaceInfo);
+                                  int pFaceNum, int[] pFaceInfo);
 
     /**
      * @author   chen.gs
@@ -102,31 +119,7 @@ public class JustouchFaceApi {
      * @return    质量分数
      * */
     public native int faceQuality4Reg(byte[] pImage, int nWidth, int nHeight,
-                                         int[] pFaceInfo);
-    /**
-     * @author   chen.gs
-     * @category  可见光活体检测（配合指定型号双目摄像头）
-     * @param     pImage        - 输入，可见光图像数据
-     * 			  nImgWidth  	- 输入，图像宽度
-     * 			  nImgHeight  	- 输入，图像高度
-     * 			  nFaceNum    	- 输入，人脸数
-     * 			  pFaceInfo 	- 输入/输出，人脸信息，活体分数通过MXFaceInfoEx结构体liveness属性获取
-     * @return   0-成功，其他-失败
-     * */
-    public native int visLivenessDetect(byte[] pImage, int nImgWidth, int nImgHeight, int iFaceNum,int[] pFaceInfo);
-
-    /**
-     * @author   chen.gs
-     * @category  近红外活体检测（配合指定型号双目摄像头）
-     * @param     pImage        - 输入，近红外图像数据
-     * 			  nImgWidth  	- 输入，图像宽度
-     * 			  nImgHeight  	- 输入，图像高度
-     * 			  nFaceNum    	- 输入，人脸数
-     * 			  pFaceInfo 	- 输入/输出，人脸信息，活体分数通过MXFaceInfoEx结构体liveness属性获取
-     * @return   0-成功，其他-失败
-     * */
-    public native int nirLivenessDetect(byte[] pImage, int nImgWidth, int nImgHeight, int iFaceNum,int[] pFaceInfo);
-
+                                      int[] pFaceInfo);
     /**
      * @author   chen.gs
      * @category  检测人脸是否戴口罩
@@ -152,7 +145,7 @@ public class JustouchFaceApi {
      * @return   0-成功，其他-失败
      * */
     public native int maskFeatureExtract(byte[] pImage, int nWidth, int nHeight,
-                                     int pFaceNum, int[] pFaceInfo, byte[] pFaceFea);
+                                         int pFaceNum, int[] pFaceInfo, byte[] pFaceFea);
 
     /**
      * @author   chen.gs
@@ -166,7 +159,7 @@ public class JustouchFaceApi {
      * @return   0-成功，其他-失败
      * */
     public native int maskFeatureExtract4Reg(byte[] pImage, int nWidth, int nHeight,
-                                         int pFaceNum, int[] pFaceInfo, byte[] pFaceFea);
+                                             int pFaceNum, int[] pFaceInfo, byte[] pFaceFea);
 
     /**
      * @author   chen.gs

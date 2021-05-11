@@ -1,7 +1,5 @@
 package com.miaxis.judicialcorrection.face;
 
-import android.graphics.Bitmap;
-import android.hardware.Camera;
 import android.os.SystemClock;
 
 import com.miaxis.camera.MXCamera;
@@ -9,9 +7,10 @@ import com.miaxis.faceid.FaceManager;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
-import com.miaxis.judicialcorrection.face.callback.CaptureCallback;
 
 import org.zz.api.MXFaceInfoEx;
+
+import java.io.File;
 
 import javax.inject.Inject;
 
@@ -38,7 +37,8 @@ public class CapturePageViewModel extends ViewModel {
 
     MutableLiveData<ZZResponse<VerifyInfo>> verifyStatus = new MutableLiveData<>();
 
-    MutableLiveData<Bitmap> fingerBitmap = new MutableLiveData<>();
+    //    MutableLiveData<Bitmap> fingerBitmap = new MutableLiveData<>();
+    MutableLiveData<File> faceFile = new MutableLiveData<>();
 
     public MXFaceInfoEx[] mFaceInfoExes = new MXFaceInfoEx[MXFaceInfoEx.iMaxFaceNum];
     public int[] mFaceNumber = new int[1];
@@ -52,7 +52,7 @@ public class CapturePageViewModel extends ViewModel {
         FaceManager.getInstance().initData(mFaceInfoExes);
     }
 
-    public void getFace(int cameraId, byte[] frame, MXCamera camera, int width, int height, CaptureCallback captureCallback) {
+    public void getFace(int cameraId, byte[] frame, MXCamera camera, int width, int height, GetFacePageFragment.GetFaceCallback captureCallback) {
         mAppExecutors.networkIO().execute(() -> {
             byte[] rgb = FaceManager.getInstance().yuv2Rgb(frame, width, height);
             int detectFace = FaceManager.getInstance().detectFace(rgb, width, height, mFaceNumber, mFacesData, mFaceInfoExes);

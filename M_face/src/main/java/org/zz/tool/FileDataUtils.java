@@ -43,7 +43,11 @@ public class FileDataUtils {
         if (path == null)
             return false;
         File file = new File(path);
-        return file.exists();
+        if (!file.exists()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -69,8 +73,8 @@ public class FileDataUtils {
      */
     public static void GetSubFolders(String strMainFolder, List<String> strSubFolders) {
         File[] files = new File(strMainFolder).listFiles();
-        assert files != null;
-        for (File f : files) {
+        for (int i = 0; i < files.length; i++) {
+            File f = files[i];
             if (f.isDirectory()) {
                 strSubFolders.add(f.getPath());
             }
@@ -87,8 +91,9 @@ public class FileDataUtils {
      */
     public static void GetSubFiles(String Path, String Extension, List<String> strSubFiles) {
         File[] files = new File(Path).listFiles();
-        assert files != null;
-        for (File f : files) {
+
+        for (int i = 0; i < files.length; i++) {
+            File f = files[i];
             if (f.isFile()) {
                 //判断扩展名
                 if (f.getPath().substring(f.getPath().length() - Extension.length()).equals(Extension))
@@ -99,8 +104,9 @@ public class FileDataUtils {
 
     public static void GetSubFiles(String Path, List<String> strSubFiles) {
         File[] files = new File(Path).listFiles();
-        assert files != null;
-        for (File f : files) {
+
+        for (int i = 0; i < files.length; i++) {
+            File f = files[i];
             if (f.isFile()) {
                 strSubFiles.add(f.getPath());
             }

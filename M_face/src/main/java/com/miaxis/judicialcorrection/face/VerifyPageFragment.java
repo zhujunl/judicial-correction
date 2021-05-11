@@ -14,7 +14,6 @@ import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.repo.PersonRepo;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
-import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
 import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.face.databinding.FragmentVerifyBinding;
 
@@ -160,8 +159,8 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
 
     @Override
     public void onPreview(int cameraId, byte[] frame, MXCamera camera, int width, int height) {
-//        mVerifyPageViewModel.faceRecognize(cameraId, frame, camera, width, height);
-        mVerifyPageViewModel.verifyStatus.postValue(ZZResponse.CreateSuccess(new VerifyInfo(personInfo.getId(),personInfo.getXm(), personInfo.getIdCardNumber())));
+        mVerifyPageViewModel.faceRecognize(cameraId, frame, camera, width, height);
+        //        mVerifyPageViewModel.verifyStatus.postValue(ZZResponse.CreateSuccess(new VerifyInfo(personInfo.getId(),personInfo.getXm(), personInfo.getIdCardNumber())));
     }
 
     @Override
