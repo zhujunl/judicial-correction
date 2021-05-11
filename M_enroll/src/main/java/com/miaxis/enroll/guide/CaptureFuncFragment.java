@@ -6,18 +6,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.miaxis.enroll.EnrollActivity;
 import com.miaxis.enroll.EnrollSharedViewModel;
 import com.miaxis.enroll.R;
 import com.miaxis.enroll.databinding.FragmentCaptureFuncBinding;
-import com.miaxis.enroll.guide.CaptureBaseInfoFragment;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 
+import com.miaxis.judicialcorrection.face.GetFacePageFragment;
 import com.miaxis.judicialcorrection.face.GetFacePageFragment;
 import com.miaxis.judicialcorrection.widget.countdown.DefaultCountDownListener;
 
