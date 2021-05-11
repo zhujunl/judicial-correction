@@ -4,6 +4,7 @@ import android.os.SystemClock;
 
 import com.miaxis.camera.MXCamera;
 import com.miaxis.faceid.FaceManager;
+import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
@@ -14,8 +15,10 @@ import java.io.File;
 
 import javax.inject.Inject;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 /**
@@ -46,9 +49,12 @@ public class CapturePageViewModel extends ViewModel {
 
     AppExecutors mAppExecutors;
 
+    CapturePageRepo mCapturePageRepo;
+
     @Inject
-    public CapturePageViewModel(AppExecutors appExecutors) {
+    public CapturePageViewModel(CapturePageRepo capturePageRepo, AppExecutors appExecutors) {
         this.mAppExecutors = appExecutors;
+        this.mCapturePageRepo = capturePageRepo;
         FaceManager.getInstance().initData(mFaceInfoExes);
     }
 
@@ -66,11 +72,11 @@ public class CapturePageViewModel extends ViewModel {
                     int faceQuality = FaceManager.getInstance().getFaceQuality(rgb, width, height, 1, mFacesData, mFaceInfoExes);
                     if (faceQuality == 0) {
                         if (mFaceInfoExes[0].quality >= 30) {
-                            int detectMask = FaceManager.getInstance().detectMask(rgb, width, height, 1, mFacesData, mFaceInfoExes);
-                            if (detectMask == 0) {
-                                byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
-                                boolean mask = mFaceInfoExes[0].mask >= 40;
-                            }
+//                            int detectMask = FaceManager.getInstance().detectMask(rgb, width, height, 1, mFacesData, mFaceInfoExes);
+//                            if (detectMask == 0) {
+//                                byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
+//                                boolean mask = mFaceInfoExes[0].mask >= 40;
+//                            }
                             captureCallback.onFaceReady(camera);
 
                             return;
@@ -90,6 +96,10 @@ public class CapturePageViewModel extends ViewModel {
             SystemClock.sleep(200);
             camera.getNextFrame();
         });
+    }
+
+    public LiveData<Resource<Object>> uploadPic(String pid, File file) {
+        return mCapturePageRepo.uploadFace(pid, file);
     }
 
 }

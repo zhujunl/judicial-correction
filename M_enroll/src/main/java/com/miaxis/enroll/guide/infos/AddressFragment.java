@@ -230,7 +230,7 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             binding.spinnerDistrict2.setAdapter(adapter);
             binding.spinnerDistrict2.setSelection(getCheckedPosition(places, viewModel.mSelect2[2]));
         });
-        viewModel.allAgencies.observe(this, places -> {
+        viewModel.allAgencies2.observe(this, places -> {
             Timber.i("allAgencies2%s", places);
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);

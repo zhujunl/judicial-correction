@@ -1,12 +1,14 @@
 package com.miaxis.judicialcorrection.guide;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
+import com.miaxis.judicialcorrection.base.api.vo.LiveAddressChangeDetailsBean;
 import com.miaxis.judicialcorrection.live.LiveAddressChangeActivity;
 import com.miaxis.judicialcorrection.live.LiveAddressChangeViewModel;
 import com.miaxis.judicialcorrection.live.R;
@@ -47,7 +49,20 @@ public class ToLiveProgressFragment extends BaseBindingFragment<FragmentToLivePr
         model.getLiveAddressChangeDetails(model.mId).observe(this, obServer -> {
             if (obServer.isSuccess()&&obServer.data!=null) {
                 model.LiveDetailsBean.postValue(obServer.data);
+                binding.tvMoveInPlace.setText(combineStrings(obServer.data));
             }
         });
+    }
+
+    public  String combineStrings(LiveAddressChangeDetailsBean vm) {
+        String qrdszsName = vm.qrdszsName==null ? "" : vm.qrdszsName;
+        String qrdszdName = vm.qrdszdName==null? "" : vm.qrdszdName;
+        if (qrdszsName.equals(qrdszdName)){
+            qrdszdName="";
+        }
+        String qrdszxName = vm.qrdszxName==null?"" : vm.qrdszxName;
+        String qrdxzName = vm.qrdxzName==null ? "" : vm.qrdxzName;
+        String qrdmx = vm.qrdmx==null ? "" : vm.qrdmx;
+        return "迁入地：" + qrdszsName + qrdszdName + qrdszxName + qrdxzName + qrdmx;
     }
 }

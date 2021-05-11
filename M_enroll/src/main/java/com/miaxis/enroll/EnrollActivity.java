@@ -8,6 +8,7 @@ import com.miaxis.enroll.guide.CaptureFuncFragment;
 import com.miaxis.enroll.guide.NvController;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
+import com.miaxis.judicialcorrection.face.callback.NavigationCallback;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
 import com.miaxis.judicialcorrection.id.readIdCard.ReadIdCardManager;
 
@@ -15,6 +16,7 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
@@ -28,7 +30,7 @@ import timber.log.Timber;
  */
 @AndroidEntryPoint
 @Route(path = "/enroll/EnrollActivity")
-public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> {
+public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> implements  NavigationCallback {
 
 
     @Inject
@@ -92,5 +94,10 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> {
     public void onDestroy() {
         super.onDestroy();
         ReadIdCardManager.getInstance().free(this);
+    }
+
+    @Override
+    public void onNavigationCallBack() {
+        nvController.nvTo(new CaptureFuncFragment(), false);
     }
 }

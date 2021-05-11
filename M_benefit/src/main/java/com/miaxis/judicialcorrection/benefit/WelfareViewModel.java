@@ -43,12 +43,14 @@ import timber.log.Timber;
  */
 @HiltViewModel
 public class WelfareViewModel extends ViewModel {
-    public  IdCard idCard;
-    public  MutableLiveData<String>  mStrPid=new MutableLiveData<>();
+    public IdCard idCard;
+    public MutableLiveData<String> mStrPid = new MutableLiveData<>();
 
     private final PublicWelfareRepo mPublicWelfareRepo;
 
-    public   String mItemId;
+    public String mItemId;
+
+    public MutableLiveData<Boolean> mVerificationSignUp = new MutableLiveData<>();
 
     @Inject
     public WelfareViewModel(PublicWelfareRepo publicWelfareRepo) {
@@ -64,13 +66,13 @@ public class WelfareViewModel extends ViewModel {
     /**
      * 得到历史
      */
-    public LiveData<Resource<HistorySignUpBean>> getHistoryWelfareInfo(int page,String pid) {
-        return mPublicWelfareRepo.addHistorySignUpParameter(page, 10,pid);
+    public LiveData<Resource<HistorySignUpBean>> getHistoryWelfareInfo(int page, String pid) {
+        return mPublicWelfareRepo.addHistorySignUpParameter(page, 10, pid);
     }
 
     //参加活动
     public LiveData<Resource<Object>> getParticipate(String gyldId) {
-        return mPublicWelfareRepo.participate(mStrPid.getValue(),gyldId);
+        return mPublicWelfareRepo.participate(mStrPid.getValue(), gyldId);
     }
 
 

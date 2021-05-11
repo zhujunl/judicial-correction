@@ -142,13 +142,20 @@ public class CaptureBaseInfoFragment extends BaseBindingFragment<FragmentCapture
     }
 
     void refreshControlBtn() {
-        if (currentPageIndex == 0 || currentPageIndex == pageCount - 1) {
+//        || currentPageIndex == pageCount - 1
+        if (currentPageIndex == 0 ) {
             binding.preBtn.setVisibility(View.GONE);
         } else {
             binding.preBtn.setVisibility(View.VISIBLE);
         }
-        if (currentPageIndex == pageCount - 1) {
-            binding.nextBtn.setText("提交");
+        if (currentPageIndex==0){
+            binding.nextBtn.setText("下一页");
+        }else {
+            if (currentPageIndex == pageCount - 1) {
+                binding.nextBtn.setText("提交");
+            }else{
+                binding.nextBtn.setText("下一页");
+            }
         }
     }
 

@@ -22,7 +22,7 @@ public class LiveAddressChangeDetailsBean extends BaseObservable {
     public String qrdmx;
     public String njsjzdwId;
     public String njsjzdwName;
-    public String jzdbgsy;
+    public String jzdbgsy="";
     public String flowStatusName;
 
     public String getId() {

@@ -2,6 +2,7 @@ package com.miaxis.enroll.guide.infos;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,14 +55,14 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
     }
 
     EnrollSharedViewModel vm;
-
+    MyAdapter adapter;
     @Override
     protected void initData(@NonNull FragmentResumeBinding binding, @Nullable Bundle savedInstanceState) {
         vm = new ViewModelProvider(getActivity()).get(EnrollSharedViewModel.class);
         binding.setLifecycleOwner(this);
         binding.setVm(vm);
 
-        MyAdapter adapter = new MyAdapter();
+         adapter = new MyAdapter();
         if (vm.jobs.size() < 2) {
             vm.jobs.add(new Job());
             vm.jobs.add(new Job());
@@ -69,7 +72,18 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
         binding.addLine.setOnClickListener(v -> {
             vm.jobs.add(new Job());
             adapter.submitList(vm.jobs);
+            setRvHeight();
         });
+        setRvHeight();
+    }
+    private  void  setRvHeight(){
+        if (adapter.getItemCount()>=9){
+          RelativeLayout.LayoutParams params= (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
+          params.height=700;
+        }else{
+            RelativeLayout.LayoutParams params= (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
+            params.height=RelativeLayout.LayoutParams.WRAP_CONTENT;
+        }
     }
 
     @Inject
@@ -130,6 +144,9 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
             binding.setJob(item);
             binding.startTime.setOnClickListener(v -> {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(binding.getRoot().getContext());
+                DatePicker datePicker = datePickerDialog.getDatePicker();
+                Date d = new  Date();
+                datePicker.setMaxDate(d.getTime());
                 datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
                     item.startTime = simpleDateFormat.format(new Date(year-1900,month,dayOfMonth));
                     binding.invalidateAll();
@@ -138,6 +155,9 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
             });
             binding.endTime.setOnClickListener(v -> {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(binding.getRoot().getContext());
+                DatePicker datePicker = datePickerDialog.getDatePicker();
+                Date d = new  Date();
+                datePicker.setMaxDate(d.getTime());
                 datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
                     item.endTime = simpleDateFormat.format(new Date(year-1900,month,dayOfMonth));
                     binding.invalidateAll();

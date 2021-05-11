@@ -10,13 +10,14 @@
             type="com.miaxis.enroll.EnrollSharedViewModel" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="简历信息至少两条或以上"
@@ -25,6 +26,8 @@
             android:textSize="22px" />
 
         <LinearLayout
+            android:id="@+id/ll_title"
+            android:layout_below="@id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="72px"
             android:layout_marginStart="32px"
@@ -74,6 +77,7 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@id/ll_title"
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,10 +87,12 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/addLine"
+            android:layout_below="@id/recyclerview"
             android:layout_width="305px"
             android:layout_height="90px"
             android:text="添加行"
             android:gravity="center"
+            android:layout_marginBottom="50px"
             android:paddingStart="48px"
             android:paddingEnd="48px"
             android:drawableStart="@drawable/add"
@@ -96,5 +102,5 @@
             android:layout_marginStart="32px"
             android:background="@drawable/bg_btn_back_to_home_blue"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 </layout>

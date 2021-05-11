@@ -225,4 +225,5 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
             return false;
         }
     }
+
 }

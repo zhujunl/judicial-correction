@@ -112,14 +112,12 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                         binding.spinnerShi.setEnabled(false);
                         binding.spinnerXian.setEnabled(false);
                         binding.spinnerJiedao.setEnabled(false);
-                        binding.tvUnitRedDot.setVisibility(View.GONE);
                     } else {
                         binding.spinnerSheng.setEnabled(true);
                         binding.spinnerShi.setEnabled(true);
                         binding.spinnerXian.setEnabled(true);
                         binding.spinnerJiedao.setEnabled(true);
                         binding.llUnit.setEnabled(true);
-                        binding.tvUnitRedDot.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -331,6 +329,8 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
             }
             model.setLiveAddressChange().observe(this, observer -> {
                 if (observer.isSuccess()) {
+                    LiveAddressChangeBean v = model.liveBean.getValue();
+                    v.sqsj=model.currentTime(false);
                     DialogResult dialogResult = new DialogResult(getActivity(), new DialogResult.ClickListener() {
                         @Override
                         public void onBackHome(AppCompatDialog appCompatDialog) {

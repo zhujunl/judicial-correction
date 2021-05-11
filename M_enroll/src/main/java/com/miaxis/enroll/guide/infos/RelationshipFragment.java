@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,14 +49,14 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
     }
 
     EnrollSharedViewModel vm;
-
+    MyAdapter adapter;
     @Override
     protected void initData(@NonNull FragmentRelationshipBinding binding, @Nullable Bundle savedInstanceState) {
         vm = new ViewModelProvider(getActivity()).get(EnrollSharedViewModel.class);
         binding.setLifecycleOwner(this);
         binding.setVm(vm);
 
-        MyAdapter adapter = new MyAdapter();
+         adapter = new MyAdapter();
         if (vm.relationships.size()<2){
             vm.relationships.add(new Family());
             vm.relationships.add(new Family());
@@ -65,8 +66,21 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
         binding.addLine.setOnClickListener(v -> {
             vm.relationships.add(new Family());
             adapter.submitList(vm.relationships);
+            setRvHeight();
         });
+        setRvHeight();
     }
+
+    private  void  setRvHeight(){
+        if (adapter.getItemCount()>=9){
+            RelativeLayout.LayoutParams params= (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
+            params.height=700;
+        }else{
+            RelativeLayout.LayoutParams params= (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
+            params.height=RelativeLayout.LayoutParams.WRAP_CONTENT;
+        }
+    }
+
 
     @Inject
     AppHints appHints;

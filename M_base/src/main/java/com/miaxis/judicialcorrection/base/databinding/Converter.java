@@ -1,11 +1,15 @@
 package com.miaxis.judicialcorrection.base.databinding;
 
 import android.icu.text.SimpleDateFormat;
+import android.text.TextUtils;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.databinding.InverseMethod;
+import androidx.lifecycle.MutableLiveData;
+
+import com.miaxis.judicialcorrection.base.api.vo.LiveAddressChangeDetailsBean;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -46,10 +50,10 @@ public class Converter {
     }
 
     public static String convertGMTToLocal(String source) {
-        if (source==null){
+        if (source == null) {
             return "";
         }
-        SimpleDateFormat dff = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS",Locale.ENGLISH);//输入的被转化的时间格式
+        SimpleDateFormat dff = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ENGLISH);//输入的被转化的时间格式
         SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//需要转化成的时间格式
         Date date1 = null;
         try {

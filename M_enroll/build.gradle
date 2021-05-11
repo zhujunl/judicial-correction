@@ -30,14 +30,21 @@ android {
     buildFeatures {
         dataBinding = true
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     api project(path: ':M_base')
     api project(path: ':M_id')
     api project(path: ':M_face')
     api "com.google.dagger:hilt-android:$hilt_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor "com.alibaba:arouter-compiler:$arouter_version"
     annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
     api 'com.tencent:mmkv-static:1.1.2'

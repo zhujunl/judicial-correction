@@ -1,6 +1,7 @@
 package com.miaxis.judicialcorrection.benefit;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -79,6 +80,9 @@ public class PublicWelfareActivity extends BaseBindingActivity<ActivityPublicWel
     public void onLogin(PersonInfo personInfo) {
         //成功对象不为空
         if (personInfo != null) {
+            if (mWelfareViewModel.idCard != null && TextUtils.isEmpty(mWelfareViewModel.idCard.idCardMsg.name)) {
+                mWelfareViewModel.idCard.idCardMsg.name = personInfo.getXm();
+            }
             mWelfareViewModel.mStrPid.postValue(personInfo.getId());
             replaceFragment(new ToSignUpFragment());
         }
@@ -94,14 +98,7 @@ public class PublicWelfareActivity extends BaseBindingActivity<ActivityPublicWel
     @Override
     public void onVerify(ZZResponse<VerifyInfo> response) {
         if (ZZResponse.isSuccess(response)) {
-            mWelfareViewModel.getParticipate(mWelfareViewModel.mItemId).observe(this, observer -> {
-                if (observer.isSuccess()) {
-                    showDialog(response);
-                }
-                if (observer.isError()) {
-                    appHints.showHint(observer.errorMessage);
-                }
-            });
+            mWelfareViewModel.mVerificationSignUp.postValue(true);
         } else {
             showDialog(response);
         }
@@ -130,5 +127,7 @@ public class PublicWelfareActivity extends BaseBindingActivity<ActivityPublicWel
                 ZZResponse.isSuccess(response) ? "系统将自动返回" + "公益活动" + "身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
                 10, false
         ).hideAllHideSucceedInfo(true)).show();
+
+
     }
 }

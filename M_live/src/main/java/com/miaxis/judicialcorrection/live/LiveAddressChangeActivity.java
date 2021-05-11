@@ -67,13 +67,17 @@ public class LiveAddressChangeActivity extends BaseBindingActivity<ActivityLiveA
 
             @Override
             public void onTimeOut(AppCompatDialog appCompatDialog) {
-                finish();
+                if (ZZResponse.isSuccess(response)) {
+                    replaceFragment(new LiveAddressFragment());
+                } else {
+                    finish();
+                }
             }
         }, new DialogResult.Builder(
                 ZZResponse.isSuccess(response),
                 ZZResponse.isSuccess(response) ? title + "成功" : "验证失败",
                 ZZResponse.isSuccess(response) ? "系统将自动返回" + title + "身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
-                ZZResponse.isSuccess(response) ? 0 : 10, true
+                ZZResponse.isSuccess(response) ? 3 : 10, true
         )).show();
 //        if (ZZResponse.isSuccess(response)) {
 //            replaceFragment(new LiveAddressFragment());

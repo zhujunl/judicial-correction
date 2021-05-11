@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +17,19 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
+
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.finger.FingerManager;
 import com.miaxis.finger.FingerStrategy;
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
-import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
@@ -31,25 +38,14 @@ import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundDiffAdapter;
 import com.miaxis.judicialcorrection.databinding.ActivityMainBinding;
 import com.miaxis.judicialcorrection.databinding.ItemMainFucBinding;
 import com.miaxis.judicialcorrection.db.DbInitMainFuncs;
-import com.miaxis.judicialcorrection.dialog.DatePickDialog;
 import com.miaxis.judicialcorrection.ui.setting.SettingActivity;
 
 import java.util.Objects;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialogFragment;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.DiffUtil;
-
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
-import timber.log.Timber;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -64,6 +60,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
     @Inject
     Lazy<AppHints> appHintsLazy;
 
+    private PasswordDialog mPasswordDialog;
 
     @Inject
     DbInitMainFuncs dbInitMainFuncs;
@@ -82,9 +79,11 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
             long lt = v.getTag(v.getId()) == null ? 0L : (long) v.getTag(v.getId());
             long ct = System.currentTimeMillis();
             if (ct - lt < 500) {
-                new PasswordDialog()
-                        .show(getSupportFragmentManager(), "pwd");
-                v.setTag(v.getId(), 0);
+                if (mPasswordDialog == null || !mPasswordDialog.isVisible()) {
+                    mPasswordDialog = new PasswordDialog();
+                    mPasswordDialog.show(getSupportFragmentManager(), "pwd");
+                    v.setTag(v.getId(), 0);
+                }
             }
             v.setTag(v.getId(), ct);
         });
@@ -157,6 +156,9 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
         super.onDestroy();
         FaceManager.getInstance().free();
         FingerManager.getInstance().release();
+        if (mPasswordDialog != null && mPasswordDialog.isVisible()) {
+            mPasswordDialog.dismiss();
+        }
     }
 
     public static class PasswordDialog extends AppCompatDialogFragment {
@@ -192,6 +194,9 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
         void checkPassword(String pwd) {
             dismiss();
             if ("123456".equals(pwd)) {
+                if (getActivity() != null) {
+                    ((MainActivity) getActivity()).hideInputMethod();
+                }
                 startActivity(new Intent(getActivity(), SettingActivity.class));
             } else {
                 Toast.makeText(getContext(), "密码输入错误!", Toast.LENGTH_SHORT).show();

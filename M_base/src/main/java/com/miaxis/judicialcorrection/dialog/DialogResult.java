@@ -73,6 +73,11 @@ public class DialogResult extends BaseDialog<DialogVerifyResultBinding, DialogRe
             binding.tvMessage.setVisibility(View.GONE);
             binding.btnTryAgain.setVisibility(View.INVISIBLE);
             binding.btnBackHome.setVisibility(View.GONE);
+        }else{
+             if (mBuilder.isHideButton){
+                 binding.btnTryAgain.setVisibility(View.INVISIBLE);
+                 binding.btnBackHome.setVisibility(View.GONE);
+             }
         }
     }
 
@@ -98,6 +103,7 @@ public class DialogResult extends BaseDialog<DialogVerifyResultBinding, DialogRe
         public int countDownTime = 10;
         public boolean enableBackHome = true;
         public boolean isHideAllShowSucceed = false;
+        public boolean isHideButton=false;
 
         public Builder() {
 
@@ -113,6 +119,11 @@ public class DialogResult extends BaseDialog<DialogVerifyResultBinding, DialogRe
 
         public Builder hideAllHideSucceedInfo(boolean isHideAllShowSucceed) {
             this.isHideAllShowSucceed = isHideAllShowSucceed;
+            return this;
+        }
+
+        public Builder hideButton(boolean isHideButton) {
+            this.isHideButton = isHideButton;
             return this;
         }
     }

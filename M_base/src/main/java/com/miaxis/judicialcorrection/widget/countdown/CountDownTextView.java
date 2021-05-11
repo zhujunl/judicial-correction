@@ -106,7 +106,7 @@ public class CountDownTextView extends androidx.appcompat.widget.AppCompatTextVi
             if (mCountDownListener != null) {
                 mCountDownListener.onCountDownProgress(start);
             }
-            if (start > 0) {
+            if (start > 1) {
                 loop();
             } else {
                 if (mCountDownListener != null) {

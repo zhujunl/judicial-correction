@@ -19,7 +19,6 @@ import com.miaxis.judicialcorrection.benefit.PublicWelfareActivity;
 import com.miaxis.judicialcorrection.benefit.R;
 import com.miaxis.judicialcorrection.benefit.WelfareViewModel;
 import com.miaxis.judicialcorrection.benefit.databinding.FragmentToSignUpBinding;
-import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
 import com.miaxis.judicialcorrection.face.VerifyPageFragment;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
@@ -49,6 +48,10 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
     @Inject
     AppToast appToast;
 
+    private SignUpContentBean mItemListBean;
+
+    private int ItemCheckPosition;
+
     @Override
     protected int initLayout() {
         return R.layout.fragment_to_sign_up;
@@ -67,50 +70,21 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
         mAdapter = new SignUpAdapter();
         mAdapter.setChildItemClickListener(new ChildItemClickListener() {
             @Override
-            public void onItemClick(int position,SignUpContentBean listBean) {
-                if (listBean.isSignUpSucceed()){
+            public void onItemClick(int position, SignUpContentBean listBean) {
+                if (listBean.isSignUpSucceed()) {
                     appToast.show("您已报名");
                     return;
                 }
                 IdCard idCardBean = viewModel.idCard;
-                viewModel.mItemId=listBean.getId();
-                viewModel.getParticipate(listBean.getId()).observe(ToSignUpFragment.this, observer -> {
-                    if (observer.isSuccess()) {
-                        new DialogResult(getActivity(), new DialogResult.ClickListener() {
-                            @Override
-                            public void onBackHome(AppCompatDialog appCompatDialog) {
-                                appCompatDialog.dismiss();
-                                finish();
-                            }
-                            @Override
-                            public void onTryAgain(AppCompatDialog appCompatDialog) {
-                                appCompatDialog.dismiss();
-                            }
-
-                            @Override
-                            public void onTimeOut(AppCompatDialog appCompatDialog) {
-                                listBean.setSignUpSucceed(true);
-                                mAdapter.notifyItemChanged(position);
-                                appCompatDialog.dismiss();
-                            }
-                        }, new DialogResult.Builder(
-                               true,
-                                true ? "报名" + "成功" : "验证失败",
-                                true ? "系统将自动返回" + "公益活动" + "身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
-                                3, false
-                        ).hideAllHideSucceedInfo(true)).show();
-                    }
-                    if (observer.isError()){
-                        appHints.showError("失败");
-                    }
-                });
-//                if (idCardBean != null && getActivity() != null) {
-//                    PersonInfo info = new PersonInfo();
-//                    info.setXm(idCardBean.idCardMsg.name);
-//                    info.setIdCardNumber(idCardBean.idCardMsg.id_num);
-//                    ((PublicWelfareActivity) getActivity()).replaceFragment(
-//                            new VerifyPageFragment("身份核验", info));
-//                }
+                mItemListBean = listBean;
+                ItemCheckPosition = position;
+                if (idCardBean != null && getActivity() != null) {
+                    PersonInfo info = new PersonInfo();
+                    info.setXm(idCardBean.idCardMsg.name);
+                    info.setIdCardNumber(idCardBean.idCardMsg.id_num);
+                    ((PublicWelfareActivity) getActivity()).replaceFragment(
+                            new VerifyPageFragment("身份核验", info));
+                }
             }
         });
     }
@@ -126,6 +100,41 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
             binding.tvIdCard.setText("身份证号：" + viewModel.idCard.idCardMsg.id_num);
         }
         setData();
+        viewModel.mVerificationSignUp.observe(this, observer -> {
+            if (!observer) {
+                return;
+            }
+            viewModel.getParticipate(mItemListBean.getId()).observe(ToSignUpFragment.this, objectResource -> {
+                if (objectResource.isSuccess()) {
+                    viewModel.mVerificationSignUp.setValue(false);
+                    new DialogResult(getActivity(), new DialogResult.ClickListener() {
+                        @Override
+                        public void onBackHome(AppCompatDialog appCompatDialog) {
+                            appCompatDialog.dismiss();
+                            finish();
+                        }
+                        @Override
+                        public void onTryAgain(AppCompatDialog appCompatDialog) {
+                            appCompatDialog.dismiss();
+                        }
+                        @Override
+                        public void onTimeOut(AppCompatDialog appCompatDialog) {
+                            mItemListBean.setSignUpSucceed(true);
+                            mAdapter.notifyItemChanged(ItemCheckPosition);
+                            appCompatDialog.dismiss();
+                        }
+                    }, new DialogResult.Builder(
+                            true,
+                            true ? "报名" + "成功" : "验证失败",
+                            true ? "系统将自动返回" + "公益活动" + "身份证刷取页面" : "请点击“重新验证”重新尝试验证，\n如还是失败，请联系现场工作人员。",
+                            3, false
+                    ).hideAllHideSucceedInfo(true)).show();
+                }
+                if (objectResource.isError()) {
+                    appHints.showError("失败");
+                }
+            });
+        });
     }
 
     /**
@@ -148,7 +157,7 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
                 if (isRefresh) {
                     if (listResource.data != null && listResource.data.getList() != null) {
                         mAdapter.setNewInstance(listResource.data.getList());
-                        if(listResource.data.getList().size()<10){
+                        if (listResource.data.getList().size() < 10) {
                             mAdapter.getLoadMoreModule().loadMoreEnd();
                         }
                     } else {

@@ -14,6 +14,7 @@ import com.miaxis.judicialcorrection.LiveChildItemClickListener;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.api.vo.LiveAddressListBean;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundAdapter;
+import com.miaxis.judicialcorrection.face.VerifyPageFragment;
 import com.miaxis.judicialcorrection.live.LiveAddressChangeActivity;
 import com.miaxis.judicialcorrection.live.LiveAddressChangeViewModel;
 import com.miaxis.judicialcorrection.live.R;
@@ -47,9 +48,10 @@ public class LiveListFragment extends BaseBindingFragment<FragmentLiveListBindin
         adapter = new Adapter();
         binding.rvList.setAdapter(adapter);
         binding.tvApply.setOnClickListener(v -> {
-            if (getActivity() != null) {
-//                    ((LiveAddressChangeActivity) getActivity()).replaceFragment(new VerifyPageFragment("居住地变更",model.personInfoMutableLiveData.getValue()));
-                ((LiveAddressChangeActivity) getActivity()).replaceFragment(new LiveAddressFragment());
+            if (getActivity() != null&&getActivity() instanceof LiveAddressChangeActivity) {
+               ((LiveAddressChangeActivity) getActivity()).replaceFragment(new
+                       VerifyPageFragment("居住地变更",model.personInfoMutableLiveData.getValue()));
+//                ((LiveAddressChangeActivity) getActivity()).replaceFragment(new LiveAddressFragment());
             }
         });
     }
