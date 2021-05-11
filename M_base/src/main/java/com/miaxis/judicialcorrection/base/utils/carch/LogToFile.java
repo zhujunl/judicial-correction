@@ -32,6 +32,8 @@ public class LogToFile {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);//日期格式;
 
+    private static SimpleDateFormat dateFormatToDay = new SimpleDateFormat("yyyy-MM-dd", Locale.US);//日期格式;
+
     private static Date date = new Date();//因为log日志是使用日期命名的，使用静态成员变量主要是为了在整个程序运行期间只存在一个.log文件中;
 
     /**
@@ -120,6 +122,8 @@ public class LogToFile {
             Log.e(TAG, "logPath == null ，未初始化LogToFile");
             return;
         }
+//         String date= dateFormatToDay.format(new Date());
+//         String fileName = logPath + "/log_" + date + ".log";//log日志名，使用时间命名，保证不重复
         String fileName = logPath + "/log_" + dateFormat.format(new Date()) + ".log";//log日志名，使用时间命名，保证不重复
         String log = dateFormat.format(date) + " " + type + " " + tag + " " + msg + "\n";//log日志内容，可以自行定制
 
@@ -128,7 +132,6 @@ public class LogToFile {
         if (!file.exists()) {
             file.mkdirs();//创建父路径
         }
-
         FileOutputStream fos = null;//FileOutputStream会自动调用底层的close()方法，不用关闭
         BufferedWriter bw = null;
         try {
@@ -136,7 +139,6 @@ public class LogToFile {
             fos = new FileOutputStream(fileName, true);//这里的第二个参数代表追加还是覆盖，true为追加，flase为覆盖
             bw = new BufferedWriter(new OutputStreamWriter(fos));
             bw.write(log);
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

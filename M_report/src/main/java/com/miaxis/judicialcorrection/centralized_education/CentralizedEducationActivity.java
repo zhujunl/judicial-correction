@@ -121,7 +121,7 @@ public class CentralizedEducationActivity extends BaseBindingActivity<ActivityRe
                             }
 
                             if (temp == null) {
-                                appHintsLazy.get().showError("无" + title + "未在指定时间内操作", new DialogInterface.OnClickListener() {
+                                appHintsLazy.get().showError("当前还没有"+title+"，如需签到，请联系工作人员!", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
