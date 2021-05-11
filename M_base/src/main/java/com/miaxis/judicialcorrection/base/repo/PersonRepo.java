@@ -10,6 +10,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import androidx.lifecycle.LiveData;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 
 /**
  * EnrollRepo
@@ -32,9 +34,8 @@ public class PersonRepo {
         return ResourceConvertUtils.convertToResource(login);
     }
 
-    public LiveData<Resource<Object>> getFace(String id) {
-        LiveData<ApiResult<Object>> login = apiService.getFace(id);
-        return ResourceConvertUtils.convertToResource(login);
+    public Call<ResponseBody> getFace(String id) {
+        return apiService.getFace(id);
     }
 
 }

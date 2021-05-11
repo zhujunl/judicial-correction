@@ -1,16 +1,8 @@
 package com.miaxis.judicialcorrection.face;
 
 import android.hardware.Camera;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.SurfaceHolder;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialog;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.CameraPreviewCallback;
@@ -23,11 +15,18 @@ import com.miaxis.judicialcorrection.dialog.DialogResult;
 import com.miaxis.judicialcorrection.face.callback.NavigationCallback;
 import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.face.databinding.FragmentCaptureBinding;
+import com.miaxis.utils.FileUtils;
 
 import java.io.File;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
+import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 
 /**
@@ -45,10 +44,10 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
 
     PersonInfo personInfo;
 
-    CapturePageViewModel mCapturePageViewModel;
+    GetFaceViewModel mGetFaceViewModel;
 
     @Inject
-    AppHints appHints;
+    Lazy<AppHints> appHintsLazy;
 
     public GetFacePageFragment(@NonNull PersonInfo personInfo) {
         this.personInfo = personInfo;
@@ -61,24 +60,15 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
 
     @Override
     protected void initView(@NonNull FragmentCaptureBinding view, @Nullable Bundle savedInstanceState) {
-        mCapturePageViewModel = new ViewModelProvider(this).get(CapturePageViewModel.class);
+        mGetFaceViewModel = new ViewModelProvider(this).get(GetFaceViewModel.class);
         binding.tvTitle.setText(String.valueOf(title));
-        mCapturePageViewModel.name.observe(this, s -> binding.tvName.setText(s));
-        mCapturePageViewModel.idCardNumber.observe(this, s -> binding.tvIdCard.setText(s));
-        mCapturePageViewModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));
-        mCapturePageViewModel.verifyStatus.observe(this, response -> {
-            FragmentActivity activity = getActivity();
-            if (activity instanceof VerifyCallback) {
-                VerifyCallback callback = (VerifyCallback) activity;
-                callback.onVerify(response);
-            }
-        });
-        mCapturePageViewModel.faceFile.observe(this, file -> {
+        mGetFaceViewModel.name.observe(this, s -> binding.tvName.setText(s));
+        mGetFaceViewModel.idCardNumber.observe(this, s -> binding.tvIdCard.setText(s));
+        mGetFaceViewModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));
+        //mGetFaceViewModel.faceFile.observe(this, this::onFaceGot);
 
-        });
-
-        mCapturePageViewModel.name.setValue(personInfo.getXm());
-        mCapturePageViewModel.idCardNumber.setValue(personInfo.getIdCardNumber());
+        mGetFaceViewModel.name.setValue(personInfo.getXm());
+        mGetFaceViewModel.idCardNumber.setValue(personInfo.getIdCardNumber());
 
         binding.btnBackToHome.setOnClickListener(v -> finish());
         binding.svPreview.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -126,23 +116,22 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
 
     @Override
     public void onPreview(int cameraId, byte[] frame, MXCamera camera, int width, int height) {
-        mCapturePageViewModel.getFace(cameraId, frame, camera, width, height, new GetFaceCallback() {
+        mGetFaceViewModel.getFace( frame, camera, width, height, new GetFaceCallback() {
             @Override
             public void onFaceReady(MXCamera camera) {
-                File filePath = createFilePath();
-                String fileName = "upload_pic" + ".jpg";
-                File file = new File(filePath, fileName);
+                File filePath = FileUtils.createFileParent(getContext());
+                File file = new File(filePath, personInfo.getId() + ".jpg");
                 boolean frameImage = camera.getFrameImage(frame, file.getAbsolutePath());
                 if (frameImage) {
                     if (!BuildConfig.DEBUG) {
-                        mCapturePageViewModel.uploadPic(personInfo.getId(), file).observe(GetFacePageFragment.this, observer -> {
+                        mGetFaceViewModel.uploadPic(personInfo.getId(), file).observe(GetFacePageFragment.this, observer -> {
                             switch (observer.status) {
                                 case LOADING:
                                     showLoading();
                                     break;
                                 case ERROR:
                                     dismissLoading();
-                                    appHints.showError(observer.errorMessage);
+                                    appHintsLazy.get().showError(observer.errorMessage);
                                     break;
                                 case SUCCESS:
                                     dismissLoading();
@@ -154,46 +143,8 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
                         showDialog();
                     }
                 } else {
-                    appHints.showError("图片保存上传失败");
+                    appHintsLazy.get().showError("图片保存上传失败");
                 }
-
-
-//                binding.tvTips.setTime(3);
-//                binding.tvTips.setCountDownListener(new CountDownListener() {
-//                    @Override
-//                    public void onCountDownStart() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onCountDownProgress(int progress) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onCountDownDone() {
-//                        camera.takePicture(new Camera.PictureCallback() {
-//                            @Override
-//                            public void onPictureTaken(byte[] data, Camera camera) {
-//                                File file = new File("路径");
-//                                try {
-//                                    if (!file.exists()) {
-//                                        File parentFile = file.getParentFile();
-//                                        if (parentFile != null) {
-//                                            boolean mkdirs = parentFile.mkdirs();
-//                                        }
-//                                    }
-//                                    FileOutputStream fileOutputStream = new FileOutputStream(file);
-//                                    fileOutputStream.write(data);
-//                                    fileOutputStream.flush();
-//                                    fileOutputStream.close();
-//                                } catch (Exception e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                        });
-//                    }
-//                });
             }
         });
     }
@@ -213,6 +164,7 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
 
             @Override
             public void onTimeOut(AppCompatDialog appCompatDialog) {
+                appCompatDialog.dismiss();
                 FragmentActivity activity = getActivity();
                 if (activity instanceof VerifyCallback) {
                     NavigationCallback callback = (NavigationCallback) activity;
@@ -227,22 +179,12 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
         ).hideAllHideSucceedInfo(false).hideButton(true)).show();
     }
 
-    private File createFilePath() {
-        File path = null;
-        // 图片地址设定
-        path = getActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsoluteFile();
-        if (!path.exists()) {
-            path.mkdirs();
-        }
-        return path;
-    }
-
     public interface GetFaceCallback {
 
         /**
          * 人脸质量检测通过
          */
-        void onFaceReady(MXCamera camera);
+        void onFaceReady( MXCamera camera);
 
     }
 }

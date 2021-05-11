@@ -1,5 +1,7 @@
 package com.miaxis.judicialcorrection.face;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
@@ -9,24 +11,32 @@ import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.CameraPreviewCallback;
 import com.miaxis.camera.MXCamera;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
+import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
-import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.repo.PersonRepo;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
+import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
 import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.face.databinding.FragmentVerifyBinding;
+import com.miaxis.utils.BitmapUtils;
+import com.miaxis.utils.FileUtils;
+
+import java.io.File;
 
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @author Tank
@@ -67,13 +77,7 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
         mVerifyPageViewModel.name.observe(this, s -> binding.tvName.setText(s));
         mVerifyPageViewModel.idCardNumber.observe(this, s -> binding.tvIdCard.setText(s));
         mVerifyPageViewModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));
-        mVerifyPageViewModel.verifyStatus.observe(this, response -> {
-            FragmentActivity activity = getActivity();
-            if (activity instanceof VerifyCallback) {
-                VerifyCallback callback = (VerifyCallback) activity;
-                callback.onVerify(response);
-            }
-        });
+        mVerifyPageViewModel.verifyStatus.observe(this, this::verifyComplete);
         mVerifyPageViewModel.fingerBitmap.observe(this, bitmap -> {
             Glide.with(VerifyPageFragment.this).load(bitmap).error(R.mipmap.mipmap_error).into(binding.ivFinger);
             binding.ivFinger.setOnClickListener(v -> {
@@ -87,21 +91,87 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
 
         mVerifyPageViewModel.name.setValue(personInfo.getXm());
         mVerifyPageViewModel.idCardNumber.setValue(personInfo.getIdCardNumber());
-        //todo 身份证人脸特征数据
-        LiveData<Resource<Object>> mPersonRepoFace = mPersonRepo.getFace(personInfo.getId());
-        mPersonRepoFace.observe(this, new Observer<Resource<Object>>() {
-            @Override
-            public void onChanged(Resource<Object> objectResource) {
 
+        mVerifyPageViewModel.tempFaceFeature.observe(this, new Observer<byte[]>() {
+            @Override
+            public void onChanged(byte[] bytes) {
+                if (bytes != null) {
+                    ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().find(Camera.CameraInfo.CAMERA_FACING_FRONT);
+                    if (ZZResponse.isSuccess(mxCamera)) {
+                        mxCamera.getData().setPreviewCallback(VerifyPageFragment.this);
+                    }
+                } else {
+                    appHintsLazy.get().showError(
+                            "Error:提取人像特征失败",
+                            (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-2, "Error:提取人像特征失败")));
+                }
             }
         });
 
-        mVerifyPageViewModel.idCardFaceFeature.setValue(new byte[1]);
-
         binding.btnBackToHome.setOnClickListener(v -> finish());
-
         ZZResponse<?> init = CameraHelper.getInstance().init();
         if (ZZResponse.isSuccess(init)) {
+            //todo 身份证人脸特征数据
+            if (BuildConfig.DEBUG) {
+                File fileParent = FileUtils.createFileParent(getContext());
+                if (fileParent == null || !fileParent.exists()) {
+                    appHintsLazy.get().showError("Error:获取路径失败",
+                            (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-3, "Error:获取路径失败")));
+                    return;
+                }
+                File file = new File(fileParent.getAbsolutePath() ,  personInfo.getId() + ".jpg");
+                if (!file.exists()) {
+                    appHintsLazy.get().showError("Error:解析人像路径失败",
+                            (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-4, "Error:解析人像路径失败")));
+                    return;
+                }
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                if (bitmap == null) {
+                    appHintsLazy.get().showError("Error:人像解析失败",
+                            (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-5, "Error:人像解析失败")));
+                    return;
+                }
+                byte[] rgb = BitmapUtils.bitmap2RGB(bitmap);
+                mVerifyPageViewModel.extractFeature(rgb, bitmap.getWidth(), bitmap.getHeight());
+            } else {
+                showLoading(title, "正在请求，请稍后");
+                mPersonRepo.getFace(personInfo.getId()).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        dismissLoading();
+                        //请求成功后拿到图片 解析成bitmap
+                        ResponseBody responseBody = response.body();
+                        Bitmap bitmap = BitmapFactory.decodeStream(responseBody.byteStream());
+                        if (bitmap == null) {
+                            appHintsLazy.get().showError("Error:人像解析失败",
+                                    (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-6, "Error:人像解析失败")));
+                            return;
+                        }
+                        //File filePath = FileUtils.createFilePath(getContext());
+                        //if (filePath == null || !filePath.exists()) {
+                        //    appHintsLazy.get().showError("Error:获取路径失败",
+                        //            (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-7, "Error:获取路径失败")));
+                        //    return;
+                        // }
+                        // TODO: 2021/5/11 测试保存文件
+                        //boolean saveBitmap = BitmapUtils.saveBitmap(bitmap, filePath.getAbsolutePath() + File.pathSeparator + personInfo.getId() + ".jpg");
+                        //if (!saveBitmap) {
+                        //    appHintsLazy.get().showError("Error:人像保存失败");
+                        //    return;
+                        //}
+                        byte[] rgb = BitmapUtils.bitmap2RGB(bitmap);
+                        mVerifyPageViewModel.extractFeature(rgb, bitmap.getWidth(), bitmap.getHeight());
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        dismissLoading();
+                        appHintsLazy.get().showError("Error:" + t,
+                                (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-8, "Error:" + t)));
+                    }
+                });
+            }
+
             ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().createMXCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
             if (ZZResponse.isSuccess(mxCamera)) {
                 binding.svPreview.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -110,11 +180,11 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                         ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().find(Camera.CameraInfo.CAMERA_FACING_FRONT);
                         if (ZZResponse.isSuccess(mxCamera)) {
                             mxCamera.getData().setOrientation(90);
-                            mxCamera.getData().setPreviewCallback(VerifyPageFragment.this);
                             mxCamera.getData().start(holder);
                             return;
                         }
-                        appHintsLazy.get().showError("摄像头初始化失败");
+                        appHintsLazy.get().showError("摄像头初始化失败",
+                                (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-9, "Error:摄像头初始化失败")));
                     }
 
                     @Override
@@ -130,13 +200,16 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                 return;
             }
         }
-        appHintsLazy.get().showError("摄像头初始化失败");
+        appHintsLazy.get().showError("摄像头初始化失败",
+                (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-10, "Error:摄像头初始化失败")));
+
     }
 
     @Override
     public void onInit(boolean result) {
         if (!result) {
-            appHintsLazy.get().showError("指纹设备初始化失败");
+            appHintsLazy.get().showError("指纹设备初始化失败",
+                    (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-11, "Error:指纹设备初始化失败")));
         }
     }
 
@@ -159,8 +232,9 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
 
     @Override
     public void onPreview(int cameraId, byte[] frame, MXCamera camera, int width, int height) {
-        mVerifyPageViewModel.faceRecognize(cameraId, frame, camera, width, height);
-        //        mVerifyPageViewModel.verifyStatus.postValue(ZZResponse.CreateSuccess(new VerifyInfo(personInfo.getId(),personInfo.getXm(), personInfo.getIdCardNumber())));
+        byte[] rgb = mVerifyPageViewModel.nv21ToRgb(frame, width, height);
+        mVerifyPageViewModel.faceRecognize(rgb, camera, width, height);
+        //mVerifyPageViewModel.verifyStatus.postValue(ZZResponse.CreateSuccess(new VerifyInfo(personInfo.getId(),personInfo.getXm(), personInfo.getIdCardNumber())));
     }
 
     @Override
@@ -168,4 +242,14 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
         super.onDestroy();
         mVerifyPageViewModel.releaseFingerDevice();
     }
+
+    public void verifyComplete(ZZResponse<VerifyInfo> response) {
+        FragmentActivity activity = getActivity();
+        if (activity instanceof VerifyCallback) {
+            VerifyCallback callback = (VerifyCallback) activity;
+            callback.onVerify(response);
+        }
+    }
+
+
 }

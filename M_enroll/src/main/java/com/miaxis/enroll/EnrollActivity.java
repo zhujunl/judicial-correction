@@ -1,6 +1,7 @@
 package com.miaxis.enroll;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.miaxis.enroll.databinding.ActivityEnrollBinding;
@@ -16,7 +17,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
@@ -30,7 +30,7 @@ import timber.log.Timber;
  */
 @AndroidEntryPoint
 @Route(path = "/enroll/EnrollActivity")
-public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> implements  NavigationCallback {
+public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> implements NavigationCallback {
 
 
     @Inject
@@ -80,10 +80,20 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> i
                     break;
                 case SUCCESS:
                     dismissLoading();
+                    viewModel.haveIdInfo=false;
+                    viewModel.haveFaceImage=false;
                     if (personInfoResource.data == null) {
-                        nvController.nvTo(new CaptureFuncFragment(), false);
+                        nvController.nvTo(new CaptureFuncFragment( viewModel.haveIdInfo, viewModel.haveFaceImage), false);
                     } else {
-                        nvController.nvTo(new GoHomeFragment(), false);
+                        viewModel.haveIdInfo=!TextUtils.isEmpty(personInfoResource.data.getIdCardNumber());
+                        viewModel.haveFaceImage=personInfoResource.data.haveFaceImage;
+                        if (personInfoResource.data.haveFaceImage && TextUtils.isEmpty(personInfoResource.data.getIdCardNumber())) {
+                            nvController.nvTo(new GoHomeFragment(), false);
+                        } else {
+                            viewModel.personInfoLiveData.setValue(personInfoResource.data);
+                            nvController.nvTo(new CaptureFuncFragment(viewModel.haveIdInfo,
+                                    viewModel.haveFaceImage), false);
+                        }
                     }
                     break;
             }
@@ -98,6 +108,6 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> i
 
     @Override
     public void onNavigationCallBack() {
-        nvController.nvTo(new CaptureFuncFragment(), false);
+        nvController.nvTo(new CaptureFuncFragment(viewModel.haveIdInfo, viewModel.haveFaceImage), false);
     }
 }

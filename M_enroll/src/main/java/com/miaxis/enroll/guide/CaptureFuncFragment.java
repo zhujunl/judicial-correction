@@ -2,12 +2,6 @@ package com.miaxis.enroll.guide;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.miaxis.enroll.EnrollActivity;
 import com.miaxis.enroll.EnrollSharedViewModel;
 import com.miaxis.enroll.R;
@@ -15,13 +9,16 @@ import com.miaxis.enroll.databinding.FragmentCaptureFuncBinding;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
-
-import com.miaxis.judicialcorrection.face.GetFacePageFragment;
 import com.miaxis.judicialcorrection.face.GetFacePageFragment;
 import com.miaxis.judicialcorrection.widget.countdown.DefaultCountDownListener;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 import dagger.hilt.android.AndroidEntryPoint;
 
 /**
@@ -32,6 +29,15 @@ import dagger.hilt.android.AndroidEntryPoint;
  */
 @AndroidEntryPoint
 public class CaptureFuncFragment extends BaseBindingFragment<FragmentCaptureFuncBinding> {
+
+    private boolean haveFaceImage;
+    private boolean haveIdInfo;
+
+    public CaptureFuncFragment(boolean haveIdInfo, boolean haveFaceImage) {
+        this.haveIdInfo = haveIdInfo;
+        this.haveFaceImage = haveFaceImage;
+    }
+
     @Override
     protected int initLayout() {
         return R.layout.fragment_capture_func;
@@ -51,11 +57,20 @@ public class CaptureFuncFragment extends BaseBindingFragment<FragmentCaptureFunc
             }
         });
         binding.groupBase.setOnClickListener(v -> {
-            navigation(new CaptureBaseInfoFragment());
+            if (haveIdInfo) {
+                appHints.toast("您已经采集过基本信息");
+            } else {
+                navigation(new CaptureBaseInfoFragment());
+            }
         });
+
         binding.groupFace.setOnClickListener(v -> {
+            if (haveFaceImage) {
+                appHints.toast("您已经采集过人脸");
+                return;
+            }
             PersonInfo personInfo = viewModel.personInfoLiveData.getValue();
-            if (viewModel.personInfoLiveData.getValue()==null){
+            if (viewModel.personInfoLiveData.getValue() == null) {
                 appHints.toast("请先采集基本信息");
                 return;
             }

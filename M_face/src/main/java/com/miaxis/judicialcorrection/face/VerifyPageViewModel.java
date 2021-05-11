@@ -43,7 +43,7 @@ public class VerifyPageViewModel extends ViewModel {
 
     MutableLiveData<Bitmap> fingerBitmap = new MutableLiveData<>();
 
-    MutableLiveData<byte[]> idCardFaceFeature = new MutableLiveData<>();
+    MutableLiveData<byte[]> tempFaceFeature = new MutableLiveData<>();
 
     public MXFaceInfoEx[] mFaceInfoExes = new MXFaceInfoEx[MXFaceInfoEx.iMaxFaceNum];
     public int[] mFaceNumber = new int[1];
@@ -70,9 +70,12 @@ public class VerifyPageViewModel extends ViewModel {
         FingerManager.getInstance().setFingerListener(null);
     }
 
-    public void faceRecognize(int cameraId, byte[] frame, MXCamera camera, int width, int height) {
+    public byte[] nv21ToRgb(byte[] frame, int width, int height) {
+        return FaceManager.getInstance().yuv2Rgb(frame, width, height);
+    }
+
+    public void faceRecognize(byte[] rgb, MXCamera camera, int width, int height) {
         mAppExecutors.networkIO().execute(() -> {
-            byte[] rgb = FaceManager.getInstance().yuv2Rgb(frame, width, height);
             int detectFace = FaceManager.getInstance().detectFace(rgb, width, height, mFaceNumber, mFacesData, mFaceInfoExes);
             if (detectFace == 0) {
                 int faceNumber = FaceManager.getInstance().getFaceNumber(mFaceNumber);
@@ -119,9 +122,34 @@ public class VerifyPageViewModel extends ViewModel {
                 faceTips.postValue("未检测到人脸");
             }
             SystemClock.sleep(200);
-            camera.getNextFrame();
+            if (camera != null) {
+                camera.getNextFrame();
+            }
         });
     }
+
+    public void extractFeature(byte[] rgb, int width, int height) {
+        mAppExecutors.networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    int detectFace = FaceManager.getInstance().detectFace(rgb, width, height, mFaceNumber, mFacesData, mFaceInfoExes);
+                    if (detectFace == 0) {
+                        byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
+                        int extractFeature = FaceManager.getInstance().extractFeature(rgb, width, height, 1, mFacesData, feature, false);
+                        if (extractFeature == 0) {
+                            tempFaceFeature.postValue(feature);
+                            return;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                tempFaceFeature.postValue(null);
+            }
+        });
+    }
+
 
     private final FingerManager.OnFingerReadListener fingerReadListener = (feature, image) -> {
         Timber.e("FingerRead:" + (feature == null) + "   " + (image == null));
@@ -178,4 +206,9 @@ public class VerifyPageViewModel extends ViewModel {
     public interface OnFingerInitListener {
         void onInit(boolean result);
     }
+
+    public static class FaceFeature {
+
+    }
+
 }
