@@ -15,9 +15,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -197,19 +195,19 @@ public class Sdtusbapi extends Activity {
     }
 
     public void writefile(final String context) {
-        if (this.debug == 1 && Environment.getExternalStorageState().equals("mounted")) {
-            final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
-            try {
-                this.raf.seek(this.targetFile.length());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                this.raf.writeChars("\n" + sdf.format(new Date()) + " " + context);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        //        if (this.debug == 1 && Environment.getExternalStorageState().equals("mounted")) {
+        //            final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+        //            try {
+        //                this.raf.seek(this.targetFile.length());
+        //            } catch (IOException e) {
+        //                e.printStackTrace();
+        //            }
+        //            try {
+        //                this.raf.writeChars("\n" + sdf.format(new Date()) + " " + context);
+        //            } catch (IOException e) {
+        //                e.printStackTrace();
+        //            }
+        //        }
     }
 
     private void closefile() {

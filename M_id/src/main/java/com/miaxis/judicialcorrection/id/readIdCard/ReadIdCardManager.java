@@ -52,7 +52,13 @@ public class ReadIdCardManager {
     //    }
     public boolean init(Activity activity) {
         try {
-            mSdtApi = new Sdtapi(activity);
+            try {
+                mSdtApi = new Sdtapi(activity);
+            } catch (Exception e) {
+                e.printStackTrace();
+                //二次初始化  很扯
+                mSdtApi = new Sdtapi(activity);
+            }
             IntentFilter filter = new IntentFilter();//意图过滤器
             filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);//USB设备拔出
             filter.addAction(Common.ACTION_USB_PERMISSION);//自定义的USB设备请求授权

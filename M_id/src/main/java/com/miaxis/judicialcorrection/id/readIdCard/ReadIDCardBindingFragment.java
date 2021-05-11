@@ -94,7 +94,7 @@ public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadI
                                     builder.success = false;
                                     builder.timeOut = 10;
                                     builder.title = "系统查无此人";
-                                    builder.message="请联系现场工作人员处理\n" +
+                                    builder.message = "请联系现场工作人员处理\n" +
                                             "（工作人员需确认前期登记的\n" +
                                             "身份证号是否准确）！";
                                     new DialogNoButton(getContext(), new DialogNoButton.ClickListener() {
