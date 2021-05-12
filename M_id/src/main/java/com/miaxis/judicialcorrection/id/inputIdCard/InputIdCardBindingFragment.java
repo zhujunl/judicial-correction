@@ -1,7 +1,10 @@
 package com.miaxis.judicialcorrection.id.inputIdCard;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
@@ -20,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
+
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -119,6 +123,19 @@ public class InputIdCardBindingFragment extends BaseBindingFragment<FragmentInpu
 
         inputIDCardViewModel.title.setValue(title);
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        HideKeyboard(binding.etInputIdCard);
+    }
+
+    public static void HideKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive()) {
+            imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+        }
     }
 
     @Override
