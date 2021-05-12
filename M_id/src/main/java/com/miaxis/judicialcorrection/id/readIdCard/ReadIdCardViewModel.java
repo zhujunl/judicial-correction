@@ -64,8 +64,6 @@ public class ReadIdCardViewModel extends ViewModel {
         });
     }
 
-
-
     //private ReadIdCardCallback mReadIdCardCallback;
 
 //    public void readIdCard(ReadIdCardCallback readIdCardCallback) {

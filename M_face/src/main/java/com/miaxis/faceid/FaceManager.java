@@ -150,6 +150,9 @@ public class FaceManager {
     }
 
     public byte[] getRgbFromFile(String strPathImgFile,int[] oX,int[] oY) {
+        if (mMxImageTool==null){
+            return null;
+        }
         // 获取图像大小
         int nRet = mMxImageTool.ImageLoad(strPathImgFile, 3, null, oX, oY);
         if (nRet != 1) {
@@ -164,5 +167,11 @@ public class FaceManager {
         return null;
     }
 
+    public boolean saveRgbTiFile(byte[] rgb,int width,int height,String path){
+        if (mMxImageTool==null){
+            return false ;
+        }
+       return mMxImageTool.ImageSave(path,rgb,width,height,3)==1;
+    }
 
 }

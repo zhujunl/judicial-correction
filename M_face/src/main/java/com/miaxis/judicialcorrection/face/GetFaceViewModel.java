@@ -1,5 +1,7 @@
 package com.miaxis.judicialcorrection.face;
 
+import android.graphics.Bitmap;
+import android.os.Environment;
 import android.os.SystemClock;
 
 import com.miaxis.camera.MXCamera;
@@ -8,6 +10,7 @@ import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
+import com.miaxis.utils.FileUtils;
 
 import org.zz.api.MXFaceInfoEx;
 
@@ -40,8 +43,8 @@ public class GetFaceViewModel extends ViewModel {
 
     MutableLiveData<ZZResponse<VerifyInfo>> verifyStatus = new MutableLiveData<>();
 
-    //    MutableLiveData<Bitmap> fingerBitmap = new MutableLiveData<>();
-    MutableLiveData<File> faceFile = new MutableLiveData<>();
+    MutableLiveData<byte[]> idCardFaceFeature = new MutableLiveData<>();
+    //MutableLiveData<File> faceFile = new MutableLiveData<>();
 
     public MXFaceInfoEx[] mFaceInfoExes = new MXFaceInfoEx[MXFaceInfoEx.iMaxFaceNum];
     public int[] mFaceNumber = new int[1];
@@ -64,6 +67,10 @@ public class GetFaceViewModel extends ViewModel {
         mAppExecutors.networkIO().execute(() -> {
             byte[] rgb = FaceManager.getInstance().yuv2Rgb(frame, width, height);
             //FaceManager.getInstance().flip(rgb, width, height);
+            // TODO: 2021/5/12 测试阶段保存视频流图片，用于排查人脸算法实用性差原因
+            //FaceManager.getInstance().saveRgbTiFile(rgb,width,height,
+            //        Environment.getExternalStorageDirectory().getAbsolutePath()+File.pathSeparator+"Miaxis"+File.pathSeparator+System.currentTimeMillis()+".jpeg"
+            //       );
             int detectFace = FaceManager.getInstance().detectFace(rgb, width, height, mFaceNumber, mFaceInfoExes);
             Timber.e("face   detectFace:%s", detectFace);
             if (detectFace == 0) {
@@ -71,13 +78,31 @@ public class GetFaceViewModel extends ViewModel {
                 Timber.e("face   faceNumber:%s", faceNumber);
                 if (faceNumber == 1) {
                     if (mFaceInfoExes[0].width >= 200) {
-                        int faceQuality = FaceManager.getInstance().reg(rgb, width, height, 1, mFaceInfoExes);
+                        int faceQuality = FaceManager.getInstance().getFaceQuality(rgb, width, height, 1, mFaceInfoExes);
                         Timber.e("face   faceQuality:%s", faceQuality);
                         if (faceQuality == 0) {
                             Timber.e("face   quality:%s", mFaceInfoExes[0].quality);
                             if (mFaceInfoExes[0].quality >= 45) {
-                                captureCallback.onFaceReady(camera);
-                                return;
+                                byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
+                                int extractFeature = FaceManager.getInstance().extractFeature(rgb, width, height, 1, feature, mFaceInfoExes, false);
+                                if (extractFeature == 0) {
+                                    Timber.e("face   extractFeature:%s", extractFeature);
+                                    //byte[] temp = new byte[FaceManager.getInstance().getFeatureSize()];
+                                    float[] floats = new float[1];
+                                    int matchFeature = FaceManager.getInstance().matchFeature(feature, idCardFaceFeature.getValue(), floats, false);
+                                    Timber.e("face   match:%s", matchFeature);
+                                    if (matchFeature == 0) {
+                                        Timber.e("face   floats:%s", floats[0]);
+                                        if (floats[0] >= 0.45F) {
+                                            faceTips.postValue("人证核验通过");
+                                            captureCallback.onFaceReady(camera);
+                                            return;
+                                        } else {
+                                            faceTips.postValue("人证核验未通过");
+                                            verifyStatus.postValue(ZZResponse.CreateFail(-1,"人证核验未通过"));
+                                        }
+                                    }
+                                }
                             } else {
                                 faceTips.postValue("人脸质量过低，当前：" + mFaceInfoExes[0].quality);
                             }
@@ -102,4 +127,25 @@ public class GetFaceViewModel extends ViewModel {
         return mCapturePageRepo.uploadFace(pid, file);
     }
 
+    public void extractFeature(byte[] rgb, int width, int height) {
+        mAppExecutors.networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    int detectFace = FaceManager.getInstance().detectFace(rgb, width, height, mFaceNumber, mFaceInfoExes);
+                    if (detectFace == 0) {
+                        byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
+                        int extractFeature = FaceManager.getInstance().extractFeature(rgb, width, height, 1, feature, mFaceInfoExes, false);
+                        if (extractFeature == 0) {
+                            idCardFaceFeature.postValue(feature);
+                            return;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                idCardFaceFeature.postValue(null);
+            }
+        });
+    }
 }
