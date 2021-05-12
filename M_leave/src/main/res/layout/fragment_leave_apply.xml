@@ -377,20 +377,6 @@
             app:layout_constraintTop_toTopOf="@id/sp_city"
             tools:background="@color/color_text_grey" />
 
-        <!--外出目的地明细  -->
-        <!--        <androidx.appcompat.widget.AppCompatSpinner-->
-        <!--            android:id="@+id/sp_reason"-->
-        <!--            android:layout_width="318px"-->
-        <!--            android:layout_height="72px"-->
-        <!--            android:layout_gravity="start"-->
-        <!--            android:layout_marginTop="23px"-->
-        <!--            android:layout_marginEnd="33px"-->
-        <!--            android:autofillHints="请选择"-->
-        <!--            android:entries="@array/leave_type"-->
-        <!--            android:spinnerMode="dropdown"-->
-        <!--            app:layout_constraintRight_toRightOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/sp_street"-->
-        <!--            tools:background="@color/color_text_grey" />-->
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_reason"
@@ -405,8 +391,32 @@
             android:paddingStart="10px"
             android:text="@={data.outType}"
             android:textSize="24px"
+            android:visibility="invisible"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sp_street" />
+
+        <!--外出目的地明细  -->
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:background="@drawable/shape_et_bg"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="23px"
+            android:layout_marginEnd="33px"
+            app:layout_constraintTop_toBottomOf="@id/sp_street"
+            android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/sp_reason"
+            selection="@={data.outType}"
+            android:layout_width="318px"
+            android:layout_height="72px"
+            android:layout_gravity="start"
+            android:autofillHints="请选择"
+            android:entries="@array/leavetype"
+            android:spinnerMode="dropdown"
+            tools:background="@color/color_text_grey" />
+        </FrameLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"

@@ -123,8 +123,8 @@ public class ApplyViewModel extends ViewModel {
         if (mAgencies.getValue() == null || TextUtils.isEmpty(mAgencies.getValue().VALUE)) {
             return "请选择乡镇街道";
         }
-        if (TextUtils.isEmpty(outType.get())) {
-            return "请输入外出类型";
+        if (TextUtils.isEmpty(outType.get())||"请选择".equals(outType.get())) {
+            return "请输选择外出类型";
         }
         if (TextUtils.isEmpty(specificReasons.get())) {
             return "请输入具体事由";

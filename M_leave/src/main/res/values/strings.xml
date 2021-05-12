@@ -1,5 +1,10 @@
 <resources>
     <!--    <string name="app_name">Judicial Correction</string>-->
 
-
+    <string-array name="leavetype">
+        <item>请选择</item>
+        <item>救医</item>
+        <item>家庭重大变故</item>
+        <item>其他</item>
+    </string-array>
 </resources>
