@@ -68,9 +68,10 @@ public class GetFaceViewModel extends ViewModel {
             byte[] rgb = FaceManager.getInstance().yuv2Rgb(frame, width, height);
             //FaceManager.getInstance().flip(rgb, width, height);
             // TODO: 2021/5/12 测试阶段保存视频流图片，用于排查人脸算法实用性差原因
-            //FaceManager.getInstance().saveRgbTiFile(rgb,width,height,
-            //        Environment.getExternalStorageDirectory().getAbsolutePath()+File.pathSeparator+"Miaxis"+File.pathSeparator+System.currentTimeMillis()+".jpeg"
-            //       );
+//            boolean b = FaceManager.getInstance().saveRgbTiFile(rgb, width, height,
+//                    Environment.getExternalStorageDirectory().getAbsolutePath() + "/Miaxis/" + System.currentTimeMillis() + ".jpeg"
+//            );
+
             int detectFace = FaceManager.getInstance().detectFace(rgb, width, height, mFaceNumber, mFaceInfoExes);
             Timber.e("face   detectFace:%s", detectFace);
             if (detectFace == 0) {
@@ -123,9 +124,16 @@ public class GetFaceViewModel extends ViewModel {
         });
     }
 
-    public LiveData<Resource<Object>> uploadPic(String pid, File file) {
-        return mCapturePageRepo.uploadFace(pid, file);
+    public LiveData<Resource<Object>> uploadPic(String pid, File file,String name) {
+        return mCapturePageRepo.uploadFace(pid, file,name);
     }
+
+
+    public LiveData<Resource<Object>> uploadPic(String pid, String base64Str) {
+        return mCapturePageRepo.uploadFace(pid, base64Str);
+    }
+
+
 
     public void extractFeature(byte[] rgb, int width, int height) {
         mAppExecutors.networkIO().execute(new Runnable() {

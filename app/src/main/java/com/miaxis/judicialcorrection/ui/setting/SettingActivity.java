@@ -166,7 +166,7 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
                 SpAdapter adapter = new SpAdapter();
                 adapter.submitList(listResource.data);
                 binding.spinnerJiedao.setAdapter(adapter);
-                binding.spinnerXian.setSelection(getCheckedPosition(listResource.data,viewModel.jiedaoChecked));
+                binding.spinnerJiedao.setSelection(getCheckedPosition(listResource.data,viewModel.jiedaoChecked));
                 if (listResource.data == null) {
                     viewModel.setJiedao(null);
                 }

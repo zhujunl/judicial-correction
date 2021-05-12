@@ -81,7 +81,11 @@ public interface ApiService {
 
     @Multipart
     @POST("/personInfo/uploadFaceImg")
-    LiveData<ApiResult<Object>> uploadFace(@Part() List<MultipartBody.Part > files);
+    LiveData<ApiResult<Object>> uploadFace(@Part MultipartBody.Part id, @Part MultipartBody.Part file);
+
+    @POST("/personInfo/uploadFaceImg")
+    LiveData<ApiResult<Object>> uploadFace(@Body() Map<String, String> body);
+
 
     @POST("/report/add")
     LiveData<ApiResult<Object>> reportAdd(

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.SurfaceHolder;
 
 import com.miaxis.camera.CameraHelper;
@@ -32,6 +33,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -59,7 +61,7 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
 
     public GetFacePageFragment(@NonNull PersonInfo personInfo, Bitmap bitmap) {
         this.personInfo = personInfo;
-        this.idCardFace=bitmap;
+        this.idCardFace = bitmap;
     }
 
     @Override
@@ -77,12 +79,12 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
         mGetFaceViewModel.idCardFaceFeature.observe(this, new Observer<byte[]>() {
             @Override
             public void onChanged(byte[] feature) {
-                if (feature==null){
+                if (feature == null) {
                     appHintsLazy.get().showError("特征提取失败，请退出后重试", (dialog, which) -> finish());
                     return;
                 }
                 ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().find(Camera.CameraInfo.CAMERA_FACING_FRONT);
-                if (ZZResponse.isSuccess(mxCamera)){
+                if (ZZResponse.isSuccess(mxCamera)) {
                     mxCamera.getData().setPreviewCallback(GetFacePageFragment.this);
                 }
             }
@@ -118,22 +120,22 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
         });
 
 
-         if (idCardFace == null) {
-             appHintsLazy.get().showError("Error:人像解析失败,请退出后重新尝试", (dialog, which) -> finish());
-             return;
-         }
-         String path=FileUtils.createFileParent(getContext())+File.pathSeparator+this.personInfo.getIdCardNumber()+".jpeg";
-         boolean save= BitmapUtils.saveBitmap(idCardFace, path);
-         if (!save){
-             appHintsLazy.get().showError("Error:保存图片失败", (dialog, which) -> finish());
-             return;
-         }
+        if (idCardFace == null) {
+            appHintsLazy.get().showError("Error:人像解析失败,请退出后重新尝试", (dialog, which) -> finish());
+            return;
+        }
+        String path = FileUtils.createFileParent(getContext()) + File.pathSeparator + this.personInfo.getIdCardNumber() + ".jpeg";
+        boolean save = BitmapUtils.saveBitmap(idCardFace, path);
+        if (!save) {
+            appHintsLazy.get().showError("Error:保存图片失败", (dialog, which) -> finish());
+            return;
+        }
         int[] oX = new int[1];
         int[] oY = new int[1];
         byte[] rgbFromFile = FaceManager.getInstance().getRgbFromFile(path, oX, oY);
         if (rgbFromFile == null) {
             appHintsLazy.get().showError("Error:人像数据解析失败",
-                    (dialog, which) ->finish());
+                    (dialog, which) -> finish());
             return;
         }
         mGetFaceViewModel.extractFeature(rgbFromFile, oX[0], oY[0]);
@@ -162,34 +164,40 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
             @Override
             public void onFaceReady(MXCamera camera) {
                 File filePath = FileUtils.createFileParent(getContext());
-                File file = new File(filePath, personInfo.getId() + ".jpg");
+                String fileName=personInfo.getId() + ".jpg";
+                File file = new File(filePath, fileName);
                 boolean frameImage = camera.getFrameImage(frame, file.getAbsolutePath());
-                if (frameImage) {
-                    if (!BuildConfig.DEBUG) {
-                        mGetFaceViewModel.uploadPic(personInfo.getId(), file).observe(GetFacePageFragment.this, observer -> {
-                            switch (observer.status) {
-                                case LOADING:
-                                    showLoading();
-                                    break;
-                                case ERROR:
-                                    dismissLoading();
-                                    appHintsLazy.get().showError(observer.errorMessage);
-                                    break;
-                                case SUCCESS:
-                                    dismissLoading();
-                                    showDialog();
-                                    break;
-                            }
-                        });
+               String base64Path=  FileUtils.imageToBase64(file.getAbsolutePath());
+                mHandler.post(() -> {
+                    if (frameImage) { // false BuildConfig.DEBUG
+//                            if (!false) {
+                            mGetFaceViewModel.uploadPic(personInfo.getId(),base64Path).observe(GetFacePageFragment.this, observer -> {
+                                switch (observer.status) {
+                                    case LOADING:
+                                        showLoading();
+                                        break;
+                                    case ERROR:
+                                        dismissLoading();
+                                        appHintsLazy.get().showError(observer.errorMessage);
+                                        break;
+                                    case SUCCESS:
+                                        dismissLoading();
+                                        showDialog();
+                                        break;
+                                }
+                            });
+//                            } else {
+//                                getActivity().runOnUiThread(() -> showDialog());
+//                            }
                     } else {
-                        getActivity().runOnUiThread(() -> showDialog());
+                         appHintsLazy.get().showError("图片保存上传失败");
                     }
-                } else {
-                    getActivity().runOnUiThread(() -> appHintsLazy.get().showError("图片保存上传失败"));
-                }
+                });
             }
         });
     }
+
+    private static Handler mHandler = new Handler();
 
     private void showDialog() {
         new DialogResult(getActivity(), new DialogResult.ClickListener() {
@@ -228,5 +236,11 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
          */
         void onFaceReady(MXCamera camera);
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mHandler.removeCallbacksAndMessages(null);
     }
 }

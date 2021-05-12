@@ -6,6 +6,8 @@
         <item>现役军人</item>
         <item>工人</item>
         <item>农民</item>
+        <item>学生</item>
+        <item>服刑</item>
     </string-array>
     <string-array name="relationship">
         <item>直系亲属</item>
