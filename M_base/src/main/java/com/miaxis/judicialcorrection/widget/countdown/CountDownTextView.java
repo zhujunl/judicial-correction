@@ -102,11 +102,13 @@ public class CountDownTextView extends androidx.appcompat.widget.AppCompatTextVi
         @Override
         public void run() {
             start--;
-            setText(start + "s");
+            if (start!=0) {
+                setText(start + "s");
+            }
             if (mCountDownListener != null) {
                 mCountDownListener.onCountDownProgress(start);
             }
-            if (start > 1) {
+            if (start > 0) {
                 loop();
             } else {
                 if (mCountDownListener != null) {

@@ -26,7 +26,7 @@ public class DialogResult extends BaseDialog<DialogVerifyResultBinding, DialogRe
     public DialogResult(Context context, ClickListener clickListener, @NonNull Builder builder) {
         super(context, clickListener);
         //点击外部区域关闭弹窗
-        setCancelable(false);
+//        setCancelable(false);
         this.mBuilder = builder;
     }
 
