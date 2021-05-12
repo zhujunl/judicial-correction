@@ -97,15 +97,12 @@ public class ReadIdCardManager {
                 if (ret == 0x90) {
                     IdCard idCard = new IdCard();
                     idCard.idCardMsg = msg;
-                    //byte[] bmp = new byte[38862];
-                    //Bitmap bitmap = GetImage(pucPHMsg, bmp);
-                    //if (bitmap != null) {
-                    //  idCard.face = bitmap;
-                    //  result.code = 0;
-                    //} else {
-                    //  result.code = 1;
-                    //}
-                    result.code = 0;
+                    byte[] bmp = new byte[38862];
+                    Bitmap bitmap = GetImage(pucPHMsg, bmp);
+                    if (bitmap != null) {
+                      idCard.face = bitmap;
+                      result.code = 0;
+                    }
                     result.setData(idCard);
                 } else {
                     result.code = -4;
@@ -131,10 +128,10 @@ public class ReadIdCardManager {
             Toast.makeText(context, "action:" + action, Toast.LENGTH_SHORT).show();
             //USB设备拔出广播
             if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
-                UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-                String deviceName = device.getDeviceName();
-                int deviceId = device.getDeviceId();
-                int productId = device.getProductId();
+//                UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+//                String deviceName = device.getDeviceName();
+//                int deviceId = device.getDeviceId();
+//                int productId = device.getProductId();
             } else if (Common.ACTION_USB_PERMISSION.equals(action)) {//USB设备未授权，从SDTAPI中发出的广播
                 //                Message msg = new Message();
                 //                msg.what = 3;

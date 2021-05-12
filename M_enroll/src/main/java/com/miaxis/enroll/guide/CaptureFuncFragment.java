@@ -1,5 +1,6 @@
 package com.miaxis.enroll.guide;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import com.miaxis.enroll.EnrollActivity;
@@ -30,12 +31,12 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class CaptureFuncFragment extends BaseBindingFragment<FragmentCaptureFuncBinding> {
 
-    private boolean haveFaceImage;
+    private Bitmap idCardFace;
     private boolean haveIdInfo;
 
-    public CaptureFuncFragment(boolean haveIdInfo, boolean haveFaceImage) {
+    public CaptureFuncFragment(boolean haveIdInfo, Bitmap idCardFace) {
         this.haveIdInfo = haveIdInfo;
-        this.haveFaceImage = haveFaceImage;
+        this.idCardFace = idCardFace;
     }
 
     @Override
@@ -65,16 +66,12 @@ public class CaptureFuncFragment extends BaseBindingFragment<FragmentCaptureFunc
         });
 
         binding.groupFace.setOnClickListener(v -> {
-            if (haveFaceImage) {
-                appHints.toast("您已经采集过人脸");
-                return;
-            }
             PersonInfo personInfo = viewModel.personInfoLiveData.getValue();
             if (viewModel.personInfoLiveData.getValue() == null) {
                 appHints.toast("请先采集基本信息");
                 return;
             }
-            GetFacePageFragment capturePageFragment = new GetFacePageFragment(personInfo);
+            GetFacePageFragment capturePageFragment = new GetFacePageFragment(personInfo,idCardFace);
             navigation(capturePageFragment);
         });
         binding.groupFinger.setOnClickListener(v -> {

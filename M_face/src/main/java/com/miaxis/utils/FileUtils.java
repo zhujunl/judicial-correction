@@ -17,7 +17,7 @@ public class FileUtils {
     public static File createFileParent(Context context) {
         try {
             File path = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsoluteFile();
-            if (path != null && !path.exists()) {
+            if (!path.exists()) {
                 boolean mkdirs = path.mkdirs();
             }
             return path;

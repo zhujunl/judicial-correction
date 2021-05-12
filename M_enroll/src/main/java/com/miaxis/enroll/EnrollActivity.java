@@ -1,5 +1,6 @@
 package com.miaxis.enroll;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -67,9 +68,11 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> i
         return nvController;
     }
 
+    private Bitmap idFaceBitmap;
     public void onIdCardRead(IdCard result) {
         viewModel.login(result.idCardMsg.id_num).observe(this, personInfoResource -> {
             Timber.i("Login %s", personInfoResource);
+            idFaceBitmap=result.face;
             switch (personInfoResource.status) {
                 case LOADING:
                     showLoading();
@@ -83,7 +86,7 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> i
                     viewModel.haveIdInfo=false;
                     viewModel.haveFaceImage=false;
                     if (personInfoResource.data == null) {
-                        nvController.nvTo(new CaptureFuncFragment( viewModel.haveIdInfo, viewModel.haveFaceImage), false);
+                        nvController.nvTo(new CaptureFuncFragment( viewModel.haveIdInfo, result.face), false);
                     } else {
                         viewModel.haveIdInfo=!TextUtils.isEmpty(personInfoResource.data.getIdCardNumber());
                         viewModel.haveFaceImage=personInfoResource.data.haveFaceImage;
@@ -91,8 +94,7 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> i
                             nvController.nvTo(new GoHomeFragment(), false);
                         } else {
                             viewModel.personInfoLiveData.setValue(personInfoResource.data);
-                            nvController.nvTo(new CaptureFuncFragment(viewModel.haveIdInfo,
-                                    viewModel.haveFaceImage), false);
+                            nvController.nvTo(new CaptureFuncFragment(viewModel.haveIdInfo, result.face), false);
                         }
                     }
                     break;
@@ -108,6 +110,6 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> i
 
     @Override
     public void onNavigationCallBack() {
-        nvController.nvTo(new CaptureFuncFragment(viewModel.haveIdInfo, viewModel.haveFaceImage), false);
+        nvController.nvTo(new CaptureFuncFragment(viewModel.haveIdInfo, idFaceBitmap), false);
     }
 }
