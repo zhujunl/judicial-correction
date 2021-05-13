@@ -36,4 +36,5 @@ dependencies {
     annotationProcessor "com.alibaba:arouter-compiler:$arouter_version"
     annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
+    implementation 'top.zibin:Luban:1.1.8'
 }

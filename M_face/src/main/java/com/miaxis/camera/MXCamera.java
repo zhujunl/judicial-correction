@@ -210,6 +210,7 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
      */
     public boolean getFrameImage(byte[] data, String savePath) {
         try {
+
             File file = new File(savePath);
             if (!file.exists()) {
                 File parentFile = file.getParentFile();

@@ -29,11 +29,12 @@ android {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'SERVER_URL', '"http://10.249.0.85:9999"'
-            buildConfigField 'String', 'TOKEN_URL', '"http://10.249.0.85:9013"'
-
 //            buildConfigField 'String', 'SERVER_URL', '"http://10.249.0.85:9999"'
-//            buildConfigField 'String', 'TOKEN_URL', '"http://10.249.0.85:9103"'//10.249.0.85:9103
+//            buildConfigField 'String', 'TOKEN_URL', '"http://10.249.0.85:9013"'
+
+            buildConfigField 'String', 'SERVER_URL', '"http://10.249.0.85:8080"'
+            buildConfigField 'String', 'TOKEN_URL', '"http://10.249.0.85:9012"'
+
         }
         release {
             minifyEnabled false

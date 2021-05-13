@@ -2,6 +2,7 @@ package com.miaxis.judicialcorrection.adapter;
 
 
 import android.graphics.Color;
+import android.text.TextUtils;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.module.LoadMoreModule;
@@ -30,7 +31,14 @@ public class SignUpAdapter extends BaseQuickAdapter<SignUpContentBean, BaseDataB
             String time = HexStringUtils.convertGMTToLocal(signUpBean.getSqfwkssj()) + "至" + HexStringUtils.convertGMTToLocal(signUpBean.getSqfwjssj());
             binding.tvActivityTimeContent.setText(time);
             binding.tvActivityTimeLongContent.setText(signUpBean.getSqfwsc());
-            binding.tvActivityLocation.setText(signUpBean.getSqfwdd());
+//            binding.tvActivityLocation.setText(signUpBean.getJiedaoName());
+            String jiedaoName = signUpBean.getJiedaoName();
+            if (TextUtils.isEmpty(jiedaoName)){
+                binding.tvActivityLocation.setText("");
+            }else{
+                binding.tvActivityLocation.setText(jiedaoName);
+            }
+            binding.tvType.setText(signUpBean.getSqfwdd());
 
             if (signUpBean.isSignUpSucceed()){
                 binding.tvState.setTextColor(Color.parseColor("#979797"));

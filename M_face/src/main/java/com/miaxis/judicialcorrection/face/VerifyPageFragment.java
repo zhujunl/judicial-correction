@@ -4,15 +4,20 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.SurfaceHolder;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.CameraPreviewCallback;
 import com.miaxis.camera.MXCamera;
-import com.miaxis.faceid.FaceManager;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
-import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.repo.PersonRepo;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
@@ -22,18 +27,9 @@ import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
 import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.face.databinding.FragmentVerifyBinding;
 import com.miaxis.utils.BitmapUtils;
-import com.miaxis.utils.FileUtils;
-
-import java.io.File;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialog;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 import okhttp3.ResponseBody;
@@ -105,6 +101,7 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                         mxCamera.getData().setPreviewCallback(VerifyPageFragment.this);
                     }
                 } else {
+                    Log.i("TAG==3","3");
                     appHintsLazy.get().showError(
                             "Error:提取人像特征失败",
                             (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-2, "Error:提取人像特征失败")));
@@ -116,37 +113,39 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
         ZZResponse<?> init = CameraHelper.getInstance().init();
         if (ZZResponse.isSuccess(init)) {
             //todo 身份证人脸特征数据
-            if (BuildConfig.DEBUG) {
-                File fileParent = FileUtils.createFileParent(getContext());
-                if (fileParent == null || !fileParent.exists()) {
-                    appHintsLazy.get().showError("Error:获取路径失败",
-                            (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-3, "Error:获取路径失败")));
-                    return;
-                }
-                File file = new File(fileParent.getAbsolutePath(), personInfo.getId() + ".jpg");
-                if (!file.exists()) {
-                    appHintsLazy.get().showError("Error:请先录入人脸信息",
-                            (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-4, "Error:请先录入人脸信息")));
-                    return;
-                }
-                //                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                //                if (bitmap == null) {
-                //                    appHintsLazy.get().showError("Error:人像解析失败",
-                //                            (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-5, "Error:人像解析失败")));
-                //                    return;
-                //                }
-                //                byte[] rgb = BitmapUtils.bitmap2RGB(bitmap);
-                int[] oX = new int[1];
-                int[] oY = new int[1];
-                byte[] rgbFromFile = FaceManager.getInstance().getRgbFromFile(file.getAbsolutePath(), oX, oY);
-                if (rgbFromFile == null) {
-                    appHintsLazy.get().showError("Error:人像解析失败",
-                            (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-5, "Error:人像解析失败")));
-                    return;
-                }
-                mVerifyPageViewModel.extractFeature(rgbFromFile, oX[0], oY[0]);
-            } else {
+//            if (BuildConfig.DEBUG) {
+//                File fileParent = FileUtils.createFileParent(getContext());
+//                if (fileParent == null || !fileParent.exists()) {
+//                    appHintsLazy.get().showError("Error:获取路径失败",
+//                            (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-3, "Error:获取路径失败")));
+//                    return;
+//                }
+//                File file = new File(fileParent.getAbsolutePath(), personInfo.getId() + ".jpg");
+//                if (!file.exists()) {
+//                    appHintsLazy.get().showError("Error:请先录入人脸信息",
+//                            (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-4, "Error:请先录入人脸信息")));
+//                    return;
+//                }
+//                //                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+//                //                if (bitmap == null) {
+//                //                    appHintsLazy.get().showError("Error:人像解析失败",
+//                //                            (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-5, "Error:人像解析失败")));
+//                //                    return;
+//                //                }
+//                //                byte[] rgb = BitmapUtils.bitmap2RGB(bitmap);
+//                int[] oX = new int[1];
+//                int[] oY = new int[1];
+//                byte[] rgbFromFile = FaceManager.getInstance().getRgbFromFile(file.getAbsolutePath(), oX, oY);
+//                if (rgbFromFile == null) {
+//                    appHintsLazy.get().showError("Error:人像解析失败",
+//                            (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-5, "Error:人像解析失败")));
+//                    return;
+//                }
+//                mVerifyPageViewModel.extractFeature(rgbFromFile, oX[0], oY[0]);
+//            } else {
                 showLoading(title, "正在请求，请稍后");
+
+
                 mPersonRepo.getFace(personInfo.getId()).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -155,34 +154,36 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                         ResponseBody responseBody = response.body();
                         Bitmap bitmap = BitmapFactory.decodeStream(responseBody.byteStream());
                         if (bitmap == null) {
+                            Log.i("TAG==2","2");
                             appHintsLazy.get().showError("Error:人像解析失败",
                                     (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-6, "Error:人像解析失败")));
                             return;
                         }
-                        //File filePath = FileUtils.createFilePath(getContext());
-                        //if (filePath == null || !filePath.exists()) {
-                        //    appHintsLazy.get().showError("Error:获取路径失败",
-                        //            (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-7, "Error:获取路径失败")));
-                        //    return;
-                        // }
-                        // TODO: 2021/5/11 测试保存文件
-                        //boolean saveBitmap = BitmapUtils.saveBitmap(bitmap, filePath.getAbsolutePath() + File.pathSeparator + personInfo.getId() + ".jpg");
-                        //if (!saveBitmap) {
-                        //    appHintsLazy.get().showError("Error:人像保存失败");
-                        //    return;
-                        //}
+//                        File filePath = FileUtils.createFileParent(getContext());
+//                        if (filePath == null || !filePath.exists()) {
+//                            appHintsLazy.get().showError("Error:获取路径失败",
+//                                    (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-7, "Error:获取路径失败")));
+//                            return;
+//                         }
+//                        // TODO: 2021/5/11 测试保存文件
+//                        boolean saveBitmap = BitmapUtils.saveBitmap(bitmap, filePath.getAbsolutePath() + File.pathSeparator + personInfo.getId() + ".jpg");
+//                        if (!saveBitmap) {
+//                            appHintsLazy.get().showError("Error:人像保存失败");
+//                            return;
+//                        }
                         byte[] rgb = BitmapUtils.bitmap2RGB(bitmap);
                         mVerifyPageViewModel.extractFeature(rgb, bitmap.getWidth(), bitmap.getHeight());
                     }
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.i("TAG==1","1");
                         dismissLoading();
                         appHintsLazy.get().showError("Error:" + t,
                                 (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-8, "Error:" + t)));
                     }
                 });
-            }
+//            }
 
             ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().createMXCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
             if (ZZResponse.isSuccess(mxCamera)) {
@@ -216,14 +217,6 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                 (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-10, "Error:摄像头初始化失败")));
 
     }
-
-    //    @Override
-    //    public void onInit(boolean result) {
-    //        if (!result) {
-    //            appHintsLazy.get().showError("指纹设备初始化失败",
-    //                    (dialog, which) -> verifyComplete(ZZResponse.CreateFail(-11, "Error:指纹设备初始化失败")));
-    //        }
-    //    }
 
     @Override
     public void onPause() {

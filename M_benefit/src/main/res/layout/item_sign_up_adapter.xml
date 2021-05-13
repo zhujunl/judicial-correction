@@ -114,12 +114,10 @@
             android:layout_width="160px"
             android:layout_height="42px"
             android:layout_below="@id/tv_activity_time_long_label"
-            android:layout_marginStart="30px"
             android:layout_marginTop="15px"
             android:layout_toEndOf="@id/tv_activity_location"
             android:background="@drawable/bg_gray_oval_5"
             android:gravity="center"
-            android:visibility="gone"
             android:textColor="#5C5A5A"
             android:textSize="18px"
             tools:text="集体劳动" />

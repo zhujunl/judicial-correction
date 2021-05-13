@@ -101,5 +101,23 @@
             android:layout_marginStart="32px"
             android:background="@drawable/bg_btn_back_to_home_blue"/>
 
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/delete_line"
+            android:layout_below="@id/recyclerview"
+            android:layout_width="305px"
+            android:layout_height="90px"
+            android:text="删除行"
+            android:visibility="gone"
+            android:gravity="center"
+            android:layout_marginBottom="50px"
+            android:paddingStart="48px"
+            android:paddingEnd="48px"
+            android:layout_alignParentEnd="true"
+            android:textColor="#fff"
+            android:textSize="40px"
+            android:layout_marginTop="64px"
+            android:layout_marginEnd="32px"
+            android:background="@drawable/bg_btn_back_to_home_blue"/>
     </RelativeLayout>
 </layout>

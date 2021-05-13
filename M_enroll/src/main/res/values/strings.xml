@@ -8,6 +8,7 @@
         <item>农民</item>
         <item>学生</item>
         <item>服刑</item>
+        <item>待业</item>
     </string-array>
     <string-array name="relationship">
         <item>直系亲属</item>

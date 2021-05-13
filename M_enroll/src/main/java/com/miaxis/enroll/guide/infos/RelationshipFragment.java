@@ -50,34 +50,52 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
 
     EnrollSharedViewModel vm;
     MyAdapter adapter;
+
     @Override
     protected void initData(@NonNull FragmentRelationshipBinding binding, @Nullable Bundle savedInstanceState) {
         vm = new ViewModelProvider(getActivity()).get(EnrollSharedViewModel.class);
         binding.setLifecycleOwner(this);
         binding.setVm(vm);
 
-         adapter = new MyAdapter();
-        if (vm.relationships.size()<2){
-            vm.relationships.add(new Family());
-            vm.relationships.add(new Family());
+        adapter = new MyAdapter();
+        String[] re = getResources().getStringArray(R.array.relationship);
+        if (vm.relationships.size() < 2) {
+            Family family = new Family();
+            family.relationship = re[0];
+            vm.relationships.add(family);
+            vm.relationships.add(family);
         }
         adapter.submitList(vm.relationships);
         binding.recyclerview.setAdapter(adapter);
         binding.addLine.setOnClickListener(v -> {
-            vm.relationships.add(new Family());
-            adapter.submitList(vm.relationships);
+            Family family = new Family();
+            family.relationship = re[0];
+            vm.relationships.add(family);
+            adapter.submitLists(vm.relationships);
+            adapter.notifyItemRangeInserted(vm.relationships.size() - 1, 1);
+            if (vm.relationships.size() > 2) {
+                binding.deleteLine.setVisibility(View.VISIBLE);
+            }
             setRvHeight();
+        });
+        binding.deleteLine.setOnClickListener(v -> {
+            if (vm.relationships.size()<=2){
+                binding.deleteLine.setVisibility(View.GONE);
+            }
+            int size = vm.relationships.size() - 1;
+            vm.relationships.remove(size);
+            adapter.notifyItemRemoved(size);
         });
         setRvHeight();
     }
 
-    private  void  setRvHeight(){
-        if (adapter.getItemCount()>=9){
-            RelativeLayout.LayoutParams params= (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
-            params.height=700;
-        }else{
-            RelativeLayout.LayoutParams params= (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
-            params.height=RelativeLayout.LayoutParams.WRAP_CONTENT;
+    private void setRvHeight() {
+        if (adapter.getItemCount() >= 9) {
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
+            params.height = 700;
+        } else {
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
+            params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
         }
     }
 
@@ -88,7 +106,7 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
     @Override
     public boolean checkData() {
         Timber.v("relationships %s", vm.relationships);
-        if (TextUtils.isEmpty(vm.relationships.get(0).name)){
+        if (TextUtils.isEmpty(vm.relationships.get(0).name)) {
             appHints.toast("您没有填写社会关系");
             return true;
         }
@@ -105,10 +123,10 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
                 appHints.showHint("请填写工作单位");
                 return false;
             }
-            if (TextUtils.isEmpty(vm.relationships.get(i).phone)) {
-                appHints.showHint("请填写联系方式");
-                return false;
-            }
+//            if (TextUtils.isEmpty(vm.relationships.get(i).phone)) {
+//                appHints.showHint("请填写联系方式");
+//                return false;
+//            }
         }
         return super.checkData();
     }

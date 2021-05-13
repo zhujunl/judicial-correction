@@ -7,6 +7,7 @@ import com.miaxis.judicialcorrection.base.db.po.Place;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -16,6 +17,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import timber.log.Timber;
 
@@ -107,6 +109,13 @@ public class ApplyViewModel extends ViewModel {
         if (TextUtils.isEmpty(endTime.get())) {
             return "请选择请假结束时间";
         }
+        try{
+            if (startTime.get().compareTo(endTime.get()) > 0) {
+                return "结束日期不能小于开始日期";
+            }
+        }catch (Exception e){
+            e.getStackTrace();
+        }
         Timber.e("mProvince:" + mProvince.getValue());
         if (mProvince.getValue() == null || TextUtils.isEmpty(mProvince.getValue().VALUE)) {
             return "请选择省份";
@@ -123,7 +132,7 @@ public class ApplyViewModel extends ViewModel {
         if (mAgencies.getValue() == null || TextUtils.isEmpty(mAgencies.getValue().VALUE)) {
             return "请选择乡镇街道";
         }
-        if (TextUtils.isEmpty(outType.get())||"请选择".equals(outType.get())) {
+        if (TextUtils.isEmpty(outType.get()) || "请选择".equals(outType.get())) {
             return "请输选择外出类型";
         }
         if (TextUtils.isEmpty(specificReasons.get())) {

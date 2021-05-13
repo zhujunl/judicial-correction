@@ -5,7 +5,9 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,33 +58,56 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
 
     EnrollSharedViewModel vm;
     MyAdapter adapter;
+
     @Override
     protected void initData(@NonNull FragmentResumeBinding binding, @Nullable Bundle savedInstanceState) {
         vm = new ViewModelProvider(getActivity()).get(EnrollSharedViewModel.class);
         binding.setLifecycleOwner(this);
         binding.setVm(vm);
 
-         adapter = new MyAdapter();
+        adapter = new MyAdapter();
+        String[] re = getResources().getStringArray(R.array.job);
         if (vm.jobs.size() < 2) {
-            vm.jobs.add(new Job());
-            vm.jobs.add(new Job());
+            Job job = new Job();
+            job.job = re[0];
+            vm.jobs.add(job);
+            vm.jobs.add(job);
         }
         adapter.submitList(vm.jobs);
         binding.recyclerview.setAdapter(adapter);
         binding.addLine.setOnClickListener(v -> {
-            vm.jobs.add(new Job());
-            adapter.submitList(vm.jobs);
+            Job job = new Job();
+            job.job = re[0];
+            vm.jobs.add(job);
+            adapter.submitLists(vm.jobs);
+            adapter.notifyItemRangeInserted(vm.jobs.size() - 1, 1);
+            if (vm.jobs.size() > 2) {
+                binding.deleteLine.setVisibility(View.VISIBLE);
+            }
             setRvHeight();
+        });
+
+        binding.deleteLine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int size = vm.jobs.size() - 1;
+                vm.jobs.remove(size);
+                adapter.notifyItemRemoved(size);
+                if (vm.jobs.size() <= 2) {
+                    binding.deleteLine.setVisibility(View.GONE);
+                }
+            }
         });
         setRvHeight();
     }
-    private  void  setRvHeight(){
-        if (adapter.getItemCount()>=9){
-          RelativeLayout.LayoutParams params= (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
-          params.height=700;
-        }else{
-            RelativeLayout.LayoutParams params= (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
-            params.height=RelativeLayout.LayoutParams.WRAP_CONTENT;
+
+    private void setRvHeight() {
+        if (adapter.getItemCount() >= 9) {
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
+            params.height = 700;
+        } else {
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
+            params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
         }
     }
 
@@ -100,6 +125,7 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
             appHints.showHint("请至少填写两项简历");
             return false;
         }
+
         for (int i = 0; i < vm.jobs.size(); i++) {
             if (TextUtils.isEmpty(vm.jobs.get(i).job)) {
                 appHints.showHint("请填写职位");
@@ -110,12 +136,18 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
                 appHints.showHint("请填写日期");
                 return false;
             }
+            if (vm.jobs.get(i).startTime.compareTo(vm.jobs.get(i).endTime) > 0) {
+                appHints.showHint("结束日期不能小于开始日期");
+                return false;
+            }
             if (TextUtils.isEmpty(vm.jobs.get(i).company)) {
                 appHints.showHint("请填写工作单位");
                 return false;
             }
+
         }
         return super.checkData();
+
     }
 
     static class MyAdapter extends BaseDataBoundAdapter<Job, ItemFragmentResumeBinding> {
@@ -139,16 +171,17 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
 
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
         @Override
         protected void bind(ItemFragmentResumeBinding binding, Job item) {
             binding.setJob(item);
             binding.startTime.setOnClickListener(v -> {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(binding.getRoot().getContext());
                 DatePicker datePicker = datePickerDialog.getDatePicker();
-                Date d = new  Date();
+                Date d = new Date();
                 datePicker.setMaxDate(d.getTime());
                 datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
-                    item.startTime = simpleDateFormat.format(new Date(year-1900,month,dayOfMonth));
+                    item.startTime = simpleDateFormat.format(new Date(year - 1900, month, dayOfMonth));
                     binding.invalidateAll();
                 });
                 datePickerDialog.show();
@@ -156,10 +189,10 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
             binding.endTime.setOnClickListener(v -> {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(binding.getRoot().getContext());
                 DatePicker datePicker = datePickerDialog.getDatePicker();
-                Date d = new  Date();
+                Date d = new Date();
                 datePicker.setMaxDate(d.getTime());
                 datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
-                    item.endTime = simpleDateFormat.format(new Date(year-1900,month,dayOfMonth));
+                    item.endTime = simpleDateFormat.format(new Date(year - 1900, month, dayOfMonth));
                     binding.invalidateAll();
                 });
                 datePickerDialog.show();

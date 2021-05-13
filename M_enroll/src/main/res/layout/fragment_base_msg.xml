@@ -29,15 +29,29 @@
                 android:textColor="#393939"
                 android:textSize="30px" />
 
+
+            <FrameLayout
+                android:layout_width="706px"
+                android:layout_height="72px"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerProvince"
+                    selection="@{vm.justiceBureauLiveData.teamName}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="706px"
                 android:layout_height="72px"
-                tools:text="司法所"
+                android:background="@drawable/shape_et_bg"
                 android:gravity="center_vertical"
                 android:paddingStart="16px"
                 android:paddingEnd="16px"
-                android:text="@{vm.justiceBureauLiveData.teamName}"
-                android:background="@drawable/shape_et_bg" />
+                android:visibility="gone"
+                tools:text="司法所" />
 
         </LinearLayout>
 
@@ -58,12 +72,12 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="706px"
                 android:layout_height="72px"
+                android:background="@drawable/shape_et_bg"
                 android:gravity="center_vertical"
                 android:paddingStart="16px"
                 android:paddingEnd="16px"
                 android:text="@{vm.idCardLiveData.idCardMsg.name}"
-                tools:text="张三"
-                android:background="@drawable/shape_et_bg" />
+                tools:text="张三" />
 
         </LinearLayout>
 
@@ -84,12 +98,12 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="706px"
                 android:layout_height="72px"
+                android:background="@drawable/shape_et_bg"
                 android:gravity="center_vertical"
                 android:paddingStart="16px"
                 android:paddingEnd="16px"
                 android:text="@{vm.idCardLiveData.idCardMsg.sex}"
-                tools:text="男"
-                android:background="@drawable/shape_et_bg" />
+                tools:text="男" />
 
         </LinearLayout>
 
@@ -110,12 +124,12 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="706px"
                 android:layout_height="72px"
+                android:background="@drawable/shape_et_bg"
                 android:gravity="center_vertical"
                 android:paddingStart="16px"
                 android:paddingEnd="16px"
                 android:text="@{vm.idCardLiveData.idCardMsg.nation_str}"
-                tools:text="汉"
-                android:background="@drawable/shape_et_bg" />
+                tools:text="汉" />
 
         </LinearLayout>
 
@@ -136,12 +150,12 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="706px"
                 android:layout_height="72px"
+                android:background="@drawable/shape_et_bg"
                 android:gravity="center_vertical"
                 android:paddingStart="16px"
                 android:paddingEnd="16px"
                 android:text="@{vm.idCardLiveData.idCardMsg.id_num}"
-                tools:text="11011020200101000X"
-                android:background="@drawable/shape_et_bg" />
+                tools:text="11011020200101000X" />
 
         </LinearLayout>
 
@@ -162,12 +176,12 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="706px"
                 android:layout_height="72px"
+                android:background="@drawable/shape_et_bg"
                 android:gravity="center_vertical"
                 android:paddingStart="16px"
                 android:paddingEnd="16px"
                 android:text="@{vm.todayLiveData}"
-                tools:text="2021-05-05"
-                android:background="@drawable/shape_et_bg" />
+                tools:text="2021-05-05" />
 
         </LinearLayout>
     </LinearLayout>

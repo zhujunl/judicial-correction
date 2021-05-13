@@ -36,6 +36,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
+import top.zibin.luban.CompressionPredicate;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 /**
  * @author Tank
@@ -166,29 +169,26 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
                 File filePath = FileUtils.createFileParent(getContext());
                 String fileName=personInfo.getId() + ".jpg";
                 File file = new File(filePath, fileName);
+
                 boolean frameImage = camera.getFrameImage(frame, file.getAbsolutePath());
-               String base64Path=  FileUtils.imageToBase64(file.getAbsolutePath());
+                String base64Path=  FileUtils.imageToBase64(file.getAbsolutePath());
                 mHandler.post(() -> {
                     if (frameImage) { // false BuildConfig.DEBUG
-//                            if (!false) {
-                            mGetFaceViewModel.uploadPic(personInfo.getId(),base64Path).observe(GetFacePageFragment.this, observer -> {
-                                switch (observer.status) {
-                                    case LOADING:
-                                        showLoading();
-                                        break;
-                                    case ERROR:
-                                        dismissLoading();
-                                        appHintsLazy.get().showError(observer.errorMessage);
-                                        break;
-                                    case SUCCESS:
-                                        dismissLoading();
-                                        showDialog();
-                                        break;
-                                }
-                            });
-//                            } else {
-//                                getActivity().runOnUiThread(() -> showDialog());
-//                            }
+                        mGetFaceViewModel.uploadPic(personInfo.getId(),base64Path).observe(GetFacePageFragment.this, observer -> {
+                            switch (observer.status) {
+                                case LOADING:
+                                    showLoading();
+                                    break;
+                                case ERROR:
+                                    dismissLoading();
+                                    appHintsLazy.get().showError(observer.errorMessage);
+                                    break;
+                                case SUCCESS:
+                                    dismissLoading();
+                                    showDialog();
+                                    break;
+                            }
+                        });
                     } else {
                          appHintsLazy.get().showError("图片保存上传失败");
                     }

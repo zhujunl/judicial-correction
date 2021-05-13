@@ -49,6 +49,10 @@ public abstract class BaseDataBoundAdapter<DataType, V extends ViewDataBinding> 
         notifyDataSetChanged();
     }
 
+    public void submitLists(List<DataType> update) {
+        items = update;
+    }
+
     public void getPosition(V binding, DataType item,int position) {
 
     }

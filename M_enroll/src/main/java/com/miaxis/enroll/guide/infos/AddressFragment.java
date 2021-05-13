@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.miaxis.enroll.EnrollSharedViewModel;
 import com.miaxis.enroll.R;
 import com.miaxis.enroll.databinding.FragmentAddressBinding;
+import com.miaxis.enroll.utils.CardUtils;
 import com.miaxis.enroll.vo.Addr;
 import com.miaxis.judicialcorrection.base.db.po.Place;
 
@@ -22,6 +23,7 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
@@ -140,29 +142,42 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spinnerProvince.setAdapter(adapter);
-            binding.spinnerProvince.setSelection(getCheckedPosition(places, viewModel.mSelect[0]));
+            int checkedPosition = getCheckedPosition(places, viewModel.mSelect[0]);
+            if (checkedPosition!=0){
+                binding.spinnerDistrict.setSelection(checkedPosition);
+            }
+
         });
         viewModel.allCity.observe(this, places -> {
             Timber.i("allCity %s", places);
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spinnerCity.setAdapter(adapter);
-            binding.spinnerCity.setSelection(getCheckedPosition(places, viewModel.mSelect[1]));
-
+            int checkedPosition=getCheckedPosition(places, viewModel.mSelect[1]);
+            if (checkedPosition!=0){
+                binding.spinnerCity.setSelection(checkedPosition);
+            }
         });
         viewModel.allDistrict.observe(this, places -> {
             Timber.i("allDistrict %s", places);
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spinnerDistrict.setAdapter(adapter);
-            binding.spinnerDistrict.setSelection(getCheckedPosition(places, viewModel.mSelect[2]));
+            int checkedPosition=getCheckedPosition(places, viewModel.mSelect[2]);
+            if (checkedPosition!=0){
+                binding.spinnerDistrict.setSelection(checkedPosition);
+            }
         });
         viewModel.allAgencies.observe(this, places -> {
             Timber.i("allAgencies %s", places);
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spinnerAgencies.setAdapter(adapter);
-            binding.spinnerAgencies.setSelection(getCheckedPosition(places, viewModel.mSelect[3]));
+
+            int checkedPosition=getCheckedPosition(places, viewModel.mSelect[3]);
+            if (checkedPosition!=0){
+                binding.spinnerAgencies.setSelection(checkedPosition);
+            }
         });
 
         setHJ();
@@ -213,29 +228,40 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spinnerProvince2.setAdapter(adapter);
-            binding.spinnerProvince2.setSelection(getCheckedPosition(places, viewModel.mSelect2[0]));
+            int checkedPosition=getCheckedPosition(places, viewModel.mSelect2[0]);
+            if (checkedPosition!=0){
+                binding.spinnerProvince2.setSelection(checkedPosition);
+            }
         });
         viewModel.allCity2.observe(this, places -> {
             Timber.i("allCity2 %s", places);
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spinnerCity2.setAdapter(adapter);
-            binding.spinnerCity2.setSelection(getCheckedPosition(places, viewModel.mSelect2[1]));
-
+            int checkedPosition=getCheckedPosition(places, viewModel.mSelect2[1]);
+            if (checkedPosition!=0){
+                binding.spinnerCity2.setSelection(checkedPosition);
+            }
         });
         viewModel.allDistrict2.observe(this, places -> {
             Timber.i("allDistrict2 %s", places);
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spinnerDistrict2.setAdapter(adapter);
-            binding.spinnerDistrict2.setSelection(getCheckedPosition(places, viewModel.mSelect2[2]));
+            int checkedPosition=getCheckedPosition(places, viewModel.mSelect2[2]);
+            if (checkedPosition!=0){
+                binding.spinnerDistrict2.setSelection(checkedPosition);
+            }
         });
         viewModel.allAgencies2.observe(this, places -> {
             Timber.i("allAgencies2%s", places);
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spinnerAgencies2.setAdapter(adapter);
-            binding.spinnerAgencies2.setSelection(getCheckedPosition(places, viewModel.mSelect2[3]));
+            int checkedPosition=getCheckedPosition(places, viewModel.mSelect2[3]);
+            if (checkedPosition!=0){
+                binding.spinnerAgencies2.setSelection(checkedPosition);
+            }
         });
     }
 

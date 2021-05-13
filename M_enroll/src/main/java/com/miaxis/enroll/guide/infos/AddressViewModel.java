@@ -1,5 +1,7 @@
 package com.miaxis.enroll.guide.infos;
 
+import android.os.Looper;
+
 import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -38,7 +40,8 @@ public class AddressViewModel extends ViewModel {
     LiveData<List<Place>> allCity2 = Transformations.switchMap(mProvince2, new Function<Place, LiveData<List<Place>>>() {
         @Override
         public LiveData<List<Place>> apply(Place input) {
-            Timber.i("mProvince2 %s", input);
+            boolean bool= Looper.getMainLooper()==Looper.myLooper();
+            Timber.i("mProvince2 %s", input+"==线程"+bool);
             if (input.ZXS == 1) {
                 MutableLiveData<List<Place>> placeMutableLiveData = new MutableLiveData<>();
                 ArrayList<Place> objects = new ArrayList<>();

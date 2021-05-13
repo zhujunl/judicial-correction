@@ -124,10 +124,6 @@ public class GetFaceViewModel extends ViewModel {
         });
     }
 
-    public LiveData<Resource<Object>> uploadPic(String pid, File file,String name) {
-        return mCapturePageRepo.uploadFace(pid, file,name);
-    }
-
 
     public LiveData<Resource<Object>> uploadPic(String pid, String base64Str) {
         return mCapturePageRepo.uploadFace(pid, base64Str);

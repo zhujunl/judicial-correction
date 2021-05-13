@@ -72,7 +72,7 @@ public class DbInitMainFuncs extends RoomDatabase.Callback {
             items.add(new MainFunc("个别教育", R.mipmap.main_edu_one, IndividualEducationActivity.class.getName(), true));
             items.add(new MainFunc("请销假", R.mipmap.main_atten, LeaveActivity.class.getName(), true));
             items.add(new MainFunc("公益活动", R.mipmap.main_love, PublicWelfareActivity.class.getName(), true));
-            items.add(new MainFunc("居住地变更", R.mipmap.main_addr, LiveAddressChangeActivity.class.getName(), true));
+            items.add(new MainFunc("执行地变更", R.mipmap.main_addr, LiveAddressChangeActivity.class.getName(), true));
             List<Long> longs = appDatabaseLazy.get().mainFuncDAO().insertFuncList(items);
             Timber.i("ids : %s ", longs);
             execSQL(db);

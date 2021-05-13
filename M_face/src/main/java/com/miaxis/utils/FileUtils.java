@@ -7,8 +7,12 @@ import android.util.Base64;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 
 /**
  * @author Tank
@@ -63,5 +67,25 @@ public class FileUtils {
 
         }
         return result;
+    }
+
+    /**
+     * 把数据流写入文件
+     * @param path
+     * @param bytes
+     */
+    public static boolean  writeFile(String path, byte[] bytes) {
+        try {
+            FileOutputStream out = new FileOutputStream(path);//指定写到哪个路径中
+            FileChannel fileChannel = out.getChannel();
+            fileChannel.write(ByteBuffer.wrap(bytes)); //将字节流写入文件中
+            fileChannel.force(true);//强制刷新
+            fileChannel.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }return false;
     }
 }

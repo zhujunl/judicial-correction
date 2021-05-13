@@ -2,6 +2,9 @@ package com.miaxis.judicialcorrection.face;
 
 import android.os.SystemClock;
 
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
 import com.miaxis.camera.MXCamera;
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
@@ -12,8 +15,6 @@ import org.zz.api.MXFaceInfoEx;
 
 import javax.inject.Inject;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import timber.log.Timber;
 
@@ -79,6 +80,12 @@ public class VerifyPageViewModel extends ViewModel {
             //FaceManager.getInstance().flip(rgb, width, height);
             int detectFace = FaceManager.getInstance().detectFace(rgb, width, height, mFaceNumber, mFaceInfoExes);
             Timber.e("face   detectFace:%s", detectFace);
+            // TODO: 2021/5/13 测试流数据
+//            File filePath = FileUtils.createFileParent(FaceApplication.instance);
+//            String fileName=System.currentTimeMillis() + ".jpg";
+//            File file = new File(filePath, fileName);
+//            boolean frameImage = camera.getFrameImage(frame, file.getAbsolutePath());
+//            Timber.e("face   视频流图片保存:%s", frameImage);
             if (detectFace == 0) {
                 int faceNumber = FaceManager.getInstance().getFaceNumber(mFaceNumber);
                 Timber.e("face   faceNumber:%s", faceNumber);
@@ -103,7 +110,7 @@ public class VerifyPageViewModel extends ViewModel {
                                 Timber.e("face   match:%s", matchFeature);
                                 if (matchFeature == 0) {
                                     Timber.e("face   floats:%s", floats[0]);
-                                    if (floats[0] >= 0.70F) {
+                                    if (floats[0] >= 0.40F) {
                                         faceTips.postValue("核验通过");
                                         verifyStatus.postValue(ZZResponse.CreateSuccess(new VerifyInfo(id.getValue(), name.getValue(), idCardNumber.getValue())));
                                     } else {
