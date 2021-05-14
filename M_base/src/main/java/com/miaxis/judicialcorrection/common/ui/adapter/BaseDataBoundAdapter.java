@@ -53,6 +53,10 @@ public abstract class BaseDataBoundAdapter<DataType, V extends ViewDataBinding> 
         items = update;
     }
 
+    public List<DataType> getList(){
+        return  items;
+    }
+
     public void getPosition(V binding, DataType item,int position) {
 
     }

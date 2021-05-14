@@ -2,18 +2,14 @@ package com.miaxis.enroll.guide.infos;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +26,6 @@ import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -66,18 +61,21 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
         binding.setVm(vm);
 
         adapter = new MyAdapter();
+        adapter.setItemPresenter(new RecyclerBindPresenter());
         String[] re = getResources().getStringArray(R.array.job);
         if (vm.jobs.size() < 2) {
             Job job = new Job();
-            job.job = re[0];
+            job.jb.set( re[0]);
             vm.jobs.add(job);
-            vm.jobs.add(job);
+            Job job1 = new Job();
+            job1.jb.set(re[0]);
+            vm.jobs.add(job1);
         }
         adapter.submitList(vm.jobs);
         binding.recyclerview.setAdapter(adapter);
         binding.addLine.setOnClickListener(v -> {
             Job job = new Job();
-            job.job = re[0];
+            job.jb.set( re[0]);
             vm.jobs.add(job);
             adapter.submitLists(vm.jobs);
             adapter.notifyItemRangeInserted(vm.jobs.size() - 1, 1);
@@ -116,6 +114,12 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
 
     @Override
     public boolean checkData() {
+        for (Job job: vm.jobs){
+            job.startTime=job.st.get();
+            job.endTime=job.et.get();
+            job.company=job.cy.get();
+            job.job=job.jb.get();
+        }
         Timber.v("jobs %s", vm.jobs);
         if (TextUtils.isEmpty(vm.jobs.get(0).company)) {
             appHints.toast("您没有填写简历");
@@ -169,34 +173,59 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
             return position % 2;
         }
 
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
 
         @Override
         protected void bind(ItemFragmentResumeBinding binding, Job item) {
             binding.setJob(item);
-            binding.startTime.setOnClickListener(v -> {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(binding.getRoot().getContext());
-                DatePicker datePicker = datePickerDialog.getDatePicker();
-                Date d = new Date();
-                datePicker.setMaxDate(d.getTime());
-                datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
-                    item.startTime = simpleDateFormat.format(new Date(year - 1900, month, dayOfMonth));
-                    binding.invalidateAll();
-                });
-                datePickerDialog.show();
+            binding.setItemPresenter(ItemPresenter);
+
+
+        }
+
+        private RecyclerBindPresenter ItemPresenter;
+
+        /**
+         * 用于设置Item的事件Presenter
+         */
+        public void setItemPresenter(RecyclerBindPresenter itemPresenter) {
+            ItemPresenter = itemPresenter;
+        }
+    }
+
+    public class RecyclerBindPresenter implements IBaseBindingPresenter {
+
+        public void onStartTime(Job item, TextView textView) {
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            DatePickerDialog datePickerDialog = new DatePickerDialog(binding.getRoot().getContext());
+            DatePicker datePicker = datePickerDialog.getDatePicker();
+            Date d = new Date();
+            datePicker.setMaxDate(d.getTime());
+            datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
+                item.st.set(simpleDateFormat.format(new Date(year - 1900, month, dayOfMonth)));
+//                textView.setText(item.st.get());
+//                binding.invalidateAll();
             });
-            binding.endTime.setOnClickListener(v -> {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(binding.getRoot().getContext());
-                DatePicker datePicker = datePickerDialog.getDatePicker();
-                Date d = new Date();
-                datePicker.setMaxDate(d.getTime());
-                datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
-                    item.endTime = simpleDateFormat.format(new Date(year - 1900, month, dayOfMonth));
-                    binding.invalidateAll();
-                });
-                datePickerDialog.show();
+            datePickerDialog.show();
+        }
+
+        /**
+         *
+         */
+        public void onEndTime(Job item,TextView textView) {
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            DatePickerDialog datePickerDialog = new DatePickerDialog(binding.getRoot().getContext());
+            DatePicker datePicker = datePickerDialog.getDatePicker();
+            Date d = new Date();
+            datePicker.setMaxDate(d.getTime());
+            datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
+                item.et.set(simpleDateFormat.format(new Date(year - 1900, month, dayOfMonth)));
+//                textView.setText(item.et.get());
+//                binding.invalidateAll();
             });
+            datePickerDialog.show();
         }
     }
 }

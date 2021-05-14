@@ -143,7 +143,7 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             adapter.submitList(places);
             binding.spinnerProvince.setAdapter(adapter);
             int checkedPosition = getCheckedPosition(places, viewModel.mSelect[0]);
-            if (checkedPosition!=0){
+            if (checkedPosition != 0) {
                 binding.spinnerDistrict.setSelection(checkedPosition);
             }
 
@@ -153,8 +153,8 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spinnerCity.setAdapter(adapter);
-            int checkedPosition=getCheckedPosition(places, viewModel.mSelect[1]);
-            if (checkedPosition!=0){
+            int checkedPosition = getCheckedPosition(places, viewModel.mSelect[1]);
+            if (checkedPosition != 0) {
                 binding.spinnerCity.setSelection(checkedPosition);
             }
         });
@@ -163,8 +163,8 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spinnerDistrict.setAdapter(adapter);
-            int checkedPosition=getCheckedPosition(places, viewModel.mSelect[2]);
-            if (checkedPosition!=0){
+            int checkedPosition = getCheckedPosition(places, viewModel.mSelect[2]);
+            if (checkedPosition != 0) {
                 binding.spinnerDistrict.setSelection(checkedPosition);
             }
         });
@@ -174,8 +174,8 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             adapter.submitList(places);
             binding.spinnerAgencies.setAdapter(adapter);
 
-            int checkedPosition=getCheckedPosition(places, viewModel.mSelect[3]);
-            if (checkedPosition!=0){
+            int checkedPosition = getCheckedPosition(places, viewModel.mSelect[3]);
+            if (checkedPosition != 0) {
                 binding.spinnerAgencies.setSelection(checkedPosition);
             }
         });
@@ -189,20 +189,42 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
         addr.gdjzdszsName = getSpName(binding.spinnerProvince);
         addr.gdjzdszdsName = getSpName(binding.spinnerCity);
         addr.gdjzdszxqName = getSpName(binding.spinnerDistrict);
-        addr.gdjzdName = getSpName(binding.spinnerDistrict);
+        addr.gdjzdName = getSpName(binding.spinnerAgencies);
 
-        if (viewModel.addrSame.getValue()) {
+        addr.gdjzdszs = getSpID(binding.spinnerProvince);
+        addr.gdjzdszds = getSpID(binding.spinnerCity);
+        addr.gdjzdszxq = getSpID(binding.spinnerDistrict);
+        addr.gdjzd = getSpID(binding.spinnerAgencies);
+        String etx = binding.etx.getText().toString();
+        String etx2 = binding.addr2Title.getText().toString();
+        int checkedRadioButtonId = binding.addrGroup.getCheckedRadioButtonId();
+        if (checkedRadioButtonId==R.id.addrT) {
+            viewModel.addrSame.setValue(true);
+            addr.hjdsfyjzdxt="相同";
             addr.hjszsName = getSpName(binding.spinnerProvince);
             addr.hjszdsName = getSpName(binding.spinnerCity);
             addr.hjszxqName = getSpName(binding.spinnerDistrict);
-            addr.hjszdName = getSpName(binding.spinnerDistrict);
+            addr.hjszdName = getSpName(binding.spinnerAgencies);
+
+            addr.hjszs = getSpID(binding.spinnerProvince);
+            addr.hjszds = getSpID(binding.spinnerCity);
+            addr.hjszxq = getSpID(binding.spinnerDistrict);
+            addr.hjszd = getSpID(binding.spinnerAgencies);
+
             addr.hjszdmx = addr.gdjzdmx;
-        } else {
+        }else{
+            viewModel.addrSame.setValue(false);
+            addr.hjdsfyjzdxt="不同";
             addr.hjszsName = getSpName(binding.spinnerProvince2);
             addr.hjszdsName = getSpName(binding.spinnerCity2);
             addr.hjszxqName = getSpName(binding.spinnerDistrict2);
-            addr.hjszdName = getSpName(binding.spinnerDistrict2);
+            addr.hjszdName = getSpName(binding.spinnerAgencies2);
+            addr.hjszs = getSpID(binding.spinnerProvince2);
+            addr.hjszds = getSpID(binding.spinnerCity2);
+            addr.hjszxq = getSpID(binding.spinnerDistrict2);
+            addr.hjszd = getSpID(binding.spinnerAgencies2);
         }
+
         Timber.i("Address %s", addr);
         viewModelShard.setAddress(addr);
     }
@@ -211,6 +233,14 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
         Object selectedItem = spinner.getSelectedItem();
         if (selectedItem instanceof Place) {
             return ((Place) selectedItem).VALUE;
+        }
+        return null;
+    }
+
+    String getSpID(Spinner spinner) {
+        Object selectedItem = spinner.getSelectedItem();
+        if (selectedItem instanceof Place) {
+            return ((Place) selectedItem).ID + "";
         }
         return null;
     }
@@ -228,8 +258,8 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spinnerProvince2.setAdapter(adapter);
-            int checkedPosition=getCheckedPosition(places, viewModel.mSelect2[0]);
-            if (checkedPosition!=0){
+            int checkedPosition = getCheckedPosition(places, viewModel.mSelect2[0]);
+            if (checkedPosition != 0) {
                 binding.spinnerProvince2.setSelection(checkedPosition);
             }
         });
@@ -238,8 +268,8 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spinnerCity2.setAdapter(adapter);
-            int checkedPosition=getCheckedPosition(places, viewModel.mSelect2[1]);
-            if (checkedPosition!=0){
+            int checkedPosition = getCheckedPosition(places, viewModel.mSelect2[1]);
+            if (checkedPosition != 0) {
                 binding.spinnerCity2.setSelection(checkedPosition);
             }
         });
@@ -248,8 +278,8 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spinnerDistrict2.setAdapter(adapter);
-            int checkedPosition=getCheckedPosition(places, viewModel.mSelect2[2]);
-            if (checkedPosition!=0){
+            int checkedPosition = getCheckedPosition(places, viewModel.mSelect2[2]);
+            if (checkedPosition != 0) {
                 binding.spinnerDistrict2.setSelection(checkedPosition);
             }
         });
@@ -258,8 +288,8 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spinnerAgencies2.setAdapter(adapter);
-            int checkedPosition=getCheckedPosition(places, viewModel.mSelect2[3]);
-            if (checkedPosition!=0){
+            int checkedPosition = getCheckedPosition(places, viewModel.mSelect2[3]);
+            if (checkedPosition != 0) {
                 binding.spinnerAgencies2.setSelection(checkedPosition);
             }
         });

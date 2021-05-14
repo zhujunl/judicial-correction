@@ -3,6 +3,7 @@ package com.miaxis.enroll.guide.infos;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,8 +63,10 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
         if (vm.relationships.size() < 2) {
             Family family = new Family();
             family.relationship = re[0];
+            Family family2 = new Family();
+            family2.relationship = re[0];
             vm.relationships.add(family);
-            vm.relationships.add(family);
+            vm.relationships.add(family2);
         }
         adapter.submitList(vm.relationships);
         binding.recyclerview.setAdapter(adapter);
@@ -79,12 +82,12 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
             setRvHeight();
         });
         binding.deleteLine.setOnClickListener(v -> {
-            if (vm.relationships.size()<=2){
-                binding.deleteLine.setVisibility(View.GONE);
-            }
             int size = vm.relationships.size() - 1;
             vm.relationships.remove(size);
             adapter.notifyItemRemoved(size);
+            if (vm.relationships.size()<=2){
+                binding.deleteLine.setVisibility(View.GONE);
+            }
         });
         setRvHeight();
     }
@@ -153,6 +156,19 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
         @Override
         protected void bind(ItemFragmentRelationshipBinding binding, Family item) {
             binding.setData(item);
+//            binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                @Override
+//                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                    Log.i("TAG",position+"");
+//                    String[] re =view.getContext(). getResources().getStringArray(R.array.relationship);
+//                    item.relationship=re[position];
+//                }
+//
+//                @Override
+//                public void onNothingSelected(AdapterView<?> parent) {
+//
+//                }
+//            });
         }
     }
 }

@@ -1,26 +1,25 @@
 package com.miaxis.enroll.guide.infos;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.miaxis.enroll.BaseMsgModel;
 import com.miaxis.enroll.EnrollSharedViewModel;
 import com.miaxis.enroll.R;
 import com.miaxis.enroll.databinding.FragmentBaseMsgBinding;
-import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
-import com.miaxis.judicialcorrection.base.db.po.Place;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -63,19 +62,63 @@ public class BaseMsgFragment extends BaseInfoFragment<FragmentBaseMsgBinding> {
 
         model.jiedaoListLiveData.observe(this, listResource -> {
             if (listResource.isSuccess()) {
-                setSpView(listResource.data,binding.spinnerProvince);
+                setSpUnitView(listResource.data,binding.spinnerProvince);
             }
         });model.setSheng(null);
+        binding.spinnerProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                JusticeBureau  justiceBureau= (JusticeBureau) binding.spinnerProvince.getSelectedItem();
+                if (justiceBureau!=null) {
+                    vm.checkedJusticeBureau = justiceBureau;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
-    private void setSpView(List<JusticeBureau> observer, Spinner spinner) {
-        List<String> list = new ArrayList<>();
-        for (JusticeBureau p : observer) {
-            list.add(p.getTeamName());
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, list);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+
+    private void setSpUnitView(List<JusticeBureau> beanList, Spinner spinner) {
+        SpAdapter adapter = new SpAdapter();
+        adapter.submitList(beanList);
         spinner.setAdapter(adapter);
-        spinner.setVisibility(View.VISIBLE);
+    }
+    public static class SpAdapter extends BaseAdapter {
+
+        private List<JusticeBureau> data;
+
+        public void submitList(List<JusticeBureau> data) {
+            this.data = data;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return data == null ? 0 : data.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return data.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @SuppressLint("ViewHolder")
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            TextView view = (TextView) LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_spinner_item, parent, false);
+            view.setText(data.get(position).getTeamName());
+            return view;
+        }
     }
 }

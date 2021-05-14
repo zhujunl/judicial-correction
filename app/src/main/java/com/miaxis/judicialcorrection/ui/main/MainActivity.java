@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 
+import com.miaxis.enroll.guide.CaptureBaseInfoFragment;
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.finger.FingerManager;
 import com.miaxis.finger.FingerStrategy;
@@ -98,6 +99,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
                 dismissLoading();
             }
         });
+//        getSupportFragmentManager().beginTransaction().replace(R.id.main,new CaptureBaseInfoFragment()).commitNow();
     }
 
     @Override

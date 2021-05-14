@@ -88,6 +88,7 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> i
                     if (personInfoResource.data == null) {
                         nvController.nvTo(new CaptureFuncFragment( viewModel.haveIdInfo, result.face), false);
                     } else {
+                        viewModel.mPid=personInfoResource.data.getId();
                         viewModel.haveIdInfo=!TextUtils.isEmpty(personInfoResource.data.getIdCardNumber());
                         viewModel.haveFaceImage=personInfoResource.data.haveFaceImage;
                         if (personInfoResource.data.haveFaceImage && TextUtils.isEmpty(personInfoResource.data.getIdCardNumber())) {

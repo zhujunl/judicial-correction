@@ -1,6 +1,11 @@
 package com.miaxis.enroll.vo;
 
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.ObservableField;
+
 import com.google.gson.annotations.SerializedName;
+import com.miaxis.enroll.BR;
 
 /**
  * Job
@@ -8,7 +13,7 @@ import com.google.gson.annotations.SerializedName;
  * @author zhangyw
  * Created on 5/5/21.
  */
-public class Job {
+public class Job  {
 
     @SerializedName("pid")
     public String pid;
@@ -21,6 +26,11 @@ public class Job {
     @SerializedName("zw")
     public String job;
 
+
+    public  ObservableField<String> st = new ObservableField<>();
+    public  ObservableField<String> et = new ObservableField<>();
+    public  ObservableField<String> cy = new ObservableField<>();
+    public  ObservableField<String> jb = new ObservableField<>();
     @Override
     public String toString() {
         return "Job{" +

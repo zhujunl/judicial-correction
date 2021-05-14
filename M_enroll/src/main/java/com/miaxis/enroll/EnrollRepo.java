@@ -3,6 +3,7 @@ package com.miaxis.enroll;
 import android.annotation.SuppressLint;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.miaxis.enroll.guide.infos.RelationshipFragment;
@@ -57,6 +58,13 @@ public class EnrollRepo {
         Map<String, String> mapCardType = new Gson().fromJson(gson.toJson(cardType), Map.class);
         Map<String, String> mapAddr = new Gson().fromJson(gson.toJson(addr), Map.class);
         Map<String, String> mapOtherInfo = new Gson().fromJson(gson.toJson(otherInfo), Map.class);
+        mapOtherInfo.put("sfyjsb",otherInfo.getSfyjsb()==1?"1":"0");
+        mapOtherInfo.put("sfycrb",otherInfo.getSfycrb()==1?"1":"0");
+        //港澳
+        mapOtherInfo.put("ywgatsfz",cardType.ywgatsfz==1?"1":"0");
+        mapOtherInfo.put("ywtbz",cardType.ywtbz==1?"1":"0");
+        mapOtherInfo.put("ywhz",cardType.ywhz==1?"1":"0");
+        mapOtherInfo.put("ywgattxz",cardType.ywgattxz==1?"1":"0");
 
         Map<String, String> map = new HashMap<>();
         map.putAll(mapCardType);
@@ -64,7 +72,7 @@ public class EnrollRepo {
         map.putAll(mapOtherInfo);
         map.put("jzjg", justiceBureau.getTeamId());
         map.put("xm", idCard.name.trim());
-        map.put("xb", idCard.sex);
+        map.put("xb", idCard.sex.equals("男")?"1":"0");
         map.put("mz", idCard.nation_str);
         map.put("sfzh", idCard.id_num);
         Date date = new Date(Integer.parseInt(idCard.birth_year)-1900, Integer.parseInt(idCard.birth_month) - 1, Integer.parseInt(idCard.birth_day));
@@ -73,7 +81,8 @@ public class EnrollRepo {
         String toJson = gson.toJson(map);
         Timber.v("addPerson %s", toJson);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
-        LiveData<ApiResult<PersonInfo>> apiResultLiveData = apiService.addPerson(body);
+        LiveData<ApiResult<PersonInfo>> apiResultLiveData =new MutableLiveData<>();
+//                apiService.addPerson(body);
         return ResourceConvertUtils.convertToResource(apiResultLiveData);
     }
 
@@ -88,10 +97,18 @@ public class EnrollRepo {
 
     public LiveData<Resource<Object>> addRelationship(String pid, Family family) {
         Timber.v("addRelationship [%s]，pid=[%s]", family, pid);
-        family.pid = pid;
-        String toJson = gson.toJson(family);
+   //[Family{name='tttt', relationship='直系亲属', job='tttt', phone='2222'}]，pid=[null]
+        Map<String, String> map = new HashMap<>();
+        map.put("gx",family.relationship);
+        map.put("szdw",family.job);
+        map.put("gx",family.relationship);
+        map.put("lxdh",family.phone);
+        map.put("pid",pid);
+        //如需要分开
+        String toJson = gson.toJson(map);
+      //    居住地址	jtzz	string
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
-        LiveData<ApiResult<Object>> apiResultLiveData = apiService.addRelationship(body);
+        LiveData<ApiResult<Object>> apiResultLiveData =apiService.addRelationship(body);
         return ResourceConvertUtils.convertToResource(apiResultLiveData);
     }
 }

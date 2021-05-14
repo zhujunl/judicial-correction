@@ -25,6 +25,21 @@ public class Addr extends BaseObservable {
     public String gdjzdName;
     public String gdjzdmx;
 
+    public String gdjzdszs;
+    public String gdjzdszds;
+    public String gdjzdszxq;
+    public String gdjzd;
+
+
+
+    public String hjszs;
+    public String hjszds;
+    public String hjszxq;
+    public String hjszd;
+
+    public String hjdsfyjzdxt;
+
+
 
     public String getHjszsName() {
         return hjszsName;

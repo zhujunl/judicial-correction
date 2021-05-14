@@ -155,7 +155,6 @@
             android:layout_width="match_parent"
             android:layout_height="72px"
             android:layout_marginTop="24px"
-
             android:gravity="center_vertical"
             android:orientation="horizontal">
 

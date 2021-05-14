@@ -48,4 +48,5 @@ dependencies {
     annotationProcessor "com.alibaba:arouter-compiler:$arouter_version"
     annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
     api 'com.tencent:mmkv-static:1.1.2'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
 }

@@ -7,6 +7,9 @@
         <variable
             name="job"
             type="com.miaxis.enroll.vo.Job" />
+        <variable
+            name="itemPresenter"
+            type="com.miaxis.enroll.guide.infos.ResumeFragment.RecyclerBindPresenter" />
 
     </data>
 
@@ -27,7 +30,8 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:text="@={job.startTime}"
+            android:onClick="@{() -> itemPresenter.onStartTime(job,startTime)}"
+            android:text="@={job.st}"
             android:textColor="#393939"
             android:textSize="24px"
             tools:text="起始时间" />
@@ -40,7 +44,8 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:text="@={job.endTime}"
+            android:onClick="@{() -> itemPresenter.onEndTime(job,endTime)}"
+            android:text="@={job.et}"
             android:textColor="#393939"
             android:textSize="24px"
             tools:text="结束时间" />
@@ -51,8 +56,9 @@
             android:layout_height="match_parent"
             android:layout_weight="5"
             android:background="#0000"
+
             android:gravity="center"
-            android:text="@={job.company}"
+            android:text="@={job.cy}"
             android:textColor="#393939"
             android:textSize="24px"
             tools:text="原工作单位" />
@@ -63,7 +69,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:entries="@array/job"
-            selection="@={job.job}"
+            selection="@={job.jb}"
             android:gravity="center"
             android:text="职位"
             android:textColor="#393939"

@@ -1,5 +1,7 @@
 package com.miaxis.judicialcorrection.id.bean;
 
+import androidx.databinding.BaseObservable;
+
 /**
  * @author Tank
  * @date 2020/8/17 13:40
@@ -7,7 +9,7 @@ package com.miaxis.judicialcorrection.id.bean;
  * @updateAuthor
  * @updateDes
  */
-public class IdCardMsg {
+public class IdCardMsg extends BaseObservable {
 
     public String name;
     public String sex;

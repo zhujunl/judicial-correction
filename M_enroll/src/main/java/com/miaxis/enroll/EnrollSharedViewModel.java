@@ -67,6 +67,8 @@ public class EnrollSharedViewModel extends ViewModel {
      */
     public LiveData<JusticeBureau> justiceBureauLiveData;
 
+    public JusticeBureau checkedJusticeBureau=new JusticeBureau();
+
     /**
      * 身份证信息
      */
@@ -95,6 +97,8 @@ public class EnrollSharedViewModel extends ViewModel {
     public boolean haveFaceImage;
     public boolean haveIdInfo;
 
+    //test
+    public String  mPid;
     private final PersonRepo personRepo;
     private final EnrollRepo enrollRepo;
     private final AppExecutors appExecutors;
@@ -154,7 +158,7 @@ public class EnrollSharedViewModel extends ViewModel {
     public LiveData<Resource<PersonInfo>> addPerson() {
         OtherInfo value = otherInfoLiveData.getValue();
         Timber.i("addPerson %s", value);
-        LiveData<Resource<PersonInfo>> resourceLiveData = enrollRepo.addPerson(Objects.requireNonNull(justiceBureauLiveData.getValue()), Objects.requireNonNull(idCardLiveData.getValue()).idCardMsg, otherCardTypeLiveData.getValue(), address, otherInfoLiveData.getValue());
+        LiveData<Resource<PersonInfo>> resourceLiveData = enrollRepo.addPerson(checkedJusticeBureau, Objects.requireNonNull(idCardLiveData.getValue()).idCardMsg, otherCardTypeLiveData.getValue(), address, otherInfoLiveData.getValue());
         return Transformations.map(resourceLiveData, input -> {
             if (input.isSuccess() && input.data != null) {
                 personInfoLiveData.postValue(input.data);
