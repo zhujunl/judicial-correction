@@ -81,8 +81,7 @@ public class EnrollRepo {
         String toJson = gson.toJson(map);
         Timber.v("addPerson %s", toJson);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
-        LiveData<ApiResult<PersonInfo>> apiResultLiveData =new MutableLiveData<>();
-//                apiService.addPerson(body);
+        LiveData<ApiResult<PersonInfo>> apiResultLiveData =apiService.addPerson(body);
         return ResourceConvertUtils.convertToResource(apiResultLiveData);
     }
 
