@@ -195,8 +195,7 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
         addr.gdjzdszds = getSpID(binding.spinnerCity);
         addr.gdjzdszxq = getSpID(binding.spinnerDistrict);
         addr.gdjzd = getSpID(binding.spinnerAgencies);
-        String etx = binding.etx.getText().toString();
-        String etx2 = binding.addr2Title.getText().toString();
+
         int checkedRadioButtonId = binding.addrGroup.getCheckedRadioButtonId();
         if (checkedRadioButtonId==R.id.addrT) {
             viewModel.addrSame.setValue(true);

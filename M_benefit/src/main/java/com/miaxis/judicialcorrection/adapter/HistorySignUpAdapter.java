@@ -32,12 +32,12 @@ public class HistorySignUpAdapter extends BaseQuickAdapter< HistorySignUpBean.Li
                 String time = HexStringUtils.convertGMTToLocal(signUpBean.getPublicActivityVo().getSqfwkssj()) + "至" + HexStringUtils.convertGMTToLocal(signUpBean.getPublicActivityVo().getSqfwjssj());
                 binding.tvActivityTimeContent.setText(time);
                 binding.tvActivityTimeLongContent.setText(signUpBean.getPublicActivityVo().getSqfwsc());
-                String jiedaoName = signUpBean.getPublicActivityVo().getJiedaoName();
-                if (TextUtils.isEmpty(jiedaoName)){
-                    binding.tvActivityLocation.setText("");
-                }else{
-                    binding.tvActivityLocation.setText(jiedaoName);
-                }
+//                String jiedaoName = signUpBean.getPublicActivityVo().getJiedaoName();
+//                if (TextUtils.isEmpty(jiedaoName)){
+//                    binding.tvActivityLocation.setText("");
+//                }else{
+                    binding.tvActivityLocation.setText(signUpBean.getPublicActivityVo().getSqfwdd());
+//                }
                 binding.tvType.setText(signUpBean.getPublicActivityVo().getSqfwdd());
             } else {
                 binding.tvThemeLabel.setText("");

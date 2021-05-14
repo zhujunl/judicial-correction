@@ -16,7 +16,7 @@ public class Token {
     }
 
     public String getBearerToken() {
-        return String.format("Bearer %s1", access_token);
+        return String.format("Bearer %s", access_token);
     }
 
     @Override

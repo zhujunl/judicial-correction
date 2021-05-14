@@ -26,6 +26,12 @@ public class Job  {
     @SerializedName("zw")
     public String job;
 
+//    社区矫正人员标识	pid	string
+//    起时	qs	date
+//    止时	zr	date
+//    所在单位（所在地）	szdw	string
+//    职务	zw	string
+
 
     public  ObservableField<String> st = new ObservableField<>();
     public  ObservableField<String> et = new ObservableField<>();

@@ -32,13 +32,13 @@ public class SignUpAdapter extends BaseQuickAdapter<SignUpContentBean, BaseDataB
             binding.tvActivityTimeContent.setText(time);
             binding.tvActivityTimeLongContent.setText(signUpBean.getSqfwsc());
 //            binding.tvActivityLocation.setText(signUpBean.getJiedaoName());
-            String jiedaoName = signUpBean.getJiedaoName();
-            if (TextUtils.isEmpty(jiedaoName)){
-                binding.tvActivityLocation.setText("");
-            }else{
-                binding.tvActivityLocation.setText(jiedaoName);
-            }
-            binding.tvType.setText(signUpBean.getSqfwdd());
+//            String jiedaoName = signUpBean.getJiedaoName();
+//            if (TextUtils.isEmpty(signUpBean.getSqfwdd())){
+//                binding.tvActivityLocation.setText("");
+//            }else{
+                binding.tvActivityLocation.setText(signUpBean.getSqfwdd());
+//            }
+//            binding.tvType.setText(signUpBean.getSqfwdd());
 
             if (signUpBean.isSignUpSucceed()){
                 binding.tvState.setTextColor(Color.parseColor("#979797"));

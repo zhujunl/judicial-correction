@@ -150,7 +150,7 @@ public interface ApiService {
                                                                          @Query("rows") int rows, @Query("pid") String pid);
 
     //社区矫正对象居住地详情
-    @GET("placeChange/get")
+    @GET("/placeChange/get")
     LiveData<ApiResult<LiveAddressChangeDetailsBean>> getLiveAddressChangeDetails(@Query("id") String id);
 
 

@@ -113,6 +113,7 @@
             android:id="@+id/tv_type"
             android:layout_width="160px"
             android:layout_height="42px"
+            android:visibility="gone"
             android:layout_below="@id/tv_activity_time_long_label"
             android:layout_marginTop="15px"
             android:layout_toEndOf="@id/tv_activity_location"

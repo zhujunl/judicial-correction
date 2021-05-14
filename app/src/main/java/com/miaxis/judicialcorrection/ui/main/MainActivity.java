@@ -39,6 +39,7 @@ import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundDiffAdapter;
 import com.miaxis.judicialcorrection.databinding.ActivityMainBinding;
 import com.miaxis.judicialcorrection.databinding.ItemMainFucBinding;
 import com.miaxis.judicialcorrection.db.DbInitMainFuncs;
+import com.miaxis.judicialcorrection.id.readIdCard.ReadIdCardManager;
 import com.miaxis.judicialcorrection.ui.setting.SettingActivity;
 
 import java.util.Objects;
@@ -99,8 +100,12 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
                 dismissLoading();
             }
         });
+        //默认首页先初始化省份证信息防止初始化失败
+//        boolean init = ReadIdCardManager.getInstance().init(this);
+//        ReadIdCardManager.getInstance().free(this);
 //        getSupportFragmentManager().beginTransaction().replace(R.id.main,new CaptureBaseInfoFragment()).commitNow();
     }
+
 
     @Override
     protected void initData(@NonNull ActivityMainBinding binding, @Nullable Bundle savedInstanceState) {
