@@ -32,12 +32,29 @@ import timber.log.Timber;
 @Singleton
 public class JusticeBureauRepo {
     private final NoAuthApiService apiService;
+    private ApiService apiServiceAuth;
     private final AppDatabase database;
 
     @Inject
-    public JusticeBureauRepo(NoAuthApiService apiService, AppDatabase database) {
+    public JusticeBureauRepo(NoAuthApiService apiService,ApiService apiServiceAuth, AppDatabase database) {
         this.apiService = apiService;
+        this.apiServiceAuth = apiServiceAuth;
         this.database = database;
+    }
+    public LiveData<Resource<List<JusticeBureau>>> getMyPermissionJusticeBureau() {
+        LiveData<ApiResult<JusticeBureauList>> apiResultLiveData = apiServiceAuth.justiceBureauList(null);
+        LiveData<Resource<ApiResult<JusticeBureauList>>> convert = ResourceConvertUtils.convert(apiResultLiveData);
+
+        return Transformations.map(convert, input -> {
+            if (input.isError()) {
+                return Resource.copyError(input);
+            } else if (input.isLoading()) {
+                return Resource.loading(null);
+            }
+            assert input.data != null;
+            List<JusticeBureau> list = input.data.getData().list;
+            return Resource.success(list);
+        });
     }
 
     public LiveData<Resource<List<JusticeBureau>>> getAllJusticeBureau(String id) {

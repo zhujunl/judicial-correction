@@ -61,17 +61,20 @@ public class AutoTokenInterceptor implements Interceptor {
                 JusticeBureau jb = justiceBureaus.get(i);
                 switch (jb.getTeamLevel()) {
                     case "TEAM_LEVEL_1":
+                        Timber.i("New JAuthInfo level 1: %s", jb.getTeamName());
                         jAuthInfo.dishiId = jb.getTeamId();
                         jAuthInfo.dishiName = jb.getTeamName();
                         break;
                     case "TEAM_LEVEL_2":
+                        Timber.i("New JAuthInfo level 2: %s", jb.getTeamName());
                         jAuthInfo.quxianId = jb.getTeamId();
                         jAuthInfo.quxianName = jb.getTeamName();
                         break;
-//                    case "TEAM_LEVEL_3":
-//                        jAuthInfo.jiedaoId = jb.getTeamId();
-//                        jAuthInfo.jiedaoName = jb.getTeamName();
-//                        break;
+                    case "TEAM_LEVEL_3":
+                        Timber.i("New JAuthInfo level 3: %s", jb.getTeamName());
+                        jAuthInfo.jiedaoId = jb.getTeamId();
+                        jAuthInfo.jiedaoName = jb.getTeamName();
+                        break;
                 }
             }
             Timber.i("New JAuthInfo B: %s", jAuthInfo);

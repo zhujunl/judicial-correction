@@ -3,6 +3,7 @@ package com.miaxis.judicialcorrection.ui.setting;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -160,7 +161,7 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
             }
         });
 
-        viewModel.jiedaoListLiveData.observe(this, listResource -> {
+        viewModel.jiedaoListLiveDataWithUncheck.observe(this, listResource -> {
             if (listResource.isSuccess()) {
                 Log.i(TAG, "街道 列表: " + listResource.data);
                 SpAdapter adapter = new SpAdapter();
@@ -199,6 +200,9 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
         JusticeBureau shi = (JusticeBureau) binding.spinnerShi.getSelectedItem();
         JusticeBureau xian = (JusticeBureau) binding.spinnerXian.getSelectedItem();
         JusticeBureau jeidao = (JusticeBureau) binding.spinnerJiedao.getSelectedItem();
+        if (TextUtils.isEmpty(jeidao.getTeamId())){
+            jeidao = null;
+        }
         viewModel.addBureau(shi, xian, jeidao);
     }
 

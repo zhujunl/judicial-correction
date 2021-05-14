@@ -16,6 +16,7 @@ import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
 import com.miaxis.judicialcorrection.base.repo.JusticeBureauRepo;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,7 +39,7 @@ public class SettingViewModel extends ViewModel {
     MutableLiveData<JusticeBureau> mShengLiveData = new MutableLiveData<>();
     MutableLiveData<JusticeBureau> mShiLiveData = new MutableLiveData<>();
     MutableLiveData<JusticeBureau> mXianLiveData = new MutableLiveData<>();
-    MutableLiveData<JusticeBureau> mJiedaoLiveData = new MutableLiveData<>();
+//    MutableLiveData<JusticeBureau> mJiedaoLiveData = new MutableLiveData<>();
 
 
     public final LiveData<Resource<List<JusticeBureau>>> shiListLiveData = Transformations.switchMap(mShengLiveData, new Function<JusticeBureau, LiveData<Resource<List<JusticeBureau>>>>() {
@@ -53,21 +54,38 @@ public class SettingViewModel extends ViewModel {
             return justiceBureauRepo.getAllJusticeBureau(input == null ? null : input.getTeamId());
         }
     });
-    public final LiveData<Resource<List<JusticeBureau>>> jiedaoListLiveData = Transformations.switchMap(mXianLiveData, new Function<JusticeBureau, LiveData<Resource<List<JusticeBureau>>>>() {
+    private final LiveData<Resource<List<JusticeBureau>>> jiedaoListLiveData = Transformations.switchMap(mXianLiveData, new Function<JusticeBureau, LiveData<Resource<List<JusticeBureau>>>>() {
         @Override
         public LiveData<Resource<List<JusticeBureau>>> apply(JusticeBureau input) {
             return justiceBureauRepo.getAllJusticeBureau(input == null ? null : input.getTeamId());
+        }
+    });
+    public final LiveData<Resource<List<JusticeBureau>>> jiedaoListLiveDataWithUncheck = Transformations.map(jiedaoListLiveData, new Function<Resource<List<JusticeBureau>>, Resource<List<JusticeBureau>>>() {
+        @Override
+        public Resource<List<JusticeBureau>> apply(Resource<List<JusticeBureau>> input) {
+            if (input.isSuccess()) {
+                if (input.data != null && input.data.size() > 0) {
+                    input.data.add(0, nullJusticeBureau);
+                }
+            }
+            return input;
         }
     });
     JusticeBureau shiChecked;
     JusticeBureau xianChecked;
     JusticeBureau jiedaoChecked;
 
+    JusticeBureau nullJusticeBureau = new JusticeBureau();
+
+
     @Inject
     public SettingViewModel(AppDatabase appDatabase) {
         justiceLiveData = appDatabase.justiceBureauDao().loadAll();
         justiceLiveData.observeForever(observer);
+        nullJusticeBureau.setTeamName("请选择");
     }
+
+
     LiveData<List<JusticeBureau>> justiceLiveData;
     Observer<List<JusticeBureau>> observer = (List<JusticeBureau> justiceBureaus) -> {
         Timber.i("loadAll  :[%d], %s", justiceBureaus.size(), justiceBureaus);
@@ -86,6 +104,7 @@ public class SettingViewModel extends ViewModel {
             }
         }
     };
+
     public void setSheng(JusticeBureau justiceBureau) {
         mShengLiveData.postValue(justiceBureau);
     }
@@ -99,7 +118,7 @@ public class SettingViewModel extends ViewModel {
     }
 
     public void setJiedao(JusticeBureau justiceBureau) {
-        mJiedaoLiveData.setValue(justiceBureau);
+        //mJiedaoLiveData.setValue(justiceBureau);
     }
 
     public void addBureau(JusticeBureau shi, JusticeBureau xian, JusticeBureau jiedao) {

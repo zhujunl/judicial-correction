@@ -2,6 +2,7 @@ package com.miaxis.enroll.guide.infos;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +13,26 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.miaxis.enroll.BaseMsgModel;
 import com.miaxis.enroll.EnrollSharedViewModel;
+import com.miaxis.enroll.GoHomeFragment;
 import com.miaxis.enroll.R;
 import com.miaxis.enroll.databinding.FragmentBaseMsgBinding;
+import com.miaxis.enroll.guide.CaptureFuncFragment;
+import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
+import com.miaxis.judicialcorrection.base.utils.AppHints;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
+import timber.log.Timber;
 
 /**
  * BaseMsgFragment
@@ -43,32 +53,34 @@ public class BaseMsgFragment extends BaseInfoFragment<FragmentBaseMsgBinding> {
 
     }
 
+    @Inject
+    Lazy<AppHints> appHintsLazy;
     @Override
     protected void initData(@NonNull FragmentBaseMsgBinding binding, @Nullable Bundle savedInstanceState) {
         EnrollSharedViewModel vm = new ViewModelProvider(getActivity()).get(EnrollSharedViewModel.class);
-        BaseMsgModel model=new ViewModelProvider(this).get(BaseMsgModel.class);
+//        BaseMsgModel model=new ViewModelProvider(this).get(BaseMsgModel.class);
         binding.setLifecycleOwner(this);
         binding.setVm(vm);
-        model.shiListLiveData.observe(this, listResource -> {
-            if (listResource.isSuccess()) {
-                model.setXian(model.xianChecked);
-            }
-        });
-        model.xianListLiveData.observe(this, listResource -> {
-            if (listResource.isSuccess()) {
-                model.setJiedao(model.jiedaoChecked);
-            }
-        });
-
-        model.jiedaoListLiveData.observe(this, listResource -> {
-            if (listResource.isSuccess()) {
-                setSpUnitView(listResource.data,binding.spinnerProvince);
-            }
-        });model.setSheng(null);
+//        model.shiListLiveData.observe(this, listResource -> {
+//            if (listResource.isSuccess()) {
+//                model.setXian(model.xianChecked);
+//            }
+//        });
+//        model.xianListLiveData.observe(this, listResource -> {
+//            if (listResource.isSuccess()) {
+//                model.setJiedao(model.jiedaoChecked);
+//            }
+//        });
+//
+//        model.jiedaoListLiveData.observe(this, listResource -> {
+//            if (listResource.isSuccess()) {
+//                setSpUnitView(listResource.data,binding.spinnerProvince);
+//            }
+//        });model.setSheng(null);
         binding.spinnerProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                JusticeBureau  justiceBureau= (JusticeBureau) binding.spinnerProvince.getSelectedItem();
+                JusticeBureau  justiceBureau= (JusticeBureau) parent.getSelectedItem();
                 if (justiceBureau!=null) {
                     vm.checkedJusticeBureau = justiceBureau;
                 }
@@ -79,16 +91,34 @@ public class BaseMsgFragment extends BaseInfoFragment<FragmentBaseMsgBinding> {
 
             }
         });
+        vm.myPermissionJusticeBureau.observe(this, resource -> {
+            Timber.i("MyPermissionJusticeBureau %s", resource);
+            switch (resource.status) {
+                case LOADING:
+                    showLoading();
+                    break;
+                case ERROR:
+                    dismissLoading();
+                    appHintsLazy.get().showError("Error:" + resource.errorMessage);
+                    break;
+                case SUCCESS:
+                    dismissLoading();
+                    SpAdapter spAdapter = new SpAdapter();
+                    spAdapter.submitList(resource.data);
+                    binding.spinnerProvince.setAdapter(spAdapter);
+                    break;
+            }
+        });
 
     }
 
 
 
-    private void setSpUnitView(List<JusticeBureau> beanList, Spinner spinner) {
-        SpAdapter adapter = new SpAdapter();
-        adapter.submitList(beanList);
-        spinner.setAdapter(adapter);
-    }
+//    private void setSpUnitView(List<JusticeBureau> beanList, Spinner spinner) {
+//        SpAdapter adapter = new SpAdapter();
+//        adapter.submitList(beanList);
+//        spinner.setAdapter(adapter);
+//    }
     public static class SpAdapter extends BaseAdapter {
 
         private List<JusticeBureau> data;

@@ -8,10 +8,12 @@ import com.miaxis.enroll.vo.Job;
 import com.miaxis.enroll.vo.OtherCardType;
 import com.miaxis.enroll.vo.OtherInfo;
 import com.miaxis.judicialcorrection.base.api.ApiResult;
+import com.miaxis.judicialcorrection.base.api.ApiService;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
+import com.miaxis.judicialcorrection.base.repo.JusticeBureauRepo;
 import com.miaxis.judicialcorrection.base.repo.PersonRepo;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
@@ -25,11 +27,13 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import timber.log.Timber;
 
@@ -65,9 +69,9 @@ public class EnrollSharedViewModel extends ViewModel {
     /**
      * 当前选择的司法局
      */
-    public LiveData<JusticeBureau> justiceBureauLiveData;
+//    public LiveData<JusticeBureau> justiceBureauLiveData;
 
-    public JusticeBureau checkedJusticeBureau=new JusticeBureau();
+    public JusticeBureau checkedJusticeBureau = new JusticeBureau();
 
     /**
      * 身份证信息
@@ -98,32 +102,38 @@ public class EnrollSharedViewModel extends ViewModel {
     public boolean haveIdInfo;
 
     //test
-    public String  mPid;
+    public String mPid;
     private final PersonRepo personRepo;
     private final EnrollRepo enrollRepo;
     private final AppExecutors appExecutors;
     private Addr address;
+    public LiveData<Resource<List<JusticeBureau>>> myPermissionJusticeBureau;
 
     @Inject
-    public EnrollSharedViewModel(PersonRepo personRepo, EnrollRepo enrollRepo, AppExecutors appExecutors, AppDatabase appDatabase) {
+    public EnrollSharedViewModel(JusticeBureauRepo justiceBureauRepo, PersonRepo personRepo, EnrollRepo enrollRepo, AppExecutors appExecutors, AppDatabase appDatabase) {
         this.personRepo = personRepo;
         this.enrollRepo = enrollRepo;
         this.appExecutors = appExecutors;
-        justiceBureauLiveData = Transformations.map(appDatabase.justiceBureauDao().loadAll(), input -> {
-            for (int i = 0; i < input.size(); i++) {
-                JusticeBureau justiceBureau = input.get(i);
-                if (input.size() == 3 && Objects.equals("TEAM_LEVEL_3", justiceBureau.getTeamLevel())) {
-                    return justiceBureau;
-                }
-                if (input.size() == 2 && Objects.equals("TEAM_LEVEL_2", justiceBureau.getTeamLevel())) {
-                    return justiceBureau;
-                }
-                if (input.size() == 1) {
-                    return justiceBureau;
-                }
-            }
-            return null;
-        });
+        /**
+         * 获取当前token有权限的司法所
+         */
+        myPermissionJusticeBureau = justiceBureauRepo.getMyPermissionJusticeBureau();
+
+//        justiceBureauLiveData = Transformations.map(appDatabase.justiceBureauDao().loadAll(), input -> {
+//            for (int i = 0; i < input.size(); i++) {
+//                JusticeBureau justiceBureau = input.get(i);
+//                if (input.size() == 3 && Objects.equals("TEAM_LEVEL_3", justiceBureau.getTeamLevel())) {
+//                    return justiceBureau;
+//                }
+//                if (input.size() == 2 && Objects.equals("TEAM_LEVEL_2", justiceBureau.getTeamLevel())) {
+//                    return justiceBureau;
+//                }
+//                if (input.size() == 1) {
+//                    return justiceBureau;
+//                }
+//            }
+//            return null;
+//        });
         otherCardTypeLiveData.setValue(new OtherCardType());
         otherInfoLiveData.setValue(new OtherInfo());
     }

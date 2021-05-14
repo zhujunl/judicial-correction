@@ -16,6 +16,15 @@ public class Token {
     }
 
     public String getBearerToken() {
-        return String.format("Bearer %s", access_token);
+        return String.format("Bearer %s1", access_token);
+    }
+
+    @Override
+    public String toString() {
+        return "Token{" +
+                "access_token='" + access_token + '\'' +
+                "isExpires='" + isExpires() + '\'' +
+                ", expires_time=" + expires_time +
+                '}';
     }
 }
