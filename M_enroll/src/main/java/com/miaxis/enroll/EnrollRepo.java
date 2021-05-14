@@ -1,6 +1,7 @@
 package com.miaxis.enroll;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 
 import androidx.lifecycle.LiveData;
 
@@ -35,7 +36,7 @@ import timber.log.Timber;
  *
  * @author zhangyw
  * Created on 4/29/21.
- *
+ * <p>
  * 注意 需根据编码
  */
 @Singleton
@@ -57,16 +58,16 @@ public class EnrollRepo {
         Map<String, String> mapCardType = new Gson().fromJson(gson.toJson(cardType), Map.class);
         Map<String, String> mapAddr = new Gson().fromJson(gson.toJson(addr), Map.class);
         Map<String, String> mapOtherInfo = new Gson().fromJson(gson.toJson(otherInfo), Map.class);
-        mapOtherInfo.put("sfyjsb",otherInfo.getSfyjsb()==1?"1":"0");
-        mapOtherInfo.put("sfycrb",otherInfo.getSfycrb()==1?"1":"0");
-        mapOtherInfo.put("sfswry",otherInfo.getSfswry()==1?"1":"0");
+        mapOtherInfo.put("sfyjsb", otherInfo.getSfyjsb() == 1 ? "1" : "0");
+        mapOtherInfo.put("sfycrb", otherInfo.getSfycrb() == 1 ? "1" : "0");
+        mapOtherInfo.put("sfswry", otherInfo.getSfswry() == 1 ? "1" : "0");
         //是否有前科
-        mapOtherInfo.put("sfyqk",otherInfo.getSfyqk()==1?"1":"0");
+        mapOtherInfo.put("sfyqk", otherInfo.getSfyqk() == 1 ? "1" : "0");
         //港澳
-        mapOtherInfo.put("ywgatsfz",cardType.ywgatsfz==1?"1":"0");
-        mapOtherInfo.put("ywtbz",cardType.ywtbz==1?"1":"0");
-        mapOtherInfo.put("ywhz",cardType.ywhz==1?"1":"0");
-        mapOtherInfo.put("ywgattxz",cardType.ywgattxz==1?"1":"0");
+        mapOtherInfo.put("ywgatsfz", cardType.ywgatsfz == 1 ? "1" : "0");
+        mapOtherInfo.put("ywtbz", cardType.ywtbz == 1 ? "1" : "0");
+        mapOtherInfo.put("ywhz", cardType.ywhz == 1 ? "1" : "0");
+        mapOtherInfo.put("ywgattxz", cardType.ywgattxz == 1 ? "1" : "0");
 
         Map<String, String> map = new HashMap<>();
         map.putAll(mapCardType);
@@ -74,19 +75,19 @@ public class EnrollRepo {
         map.putAll(mapOtherInfo);
         //矫正机构
         String sex;
-        if (idCard.sex.equals("男")){
-            sex="1";
-        }else if (idCard.sex.equals("女")){
-            sex="2";
-        }else{
-            sex="0";
+        if (idCard.sex.equals("男")) {
+            sex = "1";
+        } else if (idCard.sex.equals("女")) {
+            sex = "2";
+        } else {
+            sex = "0";
         }
         map.put("jzjg", justiceBureau.getTeamId());
         map.put("xm", idCard.name.trim());
-        map.put("xb",sex);
+        map.put("xb", sex);
         map.put("mz", idCard.nation_str);
         map.put("sfzh", idCard.id_num);
-        Date date = new Date(Integer.parseInt(idCard.birth_year)-1900, Integer.parseInt(idCard.birth_month) - 1, Integer.parseInt(idCard.birth_day));
+        Date date = new Date(Integer.parseInt(idCard.birth_year) - 1900, Integer.parseInt(idCard.birth_month) - 1, Integer.parseInt(idCard.birth_day));
         map.put("csrq", simpleDateFormat.format(date));
 //        sfyqk
         String toJson = gson.toJson(map);
@@ -106,20 +107,26 @@ public class EnrollRepo {
         return ResourceConvertUtils.convertToResource(apiResultLiveData);
     }
 
+
     public LiveData<Resource<Object>> addRelationship(String pid, Family family) {
         //[Family{name='tttt', relationship='直系亲属', job='tttt', phone='2222'}]，pid=[null]
         Map<String, String> map = new HashMap<>();
-        map.put("gx",family.relationship);
-        map.put("szdw",family.job);
-        map.put("gx",family.relationship);
-        map.put("lxdh",family.phone);
-        map.put("pid",pid);
+        map.put("gx", family.relationship);
+        map.put("szdw", family.job);
+        map.put("gx", family.relationship);
+        //因需求 这边提的 传无
+        if (TextUtils.isEmpty(family.phone)) {
+            map.put("lxdh", "无");
+        } else {
+            map.put("lxdh", family.phone);
+        }
+        map.put("pid", pid);
         //如需要分开
         String toJson = gson.toJson(map);
         Timber.v("addRelationship [%s]，pid=[%s]", toJson, pid);
         //    居住地址	jtzz	string
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
-        LiveData<ApiResult<Object>> apiResultLiveData =apiService.addRelationship(body);
+        LiveData<ApiResult<Object>> apiResultLiveData = apiService.addRelationship(body);
         return ResourceConvertUtils.convertToResource(apiResultLiveData);
     }
 }

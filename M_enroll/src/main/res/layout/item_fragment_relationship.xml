@@ -26,21 +26,21 @@
             android:layout_weight="1"
             android:background="#0000"
             android:gravity="center"
+            android:imeOptions="actionNext"
+            android:inputType="text"
             android:text="@={data.name}"
             android:textColor="#393939"
-            android:inputType="text"
-            android:imeOptions="actionNext"
             android:textSize="24px"
             tools:text="张三" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spinner"
+            selection="@={data.relationship}"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.2"
             android:entries="@array/relationship"
             android:gravity="center"
-            selection="@={data.relationship}"
             android:textColor="#393939"
             android:textSize="24px" />
 
@@ -52,11 +52,11 @@
             android:layout_weight="2.5"
             android:background="#0000"
             android:gravity="center"
+            android:imeOptions="actionNext"
+            android:inputType="text"
             android:text="@={data.job}"
             android:textColor="#393939"
             android:textSize="24px"
-            android:inputType="text"
-            android:imeOptions="actionNext"
             tools:text="原工作单位地址址址址" />
 
         <EditText
@@ -65,13 +65,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:background="#0000"
+            android:textColorHint="#393939"
             android:gravity="center"
-            android:inputType="number"
+            android:hint="无"
             android:imeOptions="actionDone"
+            android:inputType="number"
             android:text="@={data.phone}"
             android:textColor="#393939"
-            android:textSize="24px"
-            tools:text="18699998888" />
+            android:textSize="24px" />
 
 
     </LinearLayout>
