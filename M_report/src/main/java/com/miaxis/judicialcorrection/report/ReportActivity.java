@@ -2,13 +2,11 @@ package com.miaxis.judicialcorrection.report;
 
 import android.os.Bundle;
 
-import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
-import com.miaxis.judicialcorrection.databinding.ActivityReportBinding;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
 import com.miaxis.judicialcorrection.face.VerifyPageFragment;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
@@ -16,6 +14,7 @@ import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
 import com.miaxis.judicialcorrection.id.callback.ReadIdCardCallback;
 import com.miaxis.judicialcorrection.id.readIdCard.ReadIDCardBindingFragment;
+import com.miaxis.judicialcorrection.report.databinding.ActivityReportBinding;
 
 import javax.inject.Inject;
 

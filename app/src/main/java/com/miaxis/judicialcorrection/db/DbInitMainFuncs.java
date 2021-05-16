@@ -10,8 +10,8 @@ import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
-import com.miaxis.judicialcorrection.centralized_education.CentralizedEducationActivity;
-import com.miaxis.judicialcorrection.individual_education.IndividualEducationActivity;
+import com.miaxis.judicialcorrection.centralized.CentralizedEducationActivity;
+import com.miaxis.judicialcorrection.individual.IndividualEducationActivity;
 import com.miaxis.judicialcorrection.leave.LeaveActivity;
 import com.miaxis.judicialcorrection.benefit.PublicWelfareActivity;
 import com.miaxis.judicialcorrection.live.LiveAddressChangeActivity;
@@ -27,7 +27,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;

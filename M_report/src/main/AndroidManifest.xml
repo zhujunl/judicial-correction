@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.miaxis.judicialcorrection">
+    package="com.miaxis.judicialcorrection.report">
 
     <application>
-        <activity android:name=".report.ReportActivity" />
-        <activity android:name=".centralized_education.CentralizedEducationActivity" />
-        <activity android:name=".individual_education.IndividualEducationActivity" />
+        <activity android:name=".ReportActivity" />
+        <activity android:name="com.miaxis.judicialcorrection.centralized.CentralizedEducationActivity" />
+        <activity android:name="com.miaxis.judicialcorrection.individual.IndividualEducationActivity" />
     </application>
 
 </manifest>
