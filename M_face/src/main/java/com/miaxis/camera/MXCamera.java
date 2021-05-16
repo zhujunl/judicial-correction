@@ -49,9 +49,12 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         return this.mCameraId;
     }
 
-    protected int open(int cameraId) {
+    protected int open(int cameraId, int width, int height) {
         if (this.mCamera != null) {
             return -2;
+        }
+        if (cameraId >= Camera.getNumberOfCameras()) {
+            return -4;
         }
         Camera camera = null;
         try {
@@ -64,10 +67,12 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         try {
             Camera.Parameters parameters = camera.getParameters();
             Camera.Size previewSize = parameters.getPreviewSize();
-            this.width = previewSize.width;
-            this.height = previewSize.height;
+            previewSize.width = width;
+            previewSize.height = height;
+            camera.setParameters(parameters);
         } catch (Exception e) {
             e.printStackTrace();
+            return -3;
         }
         this.buffer = new byte[((this.width * this.height) * ImageFormat.getBitsPerPixel(ImageFormat.NV21)) / 8];
         this.mCamera = camera;

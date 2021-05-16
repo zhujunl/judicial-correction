@@ -3,9 +3,9 @@ package com.miaxis.camera;
 import android.hardware.Camera;
 
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
+import com.miaxis.judicialcorrection.face.CameraConfig;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Admin
@@ -16,10 +16,10 @@ import java.util.List;
  */
 public class CameraHelper {
 
-    private List<MXCamera> mMXCameras;
+    private CopyOnWriteArrayList<MXCamera> mMXCameras;
 
     private CameraHelper() {
-        this.mMXCameras = new ArrayList<>();
+        this.mMXCameras = new CopyOnWriteArrayList<>();
     }
 
     private static class CameraHelperHolder {
@@ -36,23 +36,29 @@ public class CameraHelper {
         if (numberOfCameras <= 0) {
             return ZZResponse.CreateFail(MXCameraErrorCode.CODE_FAIL_NO_CAMERA, MXCameraErrorCode.MSG_FAIL_NO_CAMERA);
         }
-        if (numberOfCameras < 2) {
-            return ZZResponse.CreateFail(MXCameraErrorCode.CODE_FAIL_CAMERA_COUNTS_LESS, MXCameraErrorCode.MSG_FAIL_CAMERA_COUNTS_LESS + ":" + numberOfCameras);
-        }
+        //        if (numberOfCameras < 2) {
+        //            return ZZResponse.CreateFail(MXCameraErrorCode.CODE_FAIL_CAMERA_COUNTS_LESS, MXCameraErrorCode.MSG_FAIL_CAMERA_COUNTS_LESS + ":" + numberOfCameras);
+        //        }
         return ZZResponse.CreateSuccess();
     }
 
     public void free() {
         if (this.mMXCameras != null && !this.mMXCameras.isEmpty()) {
+            for (MXCamera camera : this.mMXCameras) {
+                camera.stop();
+            }
             this.mMXCameras.clear();
         }
     }
 
-    public ZZResponse<MXCamera> createMXCamera(int cameraId) {
+    public ZZResponse<MXCamera> createMXCamera(CameraConfig cameraConfig) {
+        if (cameraConfig == null) {
+            return ZZResponse.CreateFail(-90, "config error");
+        }
         MXCamera mxCamera = new MXCamera();
         int init = mxCamera.init();
         if (init == 0) {
-            int open = mxCamera.open(cameraId);
+            int open = mxCamera.open(cameraConfig.getCameraId(), cameraConfig.getWidth(), cameraConfig.getHeight());
             if (open == 0) {
                 addMXCamera(mxCamera);
                 return ZZResponse.CreateSuccess(mxCamera);
@@ -66,25 +72,14 @@ public class CameraHelper {
         }
     }
 
-    //    public ZZResponse<MXCamera> createMXCamera(int cameraId, int width, int height) {
-    //        MXCamera mxCamera = new MXCamera();
-    //        int init = mxCamera.init(width, height);
-    //        if (init == 0) {
-    //            int open = mxCamera.open(cameraId);
-    //            if (open == 0) {
-    //                addMXCamera(mxCamera);
-    //                return ZZResponse.CreateSuccess(mxCamera);
-    //            } else if (open == -2) {
-    //                return ZZResponse.CreateFail(MXCameraErrorCode.CODE_FAIL_PARAMETERS, MXCameraErrorCode.MSG_FAIL_PARAMETERS);
-    //            } else {
-    //                return ZZResponse.CreateFail(MXCameraErrorCode.CODE_FAIL_CAMERA_OPEN, MXCameraErrorCode.MSG_FAIL_CAMERA_OPEN);
-    //            }
-    //        } else {
-    //            return ZZResponse.CreateFail(MXCameraErrorCode.CODE_FAIL_NO_CAMERA, MXCameraErrorCode.MSG_FAIL_NO_CAMERA);
-    //        }
-    //    }
+    public synchronized ZZResponse<MXCamera> find(CameraConfig cameraConfig) {
+        if (cameraConfig == null) {
+            return ZZResponse.CreateFail(-90, "config error");
+        }
+        return find(cameraConfig.getCameraId());
+    }
 
-    public synchronized ZZResponse<MXCamera> find(int cameraId) {
+    private synchronized ZZResponse<MXCamera> find(int cameraId) {
         if (cameraId < 0) {
             return ZZResponse.CreateFail(MXCameraErrorCode.CODE_FAIL_CAMERA_ID, null);
         }

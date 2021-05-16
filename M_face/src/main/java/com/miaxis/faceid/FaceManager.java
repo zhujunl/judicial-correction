@@ -1,6 +1,7 @@
 package com.miaxis.faceid;
 
 import android.content.Context;
+import android.util.Size;
 
 import org.zz.api.MXFaceAPI;
 import org.zz.api.MXFaceInfoEx;
@@ -82,16 +83,6 @@ public class FaceManager {
         return 0;
     }
 
-    public int reg(byte[] rgbFrameData, int frameWidth, int frameHeight, int faceNum, MXFaceInfoEx[] faceInfo) {
-        if (this.mMXFaceAPI == null) {
-            return -99;
-        }
-        if (rgbFrameData == null) {
-            return -98;
-        }
-        return this.mMXFaceAPI.mxFaceQuality4Reg(rgbFrameData, frameWidth, frameHeight, faceNum, faceInfo);
-    }
-
     //人脸质量检测
     public int getFaceQuality(byte[] rgbFrameData, int frameWidth, int frameHeight, int faceNum, MXFaceInfoEx[] faceInfo) {
         if (this.mMXFaceAPI == null) {
@@ -134,6 +125,9 @@ public class FaceManager {
         if (this.mMXFaceAPI == null) {
             return -99;
         }
+        if (pFaceFeatureA == null || pFaceFeatureA.length == 0 || pFaceFeatureB == null || pFaceFeatureB.length == 0) {
+            return -98;
+        }
         if (mask) {
             return this.mMXFaceAPI.mxMaskFeatureMatch(pFaceFeatureA, pFaceFeatureB, fScore);
         } else {
@@ -141,16 +135,31 @@ public class FaceManager {
         }
     }
 
-    public boolean flip(byte[] pRGBImage, int iRGBWidth, int iRGBHeight) {
-        if (this.mMxImageTool == null) {
-            return false;
+    //    public boolean flip(byte[] pRGBImage, int iRGBWidth, int iRGBHeight) {
+    //        if (this.mMxImageTool == null || pRGBImage == null || pRGBImage.length == 0) {
+    //            return false;
+    //        }
+    //        int imageFlip = mMxImageTool.ImageFlip(pRGBImage, iRGBWidth, iRGBHeight, 1, pRGBImage);
+    //        return imageFlip == 1;
+    //    }
+
+    public Size rotate(byte[] pRGBImage, int iRGBWidth, int iRGBHeight, int rotation, byte[] out) {
+        if (this.mMxImageTool == null || pRGBImage == null || out == null || out.length == 0 ||
+                out.length != pRGBImage.length) {
+            return null;
         }
-        int imageFlip = mMxImageTool.ImageFlip(pRGBImage, iRGBWidth, iRGBHeight, 1, pRGBImage);
-        return imageFlip == 1;
+        int[] width = new int[1];
+        int[] height = new int[1];
+
+        int imageFlip = mMxImageTool.ImageRotate(pRGBImage, iRGBWidth, iRGBHeight, rotation, out, width, height);
+        if (imageFlip != 1) {
+            return null;
+        }
+        return new Size(width[0], height[0]);
     }
 
-    public byte[] getRgbFromFile(String strPathImgFile,int[] oX,int[] oY) {
-        if (mMxImageTool==null){
+    public byte[] getRgbFromFile(String strPathImgFile, int[] oX, int[] oY) {
+        if (mMxImageTool == null) {
             return null;
         }
         // 获取图像大小
@@ -167,11 +176,11 @@ public class FaceManager {
         return null;
     }
 
-    public boolean saveRgbTiFile(byte[] rgb,int width,int height,String path){
-        if (mMxImageTool==null){
-            return false ;
+    public boolean saveRgbTiFile(byte[] rgb, int width, int height, String path) {
+        if (mMxImageTool == null) {
+            return false;
         }
-       return mMxImageTool.ImageSave(path,rgb,width,height,3)==1;
+        return mMxImageTool.ImageSave(path, rgb, width, height, 3) == 1;
     }
 
 }

@@ -1,20 +1,14 @@
 package com.miaxis.judicialcorrection.face;
 
-import android.graphics.Bitmap;
-import android.os.Environment;
 import android.os.SystemClock;
+import android.util.Size;
 
 import com.miaxis.camera.MXCamera;
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
-import com.miaxis.judicialcorrection.common.response.ZZResponse;
-import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
-import com.miaxis.utils.FileUtils;
 
 import org.zz.api.MXFaceInfoEx;
-
-import java.io.File;
 
 import javax.inject.Inject;
 
@@ -41,14 +35,10 @@ public class GetFaceViewModel extends ViewModel {
 
     MutableLiveData<String> faceTips = new MutableLiveData<>();
 
-    MutableLiveData<ZZResponse<VerifyInfo>> verifyStatus = new MutableLiveData<>();
-
     MutableLiveData<byte[]> idCardFaceFeature = new MutableLiveData<>();
-    //MutableLiveData<File> faceFile = new MutableLiveData<>();
 
     public MXFaceInfoEx[] mFaceInfoExes = new MXFaceInfoEx[MXFaceInfoEx.iMaxFaceNum];
     public int[] mFaceNumber = new int[1];
-    public int[] mFacesData = new int[MXFaceInfoEx.SIZE * MXFaceInfoEx.iMaxFaceNum];
 
     AppExecutors mAppExecutors;
 
@@ -63,59 +53,64 @@ public class GetFaceViewModel extends ViewModel {
         }
     }
 
-    public void getFace(byte[] frame, MXCamera camera, int width, int height, GetFacePageFragment.GetFaceCallback captureCallback) {
+    public void getFace(byte[] frame, MXCamera camera, int widthO, int heightO, GetFacePageFragment.GetFaceCallback captureCallback) {
         mAppExecutors.networkIO().execute(() -> {
-            byte[] rgb = FaceManager.getInstance().yuv2Rgb(frame, width, height);
-            //FaceManager.getInstance().flip(rgb, width, height);
-            // TODO: 2021/5/12 测试阶段保存视频流图片，用于排查人脸算法实用性差原因
-//            boolean b = FaceManager.getInstance().saveRgbTiFile(rgb, width, height,
-//                    Environment.getExternalStorageDirectory().getAbsolutePath() + "/Miaxis/" + System.currentTimeMillis() + ".jpeg"
-//            );
-
-            int detectFace = FaceManager.getInstance().detectFace(rgb, width, height, mFaceNumber, mFaceInfoExes);
-            Timber.e("face   detectFace:%s", detectFace);
-            if (detectFace == 0) {
-                int faceNumber = FaceManager.getInstance().getFaceNumber(mFaceNumber);
-                Timber.e("face   faceNumber:%s", faceNumber);
-                if (faceNumber == 1) {
-                    if (mFaceInfoExes[0].width >= 200) {
-                        int faceQuality = FaceManager.getInstance().getFaceQuality(rgb, width, height, 1, mFaceInfoExes);
-                        Timber.e("face   faceQuality:%s", faceQuality);
-                        if (faceQuality == 0) {
-                            Timber.e("face   quality:%s", mFaceInfoExes[0].quality);
-                            if (mFaceInfoExes[0].quality >= 45) {
-                                byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
-                                int extractFeature = FaceManager.getInstance().extractFeature(rgb, width, height, 1, feature, mFaceInfoExes, false);
-                                if (extractFeature == 0) {
-                                    Timber.e("face   extractFeature:%s", extractFeature);
-                                    //byte[] temp = new byte[FaceManager.getInstance().getFeatureSize()];
-                                    float[] floats = new float[1];
-                                    int matchFeature = FaceManager.getInstance().matchFeature(feature, idCardFaceFeature.getValue(), floats, false);
-                                    Timber.e("face   match:%s", matchFeature);
-                                    if (matchFeature == 0) {
-                                        Timber.e("face   floats:%s", floats[0]);
-                                        if (floats[0] >= 0.45F) {
-                                            faceTips.postValue("人证核验通过");
-                                            captureCallback.onFaceReady(camera);
+            byte[] buffer = FaceManager.getInstance().yuv2Rgb(frame, widthO, heightO);
+            byte[] rgb = new byte[buffer.length];
+            Size rotate = FaceManager.getInstance().rotate(buffer, widthO, heightO, 270, rgb);
+            if (rotate != null) {
+                int width = rotate.getWidth();
+                int height = rotate.getHeight();
+                int detectFace = FaceManager.getInstance().detectFace(rgb, width, height, mFaceNumber, mFaceInfoExes);
+                Timber.e("face   detectFace:%s", detectFace);
+                if (detectFace == 0) {
+                    int faceNumber = FaceManager.getInstance().getFaceNumber(mFaceNumber);
+                    Timber.e("face   faceNumber:%s", faceNumber);
+                    if (faceNumber == 1) {
+                        if (mFaceInfoExes[0].width >= FaceConfig.minFaceWidth) {
+                            int faceQuality = FaceManager.getInstance().getFaceQuality(rgb, width, height, 1, mFaceInfoExes);
+                            Timber.e("face   faceQuality:%s", faceQuality);
+                            if (faceQuality == 0) {
+                                Timber.e("face   quality:%s", mFaceInfoExes[0].quality);
+                                if (mFaceInfoExes[0].quality >= FaceConfig.minFaceQuality) {
+                                    faceTips.postValue("正在提取特征");
+                                    byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
+                                    int extractFeature = FaceManager.getInstance().extractFeature(rgb, width, height, 1, feature, mFaceInfoExes, false);
+                                    if (extractFeature == 0) {
+                                        faceTips.postValue("正在进行比对");
+                                        Timber.e("face   extractFeature:%s", extractFeature);
+                                        float[] floats = new float[1];
+                                        int matchFeature = FaceManager.getInstance().matchFeature(feature, idCardFaceFeature.getValue(), floats, false);
+                                        Timber.e("face   match:%s", matchFeature);
+                                        if (matchFeature == 0) {
+                                            Timber.e("face   floats:%s", floats[0]);
+                                            if (floats[0] >= FaceConfig.threshold) {
+                                                faceTips.postValue("人证核验通过");
+                                                captureCallback.onFaceReady(camera);
+                                                return;
+                                            } else {
+                                                faceTips.postValue("人证核验未通过");
+                                            }
                                             return;
                                         } else {
-                                            faceTips.postValue("人证核验未通过");
-                                            verifyStatus.postValue(ZZResponse.CreateFail(-1,"人证核验未通过"));
+                                            faceTips.postValue("比对失败");
                                         }
+                                    } else {
+                                        faceTips.postValue("特征提取失败");
                                     }
+                                } else {
+                                    faceTips.postValue("人脸质量过低，当前：" + mFaceInfoExes[0].quality + ",低于" + FaceConfig.minFaceQuality);
                                 }
-                            } else {
-                                faceTips.postValue("人脸质量过低，当前：" + mFaceInfoExes[0].quality);
                             }
+                        } else {
+                            faceTips.postValue("人脸过小");
                         }
-                    } else {
-                        faceTips.postValue("人脸过小");
+                    } else if (faceNumber <= 0) {
+                        faceTips.postValue("未检测到人脸");
                     }
-                } else if (faceNumber <= 0) {
-                    faceTips.postValue("未检测到人脸");
+                } else {
+                    faceTips.postValue("检测人脸失败");
                 }
-            } else {
-                faceTips.postValue("检测人脸失败");
             }
             SystemClock.sleep(100);
             if (camera != null) {
@@ -128,7 +123,6 @@ public class GetFaceViewModel extends ViewModel {
     public LiveData<Resource<Object>> uploadPic(String pid, String base64Str) {
         return mCapturePageRepo.uploadFace(pid, base64Str);
     }
-
 
 
     public void extractFeature(byte[] rgb, int width, int height) {

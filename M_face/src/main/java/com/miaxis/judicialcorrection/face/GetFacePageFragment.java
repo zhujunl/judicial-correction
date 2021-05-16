@@ -1,9 +1,6 @@
 package com.miaxis.judicialcorrection.face;
 
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.SurfaceHolder;
@@ -19,7 +16,6 @@ import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
 import com.miaxis.judicialcorrection.face.callback.NavigationCallback;
 import com.miaxis.judicialcorrection.face.databinding.FragmentCaptureBinding;
-import com.miaxis.judicialcorrection.face.utils.FileUtil;
 import com.miaxis.utils.BitmapUtils;
 import com.miaxis.utils.FileUtils;
 
@@ -33,12 +29,8 @@ import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
-import top.zibin.luban.CompressionPredicate;
-import top.zibin.luban.Luban;
-import top.zibin.luban.OnCompressListener;
 
 /**
  * @author Tank
@@ -86,9 +78,11 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
                     appHintsLazy.get().showError("特征提取失败，请退出后重试", (dialog, which) -> finish());
                     return;
                 }
-                ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().find(Camera.CameraInfo.CAMERA_FACING_FRONT);
-                if (ZZResponse.isSuccess(mxCamera)) {
-                    mxCamera.getData().setPreviewCallback(GetFacePageFragment.this);
+                ZZResponse<MXCamera> mxCameraRgb = CameraHelper.getInstance().find(CameraConfig.Camera_RGB);
+                if (ZZResponse.isSuccess(mxCameraRgb) ) {
+                    mxCameraRgb.getData().setPreviewCallback(GetFacePageFragment.this);
+                }else {
+                    appHintsLazy.get().showError("查询摄像头失败，请退出后重试", (dialog, which) -> finish());
                 }
             }
         });
@@ -102,7 +96,7 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
             public void surfaceCreated(@NonNull SurfaceHolder holder) {
                 ZZResponse<?> init = CameraHelper.getInstance().init();
                 if (ZZResponse.isSuccess(init)) {
-                    ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().createMXCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
+                    ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().createMXCamera(CameraConfig.Camera_RGB);
                     if (ZZResponse.isSuccess(mxCamera)) {
                         mxCamera.getData().setOrientation(90);
                         //mxCamera.getData().setPreviewCallback(GetFacePageFragment.this);
@@ -121,7 +115,6 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
                 CameraHelper.getInstance().free();
             }
         });
-
 
         if (idCardFace == null) {
             appHintsLazy.get().showError("Error:人像解析失败,请退出后重新尝试", (dialog, which) -> finish());
@@ -167,14 +160,13 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
             @Override
             public void onFaceReady(MXCamera camera) {
                 File filePath = FileUtils.createFileParent(getContext());
-                String fileName=personInfo.getId() + ".jpg";
+                String fileName = personInfo.getId() + ".jpg";
                 File file = new File(filePath, fileName);
-
                 boolean frameImage = camera.getFrameImage(frame, file.getAbsolutePath());
-                String base64Path=  FileUtils.imageToBase64(file.getAbsolutePath());
+                String base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
                 mHandler.post(() -> {
                     if (frameImage) { // false BuildConfig.DEBUG
-                        mGetFaceViewModel.uploadPic(personInfo.getId(),base64Path).observe(GetFacePageFragment.this, observer -> {
+                        mGetFaceViewModel.uploadPic(personInfo.getId(), base64Path).observe(GetFacePageFragment.this, observer -> {
                             switch (observer.status) {
                                 case LOADING:
                                     showLoading();
@@ -190,7 +182,7 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
                             }
                         });
                     } else {
-                         appHintsLazy.get().showError("图片保存上传失败");
+                        appHintsLazy.get().showError("图片保存上传失败");
                     }
                 });
             }

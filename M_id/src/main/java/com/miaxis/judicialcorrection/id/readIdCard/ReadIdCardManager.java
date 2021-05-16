@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
-import android.widget.Toast;
 
 import com.miaxis.judicialcorrection.base.api.ApiResult;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
@@ -56,7 +54,6 @@ public class ReadIdCardManager {
                 mSdtApi = new Sdtapi(activity);
             } catch (Exception e) {
                 e.printStackTrace();
-                //二次初始化  很扯
                 mSdtApi = new Sdtapi(activity);
             }
             IntentFilter filter = new IntentFilter();//意图过滤器
@@ -125,7 +122,7 @@ public class ReadIdCardManager {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            Toast.makeText(context, "action:" + action, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "action:" + action, Toast.LENGTH_SHORT).show();
             //USB设备拔出广播
             if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
 //                UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
