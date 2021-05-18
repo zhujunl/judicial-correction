@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -20,6 +21,7 @@ import com.miaxis.enroll.EnrollSharedViewModel;
 import com.miaxis.enroll.R;
 import com.miaxis.enroll.databinding.FragmentResumeBinding;
 import com.miaxis.enroll.databinding.ItemFragmentResumeBinding;
+import com.miaxis.enroll.dialog.FloatCheckedDialog;
 import com.miaxis.enroll.vo.Job;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundAdapter;
@@ -62,20 +64,16 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
 
         adapter = new MyAdapter();
         adapter.setItemPresenter(new RecyclerBindPresenter());
-        String[] re = getResources().getStringArray(R.array.job);
         if (vm.jobs.size() < 2) {
             Job job = new Job();
-            job.jb.set( re[0]);
             vm.jobs.add(job);
             Job job1 = new Job();
-            job1.jb.set(re[0]);
             vm.jobs.add(job1);
         }
         adapter.submitList(vm.jobs);
         binding.recyclerview.setAdapter(adapter);
         binding.addLine.setOnClickListener(v -> {
             Job job = new Job();
-            job.jb.set( re[0]);
             vm.jobs.add(job);
             adapter.submitLists(vm.jobs);
             adapter.notifyItemRangeInserted(vm.jobs.size() - 1, 1);
@@ -114,11 +112,12 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
 
     @Override
     public boolean checkData() {
-        for (Job job: vm.jobs){
-            job.startTime=job.st.get();
-            job.endTime=job.et.get();
-            job.company=job.cy.get();
-            job.job=job.jb.get();
+        for (Job job : vm.jobs) {
+            job.startTime = job.st.get();
+            job.endTime = job.et.get();
+            job.company = job.cy.get();
+            //编码
+//            job.job = job.jb.get();
         }
         Timber.v("jobs %s", vm.jobs);
         if (TextUtils.isEmpty(vm.jobs.get(0).company)) {
@@ -174,7 +173,6 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
         }
 
 
-
         @Override
         protected void bind(ItemFragmentResumeBinding binding, Job item) {
             binding.setJob(item);
@@ -204,8 +202,6 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
             datePicker.setMaxDate(d.getTime());
             datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
                 item.st.set(simpleDateFormat.format(new Date(year - 1900, month, dayOfMonth)));
-//                textView.setText(item.st.get());
-//                binding.invalidateAll();
             });
             datePickerDialog.show();
         }
@@ -213,7 +209,7 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
         /**
          *
          */
-        public void onEndTime(Job item,TextView textView) {
+        public void onEndTime(Job item, TextView textView) {
             @SuppressLint("SimpleDateFormat")
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             DatePickerDialog datePickerDialog = new DatePickerDialog(binding.getRoot().getContext());
@@ -222,10 +218,28 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
             datePicker.setMaxDate(d.getTime());
             datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
                 item.et.set(simpleDateFormat.format(new Date(year - 1900, month, dayOfMonth)));
-//                textView.setText(item.et.get());
-//                binding.invalidateAll();
             });
             datePickerDialog.show();
+        }
+
+        public void onOffice(Job item, TextView textView) {
+          new FloatCheckedDialog(getActivity(), new FloatCheckedDialog.ClickListener() {
+                @Override
+                public void onCheckedItem(String title,String coding) {
+                    item.jobName.set(title);
+                    item.job=coding;
+                }
+                @Override
+                public void onTryAgain(AppCompatDialog appCompatDialog) {
+
+                }
+
+                @Override
+                public void onTimeOut(AppCompatDialog appCompatDialog) {
+
+                }
+            },0).show();
+
         }
     }
 }

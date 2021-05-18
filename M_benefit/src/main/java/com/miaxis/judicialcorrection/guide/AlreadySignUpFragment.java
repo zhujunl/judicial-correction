@@ -77,7 +77,7 @@ public class AlreadySignUpFragment extends BaseBindingFragment<FragmentAlreadySi
     }
 
     private void setData() {
-        viewModel.getHistoryWelfareInfo(page,mPid).observe(this, listResource -> {
+        viewModel.getHistoryWelfareInfo(page,10,mPid).observe(this, listResource -> {
             if (listResource.isSuccess()) {
                 if (isRefresh) {
                     if (listResource.data != null && listResource.data.getList() != null) {
@@ -104,4 +104,5 @@ public class AlreadySignUpFragment extends BaseBindingFragment<FragmentAlreadySi
             }
         });
     }
+
 }

@@ -11,6 +11,7 @@ import androidx.databinding.BaseObservable;
 public class Family extends BaseObservable {
     public String name;
     public String relationship;
+    public String relationshipName;
     public String job;
     public String phone;
     public String pid;

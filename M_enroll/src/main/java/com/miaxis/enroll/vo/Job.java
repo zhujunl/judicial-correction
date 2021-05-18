@@ -26,6 +26,7 @@ public class Job  {
     @SerializedName("zw")
     public String job;
 
+
 //    社区矫正人员标识	pid	string
 //    起时	qs	date
 //    止时	zr	date
@@ -37,6 +38,7 @@ public class Job  {
     public  ObservableField<String> et = new ObservableField<>();
     public  ObservableField<String> cy = new ObservableField<>();
     public  ObservableField<String> jb = new ObservableField<>();
+    public  ObservableField<String> jobName = new ObservableField<>();
     @Override
     public String toString() {
         return "Job{" +

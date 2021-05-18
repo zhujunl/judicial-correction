@@ -6,21 +6,121 @@
         <item>现役军人</item>
         <item>工人</item>
         <item>农民</item>
+        <item>职员</item>
+        <item>私营企业主、个体劳动者</item>
         <item>学生</item>
-        <item>服刑</item>
-        <item>待业</item>
+        <item>离退休人员</item>
+        <item>无业人员</item>
+        <item>其他</item>
     </string-array>
+    <string-array name="job_coding">
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name="job_nationalStaff">
+        <item>国家机关</item>
+        <item>国有公司或企业</item>
+        <item>金融机构</item>
+        <item>事业单位</item>
+        <item>人民团体</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="job_nationalStaff_coding">
+        <item>0101</item>
+        <item>0102</item>
+        <item>0102</item>
+        <item>0104</item>
+        <item>0105</item>
+        <item>0106</item>
+    </string-array>
+
+    <string-array name="job_post">
+        <item>在岗</item>
+        <item>下岗</item>
+    </string-array>
+
+    <string-array name="job_post_coding">
+        <item>0301</item>
+        <item>0302</item>
+    </string-array>
+
+    <string-array name="job_farmer">
+        <item>民工</item>
+        <item>农业生产人员</item>
+        <item>渔业生产人员</item>
+        <item>畜牧业生产人员</item>
+        <item>林业生产人员</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="job_farmer_coding">
+        <item>0401</item>
+        <item>0402</item>
+        <item>0403</item>
+        <item>0404</item>
+        <item>0405</item>
+        <item>0406</item>
+    </string-array>
+
     <string-array name="relationship">
         <item>直系亲属</item>
         <item>监护人</item>
         <item>旁系亲属</item>
         <item>矫正小组成员</item>
         <item>基层自治组织成员</item>
-        <item>基层自治组织成员</item>
         <item>工作关系</item>
         <item>朋友</item>
         <item>其他</item>
     </string-array>
+    <string-array name="relationship_coding">
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+    </string-array>
+
+    <string-array name="relationship_relatives">
+        <item>本人或户主</item>
+        <item>配偶</item>
+        <item>子</item>
+        <item>女</item>
+        <item>孙子、孙女、或外孙子、外孙女</item>
+        <item>父母</item>
+        <item>祖父母或外祖父母</item>
+        <item>兄弟姐妹</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="relationship_relatives_coding">
+        <item>0101</item>
+        <item>0102</item>
+        <item>0103</item>
+        <item>0104</item>
+        <item>0105</item>
+        <item>0106</item>
+        <item>0107</item>
+        <item>0108</item>
+        <item>0109</item>
+    </string-array>
+
+
+
+
+
     <string-array name="culture">
         <item>文盲</item>
         <item>小学</item>

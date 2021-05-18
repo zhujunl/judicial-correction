@@ -64,9 +64,11 @@ public class WelfareViewModel extends ViewModel {
     /**
      * 得到历史
      */
-    public LiveData<Resource<HistorySignUpBean>> getHistoryWelfareInfo(int page, String pid) {
-        return mPublicWelfareRepo.addHistorySignUpParameter(page, 10, pid);
+    public LiveData<Resource<HistorySignUpBean>> getHistoryWelfareInfo(int page,int rows, String pid) {
+        return mPublicWelfareRepo.addHistorySignUpParameter(page, rows, pid);
     }
+
+
 
     //参加活动
     public LiveData<Resource<Object>> getParticipate(String gyldId) {

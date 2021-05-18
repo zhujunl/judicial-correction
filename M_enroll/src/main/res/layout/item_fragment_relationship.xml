@@ -7,6 +7,9 @@
         <variable
             name="data"
             type="com.miaxis.enroll.vo.Family" />
+        <variable
+        name="itemPresenter"
+        type="com.miaxis.enroll.guide.infos.RelationshipFragment.RecyclerRelationshipBindPresenter" />
 
     </data>
 
@@ -33,13 +36,14 @@
             android:textSize="24px"
             tools:text="张三" />
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spinner"
-            selection="@={data.relationship}"
+        <TextView
+            android:id="@+id/tvRelationship"
+            android:text="@={data.relationshipName}"
             android:layout_width="0dp"
+            android:hint="请选择"
+            android:onClick="@{() -> itemPresenter.onClickRelationship(data,tvRelationship)}"
             android:layout_height="match_parent"
             android:layout_weight="1.2"
-            android:entries="@array/relationship"
             android:gravity="center"
             android:textColor="#393939"
             android:textSize="24px" />

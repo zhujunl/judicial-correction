@@ -1,17 +1,16 @@
 package com.miaxis.enroll.guide.infos;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -19,11 +18,10 @@ import com.miaxis.enroll.EnrollSharedViewModel;
 import com.miaxis.enroll.R;
 import com.miaxis.enroll.databinding.FragmentRelationshipBinding;
 import com.miaxis.enroll.databinding.ItemFragmentRelationshipBinding;
+import com.miaxis.enroll.dialog.FloatCheckedDialog;
 import com.miaxis.enroll.vo.Family;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundAdapter;
-
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -59,12 +57,10 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
         binding.setVm(vm);
 
         adapter = new MyAdapter();
-        String[] re = getResources().getStringArray(R.array.relationship);
+        adapter.setItemPresenter(new RecyclerRelationshipBindPresenter());
         if (vm.relationships.size() < 2) {
             Family family = new Family();
-            family.relationship = re[0];
             Family family2 = new Family();
-            family2.relationship = re[0];
             vm.relationships.add(family);
             vm.relationships.add(family2);
         }
@@ -72,7 +68,6 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
         binding.recyclerview.setAdapter(adapter);
         binding.addLine.setOnClickListener(v -> {
             Family family = new Family();
-            family.relationship = re[0];
             vm.relationships.add(family);
             adapter.submitLists(vm.relationships);
             adapter.notifyItemRangeInserted(vm.relationships.size() - 1, 1);
@@ -126,10 +121,6 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
                 appHints.showHint("请填写工作单位");
                 return false;
             }
-//            if (TextUtils.isEmpty(vm.relationships.get(i).phone)) {
-//                appHints.showHint("请填写联系方式");
-//                return false;
-//            }
         }
         return super.checkData();
     }
@@ -156,19 +147,41 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
         @Override
         protected void bind(ItemFragmentRelationshipBinding binding, Family item) {
             binding.setData(item);
-//            binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                @Override
-//                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                    Log.i("TAG",position+"");
-//                    String[] re =view.getContext(). getResources().getStringArray(R.array.relationship);
-//                    item.relationship=re[position];
-//                }
-//
-//                @Override
-//                public void onNothingSelected(AdapterView<?> parent) {
-//
-//                }
-//            });
+            binding.setItemPresenter(ItemPresenter);
         }
+
+        private RecyclerRelationshipBindPresenter ItemPresenter;
+
+        /**
+         * 用于设置Item的事件Presenter
+         */
+        public void setItemPresenter(RecyclerRelationshipBindPresenter itemPresenter) {
+            ItemPresenter = itemPresenter;
+        }
+    }
+    public class RecyclerRelationshipBindPresenter implements IBaseBindingPresenter {
+
+
+        public void onClickRelationship(Family item, TextView textView) {
+            new FloatCheckedDialog(getActivity(), new FloatCheckedDialog.ClickListener() {
+                @Override
+                public void onCheckedItem(String title,String coding) {
+                    item.relationshipName=title;
+                    item.relationship=coding;
+                    //一般不更新
+                    textView.setText(title);
+                }
+                @Override
+                public void onTryAgain(AppCompatDialog appCompatDialog) {
+
+                }
+
+                @Override
+                public void onTimeOut(AppCompatDialog appCompatDialog) {
+
+                }
+            },1).show();
+        }
+
     }
 }
