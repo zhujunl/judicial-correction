@@ -71,7 +71,7 @@ public class VerifyPageViewModel extends ViewModel {
         mAppExecutors.networkIO().execute(() -> {
             byte[] buffer = FaceManager.getInstance().yuv2Rgb(frame, widthO, heightO);
             byte[] rgb = new byte[buffer.length];
-            Size rotate = FaceManager.getInstance().rotate(buffer, widthO, heightO, 270, rgb);
+            Size rotate = FaceManager.getInstance().rotate(buffer, widthO, heightO, 90, rgb);
             if (rotate != null) {
                 int width = rotate.getWidth();
                 int height = rotate.getHeight();
