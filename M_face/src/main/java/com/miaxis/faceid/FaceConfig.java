@@ -1,4 +1,4 @@
-package com.miaxis.judicialcorrection.face;
+package com.miaxis.faceid;
 
 /**
  * @author Tank
@@ -13,6 +13,8 @@ public class FaceConfig {
 
     public static int minFaceQuality = 80;
 
-    public static float threshold = 0.75F;
+    public static float threshold = 0.73F;
+
+    public static float thresholdIdCard = 0.70F;
 
 }

@@ -3,7 +3,6 @@ package com.miaxis.camera;
 import android.hardware.Camera;
 
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
-import com.miaxis.judicialcorrection.face.CameraConfig;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -55,10 +54,14 @@ public class CameraHelper {
         if (cameraConfig == null) {
             return ZZResponse.CreateFail(-90, "config error");
         }
+        ZZResponse<MXCamera> mxCameraZZResponse = find(cameraConfig.CameraId);
+        if (ZZResponse.isSuccess(mxCameraZZResponse)) {
+            return mxCameraZZResponse;
+        }
         MXCamera mxCamera = new MXCamera();
         int init = mxCamera.init();
         if (init == 0) {
-            int open = mxCamera.open(cameraConfig.getCameraId(), cameraConfig.getWidth(), cameraConfig.getHeight());
+            int open = mxCamera.open(cameraConfig.CameraId, cameraConfig.width, cameraConfig.height);
             if (open == 0) {
                 addMXCamera(mxCamera);
                 return ZZResponse.CreateSuccess(mxCamera);
@@ -76,7 +79,7 @@ public class CameraHelper {
         if (cameraConfig == null) {
             return ZZResponse.CreateFail(-90, "config error");
         }
-        return find(cameraConfig.getCameraId());
+        return find(cameraConfig.CameraId);
     }
 
     private synchronized ZZResponse<MXCamera> find(int cameraId) {

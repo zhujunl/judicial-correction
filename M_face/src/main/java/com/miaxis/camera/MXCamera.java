@@ -31,7 +31,7 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
 
     private Camera mCamera;
     private int mCameraId;
-    private int mCameraStatus;
+    private int orientation;
 
 
     protected MXCamera() {
@@ -56,26 +56,26 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         if (cameraId >= Camera.getNumberOfCameras()) {
             return -4;
         }
-        Camera camera = null;
         try {
             this.mCameraId = cameraId;
-            camera = Camera.open(cameraId);
+            this.mCamera = Camera.open(cameraId);
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
         try {
-            Camera.Parameters parameters = camera.getParameters();
+            Camera.Parameters parameters = this.mCamera.getParameters();
             Camera.Size previewSize = parameters.getPreviewSize();
             previewSize.width = width;
             previewSize.height = height;
-            camera.setParameters(parameters);
+            this.mCamera.setParameters(parameters);
+            this.width = width;
+            this.height = height;
         } catch (Exception e) {
             e.printStackTrace();
             return -3;
         }
         this.buffer = new byte[((this.width * this.height) * ImageFormat.getBitsPerPixel(ImageFormat.NV21)) / 8];
-        this.mCamera = camera;
         return 0;
     }
 
@@ -84,18 +84,26 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
             return -1;
         }
         this.mCamera.setDisplayOrientation(orientation);
+        this.orientation = orientation;
         return 0;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     private byte[] buffer;
 
-    public int setPreviewCallback(CameraPreviewCallback frame) {
+    public int setPreviewCallback(CameraPreviewCallback cameraPreviewCallback) {
         if (this.mCamera == null) {
             return -1;
         }
         this.mCamera.setPreviewCallbackWithBuffer(this);
-        this.mCameraPreviewCallback = frame;
-        getNextFrame();
+        this.mCameraPreviewCallback = cameraPreviewCallback;
         return 0;
     }
 
@@ -113,13 +121,19 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         return 0;
     }
 
-
-    public int getNextFrame() {
+    public int setNextFrameEnable() {
         if (this.mCamera == null) {
             return -1;
         }
         this.mCamera.addCallbackBuffer(this.buffer);
         return 0;
+    }
+
+    public byte[] getCurrentFrame() {
+        if (this.mCamera == null || !this.isPreview) {
+            return null;
+        }
+        return this.buffer;
     }
 
     public int setFocus(boolean focus) {
@@ -206,16 +220,19 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
         if (mCameraPreviewCallback != null) {
-            mCameraPreviewCallback.onPreview(mCameraId, data, this, this.width, this.height);
+            mCameraPreviewCallback.onPreview(new MXFrame(this, data, this.width, this.height, this.orientation));
         }
     }
 
     /**
-     * @param data 摄像头视频流，NV21
+     * 保存视频帧数据
+     * 视频帧Buffer为 setNextFrameEnable() 后一帧数据
+     *
+     * @param savePath 保存文件路径
+     * @return true:保存成功    false:失败
      */
-    public boolean getFrameImage(byte[] data, String savePath) {
+    public boolean saveFrameImage(String savePath) {
         try {
-
             File file = new File(savePath);
             if (!file.exists()) {
                 File parentFile = file.getParentFile();
@@ -226,11 +243,10 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
                 boolean newFile = file.createNewFile();
             }
             FileOutputStream fileOutputStream = new FileOutputStream(file);
-            YuvImage image = new YuvImage(data, ImageFormat.NV21, width, height, null);
+            YuvImage image = new YuvImage(this.buffer, ImageFormat.NV21, this.width, this.height, null);
             //图像压缩
             boolean success = image.compressToJpeg(
-                    new Rect(0, 0, image.getWidth(), image.getHeight()),
-                    90, fileOutputStream);   // 将NV21格式图片，以质量70压缩成Jpeg，并得到JPEG数据流
+                    new Rect(0, 0, image.getWidth(), image.getHeight()), 90, fileOutputStream);
             if (!success) {
                 return false;
             }
