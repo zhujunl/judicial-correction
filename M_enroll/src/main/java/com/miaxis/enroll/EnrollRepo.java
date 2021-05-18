@@ -55,43 +55,41 @@ public class EnrollRepo {
 
     @SuppressWarnings("all")
     public LiveData<Resource<PersonInfo>> addPerson(JusticeBureau justiceBureau, IdCardMsg idCard, OtherCardType cardType, Addr addr, OtherInfo otherInfo) {
-        Map<String, String> mapCardType = new Gson().fromJson(gson.toJson(cardType), Map.class);
-        Map<String, String> mapAddr = new Gson().fromJson(gson.toJson(addr), Map.class);
-        Map<String, String> mapOtherInfo = new Gson().fromJson(gson.toJson(otherInfo), Map.class);
-        mapOtherInfo.put("sfyjsb", otherInfo.getSfyjsb() == 1 ? "1" : "0");
-        mapOtherInfo.put("sfycrb", otherInfo.getSfycrb() == 1 ? "1" : "0");
-        mapOtherInfo.put("sfswry", otherInfo.getSfswry() == 1 ? "1" : "0");
-        //是否有前科
-        mapOtherInfo.put("sfyqk", otherInfo.getSfyqk() == 1 ? "1" : "0");
-        //港澳
-        mapOtherInfo.put("ywgatsfz", cardType.ywgatsfz == 1 ? "1" : "0");
-        mapOtherInfo.put("ywtbz", cardType.ywtbz == 1 ? "1" : "0");
-        mapOtherInfo.put("ywhz", cardType.ywhz == 1 ? "1" : "0");
-        mapOtherInfo.put("ywgattxz", cardType.ywgattxz == 1 ? "1" : "0");
+        String cardTypeJson = gson.toJson(cardType);
+        Map<String, String> mapCardType = new Gson().fromJson(cardTypeJson,Map.class);
+        Timber.v("addPerson 地址信息 %s", cardTypeJson);
+        String addrJson = gson.toJson(addr);
+        Timber.v("addPerson 地址信息 %s", addrJson);
+        Map<String, String> mapAddr = new Gson().fromJson(addrJson, Map.class);
+        String otherInfoJson = gson.toJson(otherInfo);
+        Timber.v("addPerson 其他个人信息 %s", otherInfoJson);
+        Map<String, String> mapOtherInfo = new Gson().fromJson(otherInfoJson, Map.class);
 
         Map<String, String> map = new HashMap<>();
         map.putAll(mapCardType);
         map.putAll(mapAddr);
         map.putAll(mapOtherInfo);
         //矫正机构
-        String sex;
-        if (idCard.sex.equals("男")) {
-            sex = "1";
-        } else if (idCard.sex.equals("女")) {
-            sex = "2";
-        } else {
-            sex = "0";
+        {
+            // 身份证号
+            String sex;
+            if (idCard.sex.equals("男")) {
+                sex = "1";
+            } else if (idCard.sex.equals("女")) {
+                sex = "2";
+            } else {
+                sex = "0";
+            }
+            map.put("jzjg", justiceBureau.getTeamId());
+            map.put("xm", idCard.name.trim());
+            map.put("xb", sex);
+            map.put("mz", idCard.nation_str);
+            map.put("sfzh", idCard.id_num);
+            Date date = new Date(Integer.parseInt(idCard.birth_year) - 1900, Integer.parseInt(idCard.birth_month) - 1, Integer.parseInt(idCard.birth_day));
+            map.put("csrq", simpleDateFormat.format(date));
         }
-        map.put("jzjg", justiceBureau.getTeamId());
-        map.put("xm", idCard.name.trim());
-        map.put("xb", sex);
-        map.put("mz", idCard.nation_str);
-        map.put("sfzh", idCard.id_num);
-        Date date = new Date(Integer.parseInt(idCard.birth_year) - 1900, Integer.parseInt(idCard.birth_month) - 1, Integer.parseInt(idCard.birth_day));
-        map.put("csrq", simpleDateFormat.format(date));
-//        sfyqk
         String toJson = gson.toJson(map);
-        Timber.v("addPerson %s", toJson);
+        Timber.v("addPerson All %s", toJson);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
         LiveData<ApiResult<PersonInfo>> apiResultLiveData = apiService.addPerson(body);
         return ResourceConvertUtils.convertToResource(apiResultLiveData);

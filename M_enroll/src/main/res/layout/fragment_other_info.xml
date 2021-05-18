@@ -8,6 +8,7 @@
             type="com.miaxis.enroll.EnrollSharedViewModel" />
 
         <import type="com.miaxis.judicialcorrection.base.databinding.Converter" />
+        <import type="com.miaxis.enroll.MapConstants" />
     </data>
 
 
@@ -80,10 +81,10 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinnerCulture"
-                    selection="@={vm.otherInfoLiveData.whcd}"
+                    kvSpinnerList="@{MapConstants.whcdKvList}"
+                    kvSpinnerSelection="@={vm.otherInfoLiveData.whcdKV}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:entries="@array/culture"
                     android:spinnerMode="dropdown" />
             </FrameLayout>
 
@@ -123,11 +124,10 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinnerPolitical"
-                    selection="@={vm.otherInfoLiveData.xzzmn}"
+                    kvSpinnerList="@{MapConstants.zzmnKvList}"
+                    kvSpinnerSelection="@={vm.otherInfoLiveData.xzzmnKV}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:entries="@array/political"
-
                     android:spinnerMode="dropdown" />
             </FrameLayout>
 
@@ -276,10 +276,10 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinnerMarriage"
-                    selection="@={vm.otherInfoLiveData.hyzk}"
+                    kvSpinnerList="@{MapConstants.hyzkKvList}"
+                    kvSpinnerSelection="@={vm.otherInfoLiveData.hyzkKV}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:entries="@array/marriage"
                     android:spinnerMode="dropdown" />
             </FrameLayout>
 
@@ -299,10 +299,10 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinnerStudy"
-                    selection="@={vm.otherInfoLiveData.jyjxqk}"
+                    kvSpinnerList="@{MapConstants.jyjxqkKvList}"
+                    kvSpinnerSelection="@={vm.otherInfoLiveData.jyjxqkKV}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:entries="@array/study"
                     android:spinnerMode="dropdown" />
             </FrameLayout>
 
@@ -322,10 +322,10 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinnerPoliticalOld"
-                    selection="@={vm.otherInfoLiveData.yzzmm}"
+                    kvSpinnerList="@{MapConstants.zzmnKvList}"
+                    kvSpinnerSelection="@={vm.otherInfoLiveData.yzzmmKV}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:entries="@array/political"
                     android:spinnerMode="dropdown" />
             </FrameLayout>
 
@@ -365,10 +365,10 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinnerCounty"
-                    selection="@={vm.otherInfoLiveData.gjName}"
+                    kvSpinnerList="@{MapConstants.gjList}"
+                    kvSpinnerSelection="@={vm.otherInfoLiveData.gjKV}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:entries="@array/country"
                     android:spinnerMode="dropdown" />
             </FrameLayout>
 

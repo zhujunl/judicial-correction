@@ -14,6 +14,7 @@ import com.miaxis.judicialcorrection.base.api.vo.LiveAddressChangeDetailsBean;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import timber.log.Timber;
 
@@ -30,9 +31,9 @@ public class Converter {
      * @return 选中的id
      */
     @InverseMethod("checkedIdToChecked")
-    public static int checkedToCheckId(RadioGroup view, int checked) {
+    public static int checkedToCheckId(RadioGroup view, String checked) {
         int checkedId;
-        if (checked == 1) {
+        if (Objects.equals(checked, "1")) {
             checkedId = view.getChildAt(0).getId();
         } else {
             checkedId = view.getChildAt(1).getId();
@@ -44,9 +45,9 @@ public class Converter {
      * @param checkedId 选中的id
      * @return 是否选中 1-选中 , 0-没选中
      */
-    public static int checkedIdToChecked(RadioGroup view, int checkedId) {
+    public static String checkedIdToChecked(RadioGroup view, int checkedId) {
         int id0 = view.getChildAt(0).getId();
-        return (checkedId == id0) ? 1 : 0;
+        return (checkedId == id0) ? "1" : "0";
     }
 
     public static String convertGMTToLocal(String source) {
