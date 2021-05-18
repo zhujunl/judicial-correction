@@ -4,6 +4,7 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.miaxis.enroll.BR;
+import com.miaxis.judicialcorrection.base.databinding.kvsp.KvSpinnerVo;
 
 import timber.log.Timber;
 
@@ -13,160 +14,152 @@ import timber.log.Timber;
  * @author zhangyw
  * Created on 5/5/21.
  */
-public class OtherInfo  extends BaseObservable {
-    public  int sfyjsb;         public  int sfycrb;
-
-    public  String whcd;        public  String hyzk;
-
-    public  String grlxdh;      public  String jyjxqk;
-
-    public  String xzzmn;       public  String yzzmm;
-
-
-    public  String ygzdw;       public  String xgzdwName;
+public class OtherInfo extends BaseObservable {
+    // 是否有精神病
+    public String sfyjsb;
+    // 是否有传染病
+    public String sfycrb;
+    //sfswry
+    public String sfswry;
+    /*是否有前科*/
+    public String sfyqk;
 
 
-    public  String dwlxdh;      public  String gjName;
 
-    public  int sfswry;         public  int sfyqk;/*是否有前科*/
+    public transient KvSpinnerVo hyzkKV;
+    // 婚姻状况
+    public String hyzk;
+    public String hyzkName;
 
-    //@Bindable
-    public int getSfyjsb() {
-        return sfyjsb;
+    public transient KvSpinnerVo whcdKV;
+    // 文化程度
+    public String whcd;
+    public String whcdName;
+
+    public transient KvSpinnerVo jyjxqkKV;
+    // 就业就学情况
+    public String jyjxqk;
+    public String jyjxqkName;
+
+
+    // 个人联系电话
+    public String grlxdh;
+    public transient KvSpinnerVo xzzmnKV;
+    //现政治面貌
+    public String xzzmn;
+    public String xzzmnName;
+
+
+    public transient KvSpinnerVo yzzmmKV;
+    //原政治面貌
+    public String yzzmm;
+    public String yzzmmName;
+
+    public transient KvSpinnerVo gjKV;
+    //国籍
+    public String gj;
+    public String gjName;
+
+
+    //原工作单位
+    public String ygzdw;
+    //现工作单位中文指
+    public String xgzdwName;
+
+
+    //单位联系电话
+    public String dwlxdh;
+
+
+    public KvSpinnerVo getWhcdKV() {
+        return whcdKV;
     }
 
-    public void setSfyjsb(int sfyjsb) {
-        this.sfyjsb = sfyjsb;
-        //notifyPropertyChanged(BR.sfyjsb);
-        // 这里配套添加bindable可以实现livedata的观察者自动更新，但是要手动实现一下livedata
+    public void setWhcdKV(KvSpinnerVo whcdKV) {
+        this.whcdKV = whcdKV;
+        whcd = whcdKV.key;
+        whcdName = whcdKV.value;
     }
 
-    //@Bindable
-    public int getSfycrb() {
-        return sfycrb;
+
+    public KvSpinnerVo getHyzkKV() {
+        return hyzkKV;
     }
 
-    public void setSfycrb(int sfycrb) {
-        this.sfycrb = sfycrb;
-        //notifyPropertyChanged(BR.sfycrb);
+    public void setHyzkKV(KvSpinnerVo hyzkKV) {
+        this.hyzkKV = hyzkKV;
+        this.hyzk = hyzkKV.key;
+        this.hyzkName = hyzkKV.value;
     }
 
-    public String getWhcd() {
-        Timber.i("getWhcd %s",whcd);
-        return whcd;
+    public KvSpinnerVo getJyjxqkKV() {
+        return jyjxqkKV;
     }
 
-    public void setWhcd(String whcd) {
-        this.whcd = whcd;
-        Timber.i("setWhcd %s",whcd);
+    public void setJyjxqkKV(KvSpinnerVo jyjxqkKV) {
+        this.jyjxqkKV = jyjxqkKV;
+        this.jyjxqk = jyjxqkKV.key;
+        this.jyjxqkName = jyjxqkKV.value;
     }
 
-    public String getHyzk() {
-        return hyzk;
+    public KvSpinnerVo getXzzmnKV() {
+        return xzzmnKV;
     }
 
-    public void setHyzk(String hyzk) {
-        this.hyzk = hyzk;
+    public void setXzzmnKV(KvSpinnerVo xzzmnKV) {
+        this.xzzmnKV = xzzmnKV;
+        this.xzzmn = xzzmnKV.key;
+        this.xzzmnName = xzzmnKV.value;
     }
 
-    public String getGrlxdh() {
-        return grlxdh;
+    public KvSpinnerVo getYzzmmKV() {
+        return yzzmmKV;
     }
 
-    public void setGrlxdh(String grlxdh) {
-        this.grlxdh = grlxdh;
+    public void setYzzmmKV(KvSpinnerVo yzzmmKV) {
+        this.yzzmmKV = yzzmmKV;
+        this.yzzmm = yzzmmKV.key;
+        this.yzzmmName = yzzmmKV.value;
     }
 
-    public String getJyjxqk() {
-        return jyjxqk;
+    public KvSpinnerVo getGjKV() {
+        return gjKV;
     }
 
-    public void setJyjxqk(String jyjxqk) {
-        this.jyjxqk = jyjxqk;
+    public void setGjKV(KvSpinnerVo gjKV) {
+        this.gjKV = gjKV;
+        this.gj = gjKV.key;
+        this.gjName = gjKV.value;
     }
 
-    public String getXzzmn() {
-        return xzzmn;
-    }
-
-    public void setXzzmn(String xzzmn) {
-        this.xzzmn = xzzmn;
-    }
-
-    public String getYzzmm() {
-        return yzzmm;
-    }
-
-    public void setYzzmm(String yzzmm) {
-        this.yzzmm = yzzmm;
-    }
-
-    public String getYgzdw() {
-        return ygzdw;
-    }
-
-    public void setYgzdw(String ygzdw) {
-        this.ygzdw = ygzdw;
-    }
-
-    public String getXgzdwName() {
-        return xgzdwName;
-    }
-
-    public void setXgzdwName(String xgzdwName) {
-        this.xgzdwName = xgzdwName;
-    }
-
-    public String getDwlxdh() {
-        return dwlxdh;
-    }
-
-    public void setDwlxdh(String dwlxdh) {
-        this.dwlxdh = dwlxdh;
-    }
-
-    public String getGjName() {
-        return gjName;
-    }
-
-    public void setGjName(String gjName) {
-        this.gjName = gjName;
-    }
-
-//    @Bindable
-    public int getSfswry() {
-        return sfswry;
-    }
-
-    public void setSfswry(int sfswry) {
-        this.sfswry = sfswry;
-        //notifyPropertyChanged(BR.sfswry);
-    }
-//    @Bindable
-    public int getSfyqk() {
-        return sfyqk;
-    }
-
-    public void setSfyqk(int sfyqk) {
-        this.sfyqk = sfyqk;
-        //notifyPropertyChanged(BR.sfyqk);
-    }
 
     @Override
     public String toString() {
         return "OtherInfo{" +
                 "sfyjsb=" + sfyjsb +
                 ", sfycrb=" + sfycrb +
-                ", whcd='" + whcd + '\'' +
+                ", hyzkKV=" + hyzkKV +
                 ", hyzk='" + hyzk + '\'' +
-                ", grlxdh='" + grlxdh + '\'' +
+                ", hyzkName='" + hyzkName + '\'' +
+                ", whcdKV=" + whcdKV +
+                ", whcd='" + whcd + '\'' +
+                ", whcdName='" + whcdName + '\'' +
+                ", jyjxqkKV=" + jyjxqkKV +
                 ", jyjxqk='" + jyjxqk + '\'' +
+                ", jyjxqkName='" + jyjxqkName + '\'' +
+                ", grlxdh='" + grlxdh + '\'' +
+                ", xzzmnKV=" + xzzmnKV +
                 ", xzzmn='" + xzzmn + '\'' +
+                ", xzzmnName='" + xzzmnName + '\'' +
+                ", yzzmmKV=" + yzzmmKV +
                 ", yzzmm='" + yzzmm + '\'' +
+                ", yzzmmName='" + yzzmmName + '\'' +
+                ", gjKV=" + gjKV +
+                ", gj='" + gj + '\'' +
+                ", gjName='" + gjName + '\'' +
                 ", ygzdw='" + ygzdw + '\'' +
                 ", xgzdwName='" + xgzdwName + '\'' +
                 ", dwlxdh='" + dwlxdh + '\'' +
-                ", gjName='" + gjName + '\'' +
                 ", sfswry=" + sfswry +
                 ", sfyqk=" + sfyqk +
                 '}';

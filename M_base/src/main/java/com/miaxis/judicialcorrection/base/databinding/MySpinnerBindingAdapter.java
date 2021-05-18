@@ -60,6 +60,7 @@ public class MySpinnerBindingAdapter {
             view.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Timber.v("onItemSelected " +position);
                     if (listener != null) {
                         listener.onItemSelected(parent, view, position, id);
                     }
@@ -68,6 +69,7 @@ public class MySpinnerBindingAdapter {
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
+                    Timber.v("onNothingSelected " );
                     if (listener != null) {
                         listener.onNothingSelected(parent);
                     }
