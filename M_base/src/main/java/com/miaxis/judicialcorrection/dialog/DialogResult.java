@@ -26,7 +26,7 @@ public class DialogResult extends BaseDialog<DialogVerifyResultBinding, DialogRe
     public DialogResult(Context context, ClickListener clickListener, @NonNull Builder builder) {
         super(context, clickListener);
         //点击外部区域关闭弹窗
-//        setCancelable(false);
+        setCancelable(false);
         this.mBuilder = builder;
     }
 
@@ -54,7 +54,7 @@ public class DialogResult extends BaseDialog<DialogVerifyResultBinding, DialogRe
         binding.ivError.setBackgroundResource(this.mBuilder.success ? R.mipmap.mipmap_success : R.mipmap.mipmap_error);
         binding.tvError.setText(this.mBuilder.title);
         binding.tvMessage.setText(this.mBuilder.message);
-        if (this.mBuilder.countDownTime!=0) {
+        if (this.mBuilder.countDownTime != 0) {
             binding.cdtvTime.setVisibility(View.VISIBLE);
             binding.cdtvTime.setTime(this.mBuilder.countDownTime);
             binding.cdtvTime.setCountDownListener(new DefaultCountDownListener() {
@@ -66,19 +66,19 @@ public class DialogResult extends BaseDialog<DialogVerifyResultBinding, DialogRe
                     }
                 }
             });
-        }else{
+        } else {
             binding.cdtvTime.setVisibility(View.GONE);
         }
 
-        if (mBuilder.isHideAllShowSucceed){
+        if (mBuilder.isHideAllShowSucceed) {
             binding.tvMessage.setVisibility(View.GONE);
             binding.btnTryAgain.setVisibility(View.INVISIBLE);
             binding.btnBackHome.setVisibility(View.GONE);
-        }else{
-             if (mBuilder.isHideButton){
-                 binding.btnTryAgain.setVisibility(View.INVISIBLE);
-                 binding.btnBackHome.setVisibility(View.GONE);
-             }
+        } else {
+            if (mBuilder.isHideButton) {
+                binding.btnTryAgain.setVisibility(View.INVISIBLE);
+                binding.btnBackHome.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -104,7 +104,7 @@ public class DialogResult extends BaseDialog<DialogVerifyResultBinding, DialogRe
         public int countDownTime = 10;
         public boolean enableBackHome = true;
         public boolean isHideAllShowSucceed = false;
-        public boolean isHideButton=false;
+        public boolean isHideButton = false;
 
         public Builder() {
 
