@@ -12,7 +12,6 @@ import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.face.callback.NavigationCallback;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
-import com.miaxis.judicialcorrection.id.bean.IdCardMsg;
 import com.miaxis.judicialcorrection.id.readIdCard.ReadIdCardManager;
 
 import javax.inject.Inject;
@@ -20,9 +19,6 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-
-import java.util.Random;
-
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
@@ -66,16 +62,6 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> i
         } else {
             appHintsLazy.get().showError("初始身份证模块失败");
         }
-        IdCard idCard = new IdCard();
-        idCard.idCardMsg = new IdCardMsg();
-        idCard.idCardMsg.name = "张三";
-        idCard.idCardMsg.id_num = "1234561234";
-        idCard.idCardMsg.sex= "男";
-        idCard.idCardMsg.nation_str= "汉";
-        idCard.idCardMsg.birth_year= "2021";
-        idCard.idCardMsg.birth_month= "01";
-        idCard.idCardMsg.birth_day= "01";
-        viewModel.idCardLiveData.postValue(idCard);
     }
 
     public NvController getNvController() {
