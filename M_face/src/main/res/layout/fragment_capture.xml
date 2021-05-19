@@ -111,29 +111,39 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_face_tips" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_face"
+        <com.miaxis.faceid.FaceRectView
+            android:id="@+id/frv_face"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="@id/sv_preview"
             app:layout_constraintLeft_toLeftOf="@id/sv_preview"
             app:layout_constraintRight_toRightOf="@id/sv_preview"
-            app:layout_constraintTop_toTopOf="@id/sv_preview"
-            app:srcCompat="@mipmap/mipmap_bg_face" />
+            app:layout_constraintTop_toTopOf="@id/sv_preview" />
 
-        <com.miaxis.judicialcorrection.widget.countdown.CountDownTextView
-            android:id="@+id/tv_tips"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70px"
-            android:layout_marginBottom="10px"
-            android:textColor="@color/color_text_black"
-            android:textSize="23px"
-            app:layout_constraintBottom_toBottomOf="@id/iv_face"
-            app:layout_constraintLeft_toLeftOf="@id/iv_face"
-            app:layout_constraintRight_toRightOf="@id/iv_face"
-            tools:text="3、2、1，自动拍照" />
+        <!--        <androidx.appcompat.widget.AppCompatImageView-->
+        <!--            android:id="@+id/iv_face"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:adjustViewBounds="true"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/sv_preview"-->
+        <!--            app:layout_constraintLeft_toLeftOf="@id/sv_preview"-->
+        <!--            app:layout_constraintRight_toRightOf="@id/sv_preview"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/sv_preview"-->
+        <!--            app:srcCompat="@mipmap/mipmap_bg_face" />-->
+
+        <!--        <com.miaxis.judicialcorrection.widget.countdown.CountDownTextView-->
+        <!--            android:id="@+id/tv_tips"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="70px"-->
+        <!--            android:layout_marginBottom="10px"-->
+        <!--            android:textColor="@color/color_text_black"-->
+        <!--            android:textSize="23px"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/iv_face"-->
+        <!--            app:layout_constraintLeft_toLeftOf="@id/iv_face"-->
+        <!--            app:layout_constraintRight_toRightOf="@id/iv_face"-->
+        <!--            tools:text="3、2、1，自动拍照" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

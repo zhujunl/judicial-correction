@@ -1,22 +1,10 @@
 package com.miaxis.judicialcorrection.face;
 
-import android.os.SystemClock;
-import android.util.Size;
-
-import com.miaxis.camera.MXCamera;
-import com.miaxis.faceid.FaceManager;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
-import com.miaxis.judicialcorrection.common.response.ZZResponse;
-import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
-
-import org.zz.api.MXFaceInfoEx;
 
 import javax.inject.Inject;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import timber.log.Timber;
 
 /**
  * @author Tank
@@ -27,31 +15,12 @@ import timber.log.Timber;
  */
 
 @HiltViewModel
-public class VerifyPageViewModel extends ViewModel {
+public class VerifyPageViewModel extends BaseFaceViewModel {
 
-    MutableLiveData<String> name = new MutableLiveData<>();
-
-    MutableLiveData<String> id = new MutableLiveData<>();
-
-    MutableLiveData<String> idCardNumber = new MutableLiveData<>();
-
-    MutableLiveData<String> faceTips = new MutableLiveData<>();
-
-    MutableLiveData<ZZResponse<VerifyInfo>> verifyStatus = new MutableLiveData<>();
-
-    MutableLiveData<byte[]> tempFaceFeature = new MutableLiveData<>();
-
-    public MXFaceInfoEx[] mFaceInfoExes = new MXFaceInfoEx[MXFaceInfoEx.iMaxFaceNum];
-    public int[] mFaceNumber = new int[1];
-
-    AppExecutors mAppExecutors;
 
     @Inject
     public VerifyPageViewModel(AppExecutors appExecutors) {
-        this.mAppExecutors = appExecutors;
-        for (int i = 0; i < MXFaceInfoEx.iMaxFaceNum; i++) {
-            mFaceInfoExes[i] = new MXFaceInfoEx();
-        }
+        super(appExecutors);
     }
 
     //    private OnFingerInitListener mOnFingerInitListener;

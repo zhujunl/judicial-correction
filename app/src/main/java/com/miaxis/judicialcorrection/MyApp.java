@@ -1,8 +1,6 @@
 package com.miaxis.judicialcorrection;
 
 import com.miaxis.judicialcorrection.base.BaseApplication;
-import com.miaxis.judicialcorrection.base.utils.carch.CrashHandler;
-import com.tencent.mmkv.MMKV;
 
 import dagger.hilt.android.HiltAndroidApp;
 
@@ -17,9 +15,10 @@ public class MyApp extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        CrashHandler crashHandler = CrashHandler.getInstance();
-        crashHandler.init(this);
-
-        MMKV.initialize(this);
+        //        if (!BuildConfig.DEBUG) {
+        //            CrashHandler crashHandler = CrashHandler.getInstance();
+        //            crashHandler.init(this);
+        //        }
+        //MMKV.initialize(this);
     }
 }

@@ -50,9 +50,18 @@ public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> i
     @Override
     protected void initView(@NonNull ActivityReportBinding binding, @Nullable Bundle savedInstanceState) {
         readIdCard();
+        // TODO: 2021/5/18 测试双目识别
+        //        PersonInfo personInfo = new PersonInfo();
+        //        personInfo.setXm("堂客");
+        //        personInfo.setIdCardNumber("34292119931125481X");
+        //        Bitmap idCardFace = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/34292119931125481X.jpeg");
+        //        getSupportFragmentManager()
+        //                .beginTransaction()
+        //                .replace(R.id.layout_root, new GetFacePageFragment(personInfo, idCardFace))
+        //                .commitNow();
     }
 
-    private void readIdCard(){
+    private void readIdCard() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.layout_root, new ReadIDCardBindingFragment(title, true))
@@ -67,9 +76,10 @@ public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> i
     @Override
     public void onIdCardRead(IdCard result) {
         Timber.e("读取身份证：result:" + result);
-
     }
-    String id="";
+
+    String id = "";
+
     @Override
     public void onLogin(PersonInfo personInfo) {
         if (personInfo != null) {
@@ -100,8 +110,8 @@ public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> i
                             DialogResult.Builder builder = new DialogResult.Builder();
                             builder.success = true;
                             builder.countDownTime = 3;
-                            builder.title = title+"成功！";
-                            builder.message = "系统将自动返回"+title+"身份证刷取页面";
+                            builder.title = title + "成功！";
+                            builder.message = "系统将自动返回" + title + "身份证刷取页面";
                             new DialogResult(ReportActivity.this, new DialogResult.ClickListener() {
                                 @Override
                                 public void onBackHome(AppCompatDialog appCompatDialog) {

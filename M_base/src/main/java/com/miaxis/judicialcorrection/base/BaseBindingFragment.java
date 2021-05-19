@@ -42,7 +42,9 @@ public abstract class BaseBindingFragment<V extends ViewDataBinding> extends Fra
 
     protected abstract void initView(@NonNull V binding, @Nullable Bundle savedInstanceState);
 
-    protected abstract void initData(@NonNull V binding, @Nullable Bundle savedInstanceState);
+    protected void initData(@NonNull V binding, @Nullable Bundle savedInstanceState) {
+
+    }
 
     @Override
     public void onDestroyView() {
@@ -50,10 +52,10 @@ public abstract class BaseBindingFragment<V extends ViewDataBinding> extends Fra
         if (binding != null) {
             binding.unbind();
         }
-       Activity activity= getActivity();
-        if (activity instanceof BaseBindingActivity){
-            BaseBindingActivity baseBindingActivity= (BaseBindingActivity)activity;
-            if (baseBindingActivity!=null){
+        Activity activity = getActivity();
+        if (activity instanceof BaseBindingActivity) {
+            BaseBindingActivity baseBindingActivity = (BaseBindingActivity) activity;
+            if (baseBindingActivity != null) {
                 baseBindingActivity.hideInputMethod();
             }
         }

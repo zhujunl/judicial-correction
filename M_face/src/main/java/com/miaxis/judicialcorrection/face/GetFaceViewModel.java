@@ -1,22 +1,12 @@
 package com.miaxis.judicialcorrection.face;
 
-import android.os.SystemClock;
-import android.util.Size;
-
-import com.miaxis.camera.MXCamera;
-import com.miaxis.faceid.FaceManager;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
-
-import org.zz.api.MXFaceInfoEx;
 
 import javax.inject.Inject;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import timber.log.Timber;
 
 /**
  * @author Tank
@@ -27,26 +17,13 @@ import timber.log.Timber;
  */
 
 @HiltViewModel
-public class GetFaceViewModel extends ViewModel {
-
-    MutableLiveData<String> name = new MutableLiveData<>();
-
-    MutableLiveData<String> idCardNumber = new MutableLiveData<>();
-
-    MutableLiveData<String> faceTips = new MutableLiveData<>();
-
-    MutableLiveData<byte[]> idCardFaceFeature = new MutableLiveData<>();
-
-    public MXFaceInfoEx[] mFaceInfoExes = new MXFaceInfoEx[MXFaceInfoEx.iMaxFaceNum];
-    public int[] mFaceNumber = new int[1];
-
-    AppExecutors mAppExecutors;
+public class GetFaceViewModel extends BaseFaceViewModel {
 
     CapturePageRepo mCapturePageRepo;
 
     @Inject
     public GetFaceViewModel(CapturePageRepo capturePageRepo, AppExecutors appExecutors) {
-        this.mAppExecutors = appExecutors;
+        super(appExecutors);
         this.mCapturePageRepo = capturePageRepo;
         for (int i = 0; i < MXFaceInfoEx.iMaxFaceNum; i++) {
             mFaceInfoExes[i] = new MXFaceInfoEx();
@@ -119,31 +96,10 @@ public class GetFaceViewModel extends ViewModel {
         });
     }
 
+    }
 
     public LiveData<Resource<Object>> uploadPic(String pid, String base64Str) {
         return mCapturePageRepo.uploadFace(pid, base64Str);
     }
 
-
-    public void extractFeature(byte[] rgb, int width, int height) {
-        mAppExecutors.networkIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    int detectFace = FaceManager.getInstance().detectFace(rgb, width, height, mFaceNumber, mFaceInfoExes);
-                    if (detectFace == 0) {
-                        byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
-                        int extractFeature = FaceManager.getInstance().extractFeature(rgb, width, height, 1, feature, mFaceInfoExes, false);
-                        if (extractFeature == 0) {
-                            idCardFaceFeature.postValue(feature);
-                            return;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                idCardFaceFeature.postValue(null);
-            }
-        });
-    }
 }
