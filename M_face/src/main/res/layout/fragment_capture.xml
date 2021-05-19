@@ -111,16 +111,26 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_face_tips" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_face"
+        <com.miaxis.faceid.FaceRectView
+            android:id="@+id/frv_face"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="@id/sv_preview"
             app:layout_constraintLeft_toLeftOf="@id/sv_preview"
             app:layout_constraintRight_toRightOf="@id/sv_preview"
-            app:layout_constraintTop_toTopOf="@id/sv_preview"
-            app:srcCompat="@mipmap/mipmap_bg_face" />
+            app:layout_constraintTop_toTopOf="@id/sv_preview" />
+
+        <!--        <androidx.appcompat.widget.AppCompatImageView-->
+        <!--            android:id="@+id/iv_face"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:adjustViewBounds="true"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/sv_preview"-->
+        <!--            app:layout_constraintLeft_toLeftOf="@id/sv_preview"-->
+        <!--            app:layout_constraintRight_toRightOf="@id/sv_preview"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/sv_preview"-->
+        <!--            app:srcCompat="@mipmap/mipmap_bg_face" />-->
 
         <!--        <com.miaxis.judicialcorrection.widget.countdown.CountDownTextView-->
         <!--            android:id="@+id/tv_tips"-->

@@ -68,6 +68,7 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
     protected void initView(@NonNull FragmentCaptureBinding view, @Nullable Bundle savedInstanceState) {
         mGetFaceViewModel = new ViewModelProvider(this).get(GetFaceViewModel.class);
         binding.tvTitle.setText(String.valueOf(title));
+        mGetFaceViewModel.faceRect.observe(this, rectF -> binding.frvFace.setRect(rectF));
         mGetFaceViewModel.name.observe(this, s -> binding.tvName.setText(s));
         mGetFaceViewModel.idCardNumber.observe(this, s -> binding.tvIdCard.setText(s));
         mGetFaceViewModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));

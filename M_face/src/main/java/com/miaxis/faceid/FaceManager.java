@@ -1,6 +1,7 @@
 package com.miaxis.faceid;
 
 import android.content.Context;
+import android.graphics.RectF;
 import android.util.Size;
 
 import org.zz.api.MXErrorCode;
@@ -71,6 +72,16 @@ public class FaceManager {
         byte[] pRGBImage = new byte[width * height * 3];
         this.mMxImageTool.YUV2RGB(yuv, width, height, pRGBImage);
         return pRGBImage;
+    }
+
+    public RectF getRgbFaceRect() {
+        int faceNumberRGB = getFaceNumberRGB();
+        if (faceNumberRGB > 0) {
+            MXFaceInfoEx faceInfoRGB = getFaceInfoRGB(0);
+            return new RectF(faceInfoRGB.x, faceInfoRGB.y, faceInfoRGB.x + faceInfoRGB.width, faceInfoRGB.y + faceInfoRGB.height);
+        } else {
+            return null;
+        }
     }
 
     /**

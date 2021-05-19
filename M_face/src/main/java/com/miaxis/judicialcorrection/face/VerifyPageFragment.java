@@ -75,6 +75,7 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
     protected void initView(@NonNull FragmentVerifyBinding view, @Nullable Bundle savedInstanceState) {
         mVerifyPageViewModel = new ViewModelProvider(this).get(VerifyPageViewModel.class);
         binding.tvTitle.setText(String.valueOf(title));
+        mVerifyPageViewModel.faceRect.observe(this, rectF -> binding.frvFace.setRect(rectF));
         mVerifyPageViewModel.name.observe(this, s -> binding.tvName.setText(s));
         mVerifyPageViewModel.idCardNumber.observe(this, s -> binding.tvIdCard.setText(s));
         mVerifyPageViewModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));

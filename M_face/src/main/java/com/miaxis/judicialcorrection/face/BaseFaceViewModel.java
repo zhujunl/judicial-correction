@@ -1,5 +1,7 @@
 package com.miaxis.judicialcorrection.face;
 
+import android.graphics.RectF;
+
 import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.MXFrame;
 import com.miaxis.faceid.FaceConfig;
@@ -28,6 +30,8 @@ public class BaseFaceViewModel extends ViewModel {
     MutableLiveData<String> id = new MutableLiveData<>();
 
     MutableLiveData<String> name = new MutableLiveData<>();
+
+    MutableLiveData<RectF> faceRect = new MutableLiveData<>();
 
     MutableLiveData<String> idCardNumber = new MutableLiveData<>();
 
@@ -68,6 +72,13 @@ public class BaseFaceViewModel extends ViewModel {
                 //获取RGB可见光摄像头
                 if (!MXFrame.isBufferEmpty(rgbFrame)) {
                     int liveDetect = FaceManager.getInstance().liveDetect(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, nir.buffer);
+                    try {
+                        RectF rgbFaceRect = FaceManager.getInstance().getRgbFaceRect();
+                        faceRect.postValue(rgbFaceRect);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        faceRect.postValue(null);
+                    }
                     if (liveDetect == 10000) {//活体
                         faceTips.postValue("活体检测完成");
                         byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
