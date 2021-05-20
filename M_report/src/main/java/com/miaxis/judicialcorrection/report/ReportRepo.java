@@ -39,10 +39,12 @@ public class ReportRepo {
 //    }
 
 
-    public LiveData<Resource<Object>> reportAdd(String pid) {
+    public LiveData<Resource<Object>> reportAdd(String pid,String reportMethod) {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("pid", pid);
         hashMap.put("type", "1");
+        //1指纹；2人脸
+        hashMap.put("bgfs",reportMethod);
         LiveData<ApiResult<Object>> login = apiService.reportAdd(hashMap);
         return ResourceConvertUtils.convertToResource(login);
     }

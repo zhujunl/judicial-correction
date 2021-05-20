@@ -1,17 +1,25 @@
 package com.miaxis.enroll.guide;
 
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Base64;
 
+import androidx.databinding.ObservableField;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.miaxis.enroll.vo.FingerprintEntity;
 import com.miaxis.finger.FingerManager;
+import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
-import com.miaxis.judicialcorrection.common.response.ZZResponse;
-import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
+import com.miaxis.utils.BitmapUtils;
+import com.miaxis.utils.FileUtils;
+
+import java.io.File;
 
 import javax.inject.Inject;
 
@@ -22,15 +30,17 @@ import timber.log.Timber;
 public class FingerprintCollectModel extends ViewModel {
 
 
-    public MutableLiveData<Bitmap> fingerBitmap = new MutableLiveData<>();
-    public MutableLiveData<ZZResponse<VerifyInfo>> verifyStatus = new MutableLiveData<>();
-
-
+    public MutableLiveData<FingerprintEntity> fingerprintLiveData = new MutableLiveData<>();
+    public File filePath;
     private AppExecutors mAppExecutors;
+    private FingerprintRepo mFingerprintRepo;
+    public ObservableField<String> fingerprint1=new ObservableField<>();
+    public ObservableField<String> fingerprint2=new ObservableField<>();
 
     @Inject
-    public FingerprintCollectModel(AppExecutors mAppExecutors, AppDatabase appDatabase) {
+    public FingerprintCollectModel(FingerprintRepo fingerprintRepo, AppExecutors mAppExecutors, AppDatabase appDatabase) {
         this.mAppExecutors = mAppExecutors;
+        this.mFingerprintRepo = fingerprintRepo;
     }
 
 
@@ -47,23 +57,61 @@ public class FingerprintCollectModel extends ViewModel {
         FingerManager.getInstance().setFingerListener(null);
     }
 
-    private final FingerManager.OnFingerReadListener fingerReadListener = (feature, image) -> {
-        Timber.e("FingerRead:" + (feature == null) + "   " + (image == null));
-        if (feature != null) {
-            //fingerHint.set("获取指纹成功 ");
-            fingerBitmap.postValue(image);
-            FingerManager.getInstance().releaseDevice();
-            FingerManager.getInstance().setFingerListener(null);
-//            verifyStatus.postValue(ZZResponse.CreateSuccess(new VerifyInfo(id.getValue(), name.getValue(), idCardNumber.getValue())));
-        } else {
-            SystemClock.sleep(100);
-            try {
-                readFinger();
-            } catch (Exception e) {
-                e.printStackTrace();
+    private  final FingerManager.OnFingerReadListener fingerReadListener =new FingerManager.OnFingerReadListener() {
+        @Override
+        public void onFingerRead(byte[] feature, Bitmap image) {
+            setFingerReadFile(feature, image,null);
+        }
+
+        private void setFingerReadFile(byte[] feature, Bitmap image,byte[] comparison) {
+            Timber.e("FingerRead:" + (feature == null) + "   " + (image == null));
+            if (image != null) {
+                String fileName =  "fingerprint.jpg";
+                File file = new File(filePath, fileName);
+                boolean frameImage = getFrameImage(image, file.getAbsolutePath());
+                String base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
+                String[] strings=new String[1];
+                strings[0]=base64Path;
+                FingerprintEntity fingerprintEntity=new FingerprintEntity();
+                fingerprintEntity.fingerprints=strings;
+                fingerprintLiveData.postValue(fingerprintEntity);
+                FingerManager.getInstance().releaseDevice();
+                FingerManager.getInstance().setFingerListener(null);
+            } else {
+                SystemClock.sleep(100);
+                try {
+                    readFinger(comparison);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
+
+        @Override
+        public void onFingerReadComparison(byte[] feature, Bitmap image, int state) {
+            byte[] bytes=null;
+            if (state==0){
+                if (image==null){
+                    bytes=  getFingerToByte();
+                }
+            }else{
+                bytes = getFingerToByte();
+            }
+            setFingerReadFile(feature,image,bytes);
+        }
     };
+
+    private byte[] getFingerToByte(){
+        byte[] decode=null;
+        if (fingerprint1.get()!=null){
+            decode = Base64.decode(fingerprint1.get(), Base64.NO_WRAP);
+        }else{
+            if (fingerprint2.get()!=null){
+                decode = Base64.decode(fingerprint2.get(), Base64.NO_WRAP);
+            }
+        }
+        return decode;
+    }
 
     private final FingerManager.OnFingerStatusListener fingerStatusListener = result -> {
         Timber.e("FingerStatus:" + result);
@@ -71,9 +119,10 @@ public class FingerprintCollectModel extends ViewModel {
             this.mOnFingerInitListener.onInit(result);
         }
         if (result) {
-            result = readFinger();
+            byte[] decode=getFingerToByte();
+            result = readFinger(decode);
             if (!result) {
-                result = readFinger();
+                result = readFinger(decode);
             }
         }
         if (!result) {
@@ -82,7 +131,7 @@ public class FingerprintCollectModel extends ViewModel {
         }
     };
 
-    private boolean readFinger() {
+    private boolean readFinger(byte[] bytes) {
         String device = FingerManager.getInstance().deviceInfo();
         Timber.e("device:" + device);
         if (TextUtils.isEmpty(device)) {
@@ -96,7 +145,12 @@ public class FingerprintCollectModel extends ViewModel {
             mAppExecutors.networkIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    FingerManager.getInstance().readFinger();
+                    if(bytes==null){
+                        FingerManager.getInstance().readFinger();
+                    }else{
+                        FingerManager.getInstance().redFingerComparison(bytes);
+                    }
+
                 }
             });
             return true;
@@ -105,5 +159,28 @@ public class FingerprintCollectModel extends ViewModel {
 
     public interface OnFingerInitListener {
         void onInit(boolean result);
+    }
+
+    public LiveData<Resource<Object>> uploadFingerprint(FingerprintEntity fingerprintEntity) {
+        return  mFingerprintRepo.uploadFingerprint(fingerprintEntity);
+    }
+
+    public boolean getFrameImage(Bitmap bitmap, String savePath) {
+        try {
+
+            File file = new File(savePath);
+            if (!file.exists()) {
+                File parentFile = file.getParentFile();
+                if (parentFile != null && !parentFile.exists()) {
+                    boolean mkdirs = parentFile.mkdirs();
+                }
+            } else {
+                boolean newFile = file.createNewFile();
+            }
+            return BitmapUtils.saveBitmap(bitmap, savePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

@@ -70,6 +70,8 @@
             android:hint="请选择"
             android:layout_weight="3"
             android:entries="@array/job"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:onClick="@{() -> itemPresenter.onOffice(job,spinner)}"
             android:text="@={job.jobName}"
             android:gravity="center"

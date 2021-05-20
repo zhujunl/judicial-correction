@@ -12,6 +12,8 @@ public class VerifyInfo {
     public String pid="";
     public String name="";
     public String idCardNumber="";
+    //录入方式 0 1
+    public String entryMethod="";
 
     private VerifyInfo() {
     }
@@ -22,4 +24,10 @@ public class VerifyInfo {
         this.idCardNumber = idCardNumber;
     }
 
+    public VerifyInfo(String pid, String name, String idCardNumber,String entryMethod) {
+        this.pid = pid;
+        this.name = name;
+        this.idCardNumber = idCardNumber;
+        this.entryMethod=entryMethod;
+    }
 }

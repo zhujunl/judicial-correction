@@ -2,6 +2,7 @@ package com.miaxis.judicialcorrection.benefit;
 
 import android.annotation.SuppressLint;
 
+import androidx.databinding.ObservableField;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -15,6 +16,7 @@ import com.miaxis.judicialcorrection.base.api.ApiResult;
 import com.miaxis.judicialcorrection.base.api.vo.HistorySignUpBean;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.api.vo.SignUpBean;
+import com.miaxis.judicialcorrection.base.api.vo.SignUpContentBean;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
@@ -44,11 +46,11 @@ import timber.log.Timber;
 @HiltViewModel
 public class WelfareViewModel extends ViewModel {
     public IdCard idCard;
-    public MutableLiveData<String> mStrPid = new MutableLiveData<>();
+    public ObservableField<String> mStrPid = new ObservableField<>();
 
     private final PublicWelfareRepo mPublicWelfareRepo;
 
-    public String mItemId;
+    public  ObservableField<String> mItem =new ObservableField<>();
 
     @Inject
     public WelfareViewModel(PublicWelfareRepo publicWelfareRepo) {
@@ -72,7 +74,7 @@ public class WelfareViewModel extends ViewModel {
 
     //参加活动
     public LiveData<Resource<Object>> getParticipate(String gyldId) {
-        return mPublicWelfareRepo.participate(mStrPid.getValue(), gyldId);
+        return mPublicWelfareRepo.participate(mStrPid.get(), gyldId);
     }
 
 

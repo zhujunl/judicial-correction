@@ -1,18 +1,31 @@
 package com.miaxis.judicialcorrection.face;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.SurfaceHolder;
+import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.CameraHelper;
+import com.miaxis.camera.CameraPreviewCallback;
 import com.miaxis.camera.MXCamera;
+import com.miaxis.camera.MXFrame;
+import com.miaxis.faceid.FaceConfig;
+import com.miaxis.faceid.FaceManager;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
+import com.miaxis.judicialcorrection.base.api.vo.Education;
+import com.miaxis.judicialcorrection.base.api.vo.IndividualEducationBean;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.repo.PersonRepo;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
+import com.miaxis.judicialcorrection.base.utils.numbers.HexStringUtils;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
@@ -20,6 +33,7 @@ import com.miaxis.judicialcorrection.face.callback.FaceCallback;
 import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.face.databinding.FragmentVerifyBinding;
 import com.miaxis.utils.BitmapUtils;
+import com.miaxis.utils.FileUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +43,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 import okhttp3.ResponseBody;
@@ -40,7 +59,7 @@ import retrofit2.Response;
 /**
  * @author Tank
  * @date 2021/4/26 4:40 PM
- * @des
+ * @des 334
  * @updateAuthor
  * @updateDes
  */
@@ -59,11 +78,28 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
     @Inject
     PersonRepo mPersonRepo;
 
-    private Handler mHandler = new Handler();
+    //用于集中教育
+    private Education.ListBean mEducationBean = null;
+    //个别教育
+    private IndividualEducationBean.ListDTO mIndividual = null;
 
     public VerifyPageFragment(String title, @NonNull PersonInfo personInfo) {
         this.title = title;
         this.personInfo = personInfo;
+    }
+
+    //集中教育
+    public VerifyPageFragment(String title, @NonNull PersonInfo personInfo, Education.ListBean bean) {
+        this.title = title;
+        this.personInfo = personInfo;
+        this.mEducationBean = bean;
+    }
+
+    //个别教育
+    public VerifyPageFragment(String title, @NonNull PersonInfo personInfo, IndividualEducationBean.ListDTO bean) {
+        this.title = title;
+        this.personInfo = personInfo;
+        this.mIndividual = bean;
     }
 
     @Override
@@ -75,21 +111,41 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
     protected void initView(@NonNull FragmentVerifyBinding view, @Nullable Bundle savedInstanceState) {
         mVerifyPageViewModel = new ViewModelProvider(this).get(VerifyPageViewModel.class);
         binding.tvTitle.setText(String.valueOf(title));
-        mVerifyPageViewModel.faceRect.observe(this, rectF -> binding.frvFace.setRect(rectF));
-        mVerifyPageViewModel.name.observe(this, s -> binding.tvName.setText(s));
-        mVerifyPageViewModel.idCardNumber.observe(this, s -> binding.tvIdCard.setText(s));
+        setEducationType();
+
+        mVerifyPageViewModel.name.observe(this, s -> {
+            if (mEducationBean != null || mIndividual != null) {
+                binding.tvNameTitle.setText("");
+                binding.tvName.setText("");
+            } else {
+                binding.tvNameTitle.setText("姓名：");
+                binding.tvName.setText(s);
+            }
+        });
+        mVerifyPageViewModel.idCardNumber.observe(this, s -> {
+            if (mEducationBean != null || mIndividual != null) {
+                binding.tvIdCardTitle.setText("");
+                binding.tvIdCard.setText("");
+            } else {
+                binding.tvIdCardTitle.setText("身份证号：");
+                binding.tvIdCard.setText(s);
+            }
+        });
         mVerifyPageViewModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));
-        //mVerifyPageViewModel.fingerBitmap.observe(this, bitmap -> {
-        //            Glide.with(VerifyPageFragment.this).load(bitmap).error(R.mipmap.mipmap_error).into(binding.ivFinger);
-        //            binding.ivFinger.setOnClickListener(v -> {
-        //                Glide.with(VerifyPageFragment.this).load(R.mipmap.mipmap_bg_finger).into(binding.ivFinger);
-        //                mVerifyPageViewModel.releaseFingerDevice();
-        //                mVerifyPageViewModel.initFingerDevice(VerifyPageFragment.this);
-        //                binding.ivFinger.setOnClickListener(null);
-        //            });
-        //        });
-        //mVerifyPageViewModel.initFingerDevice(this);
-        mVerifyPageViewModel.id.setValue(personInfo.getId());
+        //指纹识别 需要下载图片后进行比对
+//        mVerifyPageViewModel.initFingerDevice(result -> {
+//
+//        });
+//        //显示图片
+//        mVerifyPageViewModel.fingerBitmap.observe(this, bitmap -> {
+//                    Glide.with(VerifyPageFragment.this).load(bitmap).error(R.mipmap.mipmap_error).into(binding.ivFinger);
+//                });
+//        //比对结果
+//        mVerifyPageViewModel.comparisonState.observe(this,result-> {
+//
+//        });
+        /*======================================================*/
+
         mVerifyPageViewModel.name.setValue(personInfo.getXm());
         mVerifyPageViewModel.idCardNumber.setValue(personInfo.getIdCardNumber());
 
@@ -119,6 +175,11 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                     return;
                 }
                 byte[] rgb = BitmapUtils.bitmap2RGB(bitmap);
+                //测试 保存黑白
+//                String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/C/" + System.currentTimeMillis() + ".jpg";
+//                FaceManager.getInstance().saveRgbTiFile(rgb, bitmap.getWidth(), bitmap.getHeight(), path);
+                /*==============================================*/
+                //获取RGB可见光摄像头
                 mVerifyPageViewModel.extractFeatureFromRgb(rgb, bitmap.getWidth(), bitmap.getHeight());
             }
 
@@ -169,6 +230,34 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
         });
     }
 
+    /**
+     * 设置教育类别显示不同内容
+     */
+    @SuppressLint("SetTextI18n")
+    private void setEducationType() {
+        if (mEducationBean != null) {
+            binding.inInfo.clContent.setVisibility(View.VISIBLE);
+            binding.inInfo.tvName.setText("姓名：" + personInfo.getXm());
+            binding.inInfo.tvIdCard.setText("身份证号：" + personInfo.getIdCardNumber());
+            String jiaoyuzhutiName = TextUtils.isEmpty(mEducationBean.jiaoyuzhutiName) ? "" : mEducationBean.jiaoyuzhutiName;
+            binding.inInfo.tvTheme.setText("教育主题：" + jiaoyuzhutiName);
+            String s = HexStringUtils.DateToString(mEducationBean.jyxxkssj);
+            binding.inInfo.tvEducationTime.setText("集中教育时间：" + s);
+            String jyxxsc = TextUtils.isEmpty(mEducationBean.jyxxsc) ? "" : mEducationBean.jyxxsc;
+            binding.inInfo.tvEducationTimeLong.setText("集中教育时长：" + jyxxsc);
+        } else if (mIndividual != null) {
+            binding.inInfo.clContent.setVisibility(View.VISIBLE);
+            binding.inInfo.tvName.setText("姓名：" + personInfo.getXm());
+            binding.inInfo.tvIdCard.setText("身份证号：" + personInfo.getIdCardNumber());
+            String jyxxfsName = TextUtils.isEmpty(mIndividual.getJyxxfsName()) ? "" : mIndividual.getJyxxfsName();
+            binding.inInfo.tvTheme.setText("教育主题：" + jyxxfsName);
+            String s = HexStringUtils.DateToString(mIndividual.getJyxxkssj());
+            binding.inInfo.tvEducationTime.setText("集中教育时间：" + s);
+            String jyxxsc = TextUtils.isEmpty(mIndividual.getJyxxsc()) ? "" : mIndividual.getJyxxsc();
+            binding.inInfo.tvEducationTimeLong.setText("集中教育时长：" + jyxxsc);
+        }
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -213,10 +302,13 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
             FragmentActivity activity = getActivity();
             if (activity instanceof VerifyCallback) {
                 VerifyCallback callback = (VerifyCallback) activity;
+//                response.getData().entryMethod="2";
                 callback.onVerify(response);
             }
         }
     }
+
+    private final static Handler mHandler = new Handler();
 
     @Override
     public void onRgbProcessReady() {
@@ -233,9 +325,9 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
     }
 
     @Override
-    public void onLiveReady(boolean success) {
+    public void onLiveReady(MXFrame nirFrame, boolean success) {
         if (success) {
-            mVerifyPageViewModel.matchFeature(this);
+            mVerifyPageViewModel.matchFeature(nirFrame, FaceConfig.threshold, this);
         } else {
             startRgbPreview();
         }
@@ -275,4 +367,5 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
         //mVerifyPageViewModel.releaseFingerDevice();
         mHandler.removeCallbacksAndMessages(null);
     }
+
 }

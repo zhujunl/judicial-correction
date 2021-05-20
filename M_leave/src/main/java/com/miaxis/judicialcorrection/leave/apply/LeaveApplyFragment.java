@@ -1,14 +1,26 @@
 package com.miaxis.judicialcorrection.leave.apply;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.miaxis.camera.CameraConfig;
+import com.miaxis.camera.CameraHelper;
+import com.miaxis.camera.CameraPreviewCallback;
+import com.miaxis.camera.MXCamera;
+import com.miaxis.camera.MXFrame;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.db.po.Place;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.base.utils.TimeUtils;
+import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DatePickDialog;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
@@ -16,15 +28,14 @@ import com.miaxis.judicialcorrection.leave.LeaveRepo;
 import com.miaxis.judicialcorrection.leave.R;
 import com.miaxis.judicialcorrection.leave.SpAdapter;
 import com.miaxis.judicialcorrection.leave.databinding.FragmentLeaveApplyBinding;
+import com.miaxis.utils.FileUtils;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialog;
-import androidx.lifecycle.ViewModelProvider;
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
@@ -37,7 +48,7 @@ import timber.log.Timber;
  * @updateDes
  */
 @AndroidEntryPoint
-public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBinding> {
+public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBinding>implements CameraPreviewCallback {
 
     private String title = "请假申请";
 
@@ -50,6 +61,13 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
 
     @Inject
     LeaveRepo mLeaveRepo;
+    //申请书
+    private String base64LiveChangeApplication;
+    //申请资料
+    private String base64LiveChangeData;
+    private File mFilePath;
+    //扫描类型
+    private int scanType=0;
 
     public LeaveApplyFragment(@NotNull VerifyInfo verifyInfo) {
         this.verifyInfo = verifyInfo;
@@ -66,6 +84,15 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
         binding.tvTitle.setText(String.valueOf(this.title));
         binding.btnBackToHome.setOnClickListener(v -> finish());
         mApplyViewModel.applyTime.set(TimeUtils.getTime());
+        mFilePath = FileUtils.createFileParent(getContext());
+        binding.btnApplicationScan.setOnClickListener(v -> {
+            scanType=0;
+            openScanning();
+        });
+        binding.btnApplicationMaterialsScan.setOnClickListener(v -> {
+            scanType=1;
+            openScanning();
+        });
         binding.btnSubmit.setOnClickListener(v -> {
             String checkContent = mApplyViewModel.checkContent();
             if (!TextUtils.isEmpty(checkContent)) {
@@ -75,6 +102,8 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
                         verifyInfo.pid,
                         TimeUtils.dateToString(mApplyViewModel.applyTime.get()),
                         "",
+                        new String[]{base64LiveChangeApplication},
+                        new String[]{base64LiveChangeData},
                         mApplyViewModel.specificReasons.get(),
                         TimeUtils.dateToString(mApplyViewModel.endTime.get()),
                         TimeUtils.dateToString(mApplyViewModel.startTime.get()),
@@ -240,6 +269,58 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
 
     }
 
+    private void openScanning() {
+        ZZResponse<?> init = CameraHelper.getInstance().init();
+        if (ZZResponse.isSuccess(init)) {
+            ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().createMXCamera(CameraConfig.Camera_SM);
+            if (ZZResponse.isSuccess(mxCamera)) {
+//                mxCamera.getData().setOrientation(CameraConfig.Camera_SM.previewOrientation);
+                mxCamera.getData().setPreviewCallback(this);
+                mxCamera.getData().start(null);
+                mxCamera.getData().setNextFrameEnable();
+            }else{
+                appHintsLazy.get().showError("扫描失败！");
+            }
+        }else{
+            appHintsLazy.get().showError("扫描设备初始化失败请点击重试！");
+        }
+    }
+
+    @Override
+    public void onPreview(MXFrame frame) {
+        if (MXFrame.isNullCamera(frame)){
+            return;
+        }
+        String fileName = "sm"+scanType+".jpg";
+        File file = new File(mFilePath, fileName);
+        boolean frameImage = frame.camera.saveFrameImage(file.getAbsolutePath());
+        if (frameImage) {
+            String base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
+            if (scanType == 0) {
+                base64LiveChangeApplication = base64Path;
+            } else {
+                base64LiveChangeData = base64Path;
+            }
+            mHandler.post(() -> {
+                if (scanType == 0) {
+                    binding.tvApplicationInfoShow.setText(fileName);
+                } else {
+                    binding.tvApplicationInfoShow2.setText(fileName);
+                }
+            });
+        }else{
+            mHandler.post(() -> appHintsLazy.get().showError("扫描文件保存失败，请点击重试！"));
+        }
+    }
+    private final  static   Handler mHandler=new Handler();
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        base64LiveChangeApplication=null;
+        base64LiveChangeData=null;
+        mHandler.removeCallbacksAndMessages(null);
+    }
 
 
 }

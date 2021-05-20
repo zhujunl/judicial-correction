@@ -95,6 +95,7 @@ public class ReadIdCardManager {
                     IdCard idCard = new IdCard();
                     idCard.idCardMsg = msg;
                     byte[] bmp = new byte[38862];
+
                     Bitmap bitmap = GetImage(pucPHMsg, bmp);
                     if (bitmap != null) {
                       idCard.face = bitmap;

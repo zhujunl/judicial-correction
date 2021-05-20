@@ -144,7 +144,7 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             binding.spinnerProvince.setAdapter(adapter);
             int checkedPosition = getCheckedPosition(places, viewModel.mSelect[0]);
             if (checkedPosition != 0) {
-                binding.spinnerDistrict.setSelection(checkedPosition);
+                binding.spinnerProvince.setSelection(checkedPosition);
             }
 
         });

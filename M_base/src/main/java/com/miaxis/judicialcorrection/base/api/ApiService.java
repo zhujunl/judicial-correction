@@ -2,6 +2,7 @@ package com.miaxis.judicialcorrection.base.api;
 
 import com.miaxis.judicialcorrection.base.api.vo.Education;
 import com.miaxis.judicialcorrection.base.api.vo.HistorySignUpBean;
+import com.miaxis.judicialcorrection.base.api.vo.IndividualEducationBean;
 import com.miaxis.judicialcorrection.base.api.vo.JusticeBureauList;
 import com.miaxis.judicialcorrection.base.api.vo.Leave;
 import com.miaxis.judicialcorrection.base.api.vo.LiveAddressChangeDetailsBean;
@@ -107,6 +108,11 @@ public interface ApiService {
             @Body() Map<String, String> body
     );
 
+    @GET("/personEducation/list")
+    LiveData<ApiResult<IndividualEducationBean>> getPersonEducation( @Query("pid") String pid,
+                                                                     @Query("page") int page,
+                                                                     @Query("rows") int rows);
+
     @GET("/leave/list")
     LiveData<ApiResult<Leave>> getLeaveList(
             @Query("pid") String pid,
@@ -158,4 +164,7 @@ public interface ApiService {
     @POST("/placeChange/add")
     LiveData<ApiResult<Object>> changeLiveAddress(@Body() RequestBody body);
     //            @Part() List<MultipartBody.Part > files);
+
+    @POST("/personInfo/uploadFingerprint")
+    LiveData<ApiResult<Object>> uploadFingerprint(@Body() RequestBody body);
 }

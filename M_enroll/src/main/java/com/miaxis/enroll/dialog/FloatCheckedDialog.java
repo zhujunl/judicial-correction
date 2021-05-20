@@ -87,10 +87,20 @@ public class FloatCheckedDialog extends BaseDialog<DialogFlotCheckedBinding, Flo
         String[] jobPost = getContext().getResources().getStringArray(R.array.job_post);
         String[] jobFarmer = getContext().getResources().getStringArray(R.array.job_farmer);
 
+        String[] jobServing = getContext().getResources().getStringArray(R.array.job_serving);
+        String[] jobAssist = getContext().getResources().getStringArray(R.array.job_assist);
+        String[] jobSelfEmployed = getContext().getResources().getStringArray(R.array.job_selfEmployed);
+
+
         String[] job_coding = getContext().getResources().getStringArray(R.array.job_coding);
         String[] jobNationalStaff_coding = getContext().getResources().getStringArray(R.array.job_nationalStaff_coding);
         String[] jobPost_coding = getContext().getResources().getStringArray(R.array.job_post_coding);
         String[] jobFarmer_coding = getContext().getResources().getStringArray(R.array.job_farmer_coding);
+
+
+        String[] jobServingCoding = getContext().getResources().getStringArray(R.array.job_serving_coding);
+        String[] jobAssistCoding = getContext().getResources().getStringArray(R.array.job_assist_coding);
+        String[] jobSelfEmployedCoding = getContext().getResources().getStringArray(R.array.job_selfEmployed_coding);
 
         for (int i = 0; i < job.length; i++) {
             List<BaseNode> secondNodeList = new ArrayList<>();
@@ -99,14 +109,30 @@ public class FloatCheckedDialog extends BaseDialog<DialogFlotCheckedBinding, Flo
                     SecondNode seNode = new SecondNode(null,jobNationalStaff[n] ,jobNationalStaff_coding[n]);
                     secondNodeList.add(seNode);
                 }
-            } else if (i == 2) {
+            } else if (i == 1) {
                 for (int n=0;n< jobPost.length;n++) {
                     SecondNode seNode = new SecondNode(null,jobPost[n] ,jobPost_coding[n]);
                     secondNodeList.add(seNode);
                 }
-            } else if (i == 3) {
+            } else if (i == 2) {
                 for (int n=0;n< jobFarmer.length;n++) {
                     SecondNode seNode = new SecondNode(null,jobFarmer[n] ,jobFarmer_coding[n]);
+                    secondNodeList.add(seNode);
+                }
+            }else if (i==3){
+                for (int n=0;n< jobServing.length;n++) {
+                    SecondNode seNode = new SecondNode(null,jobServing[n] ,jobServingCoding[n]);
+                    secondNodeList.add(seNode);
+                }
+            } else if (i==4){
+                for (int n=0;n< jobAssist.length;n++) {
+                    SecondNode seNode = new SecondNode(null,jobAssist[n] ,jobAssistCoding[n]);
+                    secondNodeList.add(seNode);
+                }
+            }
+            else if (i==5){
+                for (int n=0;n< jobSelfEmployed.length;n++) {
+                    SecondNode seNode = new SecondNode(null,jobSelfEmployed[n] ,jobSelfEmployedCoding[n]);
                     secondNodeList.add(seNode);
                 }
             }

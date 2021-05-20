@@ -12,8 +12,9 @@ import android.hardware.Camera;
 public enum CameraConfig {
 
     //todo 本地测试配置 Camera.CameraInfo.CAMERA_FACING_BACK RGB
-    Camera_RGB(Camera.CameraInfo.CAMERA_FACING_BACK, 640, 480, 90, 270),
-    Camera_NIR(Camera.CameraInfo.CAMERA_FACING_FRONT, 640, 480, 90, 270);
+    Camera_RGB(Camera.CameraInfo.CAMERA_FACING_FRONT, 640, 480, 90, 90),
+    Camera_NIR(Camera.CameraInfo.CAMERA_FACING_BACK, 640, 480, 90, 90),
+    Camera_SM(2,640, 480, 90, 90);
 
     //todo 现场配置 Camera.CameraInfo.CAMERA_FACING_FRONT RGB
     //todo 现场配置 Camera.CameraInfo.CAMERA_FACING_BACK NIR

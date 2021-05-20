@@ -3,6 +3,7 @@ package com.miaxis.judicialcorrection.guide;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,17 +19,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.miaxis.camera.CameraConfig;
+import com.miaxis.camera.CameraHelper;
+import com.miaxis.camera.CameraPreviewCallback;
+import com.miaxis.camera.MXCamera;
+import com.miaxis.camera.MXFrame;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
 import com.miaxis.judicialcorrection.base.db.po.Place;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.bean.LiveAddressChangeBean;
+import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
 import com.miaxis.judicialcorrection.live.LiveAddressChangeActivity;
 import com.miaxis.judicialcorrection.live.LiveAddressChangeViewModel;
 import com.miaxis.judicialcorrection.live.R;
 import com.miaxis.judicialcorrection.live.databinding.FragmentLiveAddressBinding;
+import com.miaxis.utils.FileUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,10 +47,17 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 
 @AndroidEntryPoint
-public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddressBinding> {
+public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddressBinding> implements CameraPreviewCallback {
 
     private static final String TAG = "LiveAddressFragment";
     private LiveAddressChangeViewModel model;
+    //申请书  暂时都只扫描1个文件
+    private String base64LiveChangeApplication;
+    //申请资料
+    private String base64LiveChangeData;
+    private  File mFilePath;
+    //扫描类型
+    private int scanType=0;
 
     @Inject
     AppHints appHints;
@@ -63,6 +79,14 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
             }
         });
 
+        binding.btnApplicationScan.setOnClickListener(v -> {
+            scanType=0;
+            openScanning();
+        });
+        binding.btnApplicationMaterialsScan.setOnClickListener(v -> {
+            scanType=1;
+            openScanning();
+        });
     }
 
     @Override
@@ -70,6 +94,7 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
         model = new ViewModelProvider(getActivity()).get(LiveAddressChangeViewModel.class);
         binding.setLifecycleOwner(this);
         binding.setVm(model);
+        mFilePath = FileUtils.createFileParent(getContext());
         model.provinceList.observe(this, observer -> {
             setSpView(observer, binding.spProvince);
             int selectedItemPosition = binding.spProvince.getSelectedItemPosition();
@@ -121,7 +146,6 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                     }
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -250,6 +274,8 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
         spinner.setAdapter(adapter);
     }
 
+
+
     public static class SpAdapter extends BaseAdapter {
 
         private List<JusticeBureau> data;
@@ -303,20 +329,20 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                     value.qrdszdName = model.cityList.getValue().get(binding.spCity.getSelectedItemPosition()).VALUE;
                 }
             }
-            if (model.smallTown.getValue() != null&&!model.smallTown.getValue().isEmpty()) {
+            if (model.smallTown.getValue() != null && !model.smallTown.getValue().isEmpty()) {
                 value.qrdszx = model.smallTown.getValue().get(binding.spDistrict.getSelectedItemPosition()).ID + "";
                 value.qrdszxName = model.smallTown.getValue().get(binding.spDistrict.getSelectedItemPosition()).VALUE;
-            }else{
-                value.qrdszx=null;
-                value.qrdszxName=null;
+            } else {
+                value.qrdszx = null;
+                value.qrdszxName = null;
             }
             if ("浙江省".equals(value.qrdszsName)) {
-                if (model.street.getValue() != null&&!model.street.getValue().isEmpty()) {
+                if (model.street.getValue() != null && !model.street.getValue().isEmpty()) {
                     value.qrdxz = model.street.getValue().get(binding.spStreet.getSelectedItemPosition()).ID + "";
                     value.qrdxzName = model.street.getValue().get(binding.spStreet.getSelectedItemPosition()).VALUE;
-                }else{
-                    value.qrdxz=null;
-                    value.qrdxzName=null;
+                } else {
+                    value.qrdxz = null;
+                    value.qrdxzName = null;
                 }
             } else {
                 value.qrdxz = null;
@@ -327,10 +353,10 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                 value.njsjzdwId = ((JusticeBureau) itemAtPosition).getTeamId();
                 value.njsjzdwName = ((JusticeBureau) itemAtPosition).getTeamName();
             }
-            model.setLiveAddressChange().observe(this, observer -> {
+            model.setLiveAddressChange(new String[]{base64LiveChangeApplication},new String[]{base64LiveChangeData}).observe(this, observer -> {
                 if (observer.isSuccess()) {
                     LiveAddressChangeBean v = model.liveBean.getValue();
-                    v.sqsj=model.currentTime(false);
+                    v.sqsj = model.currentTime(false);
                     DialogResult dialogResult = new DialogResult(getActivity(), new DialogResult.ClickListener() {
                         @Override
                         public void onBackHome(AppCompatDialog appCompatDialog) {
@@ -360,10 +386,64 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                         }
                     }, 2000);
                 }
-                if (observer.isError()){
+                if (observer.isError()) {
                     appHints.showError(observer.errorMessage);
                 }
             });
         }
+    }
+
+    private void openScanning() {
+        ZZResponse<?> init = CameraHelper.getInstance().init();
+        if (ZZResponse.isSuccess(init)) {
+            ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().createMXCamera(CameraConfig.Camera_SM);
+            if (ZZResponse.isSuccess(mxCamera)) {
+//                mxCamera.getData().setOrientation(CameraConfig.Camera_SM.previewOrientation);
+                mxCamera.getData().setPreviewCallback(this);
+                mxCamera.getData().start(null);
+                mxCamera.getData().setNextFrameEnable();
+            }else{
+                appHints.showError("扫描失败！");
+            }
+        }else{
+            appHints.showError("扫描设备初始化失败请点击重试！");
+        }
+    }
+
+    @Override
+    public void onPreview(MXFrame frame) {
+        if (MXFrame.isNullCamera(frame)){
+            return;
+        }
+        String fileName = "sm"+scanType+".jpg";
+        File file = new File(mFilePath, fileName);
+        boolean frameImage = frame.camera.saveFrameImage(file.getAbsolutePath());
+        if (frameImage) {
+            String base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
+            if (scanType == 0) {
+                base64LiveChangeApplication = base64Path;
+            } else {
+                base64LiveChangeData = base64Path;
+            }
+            mHandler.post(() -> {
+                if (scanType == 0) {
+                    binding.tvApplicationInfoShow.setText(fileName);
+                } else {
+                    binding.tvApplicationInfoShow2.setText(fileName);
+                }
+            });
+        }else{
+            mHandler.post(() -> appHints.showError("扫描保存文件失败，请点击重试！"));
+        }
+    }
+
+    private final  static  Handler mHandler=new Handler();
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        base64LiveChangeApplication=null;
+        base64LiveChangeData=null;
+        mHandler.removeCallbacksAndMessages(null);
     }
 }

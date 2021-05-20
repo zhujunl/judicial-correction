@@ -37,6 +37,8 @@ public class FingerManager {
         void release();
 
         void releaseDevice();
+
+        void comparison(byte[] b);
     }
 
     public interface OnFingerStatusListener {
@@ -45,6 +47,8 @@ public class FingerManager {
 
     public interface OnFingerReadListener {
         void onFingerRead(byte[] feature, Bitmap image);
+
+        void onFingerReadComparison(byte[] feature, Bitmap image,int  state);
     }
 
     public void initDevice(OnFingerStatusListener statusListener) {
@@ -75,6 +79,11 @@ public class FingerManager {
     public void readFinger() {
         if (fingerStrategy != null) {
             fingerStrategy.readFinger();
+        }
+    }
+    public void redFingerComparison(byte[] bytes){
+        if (fingerStrategy != null) {
+            fingerStrategy.comparison(bytes);
         }
     }
 

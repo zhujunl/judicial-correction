@@ -4,13 +4,20 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.miaxis.enroll.EnrollSharedViewModel;
 import com.miaxis.enroll.R;
+import com.miaxis.enroll.databinding.FragmentFingerprintCollectBinding;
 import com.miaxis.enroll.databinding.FragmentVoiceprintCollectBinding;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
+import com.miaxis.judicialcorrection.dialog.DialogResult;
+import com.miaxis.judicialcorrection.face.callback.NavigationCallback;
+import com.miaxis.judicialcorrection.id.bean.IdCard;
+import com.miaxis.utils.FileUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -24,21 +31,22 @@ import dagger.hilt.android.AndroidEntryPoint;
  * 声纹采集
  */
 @AndroidEntryPoint
-public class FingerprintCollectFragment extends BaseBindingFragment<FragmentVoiceprintCollectBinding> {
+public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFingerprintCollectBinding> {
 
 
-    public static FingerprintCollectFragment getInstance() {
-        FingerprintCollectFragment fragment = new FingerprintCollectFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("idCard", "");
-        fragment.setArguments(bundle);
-        return fragment;
+    private  IdCard mIdCard;
+    private  String mId;
+
+    public  FingerprintCollectFragment(String id, IdCard idCard) {
+        this.mId=id;
+        this.mIdCard=idCard;
     }
 
     private FingerprintCollectModel mFingerprintCollectModel;
-    private EnrollSharedViewModel mEnrollSharedViewModel;
     @Inject
     Lazy<AppHints> appHintsLazy;
+
+    private String mPid;
 
     @Override
     protected int initLayout() {
@@ -46,26 +54,76 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentVoic
     }
 
     @Override
-    protected void initView(@NonNull @NotNull FragmentVoiceprintCollectBinding binding, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    protected void initView(@NonNull @NotNull FragmentFingerprintCollectBinding binding, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        binding.btnBackToHome.setOnClickListener(v -> finish());
     }
 
     @Override
-    protected void initData(@NonNull @NotNull FragmentVoiceprintCollectBinding binding, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        mEnrollSharedViewModel = new ViewModelProvider(getActivity()).get(EnrollSharedViewModel.class);
+    protected void initData(@NonNull @NotNull FragmentFingerprintCollectBinding binding, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         mFingerprintCollectModel = new ViewModelProvider(this).get(FingerprintCollectModel.class);
-        mFingerprintCollectModel.initFingerDevice(new FingerprintCollectModel.OnFingerInitListener() {
-            @Override
-            public void onInit(boolean result) {
-                    if (!result){
-                        appHintsLazy.get().showError("指纹识别初始化模块失败！");
-                    }
-            }
+        mFingerprintCollectModel.filePath = FileUtils.createFileParent(getContext());
+        if (mIdCard!=null){
+            mFingerprintCollectModel.fingerprint1.set(mIdCard.idCardMsg.strFp0);
+            mFingerprintCollectModel.fingerprint2.set(mIdCard.idCardMsg.strFp1);
+        }
+        mFingerprintCollectModel.initFingerDevice(result -> {
         });
-        //读取指纹模块
-        mFingerprintCollectModel.releaseFingerDevice();
-        //得到bitmap上传
-        mFingerprintCollectModel.fingerBitmap.observe(this,bitmap->{
+        //上传对象
+        mFingerprintCollectModel.fingerprintLiveData.observe(this, entity -> {
+            entity.id = mPid;
+            mFingerprintCollectModel.uploadFingerprint(entity).observe(FingerprintCollectFragment.this, observer -> {
+                switch (observer.status) {
+                    case LOADING:
+                        showLoading();
+                        break;
+                    case ERROR:
+                        dismissLoading();
+                        appHintsLazy.get().showError(observer.errorMessage);
+                        break;
+                    case SUCCESS:
+                        dismissLoading();
+                        showDialog();
+                        break;
+                }
+            });
+        });
 
-        });
+    }
+
+    private void showDialog() {
+        new DialogResult(getActivity(), new DialogResult.ClickListener() {
+            @Override
+            public void onBackHome(AppCompatDialog appCompatDialog) {
+                appCompatDialog.dismiss();
+                finish();
+            }
+
+            @Override
+            public void onTryAgain(AppCompatDialog appCompatDialog) {
+                appCompatDialog.dismiss();
+            }
+
+            @Override
+            public void onTimeOut(AppCompatDialog appCompatDialog) {
+                appCompatDialog.dismiss();
+                FragmentActivity activity = getActivity();
+                if (activity instanceof NavigationCallback) {
+                    NavigationCallback callback = (NavigationCallback) activity;
+                    callback.onNavigationCallBack();
+                }
+            }
+        }, new DialogResult.Builder(
+                true,
+                "采集成功",
+                "3s后自动返回信息采集",
+                3, false
+        ).hideAllHideSucceedInfo(false).hideButton(true)).show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        mFingerprintCollectModel.releaseFingerDevice();
+        super.onDestroyView();
+
     }
 }

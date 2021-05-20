@@ -90,6 +90,18 @@
             app:layout_constraintTop_toTopOf="@id/tv_id_card_title"
             tools:text="@string/text_id_card" />
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="80px"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            android:layout_height="wrap_content">
+
+           <include
+               android:id="@+id/in_info"
+               layout="@layout/layout_centralize_education"
+            />
+
+        </FrameLayout>
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_face_tips"
             android:layout_width="wrap_content"
@@ -121,34 +133,23 @@
             app:layout_constraintRight_toRightOf="@id/sv_preview"
             app:layout_constraintTop_toTopOf="@id/sv_preview" />
 
-        <!--        <androidx.appcompat.widget.AppCompatImageView-->
-        <!--            android:id="@+id/iv_face"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="0dp"-->
-        <!--            android:adjustViewBounds="true"-->
-        <!--            app:layout_constraintBottom_toBottomOf="@id/sv_preview"-->
-        <!--            app:layout_constraintLeft_toLeftOf="@id/sv_preview"-->
-        <!--            app:layout_constraintRight_toRightOf="@id/sv_preview"-->
-        <!--            app:layout_constraintTop_toTopOf="@id/sv_preview"-->
-        <!--            app:srcCompat="@mipmap/mipmap_bg_face" />-->
-
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_finger"
             android:layout_width="229px"
             android:layout_height="289px"
+            android:visibility="gone"
             android:layout_marginLeft="64px"
             android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="@id/sv_preview"
             app:layout_constraintLeft_toRightOf="@id/sv_preview"
             app:srcCompat="@mipmap/mipmap_bg_finger" />
 
-
+<!--        android:text="@string/text_tips"-->
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="70px"
             android:gravity="center"
-            android:text="@string/text_tips"
             android:textColor="@color/color_text_red"
             android:textSize="36px"
             android:textStyle="bold"

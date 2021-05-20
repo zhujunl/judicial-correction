@@ -118,8 +118,8 @@ public class LiveAddressChangeViewModel extends ViewModel {
     }
 
     //信息变更
-    public LiveData<Resource<Object>> setLiveAddressChange() {
-        return mLiveAddressChangeRepo.setLiveAddressChange(liveBean.getValue());
+    public LiveData<Resource<Object>> setLiveAddressChange(String[] jzdbgsqs,String[] jzdbgsqcl) {
+        return mLiveAddressChangeRepo.setLiveAddressChange(liveBean.getValue(),jzdbgsqs,jzdbgsqcl);
     }
 
     //查询
@@ -141,7 +141,7 @@ public class LiveAddressChangeViewModel extends ViewModel {
     }
 
     //市
-    public void findAllCity(int id) {
+    public void findAllCity(long id) {
         appExecutors.diskIO().execute(() -> {
             List<Place> allProvince = appDatabase.placeDao().findAllCitySync(id);
             cityList.postValue(allProvince);
@@ -149,7 +149,7 @@ public class LiveAddressChangeViewModel extends ViewModel {
     }
 
     //县
-    public void findAllDistrict(int id) {
+    public void findAllDistrict(long id) {
         appExecutors.diskIO().execute(() -> {
             List<Place> allProvince = appDatabase.placeDao().findAllDistrictSync(id);
             smallTown.postValue(allProvince);
@@ -157,7 +157,7 @@ public class LiveAddressChangeViewModel extends ViewModel {
     }
 
     //街道
-    public void getProvince(int id) {
+    public void getProvince(long id) {
         appExecutors.diskIO().execute(() -> {
             List<Place> allProvince = appDatabase.placeDao().findAllAgenciesSync(id);
             street.postValue(allProvince);

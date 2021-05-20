@@ -1,11 +1,15 @@
 package com.miaxis.judicialcorrection.individual;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
+import com.miaxis.judicialcorrection.base.api.vo.Education;
+import com.miaxis.judicialcorrection.base.api.vo.IndividualEducationBean;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
+import com.miaxis.judicialcorrection.base.utils.TimeUtils;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
 import com.miaxis.judicialcorrection.face.VerifyPageFragment;
@@ -23,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.Observer;
+
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
@@ -44,6 +49,10 @@ public class IndividualEducationActivity extends BaseBindingActivity<ActivityRep
 
     @Inject
     Lazy<AppHints> appHintsLazy;
+
+    private String mListItemId;
+
+    private String mPid;
 
     @Override
     protected int initLayout() {
@@ -76,17 +85,15 @@ public class IndividualEducationActivity extends BaseBindingActivity<ActivityRep
     @Override
     public void onLogin(PersonInfo personInfo) {
         if (personInfo != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.layout_root, new VerifyPageFragment(title, personInfo))
-                    .commitNow();
+            mPid=personInfo.getId();
+            getList(personInfo.getId(),personInfo);
         }
     }
 
     @Override
     public void onVerify(ZZResponse<VerifyInfo> response) {
         if (ZZResponse.isSuccess(response)) {
-            mIndividualEducationRepo.individualAdd(response.getData().pid).observe(this, new Observer<Resource<Object>>() {
+            mIndividualEducationRepo.individualAdd(mPid,mListItemId).observe(this, new Observer<Resource<Object>>() {
                 @Override
                 public void onChanged(Resource<Object> objectResource) {
                     switch (objectResource.status) {
@@ -153,6 +160,53 @@ public class IndividualEducationActivity extends BaseBindingActivity<ActivityRep
                 }
             }, builder).show();
         }
+    }
+
+    private void getList(String pid,PersonInfo personInfo) {
+        mIndividualEducationRepo.getPersonEducation(pid).observe(this, observer -> {
+            switch (observer.status) {
+                case LOADING:
+                    showLoading(title, "正在获取" + title + "信息，请稍后");
+                    break;
+                case ERROR:
+                    dismissLoading();
+                    appHintsLazy.get().showError("Error:" + observer.errorMessage);
+                    break;
+                case SUCCESS:
+                    dismissLoading();
+                    if (observer.data == null || observer.data.getList() == null ||
+                            observer.data.getList().isEmpty()) {
+                        appHintsLazy.get().showError("无" + title + "数据", (dialog, which) -> {
+                            dialog.dismiss();
+                            finish();
+                        });
+                        return;
+                    }
+                    IndividualEducationBean.ListDTO temp = null;
+                    for (IndividualEducationBean.ListDTO listBean : observer.data.getList()) {
+                        if (TimeUtils.isInTime(listBean.getJyxxkssj(), listBean.getJyxxjssj())) {
+                            temp = listBean;
+                            break;
+                        }
+                    }
+                    if (temp == null) {
+                        appHintsLazy.get().showError("当前还没有"+title+"，如需签到，请联系工作人员!", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+                        return;
+                    }
+                    mListItemId=temp.getId();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.layout_root, new VerifyPageFragment(title, personInfo,temp))
+                            .commitNow();
+                    break;
+            }
+        });
     }
 
 }

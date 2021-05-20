@@ -5,9 +5,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.SurfaceHolder;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.MXCamera;
+import com.miaxis.camera.MXFrame;
+import com.miaxis.faceid.FaceConfig;
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
@@ -24,11 +32,6 @@ import java.io.File;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialog;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -68,7 +71,7 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
     protected void initView(@NonNull FragmentCaptureBinding view, @Nullable Bundle savedInstanceState) {
         mGetFaceViewModel = new ViewModelProvider(this).get(GetFaceViewModel.class);
         binding.tvTitle.setText(String.valueOf(title));
-        mGetFaceViewModel.faceRect.observe(this, rectF -> binding.frvFace.setRect(rectF));
+        mGetFaceViewModel.faceRect.observe(this, rectF -> binding.frvFace.setRect(rectF,false));
         mGetFaceViewModel.name.observe(this, s -> binding.tvName.setText(s));
         mGetFaceViewModel.idCardNumber.observe(this, s -> binding.tvIdCard.setText(s));
         mGetFaceViewModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));
@@ -131,7 +134,7 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
             appHintsLazy.get().showError("Error:人像解析失败,请退出后重新尝试", (dialog, which) -> finish());
             return;
         }
-        String path = FileUtils.createFileParent(getContext()) + File.separator + this.personInfo.getIdCardNumber() + ".jpeg";
+        String path = FileUtils.createFileParent(getContext()) + File.separator + this.personInfo.getIdCardNumber() + ".bmp";
         boolean save = BitmapUtils.saveBitmap(idCardFace, path);
         idCardFace.recycle();
         if (!save) {
@@ -177,9 +180,9 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
     }
 
     @Override
-    public void onLiveReady(boolean success) {
+    public void onLiveReady(MXFrame nirFrame, boolean success) {
         if (success) {
-            mGetFaceViewModel.matchFeature(this);
+            mGetFaceViewModel.matchFeature(nirFrame,FaceConfig.thresholdIdCard,this);
         } else {
             startRgbPreview();
         }
@@ -256,7 +259,8 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
     @Override
     public void onError(ZZResponse<?> response) {
         //活体检测出现错误
-        mHandler.post(() -> appHintsLazy.get().showError("Error:" + response.getCode() + "  " + response.getMsg(),
+        mHandler.post(() ->
+                appHintsLazy.get().showError("Error:" + response.getCode() + "  " + response.getMsg(),
                 (dialog, which) -> {
                     startRgbPreview();
                 }));
@@ -271,7 +275,7 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
         }
     }
 
-    private Handler mHandler = new Handler();
+    private final static Handler mHandler = new Handler();
 
     private void showDialog() {
         mHandler.post(() -> new DialogResult(getActivity(), new DialogResult.ClickListener() {

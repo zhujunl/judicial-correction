@@ -1,5 +1,6 @@
 package com.miaxis.judicialcorrection.face.callback;
 
+import com.miaxis.camera.MXFrame;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 
 /**
@@ -26,7 +27,7 @@ public interface FaceCallback {
     /**
      * 活体检测通过
      */
-    void onLiveReady(boolean success);
+    void onLiveReady(MXFrame nirFrame, boolean success);
 
     /**
      * 人证比对回调

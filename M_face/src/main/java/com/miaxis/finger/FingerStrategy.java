@@ -16,6 +16,7 @@ public class FingerStrategy implements FingerManager.FingerStrategy {
     private MxFingerAlg mxFingerAlg;
 
     private FingerManager.OnFingerStatusListener statusListener;
+
     private FingerManager.OnFingerReadListener readListener;
 
     private Context mContext;
@@ -98,6 +99,35 @@ public class FingerStrategy implements FingerManager.FingerStrategy {
     @Override
     public void releaseDevice() {
         this.statusListener = null;
+    }
+
+    @Override
+    public void comparison(byte[] b) {
+        try {
+            if (mxMscBigFingerApi != null || mxFingerAlg != null) {
+                Result<MxImage> result = mxMscBigFingerApi.getFingerImageBig(5000);
+                if (result.isSuccess()) {
+                    MxImage image = result.data;
+                    if (image != null) {
+                        //int quality = mxFingerAlg.imageQuality(image.data, image.width, image.height);
+                        byte[] feature = mxFingerAlg.extractFeature(image.data, image.width, image.height);
+                        if (feature != null) {
+                            int match = mxFingerAlg.match(b, feature, 3);
+                            Bitmap bitmap = RawBitmapUtils.raw2Bimap(image.data, image.width, image.height);
+                            if (readListener != null) {
+                                readListener.onFingerReadComparison(feature, bitmap,match);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (readListener != null) {
+            readListener.onFingerReadComparison(null, null,MxFingerAlg.ERROR);
+        }
     }
 
 }

@@ -100,9 +100,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
                 dismissLoading();
             }
         });
-        //默认首页先初始化省份证信息防止初始化失败
-//        boolean init = ReadIdCardManager.getInstance().init(this);
-//        ReadIdCardManager.getInstance().free(this);
+        //采集页面个人信息
 //        getSupportFragmentManager().beginTransaction().replace(R.id.main,new CaptureBaseInfoFragment()).commitNow();
     }
 
@@ -201,7 +199,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
         void checkPassword(String pwd) {
             dismiss();
             if ("123456".equals(pwd)) {
-                if (getActivity() != null&&getActivity() instanceof MainActivity) {
+                if (getActivity() != null && getActivity() instanceof MainActivity) {
                     ((MainActivity) getActivity()).hideInputMethod();
                 }
                 startActivity(new Intent(getActivity(), SettingActivity.class));

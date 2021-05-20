@@ -2,6 +2,7 @@ package com.miaxis.judicialcorrection.base.utils.numbers;
 
 
 import android.icu.text.SimpleDateFormat;
+import android.text.TextUtils;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -76,6 +77,12 @@ public class HexStringUtils {
             e.printStackTrace();
         }
         return df1.format(date1);
+    }
+
+    public static String DateToString(Date date){
+        SimpleDateFormat sdf=new  SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String s =sdf.format(date);
+        return TextUtils.isEmpty(s)?"":s;
     }
 
     public static String convertCurrentGMT(){

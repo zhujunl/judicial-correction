@@ -52,14 +52,7 @@ public class DatePickDialog extends Dialog implements View.OnClickListener {
         this.mDp_date.init(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), null);
         resizePicker(this.mDp_date, 120);
         resizePicker(this.mDp_time, 80);
-        Date date = new Date();
-        Calendar mCalendar = Calendar.getInstance();
-        mCalendar.setTimeInMillis(date.getTime());
-        int hour = mCalendar.get(Calendar.HOUR);
-        int minute = mCalendar.get(Calendar.MINUTE);
-        mDp_date.setMaxDate(System.currentTimeMillis());
-        mDp_time.setHour(hour);
-        mDp_time.setMinute(minute);
+
     }
 
     @Override

@@ -186,7 +186,6 @@ public class FileUtil {
             e.printStackTrace();
             return "";
         }
-
     }
 
     public static byte[] bitmapToByteArray(Bitmap bitmap) {

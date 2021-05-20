@@ -346,7 +346,7 @@
                 android:imeOptions="actionDone"
                 android:inputType="textCapCharacters"
                 android:paddingStart="32px"
-                android:text="@={vm.otherInfoLiveData.xgzdwName}"
+                android:text="@={vm.otherInfoLiveData.xgzdw}"
                 android:textSize="30px" />
 
             <TextView

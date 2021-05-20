@@ -51,7 +51,6 @@ public class LiveListFragment extends BaseBindingFragment<FragmentLiveListBindin
             if (getActivity() != null&&getActivity() instanceof LiveAddressChangeActivity) {
                ((LiveAddressChangeActivity) getActivity()).replaceFragment(new
                        VerifyPageFragment("居住地变更",model.personInfoMutableLiveData.getValue()));
-//                ((LiveAddressChangeActivity) getActivity()).replaceFragment(new LiveAddressFragment());
             }
         });
     }

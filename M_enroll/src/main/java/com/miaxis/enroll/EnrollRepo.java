@@ -109,10 +109,9 @@ public class EnrollRepo {
     public LiveData<Resource<Object>> addRelationship(String pid, Family family) {
         //[Family{name='tttt', relationship='直系亲属', job='tttt', phone='2222'}]，pid=[null]
         Map<String, String> map = new HashMap<>();
+        map.put("jtzz", family.job);
         map.put("gx", family.relationship);
-        map.put("szdw", family.job);
-        map.put("gx", family.relationship);
-        //因需求 这边提的 传无
+        map.put("xm",family.name);
         if (TextUtils.isEmpty(family.phone)) {
             map.put("lxdh", "无");
         } else {

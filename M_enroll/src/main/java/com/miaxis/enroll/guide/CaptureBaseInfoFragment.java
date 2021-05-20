@@ -57,12 +57,13 @@ public class CaptureBaseInfoFragment extends BaseBindingFragment<FragmentCapture
     private final int pageCount = 6;
 
     {
+        //影藏操作
         listItems.add(new NvListItem("基础信息\n登记", BaseMsgFragment.class, 0, pageCount));
-        listItems.add(new NvListItem("身份证件\n信息", OtherIdTypeFragment.class, 1, pageCount));
-        listItems.add(new NvListItem("居住地\n信息", AddressFragment.class, 2, pageCount));
-        listItems.add(new NvListItem("个人简历\n信息", ResumeFragment.class, 3, pageCount));
-        listItems.add(new NvListItem("家庭成员及\n社会关系", RelationshipFragment.class, 4, pageCount));
-        listItems.add(new NvListItem("其他基本\n信息", OtherInfoFragment.class, 5, pageCount));
+//        listItems.add(new NvListItem("身份证件\n信息", OtherIdTypeFragment.class, 1, pageCount));
+        listItems.add(new NvListItem("居住地\n信息", AddressFragment.class, 1, pageCount));
+        listItems.add(new NvListItem("个人简历\n信息", ResumeFragment.class, 2, pageCount));
+        listItems.add(new NvListItem("家庭成员及\n社会关系", RelationshipFragment.class, 3, pageCount));
+        listItems.add(new NvListItem("其他基本\n信息", OtherInfoFragment.class, 4, pageCount));
     }
 
     private int currentPageIndex = -1;

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
+import com.miaxis.judicialcorrection.base.api.vo.SignUpContentBean;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.benefit.databinding.ActivityPublicWelfareBinding;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
@@ -25,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
@@ -82,7 +84,7 @@ public class PublicWelfareActivity extends BaseBindingActivity<ActivityPublicWel
             if (mWelfareViewModel.idCard != null && TextUtils.isEmpty(mWelfareViewModel.idCard.idCardMsg.name)) {
                 mWelfareViewModel.idCard.idCardMsg.name = personInfo.getXm();
             }
-            mWelfareViewModel.mStrPid.postValue(personInfo.getId());
+            mWelfareViewModel.mStrPid.set(personInfo.getId());
             replaceFragment(new ToSignUpFragment());
         }
     }

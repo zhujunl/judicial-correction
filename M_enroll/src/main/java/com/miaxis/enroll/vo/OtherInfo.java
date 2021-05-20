@@ -1,12 +1,8 @@
 package com.miaxis.enroll.vo;
 
 import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
 
-import com.miaxis.enroll.BR;
 import com.miaxis.judicialcorrection.base.databinding.kvsp.KvSpinnerVo;
-
-import timber.log.Timber;
 
 /**
  * OtherInfo
@@ -64,7 +60,7 @@ public class OtherInfo extends BaseObservable {
     //原工作单位
     public String ygzdw;
     //现工作单位中文指
-    public String xgzdwName;
+    public String xgzdw;
 
 
     //单位联系电话
@@ -158,7 +154,7 @@ public class OtherInfo extends BaseObservable {
                 ", gj='" + gj + '\'' +
                 ", gjName='" + gjName + '\'' +
                 ", ygzdw='" + ygzdw + '\'' +
-                ", xgzdwName='" + xgzdwName + '\'' +
+                ", xgzdwName='" + xgzdw + '\'' +
                 ", dwlxdh='" + dwlxdh + '\'' +
                 ", sfswry=" + sfswry +
                 ", sfyqk=" + sfyqk +

@@ -35,10 +35,10 @@ public interface PlaceDao {
      * @param provinceId 省ID
      */
     @Query("SELECT * FROM PLACE WHERE LEVEL=2 AND PARENT_ID=:provinceId")
-    LiveData<List<Place>> findAllCity(int provinceId);
+    LiveData<List<Place>> findAllCity(long provinceId);
 
     @Query("SELECT * FROM PLACE WHERE LEVEL=2 AND PARENT_ID=:provinceId")
-    List<Place> findAllCitySync(int provinceId);
+    List<Place> findAllCitySync(long provinceId);
 
     /**
      * 获取指定市的区/县级列表
@@ -46,10 +46,10 @@ public interface PlaceDao {
      * @param cityId 城市ID
      */
     @Query("SELECT * FROM PLACE WHERE LEVEL=3 AND PARENT_ID=:cityId")
-    LiveData<List<Place>> findAllDistrict(int cityId);
+    LiveData<List<Place>> findAllDistrict(long cityId);
 
     @Query("SELECT * FROM PLACE WHERE LEVEL=3 AND PARENT_ID=:cityId")
-    List<Place> findAllDistrictSync(int cityId);
+    List<Place> findAllDistrictSync(long cityId);
 
     /**
      * 获取指定区/县的乡/镇/办事处/机构列表
@@ -57,10 +57,10 @@ public interface PlaceDao {
      * @param districtId 区/县ID
      */
     @Query("SELECT * FROM PLACE WHERE LEVEL=4 AND PARENT_ID=:districtId")
-    LiveData<List<Place>> findAllAgencies(int districtId);
+    LiveData<List<Place>> findAllAgencies(long districtId);
 
     @Query("SELECT * FROM PLACE WHERE LEVEL=4 AND PARENT_ID=:districtId")
-    List<Place> findAllAgenciesSync(int districtId);
+    List<Place> findAllAgenciesSync(long districtId);
 
 
 }

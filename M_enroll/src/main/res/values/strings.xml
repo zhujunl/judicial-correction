@@ -2,75 +2,217 @@
     <!--    <string name="app_name">Judicial Correction</string>-->
 
     <string-array name="job">
-        <item>国家工作人员</item>
-        <item>现役军人</item>
-        <item>工人</item>
-        <item>农民</item>
-        <item>职员</item>
-        <item>私营企业主、个体劳动者</item>
+        <item>党的机关、国家机关、群众团体和社会组织、企事业单位负责人</item>
+        <item>专业技术人才</item>
+        <item>办事人员和有关人员</item>
+        <item>社会生产服务和生活服务人员</item>
+        <item>农、林、牧、渔业生产及辅助人员</item>
+        <item>生产制造及有关人员</item>
+        <item>军人</item>
+        <item>不便分类的其他从业人员</item>
         <item>学生</item>
-        <item>离退休人员</item>
-        <item>无业人员</item>
+        <item>无业</item>
         <item>其他</item>
     </string-array>
     <string-array name="job_coding">
-        <item>01</item>
-        <item>02</item>
-        <item>03</item>
-        <item>04</item>
-        <item>05</item>
-        <item>06</item>
-        <item>07</item>
-        <item>08</item>
-        <item>09</item>
-        <item>10</item>
+        <item>10000</item>
+        <item>20000</item>
+        <item>30000</item>
+        <item>40000</item>
+        <item>50000</item>
+        <item>60000</item>
+        <item>70000</item>
+        <item>80000</item>
+        <item>90000</item>
+        <item>91000</item>
+        <item>99000</item>
     </string-array>
 
     <string-array name="job_nationalStaff">
-        <item>国家机关</item>
-        <item>国有公司或企业</item>
-        <item>金融机构</item>
-        <item>事业单位</item>
-        <item>人民团体</item>
-        <item>其他</item>
+        <item>中国共产党机关负责人</item>
+        <item>国家机关负责人</item>
+        <item>民主党派和工商联负责人</item>
+        <item>人民团体和群众团体、社会组织及其他成员组织负责人</item>
+        <item>基层群众自治组织负责人</item>
+        <item>企事业单位负责人</item>
     </string-array>
 
     <string-array name="job_nationalStaff_coding">
-        <item>0101</item>
-        <item>0102</item>
-        <item>0102</item>
-        <item>0104</item>
-        <item>0105</item>
-        <item>0106</item>
+        <item>10100</item>
+        <item>10200</item>
+        <item>10300</item>
+        <item>10400</item>
+        <item>10500</item>
+        <item>10600</item>
     </string-array>
 
+
     <string-array name="job_post">
-        <item>在岗</item>
-        <item>下岗</item>
+        <item>哲学研究人员</item>
+        <item>工程技术人员</item>
+        <item>农业技术人员</item>
+        <item>飞机和船舶技术人员</item>
+        <item>卫生专业技术人员</item>
+        <item>经济和金融专业人员</item>
+        <item>法律、社会和宗教专业人员</item>
+        <item>教学人员</item>
+        <item>文学艺术、体育专业人员</item>
+        <item>新闻出版、文化专业人员</item>
+        <item>其他专业技术人员</item>
     </string-array>
 
     <string-array name="job_post_coding">
-        <item>0301</item>
-        <item>0302</item>
+        <item>20100</item>
+        <item>20200</item>
+        <item>20300</item>
+        <item>20400</item>
+        <item>20500</item>
+        <item>20600</item>
+        <item>20700</item>
+        <item>20800</item>
+        <item>20900</item>
+        <item>21000</item>
+        <item>29900</item>
     </string-array>
 
+
     <string-array name="job_farmer">
-        <item>民工</item>
-        <item>农业生产人员</item>
-        <item>渔业生产人员</item>
-        <item>畜牧业生产人员</item>
-        <item>林业生产人员</item>
-        <item>其他</item>
+        <item>办事人员</item>
+        <item>安全和消防人员</item>
+        <item>其他办事人员和有关人员</item>
     </string-array>
 
     <string-array name="job_farmer_coding">
-        <item>0401</item>
-        <item>0402</item>
-        <item>0403</item>
-        <item>0404</item>
-        <item>0405</item>
-        <item>0406</item>
+        <item>30100</item>
+        <item>30200</item>
+        <item>39900</item>
     </string-array>
+
+
+    <string-array name="job_serving">
+        <item>批发与零售服务人员</item>
+        <item>交通运输、仓储和邮政业服务人员</item>
+        <item>住宿和餐饮服务人员</item>
+        <item>信息传输、软件和信息技术服务人员</item>
+        <item>金融服务人员</item>
+        <item>房地产服务人员</item>
+        <item>租赁和商务服务人员</item>
+        <item>技术辅助服务人员</item>
+        <item>水利、环境和公共设施管理服务人员</item>
+        <item>居民服务人员</item>
+        <item>电力、燃气及水供应服务人员</item>
+        <item>修理及制作服务人员</item>
+        <item>文化、体育及娱乐服务人员</item>
+        <item>健康服务人员</item>
+
+    </string-array>
+
+    <string-array name="job_serving_coding">
+        <item>40100</item>
+        <item>40200</item>
+        <item>40300</item>
+        <item>40400</item>
+        <item>40500</item>
+        <item>40600</item>
+        <item>40700</item>
+        <item>40800</item>
+        <item>40900</item>
+        <item>41000</item>
+        <item>41100</item>
+        <item>41200</item>
+        <item>41300</item>
+        <item>41400</item>
+    </string-array>
+
+    <string-array name="job_assist">
+        <item>农业生产人员</item>
+        <item>林业生产人员</item>
+        <item>畜牧业生产人员</item>
+        <item>渔业生产人员</item>
+        <item>农林牧渔生产辅助人员</item>
+        <item>其他农、林、牧、渔、水利业生产人员</item>
+    </string-array>
+
+    <string-array name="job_assist_coding">
+        <item>50100</item>
+        <item>50200</item>
+        <item>50300</item>
+        <item>50400</item>
+        <item>50500</item>
+        <item>59900</item>
+    </string-array>
+
+    <string-array name="job_selfEmployed">
+        <item>农副产品加工人员</item>
+        <item>食品、饮料生产加工人员</item>
+        <item>烟草及其制品加工人员</item>
+        <item>纺织、针织、印染人员</item>
+        <item>纺织品、服装和皮革、皮毛制品加工制作人员</item>
+        <item>木材加工、农具与木制品制作人员</item>
+        <item>纸及纸制品生产加工人员人员</item>
+        <item>印刷和记录媒介复制人员</item>
+        <item>文教、工美体育和娱乐用品制作人员</item>
+        <item>石油加工和炼焦、煤化工制作人员</item>
+        <item>化学原料和化学制品制造人员</item>
+        <item>医药制造人员</item>
+        <item>化学纤维制造人员</item>
+        <item>橡胶和塑料制品制造人员</item>
+        <item>非金属矿物制品制造人员</item>
+        <item>采矿人员</item>
+        <item>金属冶炼和压延加工人员</item>
+        <item>机械制造基础加工人员</item>
+        <item>金属制品制造人员</item>
+        <item>通用设备制造人员</item>
+        <item>专用设备制造人员</item>
+        <item>汽车制造人员</item>
+        <item>铁路、船舶、航空设备制造人员</item>
+        <item>电气机械和器材制造人员</item>
+        <item>计算机、通信、和其他电子设备制造人员</item>
+        <item>仪器仪表制造人员</item>
+        <item>电力、热力、气体、水生产和输配人员</item>
+        <item>建筑施工人员</item>
+        <item>废弃资源综合利用人员</item>
+        <item>运输设备和通用工程机械操作人员及有关人员</item>
+        <item>生产辅助人员</item>
+        <item>其他生产制造及有关人员</item>
+    </string-array>
+    <string-array name="job_selfEmployed_coding">
+        <item>60100</item>
+        <item>60200</item>
+        <item>60300</item>
+        <item>60400</item>
+        <item>60500</item>
+        <item>60600</item>
+        <item>60700</item>
+        <item>60800</item>
+        <item>60900</item>
+        <item>61000</item>
+        <item>61100</item>
+        <item>61200</item>
+        <item>61300</item>
+        <item>61400</item>
+        <item>61500</item>
+        <item>61600</item>
+        <item>61700</item>
+        <item>61800</item>
+        <item>61900</item>
+        <item>62000</item>
+        <item>62100</item>
+        <item>62200</item>
+        <item>62300</item>
+        <item>62400</item>
+        <item>62500</item>
+        <item>62600</item>
+        <item>62800</item>
+        <item>62900</item>
+        <item>62700</item>
+        <item>63000</item>
+        <item>63100</item>
+        <item>69900</item>
+    </string-array>
+
+
+
 
     <string-array name="relationship">
         <item>直系亲属</item>
@@ -116,9 +258,6 @@
         <item>0108</item>
         <item>0109</item>
     </string-array>
-
-
-
 
 
     <string-array name="culture">

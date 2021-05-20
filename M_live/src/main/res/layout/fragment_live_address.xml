@@ -424,7 +424,6 @@
             android:text="居住地变更申请书："
             android:textColor="#393939"
             android:textSize="27px"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"
             app:layout_constraintRight_toLeftOf="@id/btn_application_scan"
             app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />
@@ -440,18 +439,17 @@
             android:text="扫描附件"
             android:textColor="#393939"
             android:textSize="26px"
-            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_change_address_why" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_application_info_show"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="（请将变更申请书放置扫描区进行扫描）"
             android:textColor="#999999"
             android:textSize="27px"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"
             app:layout_constraintLeft_toRightOf="@+id/btn_application_scan"
             app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />
@@ -468,7 +466,6 @@
             android:text="扫描附件"
             android:textColor="#393939"
             android:textSize="26px"
-            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="@+id/btn_application_scan"
             app:layout_constraintRight_toRightOf="@+id/btn_application_scan"
             app:layout_constraintTop_toBottomOf="@+id/btn_application_scan" />
@@ -479,18 +476,17 @@
             android:text="居住地变更申请资料："
             android:textColor="#393939"
             android:textSize="27px"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/btn_application_materials_scan"
             app:layout_constraintRight_toLeftOf="@id/btn_application_materials_scan"
             app:layout_constraintTop_toTopOf="@+id/btn_application_materials_scan" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_application_info_show2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="（请将变更申请书放置扫描区进行扫描）"
+            android:text="（请将变更申请资料放置扫描区进行扫描）"
             android:textColor="#999999"
             android:textSize="27px"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/btn_application_materials_scan"
             app:layout_constraintLeft_toRightOf="@+id/btn_application_materials_scan"
             app:layout_constraintTop_toTopOf="@+id/btn_application_materials_scan" />

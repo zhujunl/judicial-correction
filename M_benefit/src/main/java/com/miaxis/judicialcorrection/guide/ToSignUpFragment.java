@@ -51,9 +51,6 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
     @Inject
     AppToast appToast;
 
-    private SignUpContentBean mItemListBean = new SignUpContentBean();
-
-    private int ItemCheckPosition;
 
     @Override
     protected int initLayout() {
@@ -77,11 +74,10 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
                 return;
             }
             IdCard idCardBean = viewModel.idCard;
-            mItemListBean = listBean;
-            ItemCheckPosition = position;
+            viewModel.mItem.set(listBean.getId());
             if (idCardBean != null && getActivity() != null) {
                 PersonInfo info = new PersonInfo();
-                info.setId(viewModel.mStrPid.getValue());
+                info.setId(viewModel.mStrPid.get());
                 info.setXm(idCardBean.idCardMsg.name);
                 info.setIdCardNumber(idCardBean.idCardMsg.id_num);
                 ((PublicWelfareActivity) getActivity()).replaceFragment(
@@ -100,13 +96,14 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
             binding.tvName.setText("姓名：" + viewModel.idCard.idCardMsg.name);
             binding.tvIdCard.setText("身份证号：" + viewModel.idCard.idCardMsg.id_num);
         }
-        mPid = viewModel.mStrPid.getValue();
+        mPid = viewModel.mStrPid.get();
         setData();
         if (getActivity() != null && getActivity() instanceof PublicWelfareActivity) {
             boolean b = ((PublicWelfareActivity) getActivity()).mVerificationSignUp;
             if (b) {
                 ((PublicWelfareActivity) getActivity()).mVerificationSignUp = false;
-                viewModel.getParticipate(mItemListBean.getId()).observe(ToSignUpFragment.this, objectResource -> {
+                String s = viewModel.mItem.get();
+                viewModel.getParticipate(s).observe(ToSignUpFragment.this, objectResource -> {
                     if (objectResource.isSuccess()) {
                         new DialogResult(getActivity(), new DialogResult.ClickListener() {
                             @Override
@@ -122,8 +119,6 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
 
                             @Override
                             public void onTimeOut(AppCompatDialog appCompatDialog) {
-                                mItemListBean.setSignUpSucceed(true);
-                                mAdapter.notifyItemChanged(ItemCheckPosition);
                                 appCompatDialog.dismiss();
                             }
                         }, new DialogResult.Builder(
@@ -200,7 +195,7 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
         if (historySignUpBeanResource != null) {
             setHistoryData(list, historySignUpBeanResource);
         } else {
-            viewModel.getHistoryWelfareInfo(page, 1000, mPid).observe(this, listResource -> {
+            viewModel.getHistoryWelfareInfo(page, 100, mPid).observe(this, listResource -> {
                 if (listResource.isSuccess()) {
                     historySignUpBeanResource = listResource;
                     setHistoryData(list, listResource);

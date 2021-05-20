@@ -20,7 +20,7 @@ public class Place {
      */
 
     @PrimaryKey(autoGenerate = true)
-    public int ID;
+    public long ID;
     public String VALUE;
     public int PARENT_ID;
     public int LEVEL;

@@ -33,7 +33,6 @@ public class AlreadySignUpFragment extends BaseBindingFragment<FragmentAlreadySi
     private boolean isRefresh = true;
     private String mPid;
 
-
     @Override
     protected int initLayout() {
         return R.layout.fragment_already_sign_up;
@@ -53,7 +52,7 @@ public class AlreadySignUpFragment extends BaseBindingFragment<FragmentAlreadySi
         binding.rvActivityList.setAdapter(adapter);
         mAdapter = new HistorySignUpAdapter();
         initLoadMore();
-        mPid = viewModel.mStrPid.getValue();
+        mPid = viewModel.mStrPid.get();
         binding.rvActivityList.setAdapter(mAdapter);
         setData();
     }
@@ -104,5 +103,4 @@ public class AlreadySignUpFragment extends BaseBindingFragment<FragmentAlreadySi
             }
         });
     }
-
 }

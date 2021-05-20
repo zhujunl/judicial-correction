@@ -2,8 +2,10 @@ package com.miaxis.faceid;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.hardware.Camera;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -30,9 +32,10 @@ public class FaceRectView extends View {
     }
 
     private RectF mRectF;
-
-    public void setRect(RectF rect) {
+private boolean mirror=false;
+    public void setRect(RectF rect,boolean mirror) {
         this.mRectF = rect;
+        this.mirror=mirror;
         //如果出现人脸框与视频中人脸移动方向不对，需进行位置转换，改变mRectF的值
         //float left, float top, float right, float bottom
         invalidate();
@@ -42,9 +45,42 @@ public class FaceRectView extends View {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         if (this.mRectF == null) {
+            canvas.save();
             canvas.restore();
         } else {
-            canvas.drawRect(this.mRectF, this.mPaint);
+//            Matrix  matrix =new  Matrix();
+
+
+//            int width=getWidth();
+//            int height=getHeight();
+//            matrix.setScale(1f, 1f);
+//            matrix.postRotate(90);
+//            matrix.postScale(width / 2000f, height / 2000f);
+//            matrix.postTranslate(width/3f,height/3f);
+//           // 偏移量
+//           canvas. drawRect(mRectF,this.mPaint);
+
+
+            int width = getWidth();
+            int height = getHeight();
+            float left;
+            float right;
+            float top=mRectF.top;
+            float bottom=mRectF.bottom;
+            if (mirror){
+                 left=  (width- this.mRectF.right);
+                 right=  (width- this.mRectF.left);
+            }else {
+                 left= this.mRectF.left+(width/10);
+                 right= this.mRectF.right+(width/10);
+                 top=top+(height/10);
+                 bottom=bottom+(height/10);
+            }
+
+//            int top= (int) (height- this.mRectF.top);
+//            int bottom= (int) (height- this.mRectF.top);
+
+            canvas.drawRect(left,top,right,bottom, this.mPaint);
         }
     }
 }

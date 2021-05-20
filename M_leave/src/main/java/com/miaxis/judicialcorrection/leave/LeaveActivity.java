@@ -73,10 +73,12 @@ public class LeaveActivity extends BaseBindingActivity<ActivityLeaveBinding> imp
 
     private String pid = "";
 
+    private  PersonInfo personInfo;
     @Override
     public void onLogin(PersonInfo personInfo) {
         if (personInfo != null) {
             pid = personInfo.getId();
+            this.personInfo=personInfo;
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.layout_root, new VerifyPageFragment(title, personInfo))
@@ -87,9 +89,10 @@ public class LeaveActivity extends BaseBindingActivity<ActivityLeaveBinding> imp
     @Override
     public void onVerify(ZZResponse<VerifyInfo> response) {
         if (ZZResponse.isSuccess(response)) {
+            VerifyInfo verifyInfo=new VerifyInfo(personInfo.getId(),personInfo.getXm(),personInfo.getIdCardNumber());
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.layout_root, new LeaveListFragment(response.getData()))
+                    .replace(R.id.layout_root, new LeaveListFragment(verifyInfo))
                     .commitNow();
         } else {
             DialogResult.Builder builder = new DialogResult.Builder();

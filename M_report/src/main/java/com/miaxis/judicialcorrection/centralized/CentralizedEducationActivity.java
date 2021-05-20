@@ -2,6 +2,7 @@ package com.miaxis.judicialcorrection.centralized;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.api.vo.Education;
@@ -47,6 +48,10 @@ public class CentralizedEducationActivity extends BaseBindingActivity<ActivityRe
     @Inject
     Lazy<AppHints> appHintsLazy;
 
+    private String mTempId;
+
+    private String mPid;
+
     @Override
     protected int initLayout() {
         return R.layout.activity_report;
@@ -77,16 +82,7 @@ public class CentralizedEducationActivity extends BaseBindingActivity<ActivityRe
     @Override
     public void onLogin(PersonInfo personInfo) {
         if (personInfo != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.layout_root, new VerifyPageFragment(title, personInfo))
-                    .commitNow();
-        }
-    }
-
-    @Override
-    public void onVerify(ZZResponse<VerifyInfo> response) {
-        if (ZZResponse.isSuccess(response)) {
+            mPid=personInfo.getId();
             mCentralizedEducationRepo.getEducation(1, 100).observe(this, new Observer<Resource<Education>>() {
                 @Override
                 public void onChanged(Resource<Education> objectResource) {
@@ -111,7 +107,6 @@ public class CentralizedEducationActivity extends BaseBindingActivity<ActivityRe
                                 });
                                 return;
                             }
-
                             Education.ListBean temp = null;
                             for (Education.ListBean listBean : objectResource.data.list) {
                                 if (TimeUtils.isInTime(listBean.jyxxkssj, listBean.jyxxjssj)) {
@@ -130,11 +125,22 @@ public class CentralizedEducationActivity extends BaseBindingActivity<ActivityRe
                                 });
                                 return;
                             }
-                            addEducation(temp.id, response.getData().pid);
+                            mTempId=temp.id;
+                            getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.layout_root, new VerifyPageFragment(title, personInfo,temp))
+                                    .commitNow();
                             break;
                     }
                 }
             });
+        }
+    }
+
+    @Override
+    public void onVerify(ZZResponse<VerifyInfo> response) {
+        if (ZZResponse.isSuccess(response)) {
+            addEducation(mTempId, mPid);
         } else {
             DialogResult.Builder builder = new DialogResult.Builder();
             builder.success = false;
@@ -164,7 +170,6 @@ public class CentralizedEducationActivity extends BaseBindingActivity<ActivityRe
             }, builder).show();
         }
     }
-
 
     private void addEducation(String id, String pid) {
         mCentralizedEducationRepo.educationAdd(id, pid).observe(this, new Observer<Resource<Object>>() {

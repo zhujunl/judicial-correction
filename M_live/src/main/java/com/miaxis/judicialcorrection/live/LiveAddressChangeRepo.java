@@ -1,5 +1,7 @@
 package com.miaxis.judicialcorrection.live;
 
+import android.text.TextUtils;
+
 import androidx.lifecycle.LiveData;
 
 import com.google.gson.Gson;
@@ -12,6 +14,7 @@ import com.miaxis.judicialcorrection.base.utils.ResourceConvertUtils;
 import com.miaxis.judicialcorrection.bean.LiveAddressChangeBean;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -31,27 +34,33 @@ public class LiveAddressChangeRepo {
         this.apiService = apiService;
     }
 
+    private final   Gson gson=new Gson();
     @SuppressWarnings("all")
-    public LiveData<Resource<Object>> setLiveAddressChange(LiveAddressChangeBean liveAddressChangeBean) {
-//        MultipartBody.Builder builder = new MultipartBody.Builder()
-//                .setType(MultipartBody.FORM);
-        String toJson = new Gson().toJson(liveAddressChangeBean);
+    public LiveData<Resource<Object>> setLiveAddressChange(LiveAddressChangeBean liveAddressChangeBean,String[] jzdbgsqs,String[] jzdbgsqcl) {
+        String cardTypeJson = gson.toJson(liveAddressChangeBean);
+        Map<String, Object> hashMap= new Gson().fromJson(cardTypeJson,Map.class);
+        //文件数组方式base64
+        if (jzdbgsqs!=null&&jzdbgsqs.length!=0){
+            for (String str:jzdbgsqs) {
+                if (!TextUtils.isEmpty(str)) {
+                    hashMap.put("jzdbgsqs", jzdbgsqs);
+                    break;
+                }
+            }
+        }
+        if (jzdbgsqcl!=null&&jzdbgsqcl.length!=0){
+            for (String str:jzdbgsqcl) {
+                if (!TextUtils.isEmpty(str)) {
+                    hashMap.put("qjsqcl", jzdbgsqcl);
+                    break;
+                }
+            }
+        }
+        String toJson = gson.toJson(hashMap);
         Timber.e("setLiveAddressChange %s",toJson);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
         LiveData<ApiResult<Object>> apiResultLiveData=  apiService.changeLiveAddress(body);
 
-        // 上传文件
-        // file1Location文件的路径 ,我是在手机存储根目录下创建了一个文件夹,里面放着了一张图片;
-//        File file = new File("");
-//        RequestBody imageBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-//        //添加文件(uploadfile就是你服务器中需要的文件参数)
-//        builder.addFormDataPart("uploadfile", file.getName(), imageBody);
-//        File file2 = new File(""); //file1Location文件的路径 ,我是在手机存储根目录下创建了一个文件夹,里面放着了一张图片;
-//        RequestBody imageBody2 = RequestBody.create(MediaType.parse("multipart/form-data"), file2);
-//        //添加文件(uploadfile就是你服务器中需要的文件参数)
-//        builder.addFormDataPart("uploadfile2", file.getName(), imageBody2);
-//        List<MultipartBody.Part> parts = builder.build().parts();
-//        LiveData<ApiResult<String>> apiResultLiveData = apiService.changeLiveAddress(parts);
         return ResourceConvertUtils.convertToResource(apiResultLiveData);
     }
 

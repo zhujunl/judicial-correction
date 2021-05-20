@@ -1,5 +1,7 @@
 package com.miaxis.judicialcorrection.leave;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.miaxis.judicialcorrection.base.api.ApiResult;
 import com.miaxis.judicialcorrection.base.api.ApiService;
@@ -41,7 +43,8 @@ public class LeaveRepo {
     public LiveData<Resource<Object>> leaveAdd(String pid,
                                                String sqsj,
                                                String xjms,
-
+                                                String[] qjsqs,
+                                                String[] qjsqcl,
                                                String wcly,
                                                String jsrq,
                                                String ksqr,
@@ -58,7 +61,22 @@ public class LeaveRepo {
         hashMap.put("sqsj", sqsj);
         hashMap.put("xjms", xjms);
         hashMap.put("pid", pid);
-
+        if (qjsqs!=null&&qjsqs.length!=0){
+            for (String str:qjsqs) {
+                if (!TextUtils.isEmpty(str)) {
+                    hashMap.put("qjsqs", qjsqs);
+                    break;
+                }
+            }
+        }
+        if (qjsqcl!=null&&qjsqcl.length!=0){
+            for (String str:qjsqcl) {
+                if (!TextUtils.isEmpty(str)) {
+                    hashMap.put("qjsqcl", qjsqcl);
+                    break;
+                }
+            }
+        }
         List<Bean> list = new ArrayList<>();
         Bean bean = new Bean();
         bean.pid = pid;

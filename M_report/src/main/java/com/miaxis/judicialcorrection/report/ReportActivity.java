@@ -50,15 +50,6 @@ public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> i
     @Override
     protected void initView(@NonNull ActivityReportBinding binding, @Nullable Bundle savedInstanceState) {
         readIdCard();
-        // TODO: 2021/5/18 测试双目识别
-        //        PersonInfo personInfo = new PersonInfo();
-        //        personInfo.setXm("堂客");
-        //        personInfo.setIdCardNumber("34292119931125481X");
-        //        Bitmap idCardFace = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/34292119931125481X.jpeg");
-        //        getSupportFragmentManager()
-        //                .beginTransaction()
-        //                .replace(R.id.layout_root, new GetFacePageFragment(personInfo, idCardFace))
-        //                .commitNow();
     }
 
     private void readIdCard() {
@@ -94,7 +85,12 @@ public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> i
     @Override
     public void onVerify(ZZResponse<VerifyInfo> response) {
         if (ZZResponse.isSuccess(response)) {
-            mReportRepo.reportAdd(id).observe(this, new Observer<Resource<Object>>() {
+            //默认人脸 如果有指纹再传指纹相对应的
+            String entryMethod="2";
+//            if (response.getData()!=null){
+//                entryMethod=response.getData().entryMethod;
+//            }
+            mReportRepo.reportAdd(id,entryMethod).observe(this, new Observer<Resource<Object>>() {
                 @Override
                 public void onChanged(Resource<Object> objectResource) {
                     switch (objectResource.status) {

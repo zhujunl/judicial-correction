@@ -41,6 +41,8 @@
             android:text="@={data.relationshipName}"
             android:layout_width="0dp"
             android:hint="请选择"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:onClick="@{() -> itemPresenter.onClickRelationship(data,tvRelationship)}"
             android:layout_height="match_parent"
             android:layout_weight="1.2"
