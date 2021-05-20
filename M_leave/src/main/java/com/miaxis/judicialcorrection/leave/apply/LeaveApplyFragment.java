@@ -113,7 +113,12 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
                         mApplyViewModel.details.get(),
                         mApplyViewModel.mProvince.getValue().ID + "",
                         mApplyViewModel.mDistrict.getValue().ID + "",
-                        mApplyViewModel.mCity.getValue().ID + ""
+                        mApplyViewModel.mCity.getValue().ID + "",
+                        mApplyViewModel.mAgencies.getValue().VALUE + "",
+                        mApplyViewModel.mProvince.getValue().VALUE + "",
+                        mApplyViewModel.mDistrict.getValue().VALUE + "",
+                        mApplyViewModel.mCity.getValue().VALUE + ""
+
                 ).observe(this, objectResource -> {
                     switch (objectResource.status) {
                         case LOADING:

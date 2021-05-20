@@ -13,8 +13,8 @@ public class FaceConfig {
 
     public static int minFaceQuality = 80;
 
-    public static float threshold = 0.73F;
+    public static float threshold = 0.75F;
 
-    public static float thresholdIdCard = 0.65F;
+    public static float thresholdIdCard = 0.73F;
 
 }

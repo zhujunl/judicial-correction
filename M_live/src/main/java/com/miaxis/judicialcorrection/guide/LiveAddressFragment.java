@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.gson.Gson;
 import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.CameraPreviewCallback;
@@ -55,9 +56,9 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
     private String base64LiveChangeApplication;
     //申请资料
     private String base64LiveChangeData;
-    private  File mFilePath;
+    private File mFilePath;
     //扫描类型
-    private int scanType=0;
+    private int scanType = 0;
 
     @Inject
     AppHints appHints;
@@ -80,11 +81,11 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
         });
 
         binding.btnApplicationScan.setOnClickListener(v -> {
-            scanType=0;
+            scanType = 0;
             openScanning();
         });
         binding.btnApplicationMaterialsScan.setOnClickListener(v -> {
-            scanType=1;
+            scanType = 1;
             openScanning();
         });
     }
@@ -146,6 +147,7 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                     }
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -275,7 +277,6 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
     }
 
 
-
     public static class SpAdapter extends BaseAdapter {
 
         private List<JusticeBureau> data;
@@ -333,27 +334,36 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                 value.qrdszx = model.smallTown.getValue().get(binding.spDistrict.getSelectedItemPosition()).ID + "";
                 value.qrdszxName = model.smallTown.getValue().get(binding.spDistrict.getSelectedItemPosition()).VALUE;
             } else {
-                value.qrdszx = null;
-                value.qrdszxName = null;
+                value.qrdszx = "";
+                value.qrdszxName = "";
             }
             if ("浙江省".equals(value.qrdszsName)) {
                 if (model.street.getValue() != null && !model.street.getValue().isEmpty()) {
                     value.qrdxz = model.street.getValue().get(binding.spStreet.getSelectedItemPosition()).ID + "";
                     value.qrdxzName = model.street.getValue().get(binding.spStreet.getSelectedItemPosition()).VALUE;
                 } else {
-                    value.qrdxz = null;
-                    value.qrdxzName = null;
+                    value.qrdxz = "";
+                    value.qrdxzName = "";
                 }
             } else {
-                value.qrdxz = null;
-                value.qrdxzName = null;
+                value.qrdxz = "";
+                value.qrdxzName = "";
+            }
+            if (TextUtils.isEmpty(value.qrdmx)) {
+                value.qrdmx = "";
             }
             Object itemAtPosition = binding.spinnerJiedao.getSelectedItem();
             if (itemAtPosition instanceof JusticeBureau) {
                 value.njsjzdwId = ((JusticeBureau) itemAtPosition).getTeamId();
                 value.njsjzdwName = ((JusticeBureau) itemAtPosition).getTeamName();
+                if (TextUtils.isEmpty(value.njsjzdwId)) {
+                    value.njsjzdwId = "";
+                }
+                if (TextUtils.isEmpty(value.njsjzdwName)) {
+                    value.njsjzdwName = "";
+                }
             }
-            model.setLiveAddressChange(new String[]{base64LiveChangeApplication},new String[]{base64LiveChangeData}).observe(this, observer -> {
+            model.setLiveAddressChange(new String[]{base64LiveChangeApplication}, new String[]{base64LiveChangeData}).observe(this, observer -> {
                 if (observer.isSuccess()) {
                     LiveAddressChangeBean v = model.liveBean.getValue();
                     v.sqsj = model.currentTime(false);
@@ -402,20 +412,20 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                 mxCamera.getData().setPreviewCallback(this);
                 mxCamera.getData().start(null);
                 mxCamera.getData().setNextFrameEnable();
-            }else{
+            } else {
                 appHints.showError("扫描失败！");
             }
-        }else{
+        } else {
             appHints.showError("扫描设备初始化失败请点击重试！");
         }
     }
 
     @Override
     public void onPreview(MXFrame frame) {
-        if (MXFrame.isNullCamera(frame)){
+        if (MXFrame.isNullCamera(frame)) {
             return;
         }
-        String fileName = "sm"+scanType+".jpg";
+        String fileName = "sm" + scanType + ".jpg";
         File file = new File(mFilePath, fileName);
         boolean frameImage = frame.camera.saveFrameImage(file.getAbsolutePath());
         if (frameImage) {
@@ -432,18 +442,18 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                     binding.tvApplicationInfoShow2.setText(fileName);
                 }
             });
-        }else{
+        } else {
             mHandler.post(() -> appHints.showError("扫描保存文件失败，请点击重试！"));
         }
     }
 
-    private final  static  Handler mHandler=new Handler();
+    private final static Handler mHandler = new Handler();
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        base64LiveChangeApplication=null;
-        base64LiveChangeData=null;
+        base64LiveChangeApplication = null;
+        base64LiveChangeData = null;
         mHandler.removeCallbacksAndMessages(null);
     }
 }

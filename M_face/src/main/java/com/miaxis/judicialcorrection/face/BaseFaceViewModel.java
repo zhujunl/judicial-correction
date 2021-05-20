@@ -95,8 +95,8 @@ public class BaseFaceViewModel extends ViewModel {
                         int extractFeatureRgb = FaceManager.getInstance().extractFeatureRgb(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, false, feature);
                         if (extractFeatureRgb == 0) {
                             //test
-                            String p = Environment.getExternalStorageDirectory().getAbsolutePath() + "/D/" + System.currentTimeMillis() + ".bmp";
-                            FaceManager.getInstance().saveRgbTiFile(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, p);
+//                            String p = Environment.getExternalStorageDirectory().getAbsolutePath() + "/D/" + System.currentTimeMillis() + ".bmp";
+//                            FaceManager.getInstance().saveRgbTiFile(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, p);
 //                         /*=========================================================*/
                             rgbFrameFaceFeature = feature;
                             captureCallback.onLiveReady(nirFrame,true);

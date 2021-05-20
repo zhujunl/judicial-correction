@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import androidx.lifecycle.LiveData;
+
 import timber.log.Timber;
 
 /**
@@ -43,8 +44,8 @@ public class LeaveRepo {
     public LiveData<Resource<Object>> leaveAdd(String pid,
                                                String sqsj,
                                                String xjms,
-                                                String[] qjsqs,
-                                                String[] qjsqcl,
+                                               String[] qjsqs,
+                                               String[] qjsqcl,
                                                String wcly,
                                                String jsrq,
                                                String ksqr,
@@ -56,21 +57,26 @@ public class LeaveRepo {
                                                String wcmddszs,
                                                String wcmddszx,
                                                String wcmddszd
+                                               ,
+                                                String wcmddxzName,
+                                               String wcmddszsName,
+                                               String wcmddszxName,
+                                               String wcmddszdName
     ) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sqsj", sqsj);
         hashMap.put("xjms", xjms);
         hashMap.put("pid", pid);
-        if (qjsqs!=null&&qjsqs.length!=0){
-            for (String str:qjsqs) {
+        if (qjsqs != null && qjsqs.length != 0) {
+            for (String str : qjsqs) {
                 if (!TextUtils.isEmpty(str)) {
                     hashMap.put("qjsqs", qjsqs);
                     break;
                 }
             }
         }
-        if (qjsqcl!=null&&qjsqcl.length!=0){
-            for (String str:qjsqcl) {
+        if (qjsqcl != null && qjsqcl.length != 0) {
+            for (String str : qjsqcl) {
                 if (!TextUtils.isEmpty(str)) {
                     hashMap.put("qjsqcl", qjsqcl);
                     break;
@@ -80,11 +86,15 @@ public class LeaveRepo {
         List<Bean> list = new ArrayList<>();
         Bean bean = new Bean();
         bean.pid = pid;
+        bean.wcmddmx = TextUtils.isEmpty(wcmddmx)?"":wcmddmx;;
         bean.wcmddxz = wcmddxz;
-        bean.wcmddmx = wcmddmx;
         bean.wcmddszs = wcmddszs;
         bean.wcmddszx = wcmddszx;
         bean.wcmddszd = wcmddszd;
+        bean.wcmddxzName = TextUtils.isEmpty(wcmddxzName)?"":wcmddxzName;
+        bean.wcmddszsName = TextUtils.isEmpty(wcmddszsName)?"":wcmddszsName;;
+        bean.wcmddszxName = TextUtils.isEmpty(wcmddszxName)?"":wcmddszxName;;
+        bean.wcmddszdName = TextUtils.isEmpty(wcmddszdName)?"":wcmddszdName;;
         list.add(bean);
         hashMap.put("list", list);
 
@@ -119,6 +129,13 @@ public class LeaveRepo {
         public String wcmddszs;
         public String wcmddszx;
         public String wcmddszd;
+
+        public String wcmddszsName;
+        public String wcmddszdName;
+        public String wcmddszxName;
+        public String wcmddxzName;
+
+
     }
 
 }
