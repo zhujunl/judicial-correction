@@ -56,7 +56,9 @@ public class FaceManager {
         for (int i = 0; i < MXFaceInfoEx.iMaxFaceNum; i++) {
             this.mFaceInfoExesRgb[i] = new MXFaceInfoEx();
         }
-        System.arraycopy(mFaceInfoExesRgb, 0, mFaceInfoExesNir, 0, MXFaceInfoEx.iMaxFaceNum);
+        for (int i = 0; i < MXFaceInfoEx.iMaxFaceNum; i++) {
+            this.mFaceInfoExesNir[i] = new MXFaceInfoEx();
+        }
         return this.mMXFaceAPI.mxInitAlg(context, null, null);
     }
 
