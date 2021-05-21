@@ -18,6 +18,8 @@ import javax.inject.Singleton;
 
 import androidx.lifecycle.LiveData;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import timber.log.Timber;
 
 /**
@@ -104,8 +106,10 @@ public class LeaveRepo {
         hashMap.put("wcts", wcts);
         hashMap.put("sfyxj", sfyxj);
 
-        Timber.i("leaveAdd:%s", new Gson().toJson(hashMap));
-        LiveData<ApiResult<Object>> login = apiService.leaveAdd(hashMap);
+        String toJson = new Gson().toJson(hashMap);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
+        Timber.i("leaveAdd:%s", toJson);
+        LiveData<ApiResult<Object>> login = apiService.leaveAdd(body);
         return ResourceConvertUtils.convertToResource(login);
     }
 

@@ -1,11 +1,13 @@
 package com.miaxis.judicialcorrection.leave.progress;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.api.vo.Leave;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.base.utils.TimeUtils;
+import com.miaxis.judicialcorrection.base.utils.numbers.HexStringUtils;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
 import com.miaxis.judicialcorrection.leave.LeaveRepo;
 import com.miaxis.judicialcorrection.leave.R;
@@ -75,7 +77,11 @@ public class ProgressFragment extends BaseBindingFragment<FragmentProgressBindin
                         progressViewModel.days.set(item.wcts);
                         progressViewModel.reasonType.set(item.wclyName);
                         progressViewModel.reason.set(item.wcly);
-                        progressViewModel.cancelTime.set(item.xjsj);
+                        String s = HexStringUtils.convertGMTToLocal(item.xjsj);
+                        if (TextUtils.isEmpty(s)){
+                            s="";
+                        }
+                        progressViewModel.cancelTime.set(s);
                     }
                     break;
             }

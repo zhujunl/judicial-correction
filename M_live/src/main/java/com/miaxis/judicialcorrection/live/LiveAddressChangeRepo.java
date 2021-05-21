@@ -51,7 +51,7 @@ public class LiveAddressChangeRepo {
         if (jzdbgsqcl!=null&&jzdbgsqcl.length!=0){
             for (String str:jzdbgsqcl) {
                 if (!TextUtils.isEmpty(str)) {
-                    hashMap.put("qjsqcl", jzdbgsqcl);
+                    hashMap.put("jzdbgsqcl", jzdbgsqcl);
                     break;
                 }
             }

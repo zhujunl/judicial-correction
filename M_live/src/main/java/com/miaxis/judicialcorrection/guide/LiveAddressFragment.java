@@ -445,6 +445,12 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
         } else {
             mHandler.post(() -> appHints.showError("扫描保存文件失败，请点击重试！"));
         }
+        try {
+            CameraHelper.getInstance().stop();
+            frame.camera.stop();
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
     }
 
     private final static Handler mHandler = new Handler();

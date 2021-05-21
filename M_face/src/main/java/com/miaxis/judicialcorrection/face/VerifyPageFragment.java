@@ -335,11 +335,13 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
 
     @Override
     public void onMatchReady(boolean success) {
-        if (success) {
-            verifyComplete(ZZResponse.CreateSuccess());
-        } else {
-            verifyComplete(ZZResponse.CreateFail(-100, "核验失败"));
-        }
+        mHandler.post(() -> {
+            if (success) {
+                verifyComplete(ZZResponse.CreateSuccess());
+            } else {
+                verifyComplete(ZZResponse.CreateFail(-100, "核验失败"));
+            }
+        });
     }
 
     @Override

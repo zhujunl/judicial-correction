@@ -316,6 +316,12 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
         }else{
             mHandler.post(() -> appHintsLazy.get().showError("扫描文件保存失败，请点击重试！"));
         }
+        try {
+            CameraHelper.getInstance().stop();
+            frame.camera.stop();
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
     }
     private final  static   Handler mHandler=new Handler();
 

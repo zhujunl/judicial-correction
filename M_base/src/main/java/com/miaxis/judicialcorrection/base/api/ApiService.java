@@ -120,10 +120,9 @@ public interface ApiService {
             @Query("rows") int rows
     );
 
+    //
     @POST("/leave/add")
-    LiveData<ApiResult<Object>> leaveAdd(
-            @Body() Map<String, Object> body
-    );
+    LiveData<ApiResult<Object>> leaveAdd(@Body() RequestBody body);
 
     @POST("/leave/end")
     LiveData<ApiResult<Object>> leaveEnd(
@@ -160,7 +159,7 @@ public interface ApiService {
     LiveData<ApiResult<LiveAddressChangeDetailsBean>> getLiveAddressChangeDetails(@Query("id") String id);
 
 
-    //社区对象变更采集 文件和参数一起上传
+    //社区对象变更采集 文件和参数一起上传 //
     @POST("/placeChange/add")
     LiveData<ApiResult<Object>> changeLiveAddress(@Body() RequestBody body);
     //            @Part() List<MultipartBody.Part > files);
