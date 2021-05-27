@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_app_background_glass" />
+
+        <include
+            android:id="@+id/tv_app_title"
+            layout="@layout/layout_app_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back_to_home"
+            android:layout_width="236px"
+            android:layout_height="85px"
+            android:layout_marginTop="43px"
+            android:layout_marginEnd="33px"
+            android:background="@drawable/bg_btn_back_to_home"
+            android:gravity="center"
+            android:text="@string/btn_text_back_to_home"
+            android:textColor="@color/color_text_btn"
+            android:textSize="42px"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_app_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52px"
+            android:gravity="center"
+            android:text="基本信息采集"
+            android:textColor="@color/color_text_title"
+            android:textSize="68px"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_app_title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="38px"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            tools:itemCount="6"
+            tools:listitem="@layout/item_fragment_base_info" />
+
+
+        <FrameLayout
+            android:id="@+id/infoContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16px"
+            app:layout_constraintBottom_toTopOf="@id/nextBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerview" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/preBtn"
+            android:layout_width="421px"
+            android:layout_height="104px"
+            android:layout_marginTop="64px"
+            android:background="@drawable/bg_btn_back_to_home_green"
+            android:gravity="center"
+            android:text="上一步"
+            android:textColor="#fff"
+            android:visibility="gone"
+            app:layout_constraintBaseline_toBaselineOf="@id/nextBtn"
+            app:layout_constraintEnd_toStartOf="@id/nextBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/nextBtn"
+            android:layout_width="421px"
+            android:layout_height="104px"
+            android:layout_marginBottom="66px"
+            android:background="@drawable/bg_btn_back_to_home_green"
+            android:gravity="center"
+            android:text="下一步"
+            android:textColor="#fff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/preBtn" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_app_background_glass" />
+
+        <include
+            android:id="@+id/tv_app_title"
+            layout="@layout/layout_app_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52px"
+            android:gravity="center"
+            android:textColor="@color/color_text_title"
+            android:textSize="48px"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_app_title"
+            tools:text="人像采集" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back_to_home"
+            android:layout_width="276px"
+            android:layout_height="104px"
+            android:layout_marginTop="27px"
+            android:layout_marginEnd="36px"
+            android:background="@drawable/bg_btn_back_to_home"
+            android:gravity="center"
+            android:text="@string/btn_text_back_to_home"
+            android:textColor="@color/color_text_btn"
+            android:textSize="48px"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="44px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_name_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_name"
+                android:textColor="@color/color_text_black"
+                android:textSize="30px" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/tv_name_title"
+                android:textColor="@color/color_text_black"
+                android:textSize="30px"
+                tools:text="@string/text_name" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_id_card_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_id_card"
+                android:layout_toEndOf="@id/tv_name"
+                android:textColor="@color/color_text_black"
+                android:textSize="30px" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_id_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_text_black"
+                android:textSize="30px"
+                android:layout_toEndOf="@id/tv_id_card_title"
+                tools:text="@string/text_id_card" />
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_face_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="373px"
+            android:text="@string/text_face_tips"
+            android:layout_marginStart="568px"
+            android:textColor="@color/color_text_black"
+            android:textSize="30px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <SurfaceView
+            android:id="@+id/sv_preview"
+            android:layout_width="538px"
+            android:layout_height="472px"
+            android:layout_marginTop="27px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="456px"
+            app:layout_constraintTop_toBottomOf="@id/tv_face_tips" />
+
+        <com.miaxis.faceid.FaceRectView
+            android:id="@+id/frv_face"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="@id/sv_preview"
+            app:layout_constraintLeft_toLeftOf="@id/sv_preview"
+            app:layout_constraintRight_toRightOf="@id/sv_preview"
+            app:layout_constraintTop_toTopOf="@id/sv_preview" />
+
+        <!--        <androidx.appcompat.widget.AppCompatImageView-->
+        <!--            android:id="@+id/iv_face"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:adjustViewBounds="true"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/sv_preview"-->
+        <!--            app:layout_constraintLeft_toLeftOf="@id/sv_preview"-->
+        <!--            app:layout_constraintRight_toRightOf="@id/sv_preview"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/sv_preview"-->
+        <!--            app:srcCompat="@mipmap/mipmap_bg_face" />-->
+
+        <!--        <com.miaxis.judicialcorrection.widget.countdown.CountDownTextView-->
+        <!--            android:id="@+id/tv_tips"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="70px"-->
+        <!--            android:layout_marginBottom="10px"-->
+        <!--            android:textColor="@color/color_text_black"-->
+        <!--            android:textSize="23px"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/iv_face"-->
+        <!--            app:layout_constraintLeft_toLeftOf="@id/iv_face"-->
+        <!--            app:layout_constraintRight_toRightOf="@id/iv_face"-->
+        <!--            tools:text="3、2、1，自动拍照" />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -2,6 +2,7 @@ package com.miaxis.enroll.guide.infos;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -98,12 +99,24 @@ public class ResumeFragment extends BaseInfoFragment<FragmentResumeBinding> {
     }
 
     private void setRvHeight() {
-        if (adapter.getItemCount() >= 9) {
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
-            params.height = 700;
-        } else {
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
-            params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+        Configuration mConfiguration = this.getResources().getConfiguration();
+        int ori = mConfiguration.orientation;
+        if (Configuration.ORIENTATION_LANDSCAPE==ori){//横屏
+            if (adapter.getItemCount() >= 4) {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
+                params.height = 400;
+            } else {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
+                params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            }
+        }else {//竖屏
+            if (adapter.getItemCount() >= 9) {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
+                params.height = 700;
+            } else {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
+                params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            }
         }
     }
 

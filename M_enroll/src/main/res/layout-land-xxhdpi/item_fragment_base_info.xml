@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.miaxis.enroll.guide.NvListItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <View
+            android:id="@+id/dotSmall"
+            android:layout_width="14px"
+            android:layout_height="14px"
+            android:layout_marginTop="20px"
+            android:background="@drawable/shape_nv_dot"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <!--    前面线    -->
+
+        <View
+            visibleGone="@{!data.isFirst}"
+            android:layout_width="120px"
+            android:layout_height="4px"
+            android:layout_marginEnd="4px"
+            android:background="@drawable/shape_nv_progress_left"
+            android:backgroundTint="@{(data.isPass||data.isChecked)?@color/color_background_app_title:@color/color_light_blue}"
+            app:layout_constraintBottom_toBottomOf="@id/dotSmall"
+            app:layout_constraintEnd_toStartOf="@id/dotSmall"
+            app:layout_constraintTop_toTopOf="@id/dotSmall" />
+        <!--    后面线    -->
+
+        <View
+            visibleGone="@{!data.isLast}"
+            android:layout_width="120px"
+            android:layout_height="4px"
+            android:layout_marginStart="4px"
+            android:background="@drawable/shape_nv_progress_right"
+            android:backgroundTint="@{data.isPass?@color/color_background_app_title:@color/color_light_blue}"
+            app:layout_constraintBottom_toBottomOf="@id/dotSmall"
+            app:layout_constraintStart_toEndOf="@id/dotSmall"
+            app:layout_constraintTop_toTopOf="@id/dotSmall" />
+
+        <View
+            android:id="@+id/dotChecked"
+            visibleGone="@{data.isChecked}"
+            android:layout_width="43px"
+            android:layout_height="43px"
+            android:background="@drawable/dot_checked"
+            app:layout_constraintBottom_toBottomOf="@id/dotSmall"
+            app:layout_constraintEnd_toEndOf="@id/dotSmall"
+            app:layout_constraintStart_toStartOf="@id/dotSmall"
+            app:layout_constraintTop_toTopOf="@id/dotSmall" />
+
+        <TextView
+            android:layout_width="203px"
+            android:layout_height="117px"
+            android:layout_marginTop="18px"
+            android:background="@{data.isChecked?@drawable/bg_progress_check:@drawable/bg_progress_uncheck}"
+            android:gravity="center"
+            android:paddingTop="20px"
+            android:text="@{data.name}"
+            android:textColor="#fff"
+            android:textSize="25px"
+            app:layout_constraintEnd_toEndOf="@id/dotSmall"
+            app:layout_constraintStart_toStartOf="@id/dotSmall"
+            app:layout_constraintTop_toBottomOf="@id/dotSmall"
+            tools:background="@drawable/bg_progress_check"
+            tools:text="基础信息" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

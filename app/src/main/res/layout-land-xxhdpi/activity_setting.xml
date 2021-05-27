@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="imei"
+            type="String" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/layout_app_background_glass"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <include
+            android:id="@+id/tv_app_title"
+            layout="@layout/layout_app_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52px"
+            android:gravity="center"
+            android:text="设备出厂设置"
+            android:textColor="@color/color_text_title"
+            android:textSize="68px"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_app_title" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back_to_home"
+            android:layout_width="276px"
+            android:layout_height="104px"
+            android:layout_marginTop="35px"
+            android:layout_marginEnd="136px"
+            android:background="@drawable/bg_btn_back_to_home"
+            android:gravity="center"
+            android:text="@string/btn_text_back_to_home"
+            android:textColor="@color/color_text_btn"
+            android:textSize="48px"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
+
+
+        <TextView
+            android:id="@+id/deviceId"
+            android:layout_width="wrap_content"
+            android:layout_height="100px"
+            android:layout_marginTop="44px"
+            android:gravity="center"
+            android:text="@{String.format(&quot;设备产品标识：%s&quot;,imei)}"
+            android:textColor="#242E42"
+            android:textSize="50px"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            tools:text="设备产品标识：IMEIXXXX" />
+
+        <View
+            android:id="@+id/flag_addr"
+            android:layout_width="11px"
+            android:layout_height="41px"
+            android:layout_marginStart="149px"
+            android:layout_marginTop="37px"
+            android:background="#2850A3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/deviceId" />
+
+        <TextView
+            android:id="@+id/titleAddr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:text="设备绑定单位设置"
+            android:textColor="#ff393939"
+            android:textSize="30px"
+            app:layout_constraintBottom_toBottomOf="@id/flag_addr"
+            app:layout_constraintStart_toEndOf="@id/flag_addr"
+            app:layout_constraintTop_toTopOf="@id/flag_addr" />
+
+
+        <LinearLayout
+            android:layout_width="1000px"
+            android:layout_height="72px"
+            android:layout_marginStart="180px"
+            android:layout_marginTop="41px"
+            android:layout_marginEnd="85px"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/flag_addr">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/flag_addr">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerSheng"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:entries="@array/sheng"
+                    android:gravity="center" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16px"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/flag_addr">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerShi"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16px"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/flag_addr">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerXian"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16px"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/flag_addr">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerJiedao"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+
+        <View
+            android:id="@+id/flagActive"
+            android:layout_width="11px"
+            android:layout_height="41px"
+            android:layout_marginStart="850px"
+            android:layout_marginTop="37px"
+            android:background="#2850A3"
+            app:layout_constraintLeft_toRightOf="@id/titleAddr"
+            app:layout_constraintTop_toBottomOf="@id/deviceId" />
+
+        <TextView
+            android:id="@+id/titleActive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:text="授权激活码"
+            android:textColor="#ff393939"
+            android:textSize="30px"
+            app:layout_constraintBottom_toBottomOf="@id/flagActive"
+            app:layout_constraintStart_toEndOf="@id/flagActive"
+            app:layout_constraintTop_toTopOf="@id/flagActive" />
+
+        <EditText
+            android:id="@+id/etActiveCode"
+            android:layout_width="500px"
+            android:layout_height="72px"
+            android:layout_marginTop="41px"
+            android:background="@drawable/shape_et_bg"
+            android:hint="请输入激活码"
+            android:imeOptions="actionDone"
+            android:inputType="textCapCharacters"
+            android:paddingStart="32px"
+            android:textSize="30px"
+            app:layout_constraintLeft_toRightOf="@id/flagActive"
+            app:layout_constraintTop_toBottomOf="@id/titleActive" />
+
+        <View
+            android:id="@+id/flag_func"
+            android:layout_width="11px"
+            android:layout_height="41px"
+            android:layout_marginStart="155px"
+            android:layout_marginTop="160px"
+            android:background="#2850A3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/flagActive" />
+
+        <TextView
+            android:id="@+id/titleFunc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:text="应用模块权限设置"
+            android:textColor="#ff393939"
+            android:textSize="30px"
+            app:layout_constraintBottom_toBottomOf="@id/flag_func"
+            app:layout_constraintStart_toEndOf="@id/flag_func"
+            app:layout_constraintTop_toTopOf="@id/flag_func" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="85px"
+            android:layout_marginTop="48px"
+            android:layout_marginEnd="85px"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/flag_func"
+            app:spanCount="7"
+            tools:itemCount="7"
+            tools:listitem="@layout/item_setting_func" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

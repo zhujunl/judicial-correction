@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.miaxis.enroll.EnrollSharedViewModel" />
+
+        <import type="com.miaxis.judicialcorrection.base.databinding.Converter" />
+
+        <import type="com.miaxis.enroll.MapConstants" />
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8px"
+                android:text="是否有精神病："
+                android:textColor="#393939"
+                android:textSize="28px" />
+
+
+            <RadioGroup
+                android:id="@+id/rgJSB"
+                android:layout_width="257px"
+                android:layout_height="wrap_content"
+                android:checkedButton="@={Converter.checkedToCheckId(rgJSB,vm.otherInfoLiveData.sfyjsb)}"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbJSBT"
+                    android:layout_width="0dp"
+                    android:layout_height="54px"
+                    android:layout_weight="1"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="是" />
+
+                <RadioButton
+                    android:id="@+id/rbJSBF"
+                    android:layout_width="0dp"
+                    android:layout_height="54px"
+                    android:layout_marginStart="17px"
+                    android:layout_weight="1"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="否" />
+            </RadioGroup>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8px"
+                android:text="是否有传染病："
+                android:layout_marginStart="55px"
+                android:textColor="#393939"
+                android:textSize="28px" />
+
+
+            <RadioGroup
+                android:id="@+id/rgCYB"
+                android:layout_width="257px"
+                android:layout_height="wrap_content"
+                android:checkedButton="@={Converter.checkedToCheckId(rgCYB,vm.otherInfoLiveData.sfycrb)}"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbCYBT"
+                    android:layout_width="0dp"
+                    android:layout_height="54px"
+                    android:layout_weight="1"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="是" />
+
+                <RadioButton
+                    android:id="@+id/rbCYBF"
+                    android:layout_width="0dp"
+                    android:layout_height="54px"
+                    android:layout_marginStart="17px"
+                    android:layout_weight="1"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="否" />
+            </RadioGroup>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8px"
+                android:layout_marginStart="50px"
+                android:text="文化程度："
+                android:textColor="#393939"
+                android:textSize="28px" />
+
+            <FrameLayout
+                android:layout_width="120px"
+                android:layout_height="54px"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerCulture"
+                    kvSpinnerList="@{MapConstants.whcdKvList}"
+                    kvSpinnerSelection="@={vm.otherInfoLiveData.whcdKV}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8px"
+                android:layout_marginStart="84px"
+                android:text="婚姻状况："
+                android:textColor="#393939"
+                android:textSize="28px" />
+
+            <FrameLayout
+                android:layout_width="120px"
+                android:layout_height="54px"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerMarriage"
+                    kvSpinnerList="@{MapConstants.hyzkKvList}"
+                    kvSpinnerSelection="@={vm.otherInfoLiveData.hyzkKV}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="35px"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="个人联系电话："
+                android:textColor="#393939"
+                android:textSize="28px" />
+
+            <EditText
+                android:id="@+id/etPhone"
+                android:layout_width="257px"
+                android:layout_height="54px"
+                android:background="@drawable/shape_et_bg"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:paddingStart="32px"
+                android:text="@={vm.otherInfoLiveData.grlxdh}"
+                android:textSize="30px" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="就业就学情况："
+                android:layout_marginStart="62px"
+                android:textColor="#393939"
+                android:textSize="28px" />
+
+            <FrameLayout
+                android:layout_width="256px"
+                android:layout_height="54px"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerStudy"
+                    kvSpinnerList="@{MapConstants.jyjxqkKvList}"
+                    kvSpinnerSelection="@={vm.otherInfoLiveData.jyjxqkKV}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="政治面貌："
+                android:layout_marginStart="49px"
+                android:textColor="#393939"
+                android:textSize="28px" />
+
+            <FrameLayout
+                android:layout_width="120px"
+                android:layout_height="54px"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerPolitical"
+                    kvSpinnerList="@{MapConstants.zzmnKvList}"
+                    kvSpinnerSelection="@={vm.otherInfoLiveData.xzzmnKV}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="57px"
+                android:text="原政治面貌："
+                android:textColor="#393939"
+                android:textSize="28px" />
+
+            <FrameLayout
+                android:layout_width="120px"
+                android:layout_height="54px"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerPoliticalOld"
+                    kvSpinnerList="@{MapConstants.zzmnKvList}"
+                    kvSpinnerSelection="@={vm.otherInfoLiveData.yzzmmKV}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="35px"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8px"
+                android:text="原工作单位："
+                android:textColor="#393939"
+                android:textSize="28px" />
+
+            <EditText
+                android:id="@+id/etJobOld"
+                android:layout_width="347px"
+                android:layout_height="54px"
+                android:background="@drawable/shape_et_bg"
+                android:imeOptions="actionDone"
+                android:inputType="textCapCharacters"
+                android:paddingStart="32px"
+                android:text="@={vm.otherInfoLiveData.ygzdw}"
+                android:textSize="30px" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                 android:layout_marginStart="53px"
+                android:text="现工作单位："
+                android:textColor="#393939"
+                android:textSize="28px" />
+
+            <EditText
+                android:id="@+id/etJob"
+                android:layout_width="347px"
+                android:layout_height="54px"
+                android:background="@drawable/shape_et_bg"
+                android:imeOptions="actionDone"
+                android:inputType="textCapCharacters"
+                android:paddingStart="32px"
+                android:text="@={vm.otherInfoLiveData.xgzdw}"
+                android:textSize="30px" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="47px"
+                android:text="单位联系电话："
+                android:textColor="#393939"
+                android:textSize="28px" />
+
+            <EditText
+                android:id="@+id/etJobPhone"
+                android:layout_width="252px"
+                android:layout_height="54px"
+                android:background="@drawable/shape_et_bg"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:paddingStart="32px"
+                android:text="@={vm.otherInfoLiveData.dwlxdh}"
+                android:textSize="30px" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="35px"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8px"
+                android:text="国籍（户籍）："
+                android:textColor="#393939"
+                android:textSize="28px" />
+
+            <FrameLayout
+                android:layout_width="120px"
+                android:layout_height="54px"
+                android:background="@drawable/shape_et_bg">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerCounty"
+                    kvSpinnerList="@{MapConstants.gjList}"
+                    kvSpinnerSelection="@={vm.otherInfoLiveData.gjKV}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8px"
+                android:layout_marginStart="220px"
+                android:text="是否三无人员："
+                android:textColor="#393939"
+                android:textSize="28px" />
+
+            <RadioGroup
+                android:id="@+id/rgSFSW"
+                android:layout_width="257px"
+                android:layout_height="wrap_content"
+                android:checkedButton="@={Converter.checkedToCheckId(rgSFSW,vm.otherInfoLiveData.sfswry)}"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbSWT"
+                    android:layout_width="0dp"
+                    android:layout_height="54px"
+                    android:layout_weight="1"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="是" />
+
+                <RadioButton
+                    android:id="@+id/rbSWF"
+                    android:layout_width="0dp"
+                    android:layout_height="54px"
+                    android:layout_marginStart="17px"
+                    android:layout_weight="1"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="否" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8px"
+                android:layout_marginStart="120px"
+                android:text="有无违法犯罪记录："
+                android:textColor="#393939"
+                android:textSize="28px" />
+
+            <RadioGroup
+                android:id="@+id/rgQK"
+                android:layout_width="257px"
+                android:layout_height="wrap_content"
+                android:checkedButton="@={Converter.checkedToCheckId(rgQK,vm.otherInfoLiveData.sfyqk)}"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbQKT"
+                    android:layout_width="0dp"
+                    android:layout_height="54px"
+                    android:layout_weight="1"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="有" />
+
+                <RadioButton
+                    android:id="@+id/rbQKF"
+                    android:layout_width="0dp"
+                    android:layout_height="54px"
+                    android:layout_marginStart="17px"
+                    android:layout_weight="1"
+                    android:background="@drawable/select_rb"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="无" />
+            </RadioGroup>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

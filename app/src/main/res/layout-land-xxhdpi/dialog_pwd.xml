@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="1000px"
+    android:layout_height="wrap_content"
+    android:layout_margin="10px"
+    android:background="#fff"
+    app:cardCornerRadius="12px"
+    app:cardElevation="12px">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="1000px"
+        android:layout_height="wrap_content"
+        android:paddingBottom="120px">
+
+        <TextView
+            android:id="@+id/hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="168px"
+            android:text="请输入密码进入设置页面"
+            android:textColor="#4684FF"
+            android:textSize="56px"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/etPwd"
+            android:layout_width="836px"
+            android:layout_height="111px"
+            android:layout_marginTop="94px"
+            android:background="@drawable/shape_input"
+            android:gravity="center_vertical"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:letterSpacing="1"
+            android:lineSpacingMultiplier="4"
+            android:paddingStart="12px"
+            android:text=""
+            android:textColor="#000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hint" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100px"
+            android:background="@drawable/shape_button"
+            android:text="确定"
+            android:textColor="#fff"
+            android:textSize="52px"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etPwd" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

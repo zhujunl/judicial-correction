@@ -6,9 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -120,6 +123,12 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
             }
         }
         init();
+        Display defaultDisplay = getWindowManager().getDefaultDisplay();
+        Point point=new Point();
+        defaultDisplay.getRealSize(point);
+        Log.e("屏幕宽高",""+ point.x+"===="+point.y);
+
+
     }
 
     private void init() {

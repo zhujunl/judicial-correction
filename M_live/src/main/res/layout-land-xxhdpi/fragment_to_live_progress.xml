@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="com.miaxis.judicialcorrection.base.databinding.Converter" />
+        <variable
+            name="vm"
+            type="com.miaxis.judicialcorrection.live.LiveAddressChangeViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_text_white">
+
+
+        <include
+            android:id="@+id/tv_app_title"
+            layout="@layout/layout_app_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back_to_home"
+            android:layout_width="236px"
+            android:layout_height="85px"
+            android:layout_marginTop="43px"
+            android:layout_marginEnd="144px"
+            android:background="@drawable/bg_btn_back_to_home"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@color/color_text_btn"
+            android:textSize="42px"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_app_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52px"
+            android:gravity="center"
+            android:text="查询进度"
+            android:textColor="@color/color_text_title"
+            android:textSize="48px"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_app_title" />
+
+
+        <View
+            android:id="@+id/view_label_one"
+            android:layout_width="11px"
+            android:layout_height="41px"
+            android:layout_marginStart="82px"
+            android:layout_marginTop="50px"
+            android:background="#2850A3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <TextView
+            android:id="@+id/tv_progress_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:layout_marginTop="46px"
+            android:text="进度信息"
+            android:textColor="#393939"
+            android:textSize="36px"
+            app:layout_constraintLeft_toRightOf="@id/view_label_one"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+
+        <TextView
+            android:id="@+id/tv_progress_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:layout_marginTop="40px"
+            android:text="@{`当前进度：`+vm.LiveDetailsBean.flowStatusName}"
+            android:textColor="#393939"
+            android:textSize="30px"
+            app:layout_constraintLeft_toRightOf="@id/view_label_one"
+            app:layout_constraintTop_toBottomOf="@id/tv_progress_label" />
+
+        <View
+            android:id="@+id/view_label_two"
+            android:layout_width="11px"
+            android:layout_height="41px"
+            android:layout_marginStart="82px"
+            android:layout_marginTop="80px"
+            android:background="#2850A3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_progress_content" />
+
+        <TextView
+            android:id="@+id/tv_apply_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:layout_marginTop="75px"
+            android:text="居住地变更申请信息"
+            android:textColor="#393939"
+            android:textSize="36px"
+            app:layout_constraintLeft_toRightOf="@id/view_label_two"
+            app:layout_constraintTop_toBottomOf="@id/tv_progress_content" />
+
+
+        <TextView
+            android:id="@+id/tv_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:layout_marginTop="30px"
+            android:text="@{`姓名：`+vm.LiveDetailsBean.pname}"
+            android:textColor="#393939"
+            android:textSize="30px"
+            app:layout_constraintLeft_toRightOf="@id/view_label_two"
+            app:layout_constraintTop_toBottomOf="@id/view_label_two" />
+
+        <TextView
+            android:id="@+id/tv_id_card_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:layout_marginTop="12px"
+            android:text="@{`身份证号：`+vm.personInfoMutableLiveData.idCardNumber}"
+            android:textColor="#393939"
+            android:textSize="30px"
+            app:layout_constraintLeft_toRightOf="@id/view_label_two"
+            app:layout_constraintTop_toBottomOf="@id/tv_name_title" />
+
+        <TextView
+            android:id="@+id/tv_application_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:layout_marginTop="12px"
+            android:text="@{`申请时间：`+Converter.convertGMTToLocal(vm.LiveDetailsBean.sqsj)}"
+            android:textColor="#393939"
+            android:textSize="30px"
+            app:layout_constraintLeft_toRightOf="@id/view_label_two"
+            app:layout_constraintTop_toBottomOf="@id/tv_id_card_title" />
+
+
+        <TextView
+            android:id="@+id/tv_moveInPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:layout_marginTop="12px"
+            android:text=""
+            android:textColor="#393939"
+            android:textSize="30px"
+            app:layout_constraintLeft_toRightOf="@id/view_label_two"
+            app:layout_constraintTop_toBottomOf="@id/tv_application_time" />
+
+        <TextView
+            android:id="@+id/tv_correctionUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:layout_marginTop="12px"
+            android:text="@{`拟接收矫正单位：`+vm.LiveDetailsBean.njsjzdwName}"
+            android:textColor="#393939"
+            android:textSize="30px"
+            app:layout_constraintLeft_toRightOf="@id/view_label_two"
+            app:layout_constraintTop_toBottomOf="@id/tv_moveInPlace" />
+
+        <TextView
+            android:id="@+id/tv_reason"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:layout_marginTop="12px"
+            android:text="@{`变更理由：`+(vm.LiveDetailsBean.jzdbgsy==null?``:vm.LiveDetailsBean.jzdbgsy)}"
+            android:textColor="#393939"
+            android:textSize="30px"
+            app:layout_constraintLeft_toRightOf="@id/view_label_two"
+            app:layout_constraintTop_toBottomOf="@id/tv_correctionUnit" />
+
+        <TextView
+            android:id="@+id/tv_changeRequest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:layout_marginTop="12px"
+            android:text=""
+            android:textColor="#393939"
+            android:textSize="30px"
+            app:layout_constraintLeft_toRightOf="@id/view_label_two"
+            app:layout_constraintTop_toBottomOf="@id/tv_reason" />
+
+        <TextView
+            android:id="@+id/tv_changeRequestata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15px"
+            android:layout_marginTop="12px"
+            android:text=""
+            android:textColor="#393939"
+            android:textSize="30px"
+            app:layout_constraintLeft_toRightOf="@id/view_label_two"
+            app:layout_constraintTop_toBottomOf="@id/tv_changeRequest" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

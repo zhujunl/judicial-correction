@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="829px"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_dialog">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="30px"
+            android:text="@string/app_info"
+            android:textColor="@color/color_text_black"
+            android:textSize="34px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_error"
+            android:layout_width="168px"
+            android:layout_height="168px"
+            android:layout_marginTop="96px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@mipmap/mipmap_error" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48px"
+            android:textColor="@color/color_text_black"
+            android:textSize="50px"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_error"
+            tools:text="@string/dialog_error_1" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48px"
+            android:gravity="center"
+            android:textColor="@color/color_text_grey"
+            android:textSize="37px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_error"
+            tools:text="@string/dialog_error_3" />
+
+
+        <com.miaxis.judicialcorrection.widget.countdown.CountDownTextView
+            android:id="@+id/cdtv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45px"
+            android:textColor="@color/color_text_red"
+            android:textSize="47px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_message" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back_home"
+            android:layout_width="0dp"
+            android:layout_height="90px"
+            android:layout_marginLeft="61px"
+            android:layout_marginTop="52px"
+            android:layout_marginEnd="40px"
+            android:layout_marginBottom="61px"
+            android:background="@drawable/bg_btn_back_home"
+            android:gravity="center"
+            android:text="@string/dialog_btn_back_to_home"
+            android:textColor="@color/color_text_white"
+            android:textSize="32px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/btn_try_again"
+            app:layout_constraintTop_toBottomOf="@id/cdtv_time"
+            app:layout_constraintWidth_max="461px"
+            app:layout_constraintWidth_min="299px"
+            app:layout_goneMarginLeft="0px" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_try_again"
+            android:layout_width="0dp"
+            android:layout_height="90px"
+            android:layout_marginLeft="40px"
+            android:layout_marginEnd="61px"
+            android:layout_marginBottom="61px"
+            android:background="@drawable/bg_btn_try_again"
+            android:gravity="center"
+            android:text="@string/dialog_btn_verify_again"
+            android:textColor="@color/color_text_white"
+            android:textSize="32px"
+            android:visibility="gone"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/btn_back_home"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_back_home"
+            app:layout_constraintWidth_max="461px"
+            app:layout_constraintWidth_min="299px"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
