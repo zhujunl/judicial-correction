@@ -30,7 +30,6 @@ public class ProgressViewModel extends ViewModel {
     public ObservableField<String> relationship = new ObservableField<>();
     public ObservableField<String> phone = new ObservableField<>();
 
-
     public ObservableField<String> cancelTime = new ObservableField<>();
 
 

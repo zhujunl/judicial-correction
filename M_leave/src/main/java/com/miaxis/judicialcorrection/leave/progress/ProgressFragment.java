@@ -81,7 +81,10 @@ public class ProgressFragment extends BaseBindingFragment<FragmentProgressBindin
                         if (TextUtils.isEmpty(s)){
                             s="";
                         }
+                        progressViewModel.phone.set(item.lxdh);
+                        progressViewModel.relationship.set(item.gx);
                         progressViewModel.cancelTime.set(s);
+                        progressViewModel.temporaryGuardian.set(item.lsjhr);
                     }
                     break;
             }
