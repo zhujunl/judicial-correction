@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/cl_content"
+      android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40px"
+            android:textColor="@color/color_text_black"
+            android:textSize="19px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="主题：教育" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_education_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40px"
+            android:textColor="@color/color_text_black"
+            android:textSize="19px"
+            app:layout_constraintLeft_toRightOf="@id/tv_theme"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="集中教育时间：2012/12/12 40:10" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_education_time_long"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40px"
+            android:textColor="@color/color_text_black"
+            android:textSize="19px"
+            app:layout_constraintLeft_toRightOf="@id/tv_education_time"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="时长:2小时" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7px"
+            android:textColor="@color/color_text_black"
+            android:textSize="19px"
+            app:layout_constraintLeft_toLeftOf="@id/tv_theme"
+            app:layout_constraintTop_toBottomOf="@id/tv_education_time_long"
+            tools:text="姓名" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_id_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40px"
+            android:layout_marginTop="7px"
+            android:textColor="@color/color_text_black"
+            android:textSize="19px"
+            app:layout_constraintLeft_toLeftOf="@id/tv_education_time"
+            app:layout_constraintTop_toBottomOf="@id/tv_education_time_long"
+            tools:text="身份证号" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

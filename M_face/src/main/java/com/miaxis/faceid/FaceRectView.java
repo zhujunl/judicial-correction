@@ -9,6 +9,7 @@ import android.hardware.Camera;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.face.R;
 
 import androidx.annotation.Nullable;
@@ -27,7 +28,11 @@ public class FaceRectView extends View {
     public FaceRectView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         mPaint.setColor(getResources().getColor(R.color.color_face_rect));
-        mPaint.setStrokeWidth(5F);
+        if (BuildConfig.EQUIPMENT_TYPE==3){
+            mPaint.setStrokeWidth(3F);
+        }else {
+            mPaint.setStrokeWidth(5F);
+        }
         mPaint.setStyle(Paint.Style.STROKE);
     }
 
@@ -71,10 +76,23 @@ private boolean mirror=false;
                  left=  (width- this.mRectF.right);
                  right=  (width- this.mRectF.left);
             }else {
-                 left= this.mRectF.left+(width/10);
-                 right= this.mRectF.right+(width/10);
-                 top=top+(height/10);
-                 bottom=bottom+(height/10);
+                if (BuildConfig.EQUIPMENT_TYPE==1){
+                    left= this.mRectF.left+(width/10);
+                    right= this.mRectF.right+(width/10);
+                    top=top+(height/10);
+                    bottom=bottom+(height/10);
+                }else if (BuildConfig.EQUIPMENT_TYPE==2){
+                    left= this.mRectF.left+(width/10);
+                    right= this.mRectF.right+(width/10);
+                    top=top+(height/10);
+                    bottom=bottom+(height/10);
+                }else{
+                    left= this.mRectF.left-(width/4);
+                    right= this.mRectF.right-(width/4);
+                    top=top-(height/5);
+                    bottom=bottom-(height/5);
+                }
+
             }
 
 //            int top= (int) (height- this.mRectF.top);

@@ -1,18 +1,15 @@
 package com.miaxis.judicialcorrection.base.repo;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
-import androidx.room.RoomDatabase;
 
 import com.miaxis.judicialcorrection.base.api.ApiResult;
 import com.miaxis.judicialcorrection.base.api.ApiService;
 import com.miaxis.judicialcorrection.base.api.NoAuthApiService;
-import com.miaxis.judicialcorrection.base.db.AppDatabase;
-import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
 import com.miaxis.judicialcorrection.base.api.vo.JusticeBureauList;
 import com.miaxis.judicialcorrection.base.common.Resource;
+import com.miaxis.judicialcorrection.base.db.AppDatabase;
+import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.base.utils.ResourceConvertUtils;
 
@@ -104,7 +101,6 @@ public class JusticeBureauRepo {
                 Timber.i("setjiedao = %s",justiceBureau);
             }
         });
-
     }
 
     public LiveData<List<JusticeBureau>> getMyJusticeBureaus() {

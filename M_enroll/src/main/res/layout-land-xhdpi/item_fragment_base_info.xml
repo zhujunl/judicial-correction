@@ -54,8 +54,8 @@
         <View
             android:id="@+id/dotChecked"
             visibleGone="@{data.isChecked}"
-            android:layout_width="43px"
-            android:layout_height="43px"
+            android:layout_width="29px"
+            android:layout_height="29px"
             android:background="@drawable/dot_checked"
             app:layout_constraintBottom_toBottomOf="@id/dotSmall"
             app:layout_constraintEnd_toEndOf="@id/dotSmall"

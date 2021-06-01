@@ -46,8 +46,12 @@ public class LeaveRepo {
     public LiveData<Resource<Object>> leaveAdd(String pid,
                                                String sqsj,
                                                String xjms,
-                                               String[] qjsqs,
-                                               String[] qjsqcl,
+                                               String qjsqs,
+                                               String qjsqcl,
+                                               String wclyType,
+                                               String lsjhr,
+                                               String gx,
+                                               String lxdh,
                                                String wcly,
                                                String jsrq,
                                                String ksqr,
@@ -69,22 +73,15 @@ public class LeaveRepo {
         hashMap.put("sqsj", sqsj);
         hashMap.put("xjms", xjms);
         hashMap.put("pid", pid);
-        if (qjsqs != null && qjsqs.length != 0) {
-            for (String str : qjsqs) {
-                if (!TextUtils.isEmpty(str)) {
-                    hashMap.put("qjsqs", qjsqs);
-                    break;
-                }
-            }
+        hashMap.put("wclyName",wclyType);
+
+        if (!TextUtils.isEmpty(qjsqs)){
+            hashMap.put("qjsqs", new String[]{qjsqs});
         }
-        if (qjsqcl != null && qjsqcl.length != 0) {
-            for (String str : qjsqcl) {
-                if (!TextUtils.isEmpty(str)) {
-                    hashMap.put("qjsqcl", qjsqcl);
-                    break;
-                }
-            }
+        if (!TextUtils.isEmpty(qjsqcl)){
+            hashMap.put("qjsqcl", new String[]{qjsqcl});
         }
+
         List<Bean> list = new ArrayList<>();
         Bean bean = new Bean();
         bean.pid = pid;
@@ -100,11 +97,16 @@ public class LeaveRepo {
         list.add(bean);
         hashMap.put("list", list);
 
-        hashMap.put("wcly", wcly);
+        hashMap.put("wcly", wclyType);
+        hashMap.put("jtsy",wcly);
         hashMap.put("jsrq", jsrq);
         hashMap.put("ksqr", ksqr);
         hashMap.put("wcts", wcts);
         hashMap.put("sfyxj", sfyxj);
+
+        hashMap.put("lsjhr", lsjhr);
+        hashMap.put("gx", gx);
+        hashMap.put("lxdh", lxdh);
 
         String toJson = new Gson().toJson(hashMap);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);

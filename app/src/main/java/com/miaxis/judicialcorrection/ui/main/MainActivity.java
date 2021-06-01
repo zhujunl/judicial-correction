@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
+import android.hardware.Camera;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -32,25 +32,28 @@ import com.miaxis.enroll.guide.CaptureBaseInfoFragment;
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.finger.FingerManager;
 import com.miaxis.finger.FingerStrategy;
+import com.miaxis.judicialcorrection.BuildConfig;
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
+import com.miaxis.judicialcorrection.base.utils.FileUtils;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundDiffAdapter;
 import com.miaxis.judicialcorrection.databinding.ActivityMainBinding;
 import com.miaxis.judicialcorrection.databinding.ItemMainFucBinding;
 import com.miaxis.judicialcorrection.db.DbInitMainFuncs;
-import com.miaxis.judicialcorrection.id.readIdCard.ReadIdCardManager;
 import com.miaxis.judicialcorrection.ui.setting.SettingActivity;
 
+import java.io.File;
 import java.util.Objects;
 
 import javax.inject.Inject;
 
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
+import timber.log.Timber;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -115,6 +118,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.READ_PHONE_STATE,
                 Manifest.permission.CAMERA,
+                Manifest.permission.RECORD_AUDIO
         };
         for (String permission : permissions) {
             if (ContextCompat.checkSelfPermission(this, permission) != PERMISSION_GRANTED) {
@@ -123,12 +127,31 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
             }
         }
         init();
-        Display defaultDisplay = getWindowManager().getDefaultDisplay();
-        Point point=new Point();
-        defaultDisplay.getRealSize(point);
-        Log.e("屏幕宽高",""+ point.x+"===="+point.y);
+        deleteFile();
+        if (BuildConfig.DEBUG) {
+            Display defaultDisplay = getWindowManager().getDefaultDisplay();
+            Point point = new Point();
+            defaultDisplay.getRealSize(point);
+            Timber.e("宽=" + point.x + "高=" + point.y + "==摄像头个数" +
+                    Camera.getNumberOfCameras());
+        }
+    }
 
-
+    /**
+     * 如果文件大于10MB则删除
+     */
+    private void deleteFile() {
+        mAppExecutors.networkIO().execute(() -> {
+            //文件保存路径
+            String path = getExternalFilesDir(null).getPath();
+            long folderSize = FileUtils.getFolderSize(new File(path));
+            String formatSize = FileUtils.getFormatSize(Double.parseDouble(folderSize + ""));
+            long size = 1024 * 1024 * 7;//10mb
+            if (folderSize > size) {
+                FileUtils.deleteFolderFile(path, false);
+            }
+            Timber.e("文件大小："+formatSize);
+        });
     }
 
     private void init() {

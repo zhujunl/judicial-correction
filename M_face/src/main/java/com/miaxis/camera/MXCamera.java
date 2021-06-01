@@ -7,8 +7,10 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
+import android.hardware.camera2.CameraManager;
 import android.view.SurfaceHolder;
 
+import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.utils.BitmapUtils;
 
 import java.io.File;
@@ -65,8 +67,8 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         }
         try {
             Camera.Parameters parameters = this.mCamera.getParameters();
-            parameters.setPreviewSize(width,height);
-            parameters.setPictureSize(width,height);
+            parameters.setPreviewSize(width, height);
+            parameters.setPictureSize(width, height);
             this.mCamera.setParameters(parameters);
             this.width = width;
             this.height = height;
@@ -252,7 +254,8 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
             //将得到的照片进行270°旋转，使其竖直
             Bitmap bitmap = BitmapFactory.decodeFile(savePath);
             Matrix matrix = new Matrix();
-            matrix.preRotate(270);
+            //图片保存旋转尺寸 根据设备不同旋转不同
+            matrix.preRotate(BuildConfig.ROTATION_SIZE);
             bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
             return BitmapUtils.saveBitmap(bitmap, savePath);
         } catch (Exception e) {

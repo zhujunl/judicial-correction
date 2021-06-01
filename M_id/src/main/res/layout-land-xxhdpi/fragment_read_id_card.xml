@@ -25,7 +25,7 @@
             android:layout_marginTop="52px"
             android:gravity="center"
             android:textColor="@color/color_text_title"
-            android:textSize="68px"
+            android:textSize="48px"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -47,12 +47,13 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_no_id_card_entry"
-            android:layout_width="809px"
+            android:layout_width="609px"
             android:layout_height="124px"
             android:layout_marginTop="101px"
             android:background="@drawable/bg_btn_no_id_card_entry"
             android:gravity="center"
             android:layout_marginStart="100px"
+            app:layout_constraintRight_toLeftOf="@id/btn_back_to_home"
             android:text="@string/btn_text_no_id_card_entry"
             android:textColor="@color/color_text_btn"
             android:textSize="48px"
@@ -63,10 +64,11 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_back_to_home"
-            android:layout_width="809px"
+            android:layout_width="609px"
             android:layout_height="124px"
             android:layout_marginStart="100px"
             android:layout_marginTop="101px"
+            app:layout_constraintRight_toRightOf="parent"
             android:background="@drawable/bg_btn_back_to_home"
             android:gravity="center"
             app:layout_constraintLeft_toRightOf="@id/btn_no_id_card_entry"

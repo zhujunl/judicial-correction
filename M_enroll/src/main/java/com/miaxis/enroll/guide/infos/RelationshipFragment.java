@@ -1,6 +1,6 @@
 package com.miaxis.enroll.guide.infos;
 
-import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -21,6 +22,7 @@ import com.miaxis.enroll.databinding.FragmentRelationshipBinding;
 import com.miaxis.enroll.databinding.ItemFragmentRelationshipBinding;
 import com.miaxis.enroll.dialog.FloatCheckedDialog;
 import com.miaxis.enroll.vo.Family;
+import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundAdapter;
 
@@ -84,14 +86,28 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
             if (vm.relationships.size()<=2){
                 binding.deleteLine.setVisibility(View.GONE);
             }
+            setRvHeight();
         });
+        if (BuildConfig.EQUIPMENT_TYPE==3) {
+            Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.icon_add_line);
+            if (drawable != null) {
+                drawable.setBounds(0, 0, 16, 16);//第一0是距左边距离，第二0是距上边距离，30、35分别是长宽
+                binding.addLine.setCompoundDrawables(drawable, null, null, null);//只放左边
+            }
+        }
         setRvHeight();
     }
 
     private void setRvHeight() {
-        Configuration mConfiguration = this.getResources().getConfiguration();
-        int ori = mConfiguration.orientation;
-        if (Configuration.ORIENTATION_LANDSCAPE==ori) {//横屏
+        if (BuildConfig.EQUIPMENT_TYPE==1){
+            if (adapter.getItemCount() >= 9) {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
+                params.height = 700;
+            } else {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
+                params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            }
+        }else if (BuildConfig.EQUIPMENT_TYPE==2){
             if (adapter.getItemCount() >= 4) {
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
                 params.height = 400;
@@ -99,10 +115,10 @@ public class RelationshipFragment extends BaseInfoFragment<FragmentRelationshipB
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
                 params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
             }
-        }else {
-            if (adapter.getItemCount() >= 9) {
+        }else{
+            if (adapter.getItemCount() >= 4) {
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
-                params.height = 700;
+                params.height = 200;
             } else {
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.recyclerview.getLayoutParams();
                 params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;

@@ -28,17 +28,17 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 
 /**
- * 声纹采集
+ * 指纹采集
  */
 @AndroidEntryPoint
 public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFingerprintCollectBinding> {
 
 
     private  IdCard mIdCard;
-    private  String mId;
+    private  String mPid;
 
     public  FingerprintCollectFragment(String id, IdCard idCard) {
-        this.mId=id;
+        this.mPid=id;
         this.mIdCard=idCard;
     }
 
@@ -46,7 +46,6 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFing
     @Inject
     Lazy<AppHints> appHintsLazy;
 
-    private String mPid;
 
     @Override
     protected int initLayout() {
@@ -63,8 +62,7 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFing
         mFingerprintCollectModel = new ViewModelProvider(this).get(FingerprintCollectModel.class);
         mFingerprintCollectModel.filePath = FileUtils.createFileParent(getContext());
         if (mIdCard!=null){
-            mFingerprintCollectModel.fingerprint1.set(mIdCard.idCardMsg.strFp0);
-            mFingerprintCollectModel.fingerprint2.set(mIdCard.idCardMsg.strFp1);
+            mFingerprintCollectModel.fingerprint1.set(mIdCard.fp0);
         }
         mFingerprintCollectModel.initFingerDevice(result -> {
         });
@@ -87,7 +85,6 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFing
                 }
             });
         });
-
     }
 
     private void showDialog() {

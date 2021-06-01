@@ -1,7 +1,5 @@
 package com.miaxis.camera;
 
-import android.hardware.Camera;
-
 /**
  * @author Tank
  * @date 2021/5/16 13:19
@@ -11,16 +9,23 @@ import android.hardware.Camera;
  */
 public enum CameraConfig {
 
-    //todo 本地测试配置 Camera.CameraInfo.CAMERA_FACING_BACK RGB
+    //todo 测试 本地测试配置 Camera.CameraInfo.CAMERA_FACING_BACK RGB
 //    Camera_RGB(Camera.CameraInfo.CAMERA_FACING_FRONT, 640, 480, 90, 90),
 //    Camera_NIR(Camera.CameraInfo.CAMERA_FACING_BACK, 640, 480, 90, 90),
-//    Camera_SM(2,640, 480, 90, 90)
+//    Camera_SM(2,640, 480, 90, 90);
+
+    // 正式 小台式 3个 第一个前置 摄像头
+    Camera_RGB(2, 640, 480, 0, 0),
+    Camera_NIR(0, 640, 480, 0, 0),
+    Camera_SM(1,640, 480, 0, 0);
+
 
     //todo 现场配置 Camera.CameraInfo.CAMERA_FACING_FRONT RGB
     //todo 现场配置 Camera.CameraInfo.CAMERA_FACING_BACK NIR
-    Camera_RGB(Camera.CameraInfo.CAMERA_FACING_FRONT, 640, 480, 90, 90),
-    Camera_NIR(Camera.CameraInfo.CAMERA_FACING_BACK, 640, 480, 90, 90),
-    Camera_SM(2,640, 480, 90, 90);
+      //正式  大台式
+//    Camera_RGB(Camera.CameraInfo.CAMERA_FACING_FRONT, 640, 480, 90, 90),
+//    Camera_NIR(Camera.CameraInfo.CAMERA_FACING_BACK, 640, 480, 90, 90),
+//    Camera_SM(2,640, 480, 90, 90);
 
     public int CameraId;
     public int width;

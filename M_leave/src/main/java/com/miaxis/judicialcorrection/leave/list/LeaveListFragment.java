@@ -230,6 +230,8 @@ public class LeaveListFragment extends BaseBindingFragment<FragmentLeaveListBind
                                         item.list.get(0).wcmddxzName +
                                         item.list.get(0).wcmddmx
                         );
+                    }else{
+                        this.bind.tvLocation.setText(item.wcmdd);
                     }
                     this.bind.tvStartTime.setText(TimeUtils.simpleDateFormat.format(item.ksqr));
                     this.bind.tvEndTime.setText(TimeUtils.simpleDateFormat.format(item.jsrq));

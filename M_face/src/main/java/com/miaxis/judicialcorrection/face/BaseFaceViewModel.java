@@ -1,7 +1,6 @@
 package com.miaxis.judicialcorrection.face;
 
 import android.graphics.RectF;
-import android.os.Environment;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -76,7 +75,7 @@ public class BaseFaceViewModel extends ViewModel {
             MXFrame nir = MXFrame.processFrame(nirFrame, CameraConfig.Camera_NIR.bufferOrientation);
             if (nir != null) {
 
-                //测试 保存黑白
+                //测试  test保存黑白
 //                String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/A/A/" + System.currentTimeMillis() + ".bmp";
 //                FaceManager.getInstance().saveRgbTiFile(nir.buffer, nir.width, nir.height, path);
                 /*==============================================*/
@@ -84,9 +83,19 @@ public class BaseFaceViewModel extends ViewModel {
                 if (!MXFrame.isBufferEmpty(rgbFrame)) {
                     int liveDetect = FaceManager.getInstance().liveDetect(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, nir.buffer);
 
+                    //测试   test 可见光
+//                    String paths = Environment.getExternalStorageDirectory().getAbsolutePath() + "/A/C/" + System.currentTimeMillis() + ".bmp";
+//                    FaceManager.getInstance().saveRgbTiFile(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, paths);
                     try {
                         RectF rgbFaceRect = FaceManager.getInstance().getRgbFaceRect();
                         faceRect.postValue(rgbFaceRect);
+                        //test 人脸矩形
+//                        ZZResponse<MXCamera> mxCameraZZResponse = CameraHelper.getInstance().find(CameraConfig.Camera_RGB);
+//                        if (ZZResponse.isSuccess(mxCameraZZResponse)) {
+//                            mxCameraZZResponse.getData().setNextFrameEnable();
+//                        } else {
+//                            captureCallback.onMatchReady(false);
+//                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         faceRect.postValue(null);
@@ -96,7 +105,7 @@ public class BaseFaceViewModel extends ViewModel {
                         byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
                         int extractFeatureRgb = FaceManager.getInstance().extractFeatureRgb(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, false, feature);
                         if (extractFeatureRgb == 0) {
-                            //test
+                            //测试  test 保存活体
 //                            String p = Environment.getExternalStorageDirectory().getAbsolutePath() + "/A/B/" + System.currentTimeMillis() + ".bmp";
 //                            FaceManager.getInstance().saveRgbTiFile(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, p);
 //                         /*=========================================================*/
@@ -127,7 +136,7 @@ public class BaseFaceViewModel extends ViewModel {
         });
     }
 
-    public void matchFeature(MXFrame nirFrame, float threshold, FaceCallback captureCallback) {
+    public void matchFeature(float threshold, FaceCallback captureCallback) {
         mAppExecutors.networkIO().execute(() -> {
             byte[] idCardFeature = tempFaceFeature.getValue();
             if (idCardFeature == null || idCardFeature.length == 0) {

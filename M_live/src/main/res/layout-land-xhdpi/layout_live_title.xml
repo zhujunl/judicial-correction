@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="53px"
+        android:background="@color/color_background_list_title">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_number"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="序号"
+            android:textColor="@color/color_text_grey_1"
+            android:textSize="17px"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_weight="1.5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_name_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_name_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="姓名"
+            android:textColor="@color/color_text_grey_1"
+            android:textSize="17px"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_weight="1.5"
+            app:layout_constraintLeft_toRightOf="@+id/tv_number"
+            app:layout_constraintRight_toLeftOf="@id/tv_unit" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_unit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="拟接收矫正单位"
+            android:textColor="@color/color_text_grey_1"
+            android:textSize="17px"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_weight="3"
+            app:layout_constraintLeft_toRightOf="@+id/tv_name_title"
+            app:layout_constraintRight_toLeftOf="@id/tv_start_time" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_start_time"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="申请时间"
+            android:textColor="@color/color_text_grey_1"
+            android:textSize="17px"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_weight="3"
+            app:layout_constraintLeft_toRightOf="@+id/tv_unit"
+            app:layout_constraintRight_toLeftOf="@id/tv_address" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_address"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="迁入地"
+            android:textColor="@color/color_text_grey_1"
+            android:textSize="17px"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_weight="3"
+            app:layout_constraintLeft_toRightOf="@+id/tv_start_time"
+            app:layout_constraintRight_toLeftOf="@id/tv_operation" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_operation"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="操作"
+            android:textColor="@color/color_text_grey_1"
+            android:textSize="17px"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintLeft_toRightOf="@+id/tv_address"
+            app:layout_constraintRight_toRightOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

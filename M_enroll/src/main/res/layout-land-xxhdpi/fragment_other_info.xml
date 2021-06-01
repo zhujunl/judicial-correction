@@ -14,13 +14,16 @@
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginStart="144px"
+        android:layout_marginEnd="144px"
+        android:layout_marginTop="20px"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
 
@@ -156,7 +159,7 @@
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_marginTop="35px"
             android:layout_height="wrap_content">
@@ -175,9 +178,10 @@
                 android:background="@drawable/shape_et_bg"
                 android:imeOptions="actionDone"
                 android:inputType="number"
-                android:paddingStart="32px"
+                android:paddingStart="15px"
+                android:paddingEnd="15px"
                 android:text="@={vm.otherInfoLiveData.grlxdh}"
-                android:textSize="30px" />
+                android:textSize="28px" />
 
 
             <TextView
@@ -229,7 +233,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="57px"
+                android:layout_marginStart="50px"
                 android:text="原政治面貌："
                 android:textColor="#393939"
                 android:textSize="28px" />
@@ -251,7 +255,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_marginTop="35px"
             android:layout_height="wrap_content">
@@ -260,7 +264,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8px"
+               android:layout_marginStart="27px"
                 android:text="原工作单位："
                 android:textColor="#393939"
                 android:textSize="28px" />
@@ -272,15 +276,17 @@
                 android:background="@drawable/shape_et_bg"
                 android:imeOptions="actionDone"
                 android:inputType="textCapCharacters"
-                android:paddingStart="32px"
+                android:paddingStart="15px"
+                android:paddingEnd="15px"
                 android:text="@={vm.otherInfoLiveData.ygzdw}"
-                android:textSize="30px" />
+                android:textSize="28px"
+                />
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                 android:layout_marginStart="53px"
+                 android:layout_marginStart="63px"
                 android:text="现工作单位："
                 android:textColor="#393939"
                 android:textSize="28px" />
@@ -292,9 +298,10 @@
                 android:background="@drawable/shape_et_bg"
                 android:imeOptions="actionDone"
                 android:inputType="textCapCharacters"
-                android:paddingStart="32px"
+                android:paddingStart="15px"
+                android:paddingEnd="15px"
                 android:text="@={vm.otherInfoLiveData.xgzdw}"
-                android:textSize="30px" />
+                android:textSize="28px" />
 
 
             <TextView
@@ -312,14 +319,15 @@
                 android:background="@drawable/shape_et_bg"
                 android:imeOptions="actionDone"
                 android:inputType="number"
-                android:paddingStart="32px"
+                android:paddingStart="15px"
+                android:paddingEnd="15px"
                 android:text="@={vm.otherInfoLiveData.dwlxdh}"
-                android:textSize="30px" />
+                android:textSize="28px" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_marginTop="35px"
             android:layout_height="wrap_content">

@@ -25,7 +25,9 @@ android {
 //        }
     }
 
-    //EQUIPMENT_TYPE 设备类型 1.竖屏 2横版.1080*1920   3横版.720*1280
+    //EQUIPMENT_TYPE 打包时候注意 设备类型 1.竖屏 2横版.平板   3横版.台式
+    //配置图片保存旋转尺寸
+    //打包需要配置 CameraConfig 因每台摄像头不同
     buildTypes {
         debug {
             minifyEnabled false
@@ -33,17 +35,42 @@ android {
 //            buildConfigField 'String', 'SERVER_URL', '"http://10.249.0.85:9999"'
 //            buildConfigField 'String', 'TOKEN_URL', '"http://10.249.0.85:9013"'
 
-            buildConfigField 'String', 'SERVER_URL', '"http://223.4.75.73:8090"'
+            buildConfigField 'String', 'SERVER_URL', '"http://223.4.75.73:8090"'//8083 8090
             buildConfigField 'String', 'TOKEN_URL', '"http://223.4.75.73:9012"'
-            buildConfigField 'int', 'EQUIPMENT_TYPE', '2'
-
+            //类型
+            buildConfigField 'int', 'EQUIPMENT_TYPE', '3'
+            //人脸存图片的   旋转尺寸 3： 0   1：270  2：
+            buildConfigField 'int', 'ROTATION_SIZE', '0'
+            //设备
+            buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
+            //地址
+            buildConfigField 'String', 'LOCAL', '"杭州"'
+            //联系人
+            buildConfigField 'String', 'CONTACT', '"测试"'
+            //电话
+            buildConfigField 'String', 'CONTACTINFORMATION', '"13300000000"'
+            //设备类型
+            buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_URL', '"http://10.249.0.85:8080"'
             buildConfigField 'String', 'TOKEN_URL', '"http://10.249.0.85:9012"'
-            buildConfigField 'int', 'EQUIPMENT_TYPE', '2'
+            //类型
+            buildConfigField 'int', 'EQUIPMENT_TYPE', '3'
+            //人脸存图片的   旋转尺寸 3： 0   1：270  2：
+            buildConfigField 'int', 'ROTATION_SIZE', '0'
+            //设备
+            buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
+            //地址
+            buildConfigField 'String', 'LOCAL', '"杭州"'
+            //联系人
+            buildConfigField 'String', 'CONTACT', '"正式"'
+            //电话
+            buildConfigField 'String', 'CONTACTINFORMATION', '"13300000000"'
+            //设备类型
+            buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
         }
     }
 
@@ -104,4 +131,5 @@ dependencies {
 
     api "com.google.dagger:hilt-android:$hilt_version"
     annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
+    api 'com.github.zhaolewei:ZlwAudioRecorder:v1.07'
 }

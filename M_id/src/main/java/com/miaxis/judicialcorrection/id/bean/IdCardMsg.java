@@ -46,6 +46,8 @@ public class IdCardMsg extends BaseObservable {
                 + "身份证号码:" + this.id_num + '\n'
                 + "签发机关:" + this.sign_office + '\n'
                 + "有效期起始日期:" + this.useful_s_date_year + "-" + this.useful_s_date_month + "-" + this.useful_s_date_day + '\n'
-                + "有效期截止日期:" + this.useful_e_date_year + "-" + this.useful_e_date_month + "-" + this.useful_e_date_day + '\n';
+                + "有效期截止日期:" + this.useful_e_date_year + "-" + this.useful_e_date_month + "-" + this.useful_e_date_day + '\n'
+                + "FP0"+strFp0+"\n"
+                + "FP2"+strFp1;
     }
 }

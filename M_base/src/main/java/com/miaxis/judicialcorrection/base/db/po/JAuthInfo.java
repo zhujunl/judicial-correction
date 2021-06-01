@@ -3,6 +3,8 @@ package com.miaxis.judicialcorrection.base.db.po;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.miaxis.judicialcorrection.base.BuildConfig;
+
 /**
  * JAuthInfo
  *
@@ -33,11 +35,11 @@ public class JAuthInfo {
     @PrimaryKey(autoGenerate = true)
     public long id;
     public String vendor = "zkja";
-    public String deviceType = "台式";
+    public String deviceType = BuildConfig.DEVICE_TYPE;
 
     public String activationCode;
-    public String contact = "测试";
-    public String contactInformation = "13300000000";
+    public String contact = BuildConfig.CONTACT;
+    public String contactInformation = BuildConfig.CONTACTINFORMATION;
 
     public String dishiId;
     public String dishiName;

@@ -17,6 +17,8 @@ import com.zz.jni.Wlt2BmpCall;
 
 import java.nio.charset.StandardCharsets;
 
+import static java.lang.System.*;
+
 /**
  * @author Tank
  * @date 2021/4/25 9:33 PM
@@ -94,8 +96,12 @@ public class ReadIdCardManager {
                 if (ret == 0x90) {
                     IdCard idCard = new IdCard();
                     idCard.idCardMsg = msg;
+                    idCard.fp0=pucFpMsg;
+                    //是否需要拆分
+//                    byte[] b=new byte[512];
+//                    System.arraycopy(pucFpMsg,512,b,pucFpMsg.length,b.length-1);
+//                    idCard.fp1=b;
                     byte[] bmp = new byte[38862];
-
                     Bitmap bitmap = GetImage(pucPHMsg, bmp);
                     if (bitmap != null) {
                       idCard.face = bitmap;
@@ -164,7 +170,7 @@ public class ReadIdCardManager {
         byte[] newmsg = new byte[msg.length + 2];
         newmsg[0] = (byte) 0xff;
         newmsg[1] = (byte) 0xfe;
-        System.arraycopy(msg, 0, newmsg, 2, msg.length);
+        arraycopy(msg, 0, newmsg, 2, msg.length);
         String s = new String(newmsg, StandardCharsets.UTF_16);
         for (int i = 0; i < s.toCharArray().length; i++) {
             msg_str[i] = s.toCharArray()[i];
@@ -188,7 +194,7 @@ public class ReadIdCardManager {
      *****************************************************************************/
     public Bitmap GetImage(byte[] cardInfo, byte[] bBMPFile) {
         byte[] tmp = new byte[1024];
-        System.arraycopy(cardInfo, 0, tmp, 0, tmp.length);
+        arraycopy(cardInfo, 0, tmp, 0, tmp.length);
         int mPhotoSize = 38862;
         if (bBMPFile.length < mPhotoSize)
             return null;

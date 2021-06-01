@@ -15,6 +15,8 @@ public class IdCard {
 
     public Bitmap face;
 
+    public byte[] fp0;
+    public byte[] fp1;
 
     public IdCard() {
     }

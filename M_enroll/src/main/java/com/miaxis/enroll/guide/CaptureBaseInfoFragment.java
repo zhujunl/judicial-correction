@@ -54,7 +54,7 @@ import timber.log.Timber;
 public class CaptureBaseInfoFragment extends BaseBindingFragment<FragmentCaptureBaseInfoBinding> {
 
     private final List<NvListItem> listItems = new ArrayList<>();
-    private final int pageCount = 6;
+    private final int pageCount = 5;
 
     {
         //影藏操作

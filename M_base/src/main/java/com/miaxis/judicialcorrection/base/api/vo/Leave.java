@@ -33,6 +33,11 @@ public class Leave {
         public String xjsj;
         public String xjms;
         public String flowStatusName;
+        public String lsjhr;
+        public String gx;
+        public String lxdh;
+        public String wcmdd;
+        public String jtsy;
         public List<ListBean.ListItem> list;
 
         public static class ListItem {

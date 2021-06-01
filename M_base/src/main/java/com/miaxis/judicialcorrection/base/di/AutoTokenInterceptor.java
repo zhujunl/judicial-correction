@@ -1,6 +1,8 @@
 package com.miaxis.judicialcorrection.base.di;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -9,6 +11,7 @@ import com.miaxis.judicialcorrection.base.api.vo.Token;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.JAuthInfo;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
+import com.miaxis.judicialcorrection.base.utils.numbers.HexStringUtils;
 import com.wondersgroup.om.AuthInfo;
 import com.wondersgroup.om.JZAuth;
 import com.wondersgroup.om.ResultListener;
@@ -81,10 +84,11 @@ public class AutoTokenInterceptor implements Interceptor {
         });
         jzAuth = JZAuth.getInstance();
         jzAuth.setGlobalURL(BuildConfig.TOKEN_URL);
-        jzAuth.initialize(context);
+        jzAuth.initialize(context,"zkja");
         if (BuildConfig.DEBUG) {
             jzAuth.setDebug(true);
         }
+        Timber.i("JAuthInfo  初始化");
     }
 
     String getToken() throws IOException {
@@ -131,6 +135,7 @@ public class AutoTokenInterceptor implements Interceptor {
     }
 
 
+    @SuppressLint("HardwareIds")
     void registerJzAuth() throws IOException {
         if (TextUtils.isEmpty(jAuthInfo.activationCode)) {
             throw new IOException("请输入激活码");
@@ -140,15 +145,18 @@ public class AutoTokenInterceptor implements Interceptor {
         AuthInfo.getInstance().setContactInformation(jAuthInfo.contactInformation);
 
         AuthInfo.getInstance().setDeviceType(jAuthInfo.deviceType);
-        AuthInfo.getInstance().setVendor(jAuthInfo.vendor);
+        AuthInfo.getInstance().setVendor(jAuthInfo.vendor);//
         AuthInfo.getInstance().setDishiId(jAuthInfo.dishiId);
         AuthInfo.getInstance().setDishiName(jAuthInfo.dishiName);
         AuthInfo.getInstance().setQuxianId(jAuthInfo.quxianId);
         AuthInfo.getInstance().setQuxianName(jAuthInfo.quxianName);
+        AuthInfo.getInstance().setSerialNumber(Build.SERIAL);
+        String time = HexStringUtils.convertCurrentGMT();
+        AuthInfo.getInstance().setTime(time);
 
         AuthInfo.getInstance().setCurrentVersion("1.0.0");
-        AuthInfo.getInstance().setClientName("clientName");
-        AuthInfo.getInstance().setLoc("测试地址");
+        AuthInfo.getInstance().setClientName(BuildConfig.CLIENT_NAME);//clientName
+        AuthInfo.getInstance().setLoc(BuildConfig.LOCAL);
 
         final Exception[] errorR = new Exception[1];
         final String[] resultR = new String[1];

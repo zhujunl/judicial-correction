@@ -10,12 +10,10 @@
     </data>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="32px"
-
-        android:background="@color/color_text_white"
         android:orientation="vertical">
 
 
@@ -99,8 +97,9 @@
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etx"
-                android:layout_width="391px"
+                android:layout_width="405px"
                 android:layout_height="36px"
+                android:paddingStart="10px"
                 android:layout_marginStart="7px"
                 android:gravity="center_vertical"
                 android:background="@drawable/shape_et_bg"
@@ -196,7 +195,7 @@
             <FrameLayout
                 android:layout_width="116px"
                 android:layout_height="match_parent"
-                android:layout_marginStart="16px"
+                android:layout_marginStart="8px"
                 android:background="@drawable/shape_et_bg">
 
                 <androidx.appcompat.widget.AppCompatSpinner
@@ -209,7 +208,7 @@
             <FrameLayout
                 android:layout_width="116px"
                 android:layout_height="match_parent"
-                android:layout_marginStart="16px"
+                android:layout_marginStart="8px"
                 android:background="@drawable/shape_et_bg">
 
                 <androidx.appcompat.widget.AppCompatSpinner
@@ -222,7 +221,7 @@
             <FrameLayout
                 android:layout_width="116px"
                 android:layout_height="match_parent"
-                android:layout_marginStart="16px"
+                android:layout_marginStart="8px"
                 android:background="@drawable/shape_et_bg">
 
                 <androidx.appcompat.widget.AppCompatSpinner
@@ -237,8 +236,9 @@
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/addr2Et"
             visibleGone="@{!vmAddr.addrSame}"
-            android:layout_width="391px"
+            android:layout_width="414px"
             android:layout_height="36px"
+            android:paddingStart="10px"
             android:layout_marginTop="51px"
             android:layout_marginStart="7px"
             android:gravity="center_vertical"

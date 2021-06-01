@@ -1,15 +1,7 @@
 package com.miaxis.judicialcorrection.leave.apply;
 
 import android.text.TextUtils;
-
-import com.miaxis.judicialcorrection.base.db.AppDatabase;
-import com.miaxis.judicialcorrection.base.db.po.Place;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import javax.inject.Inject;
+import android.view.View;
 
 import androidx.arch.core.util.Function;
 import androidx.databinding.ObservableField;
@@ -17,6 +9,15 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+
+import com.miaxis.judicialcorrection.base.BuildConfig;
+import com.miaxis.judicialcorrection.base.db.AppDatabase;
+import com.miaxis.judicialcorrection.base.db.po.Place;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import timber.log.Timber;
@@ -55,6 +56,7 @@ public class ApplyViewModel extends ViewModel {
 
     public ObservableField<String> contactNumber = new ObservableField<>();
 
+    public ObservableField<Integer> isHideScanning=new ObservableField<>();
 
     private final AppDatabase appDatabase;
     MutableLiveData<Place> mProvince = new MutableLiveData<>();
@@ -97,6 +99,8 @@ public class ApplyViewModel extends ViewModel {
     public ApplyViewModel(AppDatabase appDatabase) {
         this.appDatabase = appDatabase;
         this.allProvince = appDatabase.placeDao().findAllProvince();
+        int vis= (BuildConfig.EQUIPMENT_TYPE==1||BuildConfig.EQUIPMENT_TYPE==3)? View.VISIBLE:View.INVISIBLE;
+        isHideScanning.set(vis);
     }
 
     public String checkContent() {

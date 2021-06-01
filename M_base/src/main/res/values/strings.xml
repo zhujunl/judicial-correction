@@ -21,7 +21,7 @@
     <string name="text_id_card">身份证号：</string>
     <string name="text_face_tips">请将人脸置于人像采集区</string>
     <string name="text_tips">支持人脸采集验证或指纹采集验证，\n二者任意一种比对通过都可</string>
-
+    <string name="text_tips_hand">支持人脸采集验证或指纹采集验证，二者任意一种比对通过都可</string>
 
     <string name="error_title">错误</string>
     <string name="error_no_title">错误参数</string>

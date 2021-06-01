@@ -20,6 +20,7 @@ import com.miaxis.utils.BitmapUtils;
 import com.miaxis.utils.FileUtils;
 
 import java.io.File;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -34,8 +35,7 @@ public class FingerprintCollectModel extends ViewModel {
     public File filePath;
     private AppExecutors mAppExecutors;
     private FingerprintRepo mFingerprintRepo;
-    public ObservableField<String> fingerprint1=new ObservableField<>();
-    public ObservableField<String> fingerprint2=new ObservableField<>();
+    public ObservableField<byte[]> fingerprint1=new ObservableField<>();
 
     @Inject
     public FingerprintCollectModel(FingerprintRepo fingerprintRepo, AppExecutors mAppExecutors, AppDatabase appDatabase) {
@@ -89,6 +89,7 @@ public class FingerprintCollectModel extends ViewModel {
 
         @Override
         public void onFingerReadComparison(byte[] feature, Bitmap image, int state) {
+            Timber.e("FingerRead:" + (feature == null) + "   " + (image == null)+"===结果"+state);
             byte[] bytes=null;
             if (state==0){
                 if (image==null){
@@ -103,11 +104,11 @@ public class FingerprintCollectModel extends ViewModel {
 
     private byte[] getFingerToByte(){
         byte[] decode=null;
-        if (fingerprint1.get()!=null){
-            decode = Base64.decode(fingerprint1.get(), Base64.NO_WRAP);
-        }else{
-            if (fingerprint2.get()!=null){
-                decode = Base64.decode(fingerprint2.get(), Base64.NO_WRAP);
+        for (byte b: Objects.requireNonNull(fingerprint1.get())){
+            if (b!=0x0){
+                Timber.v("不为 %s",b);
+                decode=fingerprint1.get();
+                break;
             }
         }
         return decode;
@@ -150,7 +151,6 @@ public class FingerprintCollectModel extends ViewModel {
                     }else{
                         FingerManager.getInstance().redFingerComparison(bytes);
                     }
-
                 }
             });
             return true;

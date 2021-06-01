@@ -3,6 +3,7 @@ package com.miaxis.judicialcorrection.base;
 import android.app.Application;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.zlw.main.recorderlib.RecordManager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,5 +33,6 @@ public class BaseApplication extends Application {
         }
         Timber.e("DEBUG:" + BuildConfig.DEBUG);
         ARouter.init(this);
+        RecordManager.getInstance().init(this, false);
     }
 }

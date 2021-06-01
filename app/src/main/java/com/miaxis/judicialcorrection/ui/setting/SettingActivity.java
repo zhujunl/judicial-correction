@@ -200,8 +200,11 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
         JusticeBureau shi = (JusticeBureau) binding.spinnerShi.getSelectedItem();
         JusticeBureau xian = (JusticeBureau) binding.spinnerXian.getSelectedItem();
         JusticeBureau jeidao = (JusticeBureau) binding.spinnerJiedao.getSelectedItem();
-        if (TextUtils.isEmpty(jeidao.getTeamId())){
+        if (jeidao==null||TextUtils.isEmpty(jeidao.getTeamId())){
             jeidao = null;
+        }
+        if (shi==null&&xian==null&&jeidao==null){
+            return;
         }
         viewModel.addBureau(shi, xian, jeidao);
     }

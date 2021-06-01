@@ -4,22 +4,24 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
 
-import com.bumptech.glide.Glide;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.CameraHelper;
-import com.miaxis.camera.CameraPreviewCallback;
 import com.miaxis.camera.MXCamera;
 import com.miaxis.camera.MXFrame;
 import com.miaxis.faceid.FaceConfig;
-import com.miaxis.faceid.FaceManager;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
+import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.vo.Education;
 import com.miaxis.judicialcorrection.base.api.vo.IndividualEducationBean;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
@@ -33,21 +35,10 @@ import com.miaxis.judicialcorrection.face.callback.FaceCallback;
 import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.face.databinding.FragmentVerifyBinding;
 import com.miaxis.utils.BitmapUtils;
-import com.miaxis.utils.FileUtils;
 
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialog;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
-import java.io.File;
-import java.text.SimpleDateFormat;
 
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
@@ -166,6 +157,15 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
                 dismissLoading();
+                //test 测试环境直接跳过
+                if (BuildConfig.DEBUG) {
+                    FragmentActivity activity = getActivity();
+                    if (activity instanceof VerifyCallback) {
+                        VerifyCallback callback = (VerifyCallback) activity;
+                        callback.onVerify(ZZResponse.CreateSuccess());
+                        return;
+                    }
+                }
                 //请求成功后拿到图片 解析成bitmap
                 ResponseBody responseBody = response.body();
                 Bitmap bitmap = BitmapFactory.decodeStream(responseBody.byteStream());
@@ -327,9 +327,9 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
     @Override
     public void onLiveReady(MXFrame nirFrame, boolean success) {
         if (success) {
-            mVerifyPageViewModel.matchFeature(nirFrame, FaceConfig.threshold, this);
+            mVerifyPageViewModel.matchFeature(FaceConfig.threshold, this);
         } else {
-            startRgbPreview();
+            mHandler.post(this::startRgbPreview);
         }
     }
 

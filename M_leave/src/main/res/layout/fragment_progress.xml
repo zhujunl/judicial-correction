@@ -115,7 +115,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15px"
             android:layout_marginTop="75px"
-            android:text="居住地变更申请信息"
+            android:text="请销假申请信息"
             android:textColor="#393939"
             android:textSize="36px"
             app:layout_constraintLeft_toRightOf="@id/view_label_two"

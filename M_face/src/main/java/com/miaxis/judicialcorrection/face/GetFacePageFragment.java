@@ -18,6 +18,7 @@ import com.miaxis.camera.MXFrame;
 import com.miaxis.faceid.FaceConfig;
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
+import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
@@ -71,7 +72,7 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
     protected void initView(@NonNull FragmentCaptureBinding view, @Nullable Bundle savedInstanceState) {
         mGetFaceViewModel = new ViewModelProvider(this).get(GetFaceViewModel.class);
         binding.tvTitle.setText(String.valueOf(title));
-        mGetFaceViewModel.faceRect.observe(this, rectF -> binding.frvFace.setRect(rectF,false));
+        mGetFaceViewModel.faceRect.observe(this, rectF -> binding.frvFace.setRect(rectF, false));
         mGetFaceViewModel.name.observe(this, s -> binding.tvName.setText(s));
         mGetFaceViewModel.idCardNumber.observe(this, s -> binding.tvIdCard.setText(s));
         mGetFaceViewModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));
@@ -182,15 +183,19 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
     @Override
     public void onLiveReady(MXFrame nirFrame, boolean success) {
         if (success) {
-            mGetFaceViewModel.matchFeature(nirFrame,FaceConfig.thresholdIdCard,this);
+            mGetFaceViewModel.matchFeature(FaceConfig.thresholdIdCard, this);
         } else {
-            startRgbPreview();
+            mHandler.post(this::startRgbPreview);
         }
     }
 
     @Override
     public void onMatchReady(boolean success) {
         if (success) {
+            if (BuildConfig.DEBUG) {
+                showDialog();
+                return;
+            }
             ZZResponse<MXCamera> mxCameraRgb = CameraHelper.getInstance().find(CameraConfig.Camera_RGB);
             if (ZZResponse.isSuccess(mxCameraRgb)) {
                 File filePath = FileUtils.createFileParent(getContext());
@@ -261,9 +266,9 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
         //活体检测出现错误
         mHandler.post(() ->
                 appHintsLazy.get().showError("Error:" + response.getCode() + "  " + response.getMsg(),
-                (dialog, which) -> {
-                    startRgbPreview();
-                }));
+                        (dialog, which) -> {
+                            startRgbPreview();
+                        }));
     }
 
     private void startRgbPreview() {

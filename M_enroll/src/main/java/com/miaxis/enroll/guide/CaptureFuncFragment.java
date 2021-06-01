@@ -11,6 +11,7 @@ import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.face.GetFacePageFragment;
+import com.miaxis.judicialcorrection.id.bean.IdCard;
 import com.miaxis.judicialcorrection.widget.countdown.DefaultCountDownListener;
 
 import javax.inject.Inject;
@@ -76,6 +77,11 @@ public class CaptureFuncFragment extends BaseBindingFragment<FragmentCaptureFunc
         });
         binding.groupFinger.setOnClickListener(v -> {
             appHints.toast("暂未开放");
+//            PersonInfo personInfo = viewModel.personInfoLiveData.getValue();
+//            IdCard idcard = viewModel.idCardLiveData.getValue();
+//            FingerprintCollectFragment fragment = new FingerprintCollectFragment(personInfo.getId(),idcard);
+//            navigation(fragment);
+
         });
         binding.groupSound.setOnClickListener(v -> {
             appHints.toast("暂未开放");

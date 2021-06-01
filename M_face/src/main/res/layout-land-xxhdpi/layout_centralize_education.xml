@@ -5,8 +5,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/cl_content"
-        android:layout_width="match_parent"
         android:visibility="gone"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
 
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40px"
             android:textColor="@color/color_text_black"
-            android:textSize="37px"
+            android:textSize="30px"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="主题：教育" />
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40px"
             android:textColor="@color/color_text_black"
-            android:textSize="37px"
+            android:textSize="30px"
             app:layout_constraintLeft_toRightOf="@id/tv_theme"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="集中教育时间：2012/12/12 40:10" />
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40px"
             android:textColor="@color/color_text_black"
-            android:textSize="37px"
+            android:textSize="30px"
             app:layout_constraintLeft_toRightOf="@id/tv_education_time"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="时长:2小时" />
@@ -49,9 +49,9 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15px"
+            android:layout_marginTop="10px"
             android:textColor="@color/color_text_black"
-            android:textSize="37px"
+            android:textSize="30px"
             app:layout_constraintLeft_toLeftOf="@id/tv_theme"
             app:layout_constraintTop_toBottomOf="@id/tv_education_time_long"
             tools:text="姓名" />
@@ -61,10 +61,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40px"
-            android:layout_marginTop="15px"
+            android:layout_marginTop="10px"
             android:textColor="@color/color_text_black"
-
-            android:textSize="37px"
+            android:textSize="30px"
             app:layout_constraintLeft_toLeftOf="@id/tv_education_time"
             app:layout_constraintTop_toBottomOf="@id/tv_education_time_long"
             tools:text="身份证号" />

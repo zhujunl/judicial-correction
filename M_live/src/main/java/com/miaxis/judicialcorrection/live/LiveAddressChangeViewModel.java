@@ -1,13 +1,16 @@
 package com.miaxis.judicialcorrection.live;
 
 import android.annotation.SuppressLint;
+import android.view.View;
 
 import androidx.arch.core.util.Function;
+import androidx.databinding.ObservableField;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.vo.LiveAddressChangeDetailsBean;
 import com.miaxis.judicialcorrection.base.api.vo.LiveAddressListBean;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
@@ -68,6 +71,8 @@ public class LiveAddressChangeViewModel extends ViewModel {
     MutableLiveData<JusticeBureau> mXianLiveData = new MutableLiveData<>();
     MutableLiveData<JusticeBureau> mJiedaoLiveData = new MutableLiveData<>();
 
+    public ObservableField<Integer> isHideScanning=new ObservableField<>();
+
     public final LiveData<Resource<List<JusticeBureau>>> shiListLiveData = Transformations.switchMap(mShengLiveData, new Function<JusticeBureau, LiveData<Resource<List<JusticeBureau>>>>() {
         @Override
         public LiveData<Resource<List<JusticeBureau>>> apply(JusticeBureau input) {
@@ -115,6 +120,8 @@ public class LiveAddressChangeViewModel extends ViewModel {
         LiveAddressChangeBean bean = new LiveAddressChangeBean();
         bean.sqsj = currentTime(false);
         liveBean.postValue(bean);
+        int vis=(BuildConfig.EQUIPMENT_TYPE==1||BuildConfig.EQUIPMENT_TYPE==3)?View.VISIBLE:View.INVISIBLE;
+        isHideScanning.set(vis);
     }
 
     //信息变更
