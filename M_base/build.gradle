@@ -49,7 +49,7 @@ android {
             buildConfigField 'String', 'CONTACT', '"测试"'
             //电话
             buildConfigField 'String', 'CONTACTINFORMATION', '"13300000000"'
-            //设备类型
+            //设备类型 1 3台式 2 平板
             buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
         }
         release {
@@ -69,7 +69,7 @@ android {
             buildConfigField 'String', 'CONTACT', '"正式"'
             //电话
             buildConfigField 'String', 'CONTACTINFORMATION', '"13300000000"'
-            //设备类型
+            //设备类型 1 3台式 2 平板
             buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
         }
     }
