@@ -32,6 +32,8 @@ import com.miaxis.judicialcorrection.base.utils.AppToast;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundDiffAdapter;
 import com.miaxis.judicialcorrection.databinding.ActivitySettingBinding;
 import com.miaxis.judicialcorrection.databinding.ItemSettingFuncBinding;
+import com.wondersgroup.om.AuthInfo;
+import com.wondersgroup.om.JZAuth;
 
 import java.util.List;
 import java.util.Objects;
@@ -174,6 +176,8 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
             }
         });
         viewModel.setSheng(null);
+
+        binding.tvClientId.setText("ClientId："+ AuthInfo.getInstance().getClientId());
     }
 
     private int getCheckedPosition(List<JusticeBureau> justiceBureaus, JusticeBureau total) {
