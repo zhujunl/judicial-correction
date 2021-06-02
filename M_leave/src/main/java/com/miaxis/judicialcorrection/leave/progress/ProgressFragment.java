@@ -75,7 +75,7 @@ public class ProgressFragment extends BaseBindingFragment<FragmentProgressBindin
                         progressViewModel.startTime.set(TimeUtils.simpleDateFormat.format(item.ksqr));
                         progressViewModel.endTime.set(TimeUtils.simpleDateFormat.format(item.jsrq));
                         progressViewModel.days.set(item.wcts);
-                        progressViewModel.reasonType.set(item.wcly);
+                        progressViewModel.reasonType.set(item.wclyName);
                         progressViewModel.reason.set(item.jtsy);
                         String s = HexStringUtils.convertGMTToLocal(item.xjsj);
                         if (TextUtils.isEmpty(s)){

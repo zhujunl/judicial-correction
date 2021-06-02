@@ -48,7 +48,7 @@ import timber.log.Timber;
  * @updateDes
  */
 @AndroidEntryPoint
-public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBinding>implements CameraPreviewCallback {
+public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBinding> implements CameraPreviewCallback {
 
     private String title = "请假申请";
 
@@ -67,7 +67,7 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
     private String base64LiveChangeData;
     private File mFilePath;
     //扫描类型
-    private int scanType=0;
+    private int scanType = 0;
 
     public LeaveApplyFragment(@NotNull VerifyInfo verifyInfo) {
         this.verifyInfo = verifyInfo;
@@ -86,11 +86,11 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
         mApplyViewModel.applyTime.set(TimeUtils.getTime());
         mFilePath = FileUtils.createFileParent(getContext());
         binding.btnApplicationScan.setOnClickListener(v -> {
-            scanType=0;
+            scanType = 0;
             openScanning();
         });
         binding.btnApplicationMaterialsScan.setOnClickListener(v -> {
-            scanType=1;
+            scanType = 1;
             openScanning();
         });
         binding.btnSubmit.setOnClickListener(v -> {
@@ -98,16 +98,25 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
             if (!TextUtils.isEmpty(checkContent)) {
                 appHintsLazy.get().showError(checkContent);
             } else {
+                String typeCode="1";
+                try {
+                    int typePosition = binding.spReason.getSelectedItemPosition();
+                    String[] stringArray = getResources().getStringArray(R.array.leavetype_code);
+                    typeCode = stringArray[typePosition];
+                }catch (Exception e){
+                    e.getStackTrace();
+                }
+
                 mLeaveRepo.leaveAdd(
                         verifyInfo.pid,
                         TimeUtils.dateToString(mApplyViewModel.applyTime.get()),
                         "",
                         base64LiveChangeApplication,
                         base64LiveChangeData,
-                        mApplyViewModel.outType.get()+"",
-                        mApplyViewModel.temporaryGuardian.get()+"",
-                        mApplyViewModel.relationShip.get()+"",
-                        mApplyViewModel.contactNumber.get()+"",
+                        typeCode + "",
+                        mApplyViewModel.temporaryGuardian.get() + "",
+                        mApplyViewModel.relationShip.get() + "",
+                        mApplyViewModel.contactNumber.get() + "",
                         mApplyViewModel.specificReasons.get(),
                         TimeUtils.dateToString(mApplyViewModel.endTime.get()),
                         TimeUtils.dateToString(mApplyViewModel.startTime.get()),
@@ -287,20 +296,20 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
                 mxCamera.getData().setPreviewCallback(this);
                 mxCamera.getData().start(null);
                 mxCamera.getData().setNextFrameEnable();
-            }else{
+            } else {
                 appHintsLazy.get().showError("扫描失败！");
             }
-        }else{
+        } else {
             appHintsLazy.get().showError("扫描设备初始化失败请点击重试！");
         }
     }
 
     @Override
     public void onPreview(MXFrame frame) {
-        if (MXFrame.isNullCamera(frame)){
+        if (MXFrame.isNullCamera(frame)) {
             return;
         }
-        String fileName = "sm"+scanType+".jpg";
+        String fileName = "sm" + scanType + ".jpg";
         File file = new File(mFilePath, fileName);
         boolean frameImage = frame.camera.saveFrameImage(file.getAbsolutePath());
         if (frameImage) {
@@ -317,7 +326,7 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
                     binding.tvApplicationInfoShow2.setText(fileName);
                 }
             });
-        }else{
+        } else {
             mHandler.post(() -> appHintsLazy.get().showError("扫描文件保存失败，请点击重试！"));
         }
         try {
@@ -327,13 +336,14 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
             e.getStackTrace();
         }
     }
-    private final  static   Handler mHandler=new Handler();
+
+    private final static Handler mHandler = new Handler();
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        base64LiveChangeApplication=null;
-        base64LiveChangeData=null;
+        base64LiveChangeApplication = null;
+        base64LiveChangeData = null;
         mHandler.removeCallbacksAndMessages(null);
     }
 

@@ -4,7 +4,18 @@
     <string-array name="leavetype">
         <item>请选择</item>
         <item>救医</item>
-        <item>家庭重大变故</item>
+        <item>处理家庭或者工作重要事务</item>
         <item>其他</item>
+        <item>就学</item>
+        <item>参与诉讼</item>
+    </string-array>
+
+    <string-array name="leavetype_code">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
+        <item>5</item>
     </string-array>
 </resources>

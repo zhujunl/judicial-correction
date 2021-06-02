@@ -73,7 +73,6 @@ public class LeaveRepo {
         hashMap.put("sqsj", sqsj);
         hashMap.put("xjms", xjms);
         hashMap.put("pid", pid);
-        hashMap.put("wclyName",wclyType);
 
         if (!TextUtils.isEmpty(qjsqs)){
             hashMap.put("qjsqs", new String[]{qjsqs});
