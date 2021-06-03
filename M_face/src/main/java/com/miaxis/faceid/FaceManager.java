@@ -73,7 +73,9 @@ public class FaceManager {
         }
         byte[] pRGBImage = new byte[width * height * 3];
         this.mMxImageTool.YUV2RGB(yuv, width, height, pRGBImage);
-        return pRGBImage;
+        byte[] flip = new byte[pRGBImage.length];
+        this.mMxImageTool.ImageFlip(pRGBImage,width,height,0,flip);
+        return flip;
     }
 
     public RectF getRgbFaceRect() {

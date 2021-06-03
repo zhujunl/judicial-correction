@@ -106,8 +106,8 @@
 
         <SurfaceView
             android:id="@+id/sv_preview"
-            android:layout_width="427px"
-            android:layout_height="373px"
+            android:layout_width="288px"
+            android:layout_height="384px"
             android:layout_marginTop="20px"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

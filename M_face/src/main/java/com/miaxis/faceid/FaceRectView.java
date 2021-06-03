@@ -76,23 +76,24 @@ private boolean mirror=false;
                  left=  (width- this.mRectF.right);
                  right=  (width- this.mRectF.left);
             }else {
+                //无设备暂时无法知道
                 if (BuildConfig.EQUIPMENT_TYPE==1){
                     left= this.mRectF.left+(width/10);
                     right= this.mRectF.right+(width/10);
                     top=top+(height/10);
                     bottom=bottom+(height/10);
                 }else if (BuildConfig.EQUIPMENT_TYPE==2){
-                    left= this.mRectF.left+(width/10);
-                    right= this.mRectF.right+(width/10);
-                    top=top+(height/10);
-                    bottom=bottom+(height/10);
+                    //等比0.6
+                    left= (float) (this.mRectF.left*0.6);
+                    right= (float) (this.mRectF.right*0.6);
+                    top= (float) (top*0.6);
+                    bottom= (float) (bottom*0.6);
                 }else{
-                    left= this.mRectF.left-(width/4);
-                    right= this.mRectF.right-(width/4);
-                    top=top-(height/5);
-                    bottom=bottom-(height/5);
+                    left= (float) (this.mRectF.left*0.6);
+                    right= (float) (this.mRectF.right*0.6);
+                    top= (float) (top*0.6);
+                    bottom= (float) (bottom*0.6);
                 }
-
             }
 
 //            int top= (int) (height- this.mRectF.top);
