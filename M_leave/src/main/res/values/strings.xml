@@ -3,7 +3,7 @@
 
     <string-array name="leavetype">
         <item>请选择</item>
-        <item>救医</item>
+        <item>就医</item>
         <item>处理家庭或者工作重要事务</item>
         <item>其他</item>
         <item>就学</item>
