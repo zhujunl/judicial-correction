@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.RectF;
 import android.util.Size;
 
+import com.miaxis.judicialcorrection.base.BuildConfig;
+
 import org.zz.api.MXErrorCode;
 import org.zz.api.MXFaceAPI;
 import org.zz.api.MXFaceInfoEx;
@@ -73,9 +75,7 @@ public class FaceManager {
         }
         byte[] pRGBImage = new byte[width * height * 3];
         this.mMxImageTool.YUV2RGB(yuv, width, height, pRGBImage);
-        byte[] flip = new byte[pRGBImage.length];
-        this.mMxImageTool.ImageFlip(pRGBImage,width,height,0,flip);
-        return flip;
+        return pRGBImage;
     }
 
     public RectF getRgbFaceRect() {

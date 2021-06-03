@@ -89,10 +89,10 @@ private boolean mirror=false;
                     top= (float) (top*0.6);
                     bottom= (float) (bottom*0.6);
                 }else{
-                    left= (float) (this.mRectF.left*0.6);
-                    right= (float) (this.mRectF.right*0.6);
-                    top= (float) (top*0.6);
-                    bottom= (float) (bottom*0.6);
+                    left= this.mRectF.left-(width/4);
+                    right= this.mRectF.right-(width/4);
+                    top=top-(height/5);
+                    bottom=bottom-(height/5);
                 }
             }
 
