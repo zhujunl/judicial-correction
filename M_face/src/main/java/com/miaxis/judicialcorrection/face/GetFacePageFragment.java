@@ -192,10 +192,6 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
     @Override
     public void onMatchReady(boolean success) {
         if (success) {
-            if (BuildConfig.DEBUG) {
-                showDialog();
-                return;
-            }
             ZZResponse<MXCamera> mxCameraRgb = CameraHelper.getInstance().find(CameraConfig.Camera_RGB);
             if (ZZResponse.isSuccess(mxCameraRgb)) {
                 File filePath = FileUtils.createFileParent(getContext());
