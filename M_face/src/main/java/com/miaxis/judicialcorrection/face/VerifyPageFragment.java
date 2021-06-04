@@ -157,15 +157,6 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
                 dismissLoading();
-                //test 测试环境直接跳过
-                if (BuildConfig.DEBUG) {
-                    FragmentActivity activity = getActivity();
-                    if (activity instanceof VerifyCallback) {
-                        VerifyCallback callback = (VerifyCallback) activity;
-                        callback.onVerify(ZZResponse.CreateSuccess());
-                        return;
-                    }
-                }
                 //请求成功后拿到图片 解析成bitmap
                 ResponseBody responseBody = response.body();
                 Bitmap bitmap = BitmapFactory.decodeStream(responseBody.byteStream());

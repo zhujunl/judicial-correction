@@ -1,5 +1,7 @@
 package com.miaxis.camera;
 
+import android.hardware.Camera;
+
 /**
  * @author Tank
  * @date 2021/5/16 13:19
