@@ -78,6 +78,9 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
             if (info != null && info.activationCode != null) {
                 Timber.i(" Query JAuthInfo == null ");
                 binding.etActiveCode.setText(info.activationCode);
+                binding.etLxr.setText(info.contact);
+                binding.etAddress.setText(info.local);
+                binding.etPhone.setText(info.contactInformation);
             }
         });
         binding.etActiveCode.setOnEditorActionListener((TextView v, int actionId, KeyEvent event) -> {
@@ -87,6 +90,8 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
             }
             return false;
         });
+
+
 //        justiceBureauRepo.getMyJusticeBureau().observe(this, justiceBureau -> {
 //            // 暂时先这样
 ////            mJusticeBureau = justiceBureau;
@@ -149,7 +154,7 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
                 SpAdapter adapter = new SpAdapter();
                 adapter.submitList(listResource.data);
                 binding.spinnerShi.setAdapter(adapter);
-                binding.spinnerShi.setSelection(getCheckedPosition(listResource.data,viewModel.shiChecked));
+                binding.spinnerShi.setSelection(getCheckedPosition(listResource.data, viewModel.shiChecked));
 
             }
         });
@@ -159,7 +164,7 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
                 SpAdapter adapter = new SpAdapter();
                 adapter.submitList(listResource.data);
                 binding.spinnerXian.setAdapter(adapter);
-                binding.spinnerXian.setSelection(getCheckedPosition(listResource.data,viewModel.xianChecked));
+                binding.spinnerXian.setSelection(getCheckedPosition(listResource.data, viewModel.xianChecked));
             }
         });
 
@@ -169,7 +174,7 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
                 SpAdapter adapter = new SpAdapter();
                 adapter.submitList(listResource.data);
                 binding.spinnerJiedao.setAdapter(adapter);
-                binding.spinnerJiedao.setSelection(getCheckedPosition(listResource.data,viewModel.jiedaoChecked));
+                binding.spinnerJiedao.setSelection(getCheckedPosition(listResource.data, viewModel.jiedaoChecked));
                 if (listResource.data == null) {
                     viewModel.setJiedao(null);
                 }
@@ -177,7 +182,7 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
         });
         viewModel.setSheng(null);
 
-        binding.tvClientId.setText("ClientId："+ AuthInfo.getInstance().getClientId());
+        binding.tvClientId.setText("ClientId：" + AuthInfo.getInstance().getClientId());
     }
 
     private int getCheckedPosition(List<JusticeBureau> justiceBureaus, JusticeBureau total) {
@@ -204,10 +209,10 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
         JusticeBureau shi = (JusticeBureau) binding.spinnerShi.getSelectedItem();
         JusticeBureau xian = (JusticeBureau) binding.spinnerXian.getSelectedItem();
         JusticeBureau jeidao = (JusticeBureau) binding.spinnerJiedao.getSelectedItem();
-        if (jeidao==null||TextUtils.isEmpty(jeidao.getTeamId())){
+        if (jeidao == null || TextUtils.isEmpty(jeidao.getTeamId())) {
             jeidao = null;
         }
-        if (shi==null&&xian==null&&jeidao==null){
+        if (shi == null && xian == null && jeidao == null) {
             return;
         }
         viewModel.addBureau(shi, xian, jeidao);
@@ -215,6 +220,10 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
 
     void syncActiveCode() {
         String aCode = binding.etActiveCode.getText().toString();
+        String lxr = binding.etLxr.getText().toString().trim();
+        String ad = binding.etAddress.getText().toString().trim();
+        String phone = binding.etPhone.getText().toString().trim();
+
         appExecutors.diskIO().execute(() -> {
             JAuthInfo jAuthInfo = appDatabase.tokenAuthInfoDAO().loadAuthInfoSync();
             if (jAuthInfo == null) {
@@ -222,9 +231,20 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
                 jAuthInfo = new JAuthInfo();
             }
             jAuthInfo.activationCode = aCode;
+            jAuthInfo.contact=lxr;
+            jAuthInfo.contactInformation=phone;
+            jAuthInfo.local=ad;
+//            //地址
+//            buildConfigField 'String', 'LOCAL', '"湖州市南浔区南浔镇朝阳路888号司法局"'
+//            //联系人
+//            buildConfigField 'String', 'CONTACT', '"杨晓俊"'
+//            //电话
+//            buildConfigField 'String', 'CONTACTINFORMATION', '"13666517977"'
+
             appDatabase.tokenAuthInfoDAO().insert(jAuthInfo);
         });
     }
+
 
     @Override
     protected void initData(@NonNull ActivitySettingBinding binding, @Nullable Bundle savedInstanceState) {

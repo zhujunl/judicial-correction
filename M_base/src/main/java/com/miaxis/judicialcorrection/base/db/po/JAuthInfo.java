@@ -38,8 +38,8 @@ public class JAuthInfo {
     public String deviceType = BuildConfig.DEVICE_TYPE;
 
     public String activationCode;
-    public String contact = BuildConfig.CONTACT;
-    public String contactInformation = BuildConfig.CONTACTINFORMATION;
+    public String contact;
+    public String contactInformation;
 
     public String dishiId;
     public String dishiName;
@@ -49,6 +49,7 @@ public class JAuthInfo {
     public String jiedaoId;
     public String jiedaoName;
 
+    public String local;
 
     @Override
     public String toString() {

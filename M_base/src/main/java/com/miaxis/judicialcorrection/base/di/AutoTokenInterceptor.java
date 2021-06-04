@@ -156,7 +156,7 @@ public class AutoTokenInterceptor implements Interceptor {
 
         AuthInfo.getInstance().setCurrentVersion("1.0.0");
         AuthInfo.getInstance().setClientName(BuildConfig.CLIENT_NAME);//clientName
-        AuthInfo.getInstance().setLoc(BuildConfig.LOCAL);
+        AuthInfo.getInstance().setLoc(jAuthInfo.local);
 
         final Exception[] errorR = new Exception[1];
         final String[] resultR = new String[1];

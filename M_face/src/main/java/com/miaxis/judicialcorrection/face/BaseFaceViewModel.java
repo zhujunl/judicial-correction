@@ -115,9 +115,14 @@ public class BaseFaceViewModel extends ViewModel {
                             faceTips.postValue("提取特征失败");
                             captureCallback.onError(ZZResponse.CreateFail(-83, "提取特征失败"));
                         }
-                    } else if (liveDetect == 10001) {//非活体
+                    } else if (liveDetect == 10001) {//非活体 不弹窗
                         faceTips.postValue("非活体");
-                        captureCallback.onError(ZZResponse.CreateFail(liveDetect, "非活体"));
+                        ZZResponse<MXCamera> mxCameraRgb = CameraHelper.getInstance().find(CameraConfig.Camera_RGB);
+                        if (ZZResponse.isSuccess(mxCameraRgb)) {
+                            mxCameraRgb.getData().setNextFrameEnable();
+                        }else{
+                            captureCallback.onError(ZZResponse.CreateFail(liveDetect, "摄像头查询失败"));
+                        }
                     } else if (liveDetect < 0) {
                         faceTips.postValue("活体检测异常");
                         captureCallback.onError(ZZResponse.CreateFail(liveDetect, "活体检测异常"));
