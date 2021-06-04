@@ -44,11 +44,11 @@ android {
             //设备
             buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
             //地址
-            buildConfigField 'String', 'LOCAL', '"杭州"'
+            buildConfigField 'String', 'LOCAL', '"杭州西湖区文三路90号"'
             //联系人
-            buildConfigField 'String', 'CONTACT', '"测试"'
+            buildConfigField 'String', 'CONTACT', '"何贤朴"'
             //电话
-            buildConfigField 'String', 'CONTACTINFORMATION', '"13300000000"'
+            buildConfigField 'String', 'CONTACTINFORMATION', '"15167110300"'
             //设备类型 1 3台式 2 平板
             buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
         }
@@ -64,11 +64,11 @@ android {
             //设备
             buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
             //地址
-            buildConfigField 'String', 'LOCAL', '"杭州"'
+            buildConfigField 'String', 'LOCAL', '"杭州西湖区文三路90号"'
             //联系人
-            buildConfigField 'String', 'CONTACT', '"正式"'
+            buildConfigField 'String', 'CONTACT', '"何贤朴"'
             //电话
-            buildConfigField 'String', 'CONTACTINFORMATION', '"13300000000"'
+            buildConfigField 'String', 'CONTACTINFORMATION', '"15167110300"'
             //设备类型 1 3台式 2 平板
             buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
         }
