@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.RectF;
 import android.util.Size;
 
-import com.miaxis.judicialcorrection.base.BuildConfig;
-
 import org.zz.api.MXErrorCode;
 import org.zz.api.MXFaceAPI;
 import org.zz.api.MXFaceInfoEx;
@@ -109,22 +107,24 @@ public class FaceManager {
 
     /**
      * 人脸质量RGB
+     * 单人脸质量检测
      */
     public int getFaceQualityRGB(byte[] rgbFrameData, int frameWidth, int frameHeight) {
         int faceNumber = getFaceNumberRGB();
         if (faceNumber < 0) {
-            return faceNumber;
+            return -92;
         }
-        return getFaceQuality(rgbFrameData, frameWidth, frameHeight, faceNumber, this.mFaceInfoExesRgb);
+        return getFaceQuality(rgbFrameData, frameWidth, frameHeight, 1, this.mFaceInfoExesRgb);
     }
 
     //提取特征RGB
+    //单人脸特征提取
     public int extractFeatureRgb(byte[] rgbFrameData, int frameWidth, int frameHeight, boolean mask, byte[] pFeatureData) {
         int faceNumber = getFaceNumberRGB();
         if (faceNumber < 0) {
-            return faceNumber;
+            return -92;
         }
-        return extractFeature(rgbFrameData, frameWidth, frameHeight, faceNumber, pFeatureData, this.mFaceInfoExesRgb, mask);
+        return extractFeature(rgbFrameData, frameWidth, frameHeight, 1, pFeatureData, this.mFaceInfoExesRgb, mask);
     }
 
     //口罩检测
