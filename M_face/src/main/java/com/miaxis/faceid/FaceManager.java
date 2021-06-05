@@ -111,7 +111,7 @@ public class FaceManager {
      */
     public int getFaceQualityRGB(byte[] rgbFrameData, int frameWidth, int frameHeight) {
         int faceNumber = getFaceNumberRGB();
-        if (faceNumber < 0) {
+        if (faceNumber <= 0) {
             return -92;
         }
         return getFaceQuality(rgbFrameData, frameWidth, frameHeight, 1, this.mFaceInfoExesRgb);
@@ -121,7 +121,7 @@ public class FaceManager {
     //单人脸特征提取
     public int extractFeatureRgb(byte[] rgbFrameData, int frameWidth, int frameHeight, boolean mask, byte[] pFeatureData) {
         int faceNumber = getFaceNumberRGB();
-        if (faceNumber < 0) {
+        if (faceNumber <= 0) {
             return -92;
         }
         return extractFeature(rgbFrameData, frameWidth, frameHeight, 1, pFeatureData, this.mFaceInfoExesRgb, mask);
