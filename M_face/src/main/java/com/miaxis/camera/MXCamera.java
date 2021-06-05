@@ -53,7 +53,8 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
 
     protected int open(int cameraId, int width, int height) {
         if (this.mCamera != null) {
-            return -2;
+            stop();
+//            return -2;
         }
         if (cameraId >= Camera.getNumberOfCameras()) {
             return -4;

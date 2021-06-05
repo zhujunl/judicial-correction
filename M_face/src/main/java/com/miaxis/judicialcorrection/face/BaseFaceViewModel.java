@@ -83,7 +83,7 @@ public class BaseFaceViewModel extends ViewModel {
                 if (!MXFrame.isBufferEmpty(rgbFrame)) {
                     int liveDetect = FaceManager.getInstance().liveDetect(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, nir.buffer);
 
-                    //测试   test 可见光
+                      //测试   test 可见光
 //                    String paths = Environment.getExternalStorageDirectory().getAbsolutePath() + "/A/C/" + System.currentTimeMillis() + ".bmp";
 //                    FaceManager.getInstance().saveRgbTiFile(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, paths);
                     try {
@@ -110,19 +110,14 @@ public class BaseFaceViewModel extends ViewModel {
 //                            FaceManager.getInstance().saveRgbTiFile(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, p);
 //                         /*=========================================================*/
                             rgbFrameFaceFeature = feature;
-                            captureCallback.onLiveReady(nirFrame, true);
+                            captureCallback.onLiveReady(rgbFrame, true);
                         } else {
                             faceTips.postValue("提取特征失败");
                             captureCallback.onError(ZZResponse.CreateFail(-83, "提取特征失败"));
                         }
                     } else if (liveDetect == 10001) {//非活体 不弹窗
                         faceTips.postValue("非活体");
-                        ZZResponse<MXCamera> mxCameraRgb = CameraHelper.getInstance().find(CameraConfig.Camera_RGB);
-                        if (ZZResponse.isSuccess(mxCameraRgb)) {
-                            mxCameraRgb.getData().setNextFrameEnable();
-                        }else{
-                            captureCallback.onError(ZZResponse.CreateFail(liveDetect, "摄像头查询失败"));
-                        }
+                        captureCallback.onError(ZZResponse.CreateFail(liveDetect, "非活体"));
                     } else if (liveDetect < 0) {
                         faceTips.postValue("活体检测异常");
                         captureCallback.onError(ZZResponse.CreateFail(liveDetect, "活体检测异常"));
@@ -162,7 +157,6 @@ public class BaseFaceViewModel extends ViewModel {
             if (matchFeature == 0) {
                 boolean success = floats[0] > threshold;
                 faceTips.postValue(success ? "人证核验通过" : "人证核验未通过,分值：" + floats[0]);
-                Timber.e("TAG人像 2  %s  ", floats[0]);
                 if (success) {
                     count = 0;
                     captureCallback.onMatchReady(true);

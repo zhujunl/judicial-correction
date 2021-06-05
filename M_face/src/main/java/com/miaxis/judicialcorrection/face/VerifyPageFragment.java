@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.SurfaceHolder;
@@ -20,12 +21,14 @@ import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.MXCamera;
 import com.miaxis.camera.MXFrame;
 import com.miaxis.faceid.FaceConfig;
+import com.miaxis.faceid.FaceManager;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.vo.Education;
 import com.miaxis.judicialcorrection.base.api.vo.IndividualEducationBean;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.repo.PersonRepo;
+import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.base.utils.numbers.HexStringUtils;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
@@ -35,8 +38,13 @@ import com.miaxis.judicialcorrection.face.callback.FaceCallback;
 import com.miaxis.judicialcorrection.face.callback.VerifyCallback;
 import com.miaxis.judicialcorrection.face.databinding.FragmentVerifyBinding;
 import com.miaxis.utils.BitmapUtils;
+import com.miaxis.utils.FileUtils;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -69,6 +77,8 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
     @Inject
     PersonRepo mPersonRepo;
 
+    @Inject
+    AppExecutors mAppExecutors;
     //用于集中教育
     private Education.ListBean mEducationBean = null;
     //个别教育
@@ -102,8 +112,9 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
     protected void initView(@NonNull FragmentVerifyBinding view, @Nullable Bundle savedInstanceState) {
         mVerifyPageViewModel = new ViewModelProvider(this).get(VerifyPageViewModel.class);
         binding.tvTitle.setText(String.valueOf(title));
-        setEducationType();
 
+        setEducationType();
+        mVerifyPageViewModel.faceRect.observe(this, rectF -> binding.frvFace.setRect(rectF, false));
         mVerifyPageViewModel.name.observe(this, s -> {
             if (mEducationBean != null || mIndividual != null) {
                 binding.tvNameTitle.setText("");
@@ -165,13 +176,49 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                             (dialog, which) -> finish());
                     return;
                 }
-                byte[] rgb = BitmapUtils.bitmap2RGB(bitmap);
-                //测试 保存黑白
-//                String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/C/" + System.currentTimeMillis() + ".jpg";
-//                FaceManager.getInstance().saveRgbTiFile(rgb, bitmap.getWidth(), bitmap.getHeight(), path);
-                /*==============================================*/
-                //获取RGB可见光摄像头
-                mVerifyPageViewModel.extractFeatureFromRgb(rgb, bitmap.getWidth(), bitmap.getHeight());
+                try {
+//                    byte[] rgb = BitmapUtils.bitmap2RGB(bitmap);
+                    mAppExecutors.networkIO().execute(() -> {
+                        File filePath = FileUtils.createFileParent(getContext());
+                        String fileName = personInfo.getId() + ".jpg";
+                        File file = new File(filePath, fileName);
+                        if (!file.exists()) {
+                            File parentFile = file.getParentFile();
+                            if (parentFile != null && !parentFile.exists()) {
+                                boolean mkdirs = parentFile.mkdirs();
+                            }
+                        } else {
+                            try {
+                                boolean newFile = file.createNewFile();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        boolean save = BitmapUtils.saveBitmap(bitmap, file.getAbsolutePath());
+                        if (!save) {
+                            appHintsLazy.get().showError("Error:保存人像失败",
+                                    (dialog, which) -> finish());
+                            return;
+                        }
+                        int[] oX = new int[1];
+                        int[] oY = new int[1];
+                        byte[] rgbFromFile = FaceManager.getInstance().getRgbFromFile(file.getAbsolutePath(), oX, oY);
+                        if (rgbFromFile == null) {
+                            appHintsLazy.get().showError("Error:人像数据解析失败",
+                                    (dialog, which) -> finish());
+                            return;
+                        }
+                        mHandler.post(() -> mVerifyPageViewModel.extractFeatureFromRgb(rgbFromFile, bitmap.getWidth(), bitmap.getHeight()));
+                    });
+                    //测试
+//                    String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/A/" + System.currentTimeMillis() + ".jpg";
+//                    FaceManager.getInstance().saveRgbTiFile(rgb, bitmap.getWidth(), bitmap.getHeight(), path);
+//                    String path1 = Environment.getExternalStorageDirectory().getAbsolutePath() + "/A/" + System.currentTimeMillis() + ".jpg";
+//                    BitmapUtils.saveBitmap(bitmap,path1);
+                } catch (Exception e) {
+                    e.getStackTrace();
+                }
+
             }
 
             @Override
@@ -204,7 +251,10 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                         mxCameraNir.getData().start(null);
                     } else {
                         mHandler.post(() -> appHintsLazy.get().showError("Error:打开双目摄像头失败，请联系工作人员",
-                                (dialog, which) -> finish()));
+                                (dialog, which) -> {
+                                    dialog.dismiss();
+                                    finish();
+                                }));
                     }
                 }
             }
@@ -217,6 +267,11 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
             @Override
             public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
                 CameraHelper.getInstance().free();
+                try {
+                    holder.removeCallback(this);
+                } catch (Exception e) {
+                    e.getStackTrace();
+                }
             }
         });
     }
@@ -310,7 +365,10 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                 mxCameraNir.getData().setNextFrameEnable();
             } else {
                 appHintsLazy.get().showError("Error:未查询到近红外摄像头",
-                        (dialog, which) -> finish());
+                        (dialog, which) -> {
+                            dialog.dismiss();
+                            finish();
+                        });
             }
         });
     }
@@ -350,7 +408,10 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
             mxCameraRgb.getData().setNextFrameEnable();
         } else {
             appHintsLazy.get().showError("查询摄像头失败，请退出后重试",
-                    (dialog, which) -> finish());
+                    (dialog, which) -> {
+                        dialog.dismiss();
+                        finish();
+                    });
         }
     }
 

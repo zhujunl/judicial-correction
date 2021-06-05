@@ -174,7 +174,7 @@
             android:id="@+id/tv_out_location_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="迁入地："
+            android:text="拟迁入地："
             android:textColor="#393939"
             android:textSize="27px"
             app:layout_constraintBottom_toBottomOf="@+id/fl_province"

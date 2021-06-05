@@ -53,6 +53,9 @@ public class AutoTokenInterceptor implements Interceptor {
     public AutoTokenInterceptor(@ApplicationContext Context context, AppDatabase appDatabase) {
         appDatabase.tokenAuthInfoDAO().loadAuthInfo().observeForever((JAuthInfo info) -> {
             jAuthInfo.activationCode = info == null ? null : info.activationCode;
+            jAuthInfo.local=info == null ? null : info.local;
+            jAuthInfo.contact=info == null ? null : info.contact;
+            jAuthInfo.contactInformation=info == null ? null : info.contactInformation;
             Timber.i("New JAuthInfo by A: %s", jAuthInfo);
         });
         appDatabase.justiceBureauDao().loadAll().observeForever((List<JusticeBureau> justiceBureaus) -> {

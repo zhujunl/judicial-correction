@@ -234,13 +234,6 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
             jAuthInfo.contact=lxr;
             jAuthInfo.contactInformation=phone;
             jAuthInfo.local=ad;
-//            //地址
-//            buildConfigField 'String', 'LOCAL', '"湖州市南浔区南浔镇朝阳路888号司法局"'
-//            //联系人
-//            buildConfigField 'String', 'CONTACT', '"杨晓俊"'
-//            //电话
-//            buildConfigField 'String', 'CONTACTINFORMATION', '"13666517977"'
-
             appDatabase.tokenAuthInfoDAO().insert(jAuthInfo);
         });
     }

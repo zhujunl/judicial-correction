@@ -195,7 +195,7 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
             ZZResponse<MXCamera> mxCameraRgb = CameraHelper.getInstance().find(CameraConfig.Camera_RGB);
             if (ZZResponse.isSuccess(mxCameraRgb)) {
                 File filePath = FileUtils.createFileParent(getContext());
-                String fileName = personInfo.getId() + ".jpg";
+                String fileName = System.currentTimeMillis() + ".jpg";
                 File file = new File(filePath, fileName);
                 boolean frameImage = mxCameraRgb.getData().saveFrameImage(file.getAbsolutePath());
                 mHandler.post(() -> {
