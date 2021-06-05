@@ -2,9 +2,6 @@ package com.miaxis.judicialcorrection.face;
 
 import android.graphics.RectF;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
 import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.MXCamera;
@@ -16,6 +13,8 @@ import com.miaxis.judicialcorrection.face.callback.FaceCallback;
 
 import javax.inject.Inject;
 
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import timber.log.Timber;
 
@@ -100,20 +99,29 @@ public class BaseFaceViewModel extends ViewModel {
                         e.printStackTrace();
                         faceRect.postValue(null);
                     }
+
                     if (liveDetect == 10000) {//活体
                         faceTips.postValue("活体检测完成");
-                        byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
-                        int extractFeatureRgb = FaceManager.getInstance().extractFeatureRgb(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, false, feature);
-                        if (extractFeatureRgb == 0) {
-                            //测试  test 保存活体
-//                            String p = Environment.getExternalStorageDirectory().getAbsolutePath() + "/A/B/" + System.currentTimeMillis() + ".bmp";
-//                            FaceManager.getInstance().saveRgbTiFile(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, p);
-//                         /*=========================================================*/
-                            rgbFrameFaceFeature = feature;
-                            captureCallback.onLiveReady(nirFrame, true);
+                        int faceNumberRGB = FaceManager.getInstance().getFaceNumberRGB();
+                        if (faceNumberRGB <= 0) {
+                            captureCallback.onError(ZZResponse.CreateFail(-79, "人脸数量<1"));
+                        } else if (faceNumberRGB > 1) {
+                            captureCallback.onError(ZZResponse.CreateFail(-80, "人脸数量>1，请在单人情况下操作"));
                         } else {
-                            faceTips.postValue("提取特征失败");
-                            captureCallback.onError(ZZResponse.CreateFail(-83, "提取特征失败"));
+                            faceTips.postValue("活体检测完成");
+                            byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
+                            int extractFeatureRgb = FaceManager.getInstance().extractFeatureRgb(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, false, feature);
+                            if (extractFeatureRgb == 0) {
+                                //测试  test 保存活体
+                                //                            String p = Environment.getExternalStorageDirectory().getAbsolutePath() + "/A/B/" + System.currentTimeMillis() + ".bmp";
+                                //                            FaceManager.getInstance().saveRgbTiFile(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, p);
+                                //                         /*=========================================================*/
+                                rgbFrameFaceFeature = feature;
+                                captureCallback.onLiveReady(nirFrame, true);
+                            } else {
+                                faceTips.postValue("提取特征失败");
+                                captureCallback.onError(ZZResponse.CreateFail(-83, "提取特征失败"));
+                            }
                         }
                     } else if (liveDetect == 10001) {//非活体
                         faceTips.postValue("非活体");
