@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.android.xhapimanager.XHApiManager;
 import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.MXCamera;
@@ -57,6 +58,8 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
     Lazy<AppHints> appHintsLazy;
 
     private final Bitmap idCardFace;
+
+   private XHApiManager  xhApi;
 
     public GetFacePageFragment(@NonNull PersonInfo personInfo, Bitmap bitmap) {
         this.personInfo = personInfo;
@@ -152,6 +155,11 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
             return;
         }
         mGetFaceViewModel.extractFeatureFromRgb(rgbFromFile, oX[0], oY[0]);
+
+       if (BuildConfig.EQUIPMENT_TYPE==3){
+           xhApi = new XHApiManager();
+           xhApi.XHSetGpioValue(4, 1);
+       }
     }
 
     @Override
@@ -313,5 +321,8 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
     public void onDestroyView() {
         super.onDestroyView();
         mHandler.removeCallbacksAndMessages(null);
+        if (BuildConfig.EQUIPMENT_TYPE==3&&xhApi!=null){
+            xhApi.XHSetGpioValue(4, 0);
+        }
     }
 }

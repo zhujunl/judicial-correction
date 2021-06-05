@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.android.xhapimanager.XHApiManager;
 import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.MXCamera;
@@ -83,6 +84,8 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
     private Education.ListBean mEducationBean = null;
     //个别教育
     private IndividualEducationBean.ListDTO mIndividual = null;
+
+    private XHApiManager xhApi;
 
     public VerifyPageFragment(String title, @NonNull PersonInfo personInfo) {
         this.title = title;
@@ -274,6 +277,11 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                 }
             }
         });
+
+        if (BuildConfig.EQUIPMENT_TYPE==3){
+            xhApi = new XHApiManager();
+            xhApi.XHSetGpioValue(4, 1);
+        }
     }
 
     /**
@@ -420,6 +428,9 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
         super.onDestroyView();
         //mVerifyPageViewModel.releaseFingerDevice();
         mHandler.removeCallbacksAndMessages(null);
+        if (BuildConfig.EQUIPMENT_TYPE==3&&xhApi!=null){
+            xhApi.XHSetGpioValue(4, 0);
+        }
     }
 
 }
