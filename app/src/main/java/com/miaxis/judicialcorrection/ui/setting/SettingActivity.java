@@ -1,6 +1,7 @@
 package com.miaxis.judicialcorrection.ui.setting;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
+import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.JAuthInfo;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
@@ -90,6 +92,15 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
             }
             return false;
         });
+        if (BuildConfig.EQUIPMENT_TYPE==3){
+            binding.btnCameraConfig.setVisibility(View.VISIBLE);
+        }else{
+            binding.btnCameraConfig.setVisibility(View.GONE);
+        }
+
+       binding.btnCameraConfig.setOnClickListener(v -> {
+           startActivity(new Intent(this,CameraConfigActivity.class));
+       });
 
 
 //        justiceBureauRepo.getMyJusticeBureau().observe(this, justiceBureau -> {

@@ -36,25 +36,16 @@ public class LiveAddressChangeRepo {
 
     private final   Gson gson=new Gson();
     @SuppressWarnings("all")
-    public LiveData<Resource<Object>> setLiveAddressChange(LiveAddressChangeBean liveAddressChangeBean,String[] jzdbgsqs,String[] jzdbgsqcl) {
+    public LiveData<Resource<Object>> setLiveAddressChange(LiveAddressChangeBean liveAddressChangeBean,String jzdbgsqs,String jzdbgsqcl) {
         String cardTypeJson = gson.toJson(liveAddressChangeBean);
         Map<String, Object> hashMap= new Gson().fromJson(cardTypeJson,Map.class);
         //文件数组方式base64
-        if (jzdbgsqs!=null&&jzdbgsqs.length!=0){
-            for (String str:jzdbgsqs) {
-                if (!TextUtils.isEmpty(str)) {
-                    hashMap.put("jzdbgsqs", jzdbgsqs);
-                    break;
-                }
-            }
+
+        if (!TextUtils.isEmpty(jzdbgsqs)){
+            hashMap.put("jzdbgsqs", new String[]{jzdbgsqs});
         }
-        if (jzdbgsqcl!=null&&jzdbgsqcl.length!=0){
-            for (String str:jzdbgsqcl) {
-                if (!TextUtils.isEmpty(str)) {
-                    hashMap.put("jzdbgsqcl", jzdbgsqcl);
-                    break;
-                }
-            }
+        if (!TextUtils.isEmpty(jzdbgsqcl)){
+            hashMap.put("jzdbgsqcl", new String[]{jzdbgsqcl});
         }
         String toJson = gson.toJson(hashMap);
         Timber.e("setLiveAddressChange %s",toJson);

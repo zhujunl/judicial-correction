@@ -2,9 +2,6 @@ package com.miaxis.judicialcorrection.face;
 
 import android.graphics.RectF;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
 import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.MXCamera;
@@ -15,6 +12,11 @@ import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.face.callback.FaceCallback;
 
 import javax.inject.Inject;
+
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
+import org.zz.api.MXFaceInfoEx;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import timber.log.Timber;
@@ -43,6 +45,8 @@ public class BaseFaceViewModel extends ViewModel {
     MutableLiveData<byte[]> tempFaceFeature = new MutableLiveData<>();
 
     private int count = 0;
+
+    private int livingBodyCount = 0;
 
     byte[] rgbFrameFaceFeature;
 
@@ -83,7 +87,7 @@ public class BaseFaceViewModel extends ViewModel {
                 if (!MXFrame.isBufferEmpty(rgbFrame)) {
                     int liveDetect = FaceManager.getInstance().liveDetect(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, nir.buffer);
 
-                      //测试   test 可见光
+                    //测试   test 可见光
 //                    String paths = Environment.getExternalStorageDirectory().getAbsolutePath() + "/A/C/" + System.currentTimeMillis() + ".bmp";
 //                    FaceManager.getInstance().saveRgbTiFile(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, paths);
                     try {
@@ -100,24 +104,52 @@ public class BaseFaceViewModel extends ViewModel {
                         e.printStackTrace();
                         faceRect.postValue(null);
                     }
+
                     if (liveDetect == 10000) {//活体
+                        livingBodyCount=0;
                         faceTips.postValue("活体检测完成");
-                        byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
-                        int extractFeatureRgb = FaceManager.getInstance().extractFeatureRgb(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, false, feature);
-                        if (extractFeatureRgb == 0) {
-                            //测试  test 保存活体
-//                            String p = Environment.getExternalStorageDirectory().getAbsolutePath() + "/A/B/" + System.currentTimeMillis() + ".bmp";
-//                            FaceManager.getInstance().saveRgbTiFile(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, p);
-//                         /*=========================================================*/
-                            rgbFrameFaceFeature = feature;
-                            captureCallback.onLiveReady(rgbFrame, true);
+                        int faceQualityRGB = FaceManager.getInstance().getFaceQualityRGB(rgbFrame.buffer, rgbFrame.width, rgbFrame.height);
+                        if (faceQualityRGB == 0) {
+                            MXFaceInfoEx faceInfoRGB = FaceManager.getInstance().getFaceInfoRGB(0);
+                            int quality = faceInfoRGB.quality;
+                            if (quality > 30) {
+                                faceTips.postValue("人脸质量检测完成:" + quality);
+                                byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
+                                int extractFeatureRgb = FaceManager.getInstance().extractFeatureRgb(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, false, feature);
+                                if (extractFeatureRgb == 0) {
+                                    //测试  test 保存活体
+                                    //                            String p = Environment.getExternalStorageDirectory().getAbsolutePath() + "/A/B/" + System.currentTimeMillis() + ".bmp";
+                                    //                            FaceManager.getInstance().saveRgbTiFile(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, p);
+                                    //                         /*=========================================================*/
+                                    rgbFrameFaceFeature = feature;
+                                    captureCallback.onLiveReady(nirFrame, true);
+                                } else {
+                                    faceTips.postValue("提取特征失败");
+                                    captureCallback.onError(ZZResponse.CreateFail(-83, "提取特征失败"));
+                                }
+                            } else {
+                                faceTips.postValue("人脸质量检测过低：" + quality);
+                                captureCallback.onError(ZZResponse.CreateFail(-86, "人脸质量检测过低,请重试！"));
+                            }
                         } else {
-                            faceTips.postValue("提取特征失败");
-                            captureCallback.onError(ZZResponse.CreateFail(-83, "提取特征失败"));
+                            faceTips.postValue("人脸质量检测失败：" + faceQualityRGB);
+                            captureCallback.onError(ZZResponse.CreateFail(-86, "人脸质量检测失败！"));
                         }
-                    } else if (liveDetect == 10001) {//非活体 不弹窗
+                    } else if (liveDetect == 10001) {//非活体
                         faceTips.postValue("非活体");
-                        captureCallback.onError(ZZResponse.CreateFail(liveDetect, "非活体"));
+                        livingBodyCount = livingBodyCount + 1;
+                        if (livingBodyCount < 5) {
+                            ZZResponse<MXCamera> mxCameraZZResponse = CameraHelper.getInstance().find(CameraConfig.Camera_RGB);
+                            if (ZZResponse.isSuccess(mxCameraZZResponse)) {
+                                mxCameraZZResponse.getData().setNextFrameEnable();
+                            } else {
+                                livingBodyCount = 0;
+                                captureCallback.onError(ZZResponse.CreateFail(liveDetect, "非活体"));
+                            }
+                        } else {
+                            livingBodyCount = 0;
+                            captureCallback.onError(ZZResponse.CreateFail(liveDetect, "非活体"));
+                        }
                     } else if (liveDetect < 0) {
                         faceTips.postValue("活体检测异常");
                         captureCallback.onError(ZZResponse.CreateFail(liveDetect, "活体检测异常"));
@@ -157,6 +189,7 @@ public class BaseFaceViewModel extends ViewModel {
             if (matchFeature == 0) {
                 boolean success = floats[0] > threshold;
                 faceTips.postValue(success ? "人证核验通过" : "人证核验未通过,分值：" + floats[0]);
+                Timber.e("TAG人像 2  %s  ", floats[0]);
                 if (success) {
                     count = 0;
                     captureCallback.onMatchReady(true);

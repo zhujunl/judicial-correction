@@ -163,6 +163,7 @@ public class AutoTokenInterceptor implements Interceptor {
 
         final Exception[] errorR = new Exception[1];
         final String[] resultR = new String[1];
+        Timber.e("clientId:%s",AuthInfo.getInstance().getClientId());
         JZAuth.getInstance().registerDevice(new ResultListener() {
 
             @Override

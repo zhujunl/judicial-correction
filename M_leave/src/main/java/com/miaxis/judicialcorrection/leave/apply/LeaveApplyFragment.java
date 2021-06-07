@@ -23,6 +23,7 @@ import com.miaxis.judicialcorrection.base.utils.TimeUtils;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DatePickDialog;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
+import com.miaxis.judicialcorrection.dialog.PreviewPictureDialog;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
 import com.miaxis.judicialcorrection.leave.LeaveRepo;
 import com.miaxis.judicialcorrection.leave.R;
@@ -68,6 +69,7 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
     private File mFilePath;
     //扫描类型
     private int scanType = 0;
+    private  PreviewPictureDialog mDialog;
 
     public LeaveApplyFragment(@NotNull VerifyInfo verifyInfo) {
         this.verifyInfo = verifyInfo;
@@ -314,18 +316,15 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
         boolean frameImage = frame.camera.saveFrameImage(file.getAbsolutePath());
         if (frameImage) {
             String base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
-            if (scanType == 0) {
-                base64LiveChangeApplication = base64Path;
-            } else {
-                base64LiveChangeData = base64Path;
-            }
-            mHandler.post(() -> {
-                if (scanType == 0) {
-                    binding.tvApplicationInfoShow.setText(fileName);
-                } else {
-                    binding.tvApplicationInfoShow2.setText(fileName);
-                }
-            });
+           mHandler.post(() -> {
+               if (scanType == 0) {
+                   base64LiveChangeApplication = base64Path;
+                   binding.tvApplicationInfoShow.setText(fileName);
+               } else {
+                   base64LiveChangeData = base64Path;
+                   binding.tvApplicationInfoShow2.setText(fileName);
+               }
+           });
         } else {
             mHandler.post(() -> appHintsLazy.get().showError("扫描文件保存失败，请点击重试！"));
         }
@@ -336,6 +335,29 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
             e.getStackTrace();
         }
     }
+    private  void setPreviewDialog(File file,String base64,String fileName){
+        mDialog=  new PreviewPictureDialog(getContext(), new PreviewPictureDialog.ClickListener() {
+            @Override
+            public void onDetermine() {
+                if (scanType == 0) {
+                    base64LiveChangeApplication = base64;
+                    binding.tvApplicationInfoShow.setText(fileName);
+                } else {
+                    base64LiveChangeData = base64;
+                    binding.tvApplicationInfoShow2.setText(fileName);
+                }
+            }
+            @Override
+            public void onTryAgain(AppCompatDialog appCompatDialog) {
+                openScanning();
+            }
+            @Override
+            public void onTimeOut(AppCompatDialog appCompatDialog) {
+
+            }
+        },new PreviewPictureDialog.Builder().setPathFile(file.getAbsolutePath()));
+        mDialog.show();
+    }
 
     private final static Handler mHandler = new Handler();
 
@@ -345,6 +367,9 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
         base64LiveChangeApplication = null;
         base64LiveChangeData = null;
         mHandler.removeCallbacksAndMessages(null);
+        if (mDialog!=null&&mDialog.isShowing()){
+            mDialog.dismiss();
+        }
     }
 
 

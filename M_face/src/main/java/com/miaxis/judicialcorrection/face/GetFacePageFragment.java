@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.android.xhapimanager.XHApiManager;
 import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.MXCamera;
@@ -24,6 +23,7 @@ import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
+import com.miaxis.judicialcorrection.dialog.PreviewPictureDialog;
 import com.miaxis.judicialcorrection.face.callback.FaceCallback;
 import com.miaxis.judicialcorrection.face.callback.NavigationCallback;
 import com.miaxis.judicialcorrection.face.databinding.FragmentCaptureBinding;
@@ -31,6 +31,7 @@ import com.miaxis.utils.BitmapUtils;
 import com.miaxis.utils.FileUtils;
 
 import java.io.File;
+import java.lang.reflect.Field;
 
 import javax.inject.Inject;
 
@@ -59,7 +60,8 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
 
     private final Bitmap idCardFace;
 
-   private XHApiManager  xhApi;
+
+    private  PreviewPictureDialog dialog;
 
     public GetFacePageFragment(@NonNull PersonInfo personInfo, Bitmap bitmap) {
         this.personInfo = personInfo;
@@ -156,10 +158,10 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
         }
         mGetFaceViewModel.extractFeatureFromRgb(rgbFromFile, oX[0], oY[0]);
 
-       if (BuildConfig.EQUIPMENT_TYPE==3){
-           xhApi = new XHApiManager();
-           xhApi.XHSetGpioValue(4, 1);
-       }
+//       if (BuildConfig.EQUIPMENT_TYPE==3){
+//           xhApi = new XHApiManager();
+//           xhApi.XHSetGpioValue(4, 1);
+//       }
     }
 
     @Override
@@ -206,25 +208,14 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
                 String fileName = System.currentTimeMillis() + ".jpg";
                 File file = new File(filePath, fileName);
                 boolean frameImage = mxCameraRgb.getData().saveFrameImage(file.getAbsolutePath());
+                String base64Path="";
+                if (frameImage) {
+                     base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
+                }
+                String finalBase64Path = base64Path;
                 mHandler.post(() -> {
                     if (frameImage) {
-                        String base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
-                        mGetFaceViewModel.uploadPic(personInfo.getId(), base64Path).observe(GetFacePageFragment.this, observer -> {
-                            switch (observer.status) {
-                                case LOADING:
-                                    showLoading();
-                                    break;
-                                case ERROR:
-                                    dismissLoading();
-                                    appHintsLazy.get().showError(observer.errorMessage,
-                                            (dialog, which) -> finish());
-                                    break;
-                                case SUCCESS:
-                                    dismissLoading();
-                                    showDialog();
-                                    break;
-                            }
-                        });
+                      setPreviewDialog(file,finalBase64Path,mxCameraRgb);
                     } else {
                         appHintsLazy.get().showError("Error:图片保存失败",
                                 (dialog, which) -> finish());
@@ -263,6 +254,40 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
                 ).hideAllHideSucceedInfo(false).hideButton(false)).show();
             });
         }
+    }
+
+    private  void setPreviewDialog(File file,String base64, ZZResponse<MXCamera> cameraZZResponse){
+         dialog=  new PreviewPictureDialog(getContext(), new PreviewPictureDialog.ClickListener() {
+            @Override
+            public void onDetermine() {
+                mGetFaceViewModel.uploadPic(personInfo.getId(), base64).observe(GetFacePageFragment.this, observer -> {
+                    switch (observer.status) {
+                        case LOADING:
+                            showLoading();
+                            break;
+                        case ERROR:
+                            dismissLoading();
+                            appHintsLazy.get().showError(observer.errorMessage,
+                                    (dialog, which) -> finish());
+                            break;
+                        case SUCCESS:
+                            dismissLoading();
+                            showDialog();
+                            break;
+                    }
+                });
+            }
+            @Override
+            public void onTryAgain(AppCompatDialog appCompatDialog) {
+                cameraZZResponse.getData().setNextFrameEnable();
+            }
+            @Override
+            public void onTimeOut(AppCompatDialog appCompatDialog) {
+
+            }
+        },new PreviewPictureDialog.Builder().setPathFile(file.getAbsolutePath()));
+        dialog.show();
+
     }
 
     @Override
@@ -321,8 +346,11 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
     public void onDestroyView() {
         super.onDestroyView();
         mHandler.removeCallbacksAndMessages(null);
-        if (BuildConfig.EQUIPMENT_TYPE==3&&xhApi!=null){
-            xhApi.XHSetGpioValue(4, 0);
+        if (dialog!=null&&dialog.isShowing()){
+            dialog.dismiss();
         }
+//        if (BuildConfig.EQUIPMENT_TYPE==3&&xhApi!=null){
+//            xhApi.XHSetGpioValue(4, 0);
+//        }
     }
 }

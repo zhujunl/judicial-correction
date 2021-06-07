@@ -32,6 +32,8 @@ import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.bean.LiveAddressChangeBean;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
+import com.miaxis.judicialcorrection.dialog.PreviewPictureDialog;
+import com.miaxis.judicialcorrection.face.GetFacePageFragment;
 import com.miaxis.judicialcorrection.live.LiveAddressChangeActivity;
 import com.miaxis.judicialcorrection.live.LiveAddressChangeViewModel;
 import com.miaxis.judicialcorrection.live.R;
@@ -59,6 +61,7 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
     private File mFilePath;
     //扫描类型
     private int scanType = 0;
+    private PreviewPictureDialog mDialog;
 
     @Inject
     AppHints appHints;
@@ -363,7 +366,7 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                     value.njsjzdwName = "";
                 }
             }
-            model.setLiveAddressChange(new String[]{base64LiveChangeApplication}, new String[]{base64LiveChangeData}).observe(this, observer -> {
+            model.setLiveAddressChange(base64LiveChangeApplication, base64LiveChangeData).observe(this, observer -> {
                 if (observer.isSuccess()) {
                     LiveAddressChangeBean v = model.liveBean.getValue();
                     v.sqsj = model.currentTime(false);
@@ -430,15 +433,12 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
         boolean frameImage = frame.camera.saveFrameImage(file.getAbsolutePath());
         if (frameImage) {
             String base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
-            if (scanType == 0) {
-                base64LiveChangeApplication = base64Path;
-            } else {
-                base64LiveChangeData = base64Path;
-            }
             mHandler.post(() -> {
                 if (scanType == 0) {
+                    base64LiveChangeApplication = base64Path;
                     binding.tvApplicationInfoShow.setText(fileName);
                 } else {
+                    base64LiveChangeData = base64Path;
                     binding.tvApplicationInfoShow2.setText(fileName);
                 }
             });
@@ -453,6 +453,32 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
         }
     }
 
+    private void setPreviewDialog(File file, String base64, String fileName) {
+        mDialog = new PreviewPictureDialog(getContext(), new PreviewPictureDialog.ClickListener() {
+            @Override
+            public void onDetermine() {
+                if (scanType == 0) {
+                    base64LiveChangeApplication = base64;
+                    binding.tvApplicationInfoShow.setText(fileName);
+                } else {
+                    base64LiveChangeData = base64;
+                    binding.tvApplicationInfoShow2.setText(fileName);
+                }
+            }
+
+            @Override
+            public void onTryAgain(AppCompatDialog appCompatDialog) {
+                openScanning();
+            }
+
+            @Override
+            public void onTimeOut(AppCompatDialog appCompatDialog) {
+
+            }
+        }, new PreviewPictureDialog.Builder().setPathFile(file.getAbsolutePath()));
+        mDialog.show();
+    }
+
     private final static Handler mHandler = new Handler();
 
     @Override
@@ -461,5 +487,8 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
         base64LiveChangeApplication = null;
         base64LiveChangeData = null;
         mHandler.removeCallbacksAndMessages(null);
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
     }
 }

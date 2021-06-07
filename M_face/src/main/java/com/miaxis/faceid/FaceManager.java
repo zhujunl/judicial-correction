@@ -26,6 +26,8 @@ public class FaceManager {
     public MXFaceInfoEx[] mFaceInfoExesRgb;
     public MXFaceInfoEx[] mFaceInfoExesNir;
 
+    public MXFaceInfoEx[] mFaceInfoExesTemp;
+
     public int[] mFaceNumberRgb = new int[1];
     public int[] mFaceNumberNir = new int[1];
 
@@ -59,6 +61,8 @@ public class FaceManager {
         for (int i = 0; i < MXFaceInfoEx.iMaxFaceNum; i++) {
             this.mFaceInfoExesNir[i] = new MXFaceInfoEx();
         }
+        this.mFaceInfoExesTemp = new MXFaceInfoEx[1];
+        this.mFaceInfoExesTemp[0] = new MXFaceInfoEx();
         return this.mMXFaceAPI.mxInitAlg(context, null, null);
     }
 
@@ -73,6 +77,11 @@ public class FaceManager {
         }
         byte[] pRGBImage = new byte[width * height * 3];
         this.mMxImageTool.YUV2RGB(yuv, width, height, pRGBImage);
+
+
+//        byte[] p = new byte[pRGBImage.length];
+//        this.mMxImageTool.ImageFlip(pRGBImage,width,height,1,p);
+
         return pRGBImage;
     }
 
@@ -114,17 +123,51 @@ public class FaceManager {
         if (faceNumber <= 0) {
             return -92;
         }
-        return getFaceQuality(rgbFrameData, frameWidth, frameHeight, 1, this.mFaceInfoExesRgb);
+        MXFaceInfoEx maxFaceIndex = getMaxFaceIndex();
+        if (maxFaceIndex==null){
+            return -91;
+        }
+        this.mFaceInfoExesTemp[0] = getMaxFaceIndex();
+        return getFaceQuality(rgbFrameData, frameWidth, frameHeight, 1, this.mFaceInfoExesTemp);
+    }
+
+    /**
+     * 获取最大人脸
+     *
+     * @return
+     */
+    public MXFaceInfoEx getMaxFaceIndex() {
+        if (this.mFaceInfoExesRgb == null || this.mFaceInfoExesRgb.length <= 0) {
+            return null;
+        }
+        int maxWidth = 0;
+        int index = -1;
+        for (int i = 0; i < this.mFaceInfoExesRgb.length; i++) {
+            MXFaceInfoEx face = this.mFaceInfoExesRgb[i];
+            if (face.width > maxWidth) {
+                maxWidth = face.width;
+                index = i;
+            }
+        }
+        if (index >= 0) {
+            return this.mFaceInfoExesRgb[index];
+        }
+        return null;
     }
 
     //提取特征RGB
-    //单人脸特征提取
     public int extractFeatureRgb(byte[] rgbFrameData, int frameWidth, int frameHeight, boolean mask, byte[] pFeatureData) {
         int faceNumber = getFaceNumberRGB();
         if (faceNumber <= 0) {
             return -92;
         }
-        return extractFeature(rgbFrameData, frameWidth, frameHeight, 1, pFeatureData, this.mFaceInfoExesRgb, mask);
+        MXFaceInfoEx maxFaceIndex = getMaxFaceIndex();
+        if (maxFaceIndex==null){
+            return -91;
+        }
+        this.mFaceInfoExesTemp[0] = getMaxFaceIndex();
+
+        return extractFeature(rgbFrameData, frameWidth, frameHeight, 1, pFeatureData, this.mFaceInfoExesTemp, mask);
     }
 
     //口罩检测

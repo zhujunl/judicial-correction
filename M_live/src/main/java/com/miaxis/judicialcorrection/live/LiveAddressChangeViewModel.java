@@ -125,7 +125,7 @@ public class LiveAddressChangeViewModel extends ViewModel {
     }
 
     //信息变更
-    public LiveData<Resource<Object>> setLiveAddressChange(String[] jzdbgsqs,String[] jzdbgsqcl) {
+    public LiveData<Resource<Object>> setLiveAddressChange(String jzdbgsqs,String jzdbgsqcl) {
         return mLiveAddressChangeRepo.setLiveAddressChange(liveBean.getValue(),jzdbgsqs,jzdbgsqcl);
     }
 

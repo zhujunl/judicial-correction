@@ -10,7 +10,6 @@ import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -28,7 +27,6 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 
-import com.miaxis.enroll.guide.CaptureBaseInfoFragment;
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.finger.FingerManager;
 import com.miaxis.finger.FingerStrategy;
@@ -127,7 +125,6 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
             }
         }
         init();
-        deleteFile();
         if (BuildConfig.DEBUG) {
             Display defaultDisplay = getWindowManager().getDefaultDisplay();
             Point point = new Point();
@@ -137,20 +134,30 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        deleteFile();
+    }
+
     /**
      * 如果文件大于10MB则删除
      */
     private void deleteFile() {
         mAppExecutors.networkIO().execute(() -> {
-            //文件保存路径
-            String path = getExternalFilesDir(null).getPath();
-            long folderSize = FileUtils.getFolderSize(new File(path));
-            String formatSize = FileUtils.getFormatSize(Double.parseDouble(folderSize + ""));
-            long size = 1024 * 1024 * 7;//10mb
-            if (folderSize > size) {
-                FileUtils.deleteFolderFile(path, false);
+            try {
+                //文件保存路径
+                String path = getExternalFilesDir(null).getPath();
+                long folderSize = FileUtils.getFolderSize(new File(path));
+                String formatSize = FileUtils.getFormatSize(Double.parseDouble(folderSize + ""));
+                long size = 1024 * 1024 * 7;//10mb
+                if (folderSize > size) {
+                    FileUtils.deleteFolderFile(path, false);
+                }
+                Timber.e("文件大小：" + formatSize);
+            } catch (Exception e) {
+                e.getStackTrace();
             }
-            Timber.e("文件大小："+formatSize);
         });
     }
 
@@ -281,6 +288,4 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
             });
         }
     }
-
-
 }

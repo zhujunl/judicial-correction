@@ -53,6 +53,19 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_camera_config"
+            android:layout_width="276px"
+            android:layout_height="104px"
+            android:layout_marginTop="27px"
+            android:layout_marginStart="36px"
+            android:background="@drawable/bg_btn_back_to_home"
+            android:gravity="center"
+            android:text="摄像头配置"
+            android:textColor="@color/color_text_btn"
+            android:textSize="48px"
+             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
 
         <TextView
             android:id="@+id/deviceId"

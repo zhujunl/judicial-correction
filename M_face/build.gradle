@@ -35,7 +35,6 @@ android {
 dependencies {
     implementation files('libs/MxMscFingerApi.jar')
     implementation project(path: ':M_base')
-    implementation files('libs/XHApi.jar')
     annotationProcessor "com.alibaba:arouter-compiler:$arouter_version"
     annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"

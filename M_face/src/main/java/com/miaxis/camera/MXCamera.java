@@ -12,6 +12,7 @@ import android.view.SurfaceHolder;
 
 import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.utils.BitmapUtils;
+import com.tencent.mmkv.MMKV;
 
 import java.io.File;
 import java.io.FileOutputStream;

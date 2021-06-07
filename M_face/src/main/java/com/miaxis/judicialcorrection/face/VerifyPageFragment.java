@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.android.xhapimanager.XHApiManager;
 import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.MXCamera;
@@ -85,7 +84,6 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
     //个别教育
     private IndividualEducationBean.ListDTO mIndividual = null;
 
-    private XHApiManager xhApi;
 
     public VerifyPageFragment(String title, @NonNull PersonInfo personInfo) {
         this.title = title;
@@ -171,6 +169,13 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
                 dismissLoading();
+//                FragmentActivity activity = getActivity();
+//                if (activity instanceof VerifyCallback) {
+//                    VerifyCallback callback = (VerifyCallback) activity;
+////                response.getData().entryMethod="2";
+//                    callback.onVerify(ZZResponse.CreateSuccess());
+//                    return;
+//                }
                 //请求成功后拿到图片 解析成bitmap
                 ResponseBody responseBody = response.body();
                 Bitmap bitmap = BitmapFactory.decodeStream(responseBody.byteStream());
@@ -180,10 +185,10 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                     return;
                 }
                 try {
+                    File filePath = FileUtils.createFileParent(getContext());
 //                    byte[] rgb = BitmapUtils.bitmap2RGB(bitmap);
                     mAppExecutors.networkIO().execute(() -> {
-                        File filePath = FileUtils.createFileParent(getContext());
-                        String fileName = personInfo.getId() + ".jpg";
+                        String fileName = System.currentTimeMillis() + ".jpg";
                         File file = new File(filePath, fileName);
                         if (!file.exists()) {
                             File parentFile = file.getParentFile();
@@ -278,10 +283,10 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
             }
         });
 
-        if (BuildConfig.EQUIPMENT_TYPE==3){
-            xhApi = new XHApiManager();
-            xhApi.XHSetGpioValue(4, 1);
-        }
+//        if (BuildConfig.EQUIPMENT_TYPE==3){
+//            xhApi = new XHApiManager();
+//            xhApi.XHSetGpioValue(4, 1);
+//        }
     }
 
     /**
@@ -428,9 +433,9 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
         super.onDestroyView();
         //mVerifyPageViewModel.releaseFingerDevice();
         mHandler.removeCallbacksAndMessages(null);
-        if (BuildConfig.EQUIPMENT_TYPE==3&&xhApi!=null){
-            xhApi.XHSetGpioValue(4, 0);
-        }
+//        if (BuildConfig.EQUIPMENT_TYPE==3&&xhApi!=null){
+//            xhApi.XHSetGpioValue(4, 0);
+//        }
     }
 
 }

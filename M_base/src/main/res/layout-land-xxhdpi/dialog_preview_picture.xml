@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="50px"
+            android:paddingEnd="50px"
+            android:paddingTop="50px"
+            android:background="@drawable/bg_white_splash_10"
+            android:orientation="vertical">
+
+            <com.miaxis.judicialcorrection.common.ui.ZoomImageView
+                android:id="@+id/image"
+                android:layout_width="680px"
+                android:adjustViewBounds="true"
+                android:maxHeight="870px"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10px"
+                android:layout_marginBottom="10px"
+                android:text="请查看图片是否清晰,不清晰请重新采集"
+                android:textColor="@color/color_text_red"
+                android:textSize="19px"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_retry"
+                    android:layout_width="199px"
+                    android:layout_height="59px"
+                    android:layout_marginLeft="61px"
+                    android:layout_marginTop="52px"
+                    android:layout_marginEnd="40px"
+                    android:layout_marginBottom="61px"
+                    android:background="@drawable/bg_btn_back_home"
+                    android:gravity="center"
+                    android:text="重试"
+                    android:textColor="@color/color_text_white"
+                    android:textSize="19px"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/btn_try_again"
+                    app:layout_constraintTop_toBottomOf="@id/cdtv_time"
+                    app:layout_goneMarginLeft="0px" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_try_again"
+                    android:layout_width="199px"
+                    android:layout_height="59px"
+                    android:layout_marginLeft="40px"
+                    android:layout_marginTop="52px"
+                    android:layout_marginEnd="61px"
+                    android:layout_marginBottom="61px"
+                    android:background="@drawable/bg_btn_try_again"
+                    android:gravity="center"
+                    android:text="确定"
+                    android:textColor="@color/color_text_white"
+                    android:textSize="19px"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toRightOf="@id/btn_back_home"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/btn_back_home"
+                    tools:visibility="visible" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</layout>
