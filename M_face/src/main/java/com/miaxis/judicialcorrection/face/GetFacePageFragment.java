@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.android.xhapimanager.XHApiManager;
 import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.MXCamera;
@@ -61,12 +62,14 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
     private final Bitmap idCardFace;
 
 
-    private  PreviewPictureDialog dialog;
+    private PreviewPictureDialog dialog;
 
     public GetFacePageFragment(@NonNull PersonInfo personInfo, Bitmap bitmap) {
         this.personInfo = personInfo;
         this.idCardFace = bitmap;
     }
+
+    XHApiManager apimanager;
 
     @Override
     protected int initLayout() {
@@ -76,6 +79,11 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
     @Override
     protected void initView(@NonNull FragmentCaptureBinding view, @Nullable Bundle savedInstanceState) {
         mGetFaceViewModel = new ViewModelProvider(this).get(GetFaceViewModel.class);
+        if (BuildConfig.EQUIPMENT_TYPE == 3) {
+            apimanager = new XHApiManager();
+            apimanager.XHSetGpioValue(1, 1);
+        }
+
         binding.tvTitle.setText(String.valueOf(title));
         mGetFaceViewModel.faceRect.observe(this, rectF -> binding.frvFace.setRect(rectF, false));
         mGetFaceViewModel.name.observe(this, s -> binding.tvName.setText(s));
@@ -208,14 +216,14 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
                 String fileName = System.currentTimeMillis() + ".jpg";
                 File file = new File(filePath, fileName);
                 boolean frameImage = mxCameraRgb.getData().saveFrameImage(file.getAbsolutePath());
-                String base64Path="";
+                String base64Path = "";
                 if (frameImage) {
-                     base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
+                    base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
                 }
                 String finalBase64Path = base64Path;
                 mHandler.post(() -> {
                     if (frameImage) {
-                      setPreviewDialog(file,finalBase64Path,mxCameraRgb);
+                        setPreviewDialog(file, finalBase64Path, mxCameraRgb);
                     } else {
                         appHintsLazy.get().showError("Error:图片保存失败",
                                 (dialog, which) -> finish());
@@ -256,8 +264,8 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
         }
     }
 
-    private  void setPreviewDialog(File file,String base64, ZZResponse<MXCamera> cameraZZResponse){
-         dialog=  new PreviewPictureDialog(getContext(), new PreviewPictureDialog.ClickListener() {
+    private void setPreviewDialog(File file, String base64, ZZResponse<MXCamera> cameraZZResponse) {
+        dialog = new PreviewPictureDialog(getContext(), new PreviewPictureDialog.ClickListener() {
             @Override
             public void onDetermine() {
                 mGetFaceViewModel.uploadPic(personInfo.getId(), base64).observe(GetFacePageFragment.this, observer -> {
@@ -277,15 +285,17 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
                     }
                 });
             }
+
             @Override
             public void onTryAgain(AppCompatDialog appCompatDialog) {
                 cameraZZResponse.getData().setNextFrameEnable();
             }
+
             @Override
             public void onTimeOut(AppCompatDialog appCompatDialog) {
 
             }
-        },new PreviewPictureDialog.Builder().setPathFile(file.getAbsolutePath()));
+        }, new PreviewPictureDialog.Builder().setPathFile(file.getAbsolutePath()));
         dialog.show();
 
     }
@@ -346,11 +356,11 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
     public void onDestroyView() {
         super.onDestroyView();
         mHandler.removeCallbacksAndMessages(null);
-        if (dialog!=null&&dialog.isShowing()){
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
-//        if (BuildConfig.EQUIPMENT_TYPE==3&&xhApi!=null){
-//            xhApi.XHSetGpioValue(4, 0);
-//        }
+        if (BuildConfig.EQUIPMENT_TYPE == 3 && apimanager != null) {
+            apimanager.XHSetGpioValue(1, 0);
+        }
     }
 }
