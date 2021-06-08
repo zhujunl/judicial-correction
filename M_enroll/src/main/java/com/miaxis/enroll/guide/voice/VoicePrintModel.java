@@ -1,6 +1,5 @@
 package com.miaxis.enroll.guide.voice;
 
-import androidx.databinding.ObservableField;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,10 +11,6 @@ import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.zlw.main.recorderlib.RecordManager;
 import com.zlw.main.recorderlib.recorder.RecordConfig;
 import com.zlw.main.recorderlib.recorder.RecordHelper;
-import com.zlw.main.recorderlib.recorder.listener.RecordFftDataListener;
-import com.zlw.main.recorderlib.recorder.listener.RecordResultListener;
-import com.zlw.main.recorderlib.recorder.listener.RecordSoundSizeListener;
-import com.zlw.main.recorderlib.recorder.listener.RecordStateListener;
 
 import java.io.File;
 
@@ -28,7 +23,7 @@ import timber.log.Timber;
 public class VoicePrintModel extends ViewModel {
 
 
-    private VoicePrintRepo voicePrintRepo;
+    private final VoicePrintRepo voicePrintRepo;
 
     public MutableLiveData<File> observableFile = new MutableLiveData<>();
 
@@ -49,7 +44,7 @@ public class VoicePrintModel extends ViewModel {
 
     public void init() {
         mRecordManager.init(BaseApplication.application, BuildConfig.DEBUG);
-        mRecordManager.changeFormat(RecordConfig.RecordFormat.WAV);
+        mRecordManager.changeFormat(RecordConfig.RecordFormat.PCM);
 //        String recordDir = String.format(Locale.getDefault(), "%s/Record/",
 //                Environment.getExternalStorageDirectory().getAbsolutePath());
 //        mRecordManager.changeRecordDir(recordDir);
@@ -61,7 +56,6 @@ public class VoicePrintModel extends ViewModel {
             observableFile.postValue(result);
             Timber.i("路径: %s", result.getAbsolutePath());
         });
-
     }
 
     /**
@@ -102,4 +96,14 @@ public class VoicePrintModel extends ViewModel {
         RecordHelper.RecordState state = RecordManager.getInstance().getState();
         return state == RecordHelper.RecordState.RECORDING || state == RecordHelper.RecordState.PAUSE;
     }
+
+    /**
+     * 是否空闲
+     * @return
+     */
+    public  boolean isIdle() {
+        RecordHelper.RecordState state = RecordManager.getInstance().getState();
+        return state == RecordHelper.RecordState.IDLE;
+    }
+
 }

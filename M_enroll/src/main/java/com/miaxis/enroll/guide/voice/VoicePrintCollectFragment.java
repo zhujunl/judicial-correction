@@ -57,6 +57,7 @@ public class VoicePrintCollectFragment extends BaseBindingFragment<FragmentVoice
 
     private   VoicePrintModel model;
 
+
     @Override
     protected int initLayout() {
         return R.layout.fragment_voiceprint_collect;
@@ -65,7 +66,10 @@ public class VoicePrintCollectFragment extends BaseBindingFragment<FragmentVoice
     @Override
     protected void initView(@NonNull @NotNull FragmentVoiceprintCollectBinding binding, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         binding.imgVoicePrint.setOnClickListener(v -> {
-            if (model.isRunning()) {
+            if(model.isIdle()){
+                model.start();
+                mAppToast.show("开始录制中...");
+            }else{
                 model.stop();
             }
             mAppToast.show("停止录制...");

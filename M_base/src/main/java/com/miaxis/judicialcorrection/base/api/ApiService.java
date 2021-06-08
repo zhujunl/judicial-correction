@@ -1,6 +1,7 @@
 package com.miaxis.judicialcorrection.base.api;
 
 import com.miaxis.judicialcorrection.base.api.vo.Education;
+import com.miaxis.judicialcorrection.base.api.vo.FingerEntity;
 import com.miaxis.judicialcorrection.base.api.vo.HistorySignUpBean;
 import com.miaxis.judicialcorrection.base.api.vo.IndividualEducationBean;
 import com.miaxis.judicialcorrection.base.api.vo.JusticeBureauList;
@@ -38,9 +39,9 @@ public interface ApiService {
     //    @GET("/api/aidy-base/atm/enter/login/student/code")
     //    LiveData<ApiResult<User>> login(@Header("tenementCode") String tenementCode, @Query("rfid") String rfid, @Query("sn") String sn);
 
-    public  String  appkey ="1c7d017e-eebe-40fa-9b17-285e62bcbeb1";
+    public String appkey = "1c7d017e-eebe-40fa-9b17-285e62bcbeb1";
 
-    public  String  appsecret ="B6C943010F95B2205FCA2FC6B7B23715";
+    public String appsecret = "B6C943010F95B2205FCA2FC6B7B23715";
 
     @GET("/personInfo/list")
     LiveData<ApiResult<List<User>>> personList(
@@ -113,9 +114,9 @@ public interface ApiService {
     );
 
     @GET("/personEducation/list")
-    LiveData<ApiResult<IndividualEducationBean>> getPersonEducation( @Query("pid") String pid,
-                                                                     @Query("page") int page,
-                                                                     @Query("rows") int rows);
+    LiveData<ApiResult<IndividualEducationBean>> getPersonEducation(@Query("pid") String pid,
+                                                                    @Query("page") int page,
+                                                                    @Query("rows") int rows);
 
     @GET("/leave/list")
     LiveData<ApiResult<Leave>> getLeaveList(
@@ -170,10 +171,14 @@ public interface ApiService {
 
     //指纹
     @POST("http://10.249.2.210/sqjzsjzx/correctFingerprints/add")
-    LiveData<ApiResult<Object>> uploadFingerprint(@Body() RequestBody body);
+    LiveData<ApiOtherResult<Object>> uploadFingerprint(@Body() RequestBody body);
 
 
     //声纹
     @POST("http://10.249.2.210/sqjzsjzx/correctVocalprint/add")
-    LiveData<ApiOtherResult<Object>>  uploadVoicePrint(@Body() RequestBody body);
+    LiveData<ApiOtherResult<Object>> uploadVoicePrint(@Body() RequestBody body);
+
+    //获取指纹
+    @POST("http://10.249.2.210/correctFingerprints/queryById")
+    LiveData<ApiOtherResult<FingerEntity>> getFinger(@Body() RequestBody body);
 }

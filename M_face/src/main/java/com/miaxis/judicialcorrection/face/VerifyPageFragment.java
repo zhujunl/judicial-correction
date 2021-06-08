@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.android.xhapimanager.XHApiManager;
 import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.MXCamera;
@@ -104,6 +105,8 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
         this.mIndividual = bean;
     }
 
+    private XHApiManager apimanager;
+
     @Override
     protected int initLayout() {
         return R.layout.fragment_verify;
@@ -113,8 +116,13 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
     protected void initView(@NonNull FragmentVerifyBinding view, @Nullable Bundle savedInstanceState) {
         mVerifyPageViewModel = new ViewModelProvider(this).get(VerifyPageViewModel.class);
         binding.tvTitle.setText(String.valueOf(title));
-
         setEducationType();
+        if (BuildConfig.EQUIPMENT_TYPE == 3) {
+            apimanager = new XHApiManager();
+            apimanager.XHSetGpioValue(1, 1);
+        }
+
+
         mVerifyPageViewModel.faceRect.observe(this, rectF -> binding.frvFace.setRect(rectF, false));
         mVerifyPageViewModel.name.observe(this, s -> {
             if (mEducationBean != null || mIndividual != null) {
@@ -431,11 +439,10 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        //mVerifyPageViewModel.releaseFingerDevice();
         mHandler.removeCallbacksAndMessages(null);
-//        if (BuildConfig.EQUIPMENT_TYPE==3&&xhApi!=null){
-//            xhApi.XHSetGpioValue(4, 0);
-//        }
+        if (BuildConfig.EQUIPMENT_TYPE == 3 && apimanager != null) {
+            apimanager.XHSetGpioValue(1, 0);
+        }
     }
 
 }
