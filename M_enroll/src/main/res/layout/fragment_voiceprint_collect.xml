@@ -98,7 +98,12 @@
             android:layout_width="794px"
             android:layout_height="619px"
             android:layout_marginTop="71px"
-            android:src="@drawable/icon_voiceprint"
+            android:paddingStart="100px"
+            android:paddingEnd="100px"
+            android:paddingTop="50px"
+            android:background="@drawable/bg_white_splash_10"
+            android:paddingBottom="50px"
+            android:src="@drawable/icon_voiceprint_1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_content" />

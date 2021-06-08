@@ -5,5 +5,7 @@
     <application>
         <activity android:name=".EnrollActivity">
         </activity>
+
+        <service android:name="com.zlw.main.recorderlib.recorder.RecordService" />
     </application>
 </manifest>

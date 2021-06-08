@@ -38,6 +38,10 @@ public interface ApiService {
     //    @GET("/api/aidy-base/atm/enter/login/student/code")
     //    LiveData<ApiResult<User>> login(@Header("tenementCode") String tenementCode, @Query("rfid") String rfid, @Query("sn") String sn);
 
+    public  String  appkey ="1c7d017e-eebe-40fa-9b17-285e62bcbeb1";
+
+    public  String  appsecret ="B6C943010F95B2205FCA2FC6B7B23715";
+
     @GET("/personInfo/list")
     LiveData<ApiResult<List<User>>> personList(
             @Query("lastModifiedTime") String lastModifiedTime
@@ -164,6 +168,12 @@ public interface ApiService {
     LiveData<ApiResult<Object>> changeLiveAddress(@Body() RequestBody body);
     //            @Part() List<MultipartBody.Part > files);
 
-    @POST("/personInfo/uploadFingerprint")
+    //指纹
+    @POST("http://10.249.2.210/sqjzsjzx/correctFingerprints/add")
     LiveData<ApiResult<Object>> uploadFingerprint(@Body() RequestBody body);
+
+
+    //声纹
+    @POST("http://10.249.2.210/sqjzsjzx/correctVocalprint/add")
+    LiveData<ApiOtherResult<Object>>  uploadVoicePrint(@Body() RequestBody body);
 }

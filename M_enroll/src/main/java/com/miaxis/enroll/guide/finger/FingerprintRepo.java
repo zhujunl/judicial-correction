@@ -1,4 +1,4 @@
-package com.miaxis.enroll.guide;
+package com.miaxis.enroll.guide.finger;
 
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
@@ -17,6 +17,7 @@ import com.miaxis.judicialcorrection.base.api.ApiService;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
+import com.miaxis.judicialcorrection.base.utils.MD5Utils;
 import com.miaxis.judicialcorrection.base.utils.ResourceConvertUtils;
 import com.miaxis.judicialcorrection.id.bean.IdCardMsg;
 
@@ -51,11 +52,13 @@ public class FingerprintRepo {
     }
 
     private final Gson gson = new Gson();
-    @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
 
 
     public LiveData<Resource<Object>> uploadFingerprint(FingerprintEntity entity) {
+        entity.appkey=ApiService.appkey;
+        String sign=ApiService.appkey+ApiService.appsecret;
+        entity.sign= MD5Utils.md5(sign);
         String toJson = gson.toJson(entity);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
         LiveData<ApiResult<Object>> apiResultLiveData = apiService.uploadFingerprint(body);

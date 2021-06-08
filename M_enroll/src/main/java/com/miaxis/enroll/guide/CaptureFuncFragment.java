@@ -7,11 +7,11 @@ import com.miaxis.enroll.EnrollActivity;
 import com.miaxis.enroll.EnrollSharedViewModel;
 import com.miaxis.enroll.R;
 import com.miaxis.enroll.databinding.FragmentCaptureFuncBinding;
+import com.miaxis.enroll.guide.voice.VoicePrintCollectFragment;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.face.GetFacePageFragment;
-import com.miaxis.judicialcorrection.id.bean.IdCard;
 import com.miaxis.judicialcorrection.widget.countdown.DefaultCountDownListener;
 
 import javax.inject.Inject;
@@ -84,8 +84,13 @@ public class CaptureFuncFragment extends BaseBindingFragment<FragmentCaptureFunc
 
         });
         binding.groupSound.setOnClickListener(v -> {
-            appHints.toast("暂未开放");
+//            appHints.toast("暂未开放");
+            PersonInfo personInfo = viewModel.personInfoLiveData.getValue();
+            VoicePrintCollectFragment fragment = new VoicePrintCollectFragment(personInfo);
+            navigation(fragment);
+
         });
+
     }
 
     protected void navigation(Fragment fragment) {

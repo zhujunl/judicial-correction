@@ -1,10 +1,8 @@
-package com.miaxis.enroll.guide;
+package com.miaxis.enroll.guide.finger;
 
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.SystemClock;
 import android.text.TextUtils;
-import android.util.Base64;
 
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.LiveData;
@@ -69,14 +67,16 @@ public class FingerprintCollectModel extends ViewModel {
                 String fileName =  "fingerprint.jpg";
                 File file = new File(filePath, fileName);
                 boolean frameImage = getFrameImage(image, file.getAbsolutePath());
-                String base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
-                String[] strings=new String[1];
-                strings[0]=base64Path;
-                FingerprintEntity fingerprintEntity=new FingerprintEntity();
-                fingerprintEntity.fingerprints=strings;
-                fingerprintLiveData.postValue(fingerprintEntity);
-                FingerManager.getInstance().releaseDevice();
-                FingerManager.getInstance().setFingerListener(null);
+                if (frameImage) {
+                    String base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
+                    String[] strings = new String[1];
+                    strings[0] = base64Path;
+                    FingerprintEntity fingerprintEntity = new FingerprintEntity();
+                    fingerprintEntity.fingerprints = strings;
+                    fingerprintLiveData.postValue(fingerprintEntity);
+                    FingerManager.getInstance().releaseDevice();
+                    FingerManager.getInstance().setFingerListener(null);
+                }
             } else {
                 SystemClock.sleep(100);
                 try {

@@ -1,4 +1,4 @@
-package com.miaxis.enroll.guide;
+package com.miaxis.enroll.guide.finger;
 
 import android.os.Bundle;
 
@@ -8,10 +8,8 @@ import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.miaxis.enroll.EnrollSharedViewModel;
 import com.miaxis.enroll.R;
 import com.miaxis.enroll.databinding.FragmentFingerprintCollectBinding;
-import com.miaxis.enroll.databinding.FragmentVoiceprintCollectBinding;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
