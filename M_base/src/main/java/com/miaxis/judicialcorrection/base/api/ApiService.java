@@ -1,5 +1,6 @@
 package com.miaxis.judicialcorrection.base.api;
 
+import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.vo.Education;
 import com.miaxis.judicialcorrection.base.api.vo.FingerEntity;
 import com.miaxis.judicialcorrection.base.api.vo.HistorySignUpBean;
@@ -170,15 +171,15 @@ public interface ApiService {
     //            @Part() List<MultipartBody.Part > files);
 
     //指纹
-    @POST("http://10.249.2.210/sqjzsjzx/correctFingerprints/add")
+    @POST(BuildConfig.SERVER_URL2 + "/correctFingerprints/add")
     LiveData<ApiOtherResult<Object>> uploadFingerprint(@Body() RequestBody body);
 
 
-    //声纹
-    @POST("http://10.249.2.210/sqjzsjzx/correctVocalprint/add")
-    LiveData<ApiOtherResult<Object>> uploadVoicePrint(@Body() RequestBody body);
+    //声纹上传
+    @POST(BuildConfig.SERVER_URL2 + "/correctVocalprint/add")
+    LiveData<ApiResult<Object>> uploadVoicePrint(@Body() RequestBody body);
 
     //获取指纹
-    @POST("http://10.249.2.210/correctFingerprints/queryById")
+    @POST(BuildConfig.SERVER_URL2 + "/correctFingerprints/queryById")
     LiveData<ApiOtherResult<FingerEntity>> getFinger(@Body() RequestBody body);
 }

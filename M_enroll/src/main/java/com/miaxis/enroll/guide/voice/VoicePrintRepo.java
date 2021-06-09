@@ -42,7 +42,7 @@ public class VoicePrintRepo {
         map.put("fingerprints",new String[]{base64Str});
         String toJson = gson.toJson(map);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
-        LiveData<ApiOtherResult<Object>> apiResultLiveData = apiService.uploadVoicePrint(body);
-        return ResourceConvertUtils.convertToResourceFV(apiResultLiveData);
+        LiveData<ApiResult<Object>> apiResultLiveData = apiService.uploadVoicePrint(body);
+        return ResourceConvertUtils.convertToResource(apiResultLiveData);
     }
 }
