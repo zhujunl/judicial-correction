@@ -84,10 +84,10 @@ public class CaptureFuncFragment extends BaseBindingFragment<FragmentCaptureFunc
 
         });
         binding.groupSound.setOnClickListener(v -> {
-//            appHints.toast("暂未开放");
-            PersonInfo personInfo = viewModel.personInfoLiveData.getValue();
-            VoicePrintCollectFragment fragment = new VoicePrintCollectFragment(personInfo);
-            navigation(fragment);
+            appHints.toast("暂未开放");
+//            PersonInfo personInfo = viewModel.personInfoLiveData.getValue();
+//            VoicePrintCollectFragment fragment = new VoicePrintCollectFragment(personInfo);
+//            navigation(fragment);
 
         });
 

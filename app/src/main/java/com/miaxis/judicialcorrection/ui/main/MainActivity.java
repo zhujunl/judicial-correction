@@ -27,6 +27,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 
+import com.android.xhapimanager.XHApiManager;
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.finger.FingerManager;
 import com.miaxis.finger.FingerStrategy;
@@ -104,6 +105,10 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
                 dismissLoading();
             }
         });
+        if (com.miaxis.judicialcorrection.base.BuildConfig.EQUIPMENT_TYPE == 3) {
+            XHApiManager api = new XHApiManager();
+            api.XHSetGpioValue(1, 0);
+        }
         //采集页面个人信息
 //        getSupportFragmentManager().beginTransaction().replace(R.id.main,new CaptureBaseInfoFragment()).commitNow();
     }
