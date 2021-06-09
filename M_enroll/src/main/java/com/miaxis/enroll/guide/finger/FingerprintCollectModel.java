@@ -59,6 +59,7 @@ public class FingerprintCollectModel extends ViewModel {
     private final FingerManager.OnFingerReadListener fingerReadListener = new FingerManager.OnFingerReadListener() {
         @Override
         public void onFingerRead(byte[] feature, Bitmap image) {
+            Timber.e("FingerRead:" + (feature == null) + "   " + (image == null));
             setFingerReadFile(feature, image);
         }
 
@@ -75,8 +76,7 @@ public class FingerprintCollectModel extends ViewModel {
                 boolean frameImage = getFrameImage(image, file.getAbsolutePath());
                 if (frameImage) {
                     String base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
-                    String[] strings = new String[1];
-                    strings[0] = base64Path;
+                    String[] strings = new String[]{base64Path};
                     FingerprintEntity fingerprintEntity = new FingerprintEntity();
                     fingerprintEntity.fingerprints = strings;
                     fingerprintLiveData.postValue(fingerprintEntity);
