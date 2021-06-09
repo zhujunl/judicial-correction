@@ -290,11 +290,6 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                 }
             }
         });
-
-//        if (BuildConfig.EQUIPMENT_TYPE==3){
-//            xhApi = new XHApiManager();
-//            xhApi.XHSetGpioValue(4, 1);
-//        }
     }
 
     /**

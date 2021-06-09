@@ -165,11 +165,6 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
             return;
         }
         mGetFaceViewModel.extractFeatureFromRgb(rgbFromFile, oX[0], oY[0]);
-
-//       if (BuildConfig.EQUIPMENT_TYPE==3){
-//           xhApi = new XHApiManager();
-//           xhApi.XHSetGpioValue(4, 1);
-//       }
     }
 
     @Override
