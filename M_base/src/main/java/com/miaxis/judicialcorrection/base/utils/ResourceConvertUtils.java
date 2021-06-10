@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
-import com.miaxis.judicialcorrection.base.api.ApiOtherResult;
 import com.miaxis.judicialcorrection.base.api.ApiResult;
 import com.miaxis.judicialcorrection.base.common.Resource;
 
@@ -51,22 +50,24 @@ public class ResourceConvertUtils {
 
 
     @MainThread
-    public static <T> LiveData<Resource<T>> convertToResourceFV(LiveData<ApiOtherResult<T>> source) {
-        MutableLiveData<Resource<T>> map = LiveDataTransformations.map(source, new Function<ApiOtherResult<T>, Resource<T>>() {
+    public static <T> LiveData<Resource<T>> convertToResourceFV(LiveData<ApiResult<T>> source) {
+        MutableLiveData<Resource<T>> map = LiveDataTransformations.map(source, new Function<ApiResult<T>, Resource<T>>() {
             @Override
-            public Resource<T> apply(ApiOtherResult<T> input) {
+            public Resource<T> apply(ApiResult<T> input) {
                 if (null == input) {
                     return Resource.error(0x9999, "UnKnow Error !!!", null);
-                } else if (input.isSuccessful()) {
-                    return Resource.success(input.getData());
+                } else if (input.isSuccessful200()) {
+                    return Resource.success(input.result);
                 } else {
-                    return Resource.error(input.code, input.errorMsg(), input.getData());
+                    return Resource.error(input.code, input.errorMessage(), input.result);
                 }
             }
         });
         map.setValue(Resource.loading(null));
         return map;
     }
+
+
 
 
 

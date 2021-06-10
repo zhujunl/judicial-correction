@@ -87,18 +87,45 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
+
         <ImageView
+            android:id="@+id/img_fingerprint"
             android:layout_width="640px"
             android:layout_height="540px"
             android:layout_marginTop="45px"
+            android:background="@drawable/bg_white_splash_10"
             android:paddingStart="55px"
-            android:paddingBottom="37px"
             android:paddingTop="37px"
             android:paddingEnd="55px"
-            android:background="@drawable/bg_white_splash_10"
+            android:paddingBottom="37px"
             android:src="@drawable/icon_fingerprint_collect_1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_content" />
+
+
+
+        <TextView
+            android:id="@+id/tv_hint_fingerprint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40px"
+            android:text=""
+            android:textColor="#333333"
+            android:textSize="12px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_content" />
+
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#333333"
+            android:textSize="19px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_fingerprint" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

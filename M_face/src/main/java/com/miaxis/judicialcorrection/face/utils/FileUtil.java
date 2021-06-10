@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -175,18 +176,37 @@ public class FileUtil {
         }
     }
 
+    /**
+     * 将File转换成Base64
+     *
+     * @param file 文件
+     * @return base64字符串
+     */
     public static String fileToBase64(File file) {
         try {
             byte[] bytes = toByteArray(file);
-            String str = Base64.encodeToString(bytes, Base64.NO_WRAP);
-            bytes = null;
-            System.gc();
-            return str;
+            return Base64.encodeToString(bytes, Base64.NO_WRAP);
         } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
     }
+
+    /**
+     * 将base64字符解码保存文件
+     */
+    public static void decoderBase64File(String base64Code, String targetPath) {
+        byte[] buffer = Base64.decode(base64Code, Base64.NO_WRAP);
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(targetPath);
+            out.write(buffer);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static byte[] bitmapToByteArray(Bitmap bitmap) {
         try {

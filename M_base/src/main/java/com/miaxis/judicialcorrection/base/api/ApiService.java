@@ -1,5 +1,6 @@
 package com.miaxis.judicialcorrection.base.api;
 
+import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.vo.Education;
 import com.miaxis.judicialcorrection.base.api.vo.FingerEntity;
 import com.miaxis.judicialcorrection.base.api.vo.HistorySignUpBean;
@@ -11,6 +12,7 @@ import com.miaxis.judicialcorrection.base.api.vo.LiveAddressListBean;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.api.vo.SignUpBean;
 import com.miaxis.judicialcorrection.base.api.vo.User;
+import com.miaxis.judicialcorrection.base.api.vo.VocalPrintEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -169,16 +171,20 @@ public interface ApiService {
     LiveData<ApiResult<Object>> changeLiveAddress(@Body() RequestBody body);
     //            @Part() List<MultipartBody.Part > files);
 
-    //指纹
-    @POST("http://10.249.2.210/sqjzsjzx/correctFingerprints/add")
-    LiveData<ApiOtherResult<Object>> uploadFingerprint(@Body() RequestBody body);
+    //指纹上传
+    @POST(BuildConfig.SERVER_URL2 + "/correctFingerprints/add")
+    LiveData<ApiResult<Object>> uploadFingerprint(@Body() RequestBody body);
 
 
-    //声纹
-    @POST("http://10.249.2.210/sqjzsjzx/correctVocalprint/add")
-    LiveData<ApiOtherResult<Object>> uploadVoicePrint(@Body() RequestBody body);
+    //声纹上传
+    @POST(BuildConfig.SERVER_URL2 + "/correctVocalprint/add")
+    LiveData<ApiResult<Object>> uploadVoicePrint(@Body() RequestBody body);
 
     //获取指纹
-    @POST("http://10.249.2.210/correctFingerprints/queryById")
-    LiveData<ApiOtherResult<FingerEntity>> getFinger(@Body() RequestBody body);
+    @POST(BuildConfig.SERVER_URL2 + "/correctFingerprints/queryById")
+    LiveData<ApiResult<FingerEntity>> getFinger(@Body() RequestBody body);
+
+    //得到声纹
+    @POST(BuildConfig.SERVER_URL2+"/correctVocalprint/queryById")
+    LiveData<ApiResult<VocalPrintEntity>> getVocalPrint(@Body() RequestBody body);
 }

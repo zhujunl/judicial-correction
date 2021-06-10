@@ -1,13 +1,20 @@
 package com.miaxis.enroll.guide.voice;
 
+import android.os.Environment;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.miaxis.camera.CameraConfig;
+import com.miaxis.camera.MXFrame;
+import com.miaxis.enroll.vo.VoiceEntity;
 import com.miaxis.judicialcorrection.base.BaseApplication;
 import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
+import com.miaxis.judicialcorrection.common.response.ZZResponse;
+import com.miaxis.judicialcorrection.face.utils.FileUtil;
 import com.zlw.main.recorderlib.RecordManager;
 import com.zlw.main.recorderlib.recorder.RecordConfig;
 import com.zlw.main.recorderlib.recorder.RecordHelper;
@@ -25,11 +32,14 @@ public class VoicePrintModel extends ViewModel {
 
     private final VoicePrintRepo voicePrintRepo;
 
-    public MutableLiveData<File> observableFile = new MutableLiveData<>();
+    public MutableLiveData<VoiceEntity> observableFile = new MutableLiveData<>();
+
+    private  AppExecutors  mAppExecutors;
 
     @Inject
     public VoicePrintModel(AppExecutors mAppExecutors, VoicePrintRepo voicePrintRepo) {
         this.voicePrintRepo = voicePrintRepo;
+        this.mAppExecutors=mAppExecutors;
         init();
     }
 
@@ -38,23 +48,26 @@ public class VoicePrintModel extends ViewModel {
         return voicePrintRepo.uploadVoicePrint(id, base64Str);
     }
 
-
     final RecordManager mRecordManager = RecordManager.getInstance();
-
 
     public void init() {
         mRecordManager.init(BaseApplication.application, BuildConfig.DEBUG);
-        mRecordManager.changeFormat(RecordConfig.RecordFormat.PCM);
-//        String recordDir = String.format(Locale.getDefault(), "%s/Record/",
-//                Environment.getExternalStorageDirectory().getAbsolutePath());
-//        mRecordManager.changeRecordDir(recordDir);
+        mRecordManager.changeFormat(RecordConfig.RecordFormat.WAV);
+        String path = BaseApplication.application.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        mRecordManager.changeRecordDir(path);
         initRecordEvent();
     }
 
     private void initRecordEvent() {
         mRecordManager.setRecordResultListener(result -> {
-            observableFile.postValue(result);
-            Timber.i("路径: %s", result.getAbsolutePath());
+            mAppExecutors.networkIO().execute(() -> {
+                String s = FileUtil.fileToBase64(result);
+                VoiceEntity entity=new VoiceEntity();
+                entity.path=result.getAbsolutePath();
+                entity.base64Path=s;
+                observableFile.postValue(entity);
+                Timber.i("路径: %s", result.getAbsolutePath());
+            });
         });
     }
 
@@ -79,11 +92,11 @@ public class VoicePrintModel extends ViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        if (isRunning()) {
-            stop();
-        }
         if (mRecordManager != null) {
             mRecordManager.setRecordResultListener(null);
+        }
+        if (isRunning()) {
+            stop();
         }
     }
 
@@ -98,8 +111,7 @@ public class VoicePrintModel extends ViewModel {
     }
 
     /**
-     * 是否空闲
-     * @return
+     *
      */
     public  boolean isIdle() {
         RecordHelper.RecordState state = RecordManager.getInstance().getState();

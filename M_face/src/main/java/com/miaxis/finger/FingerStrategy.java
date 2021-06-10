@@ -63,12 +63,11 @@ public class FingerStrategy implements FingerManager.FingerStrategy {
     @Override
     public void readFinger() {
         try {
-            if (mxMscBigFingerApi != null || mxFingerAlg != null) {
+            if (mxMscBigFingerApi != null && mxFingerAlg != null) {
                 Result<MxImage> result = mxMscBigFingerApi.getFingerImageBig(5000);
                 if (result.isSuccess()) {
                     MxImage image = result.data;
                     if (image != null) {
-                        //int quality = mxFingerAlg.imageQuality(image.data, image.width, image.height);
                         byte[] feature = mxFingerAlg.extractFeature(image.data, image.width, image.height);
                         if (feature != null) {
                             Bitmap bitmap = RawBitmapUtils.raw2Bimap(image.data, image.width, image.height);
@@ -102,20 +101,33 @@ public class FingerStrategy implements FingerManager.FingerStrategy {
     }
 
     @Override
-    public void comparison(byte[] b) {
+    public void comparison(byte[] b, byte[] b2) {
         try {
-            if (mxMscBigFingerApi != null || mxFingerAlg != null) {
+            if (mxMscBigFingerApi != null && mxFingerAlg != null) {
                 Result<MxImage> result = mxMscBigFingerApi.getFingerImageBig(5000);
                 if (result.isSuccess()) {
                     MxImage image = result.data;
                     if (image != null) {
-                        //int quality = mxFingerAlg.imageQuality(image.data, image.width, image.height);
+
                         byte[] feature = mxFingerAlg.extractFeature(image.data, image.width, image.height);
                         if (feature != null) {
+                            //比对两个指纹
                             int match = mxFingerAlg.match(b, feature, 3);
+                            int m;
+                            if (match==MxFingerAlg.SUCCESS){
+                                m = MxFingerAlg.SUCCESS;
+                            }else {
+                                int match2 = mxFingerAlg.match(b, feature, 3);
+                                if (match2==MxFingerAlg.SUCCESS) {
+                                    m = MxFingerAlg.SUCCESS;
+                                } else {
+                                    m = MxFingerAlg.ERROR;
+                                }
+                            }
                             Bitmap bitmap = RawBitmapUtils.raw2Bimap(image.data, image.width, image.height);
+//                            int quality = mxFingerAlg.imageQuality(image.data, image.width, image.height);
                             if (readListener != null) {
-                                readListener.onFingerReadComparison(feature, bitmap,match);
+                                readListener.onFingerReadComparison(feature, bitmap, m);
                                 return;
                             }
                         }
@@ -126,7 +138,60 @@ public class FingerStrategy implements FingerManager.FingerStrategy {
             e.printStackTrace();
         }
         if (readListener != null) {
-            readListener.onFingerReadComparison(null, null,MxFingerAlg.ERROR);
+            readListener.onFingerReadComparison(null, null, MxFingerAlg.ERROR);
+        }
+    }
+
+    @Override
+    public void comparison(byte[] b, byte[] b2,byte[] b3) {
+        try {
+            if (mxMscBigFingerApi != null && mxFingerAlg != null) {
+                Result<MxImage> result = mxMscBigFingerApi.getFingerImageBig(5000);
+                if (result.isSuccess()) {
+                    MxImage image = result.data;
+                    if (image != null) {
+
+                        byte[] feature = mxFingerAlg.extractFeature(image.data, image.width, image.height);
+                        if (feature != null) {
+                            //两个指纹判断
+                            int match = mxFingerAlg.match(b, feature, 3);
+                            int m;
+                            if (match==MxFingerAlg.SUCCESS){
+                                //与下载的指纹判断
+                                int match3= mxFingerAlg.match(b3, feature, 3);
+                                if (match3== MxFingerAlg.SUCCESS){
+                                    m = MxFingerAlg.SUCCESS;
+                                }else{
+                                    m = MxFingerAlg.ERROR;
+                                }
+                            }else{
+                                int match2 = mxFingerAlg.match(b2, feature, 3);
+                                if (match2==MxFingerAlg.SUCCESS){
+                                    int match3= mxFingerAlg.match(b3, feature, 3);
+                                    if (match3== MxFingerAlg.SUCCESS){
+                                        m = MxFingerAlg.SUCCESS;
+                                    }else{
+                                        m = MxFingerAlg.ERROR;
+                                    }
+                                }else{
+                                    m = MxFingerAlg.ERROR;
+                                }
+                            }
+                            Bitmap bitmap = RawBitmapUtils.raw2Bimap(image.data, image.width, image.height);
+//                            int quality = mxFingerAlg.imageQuality(image.data, image.width, image.height);
+                            if (readListener != null) {
+                                readListener.onFingerReadComparison(feature, bitmap, m);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (readListener != null) {
+            readListener.onFingerReadComparison(null, null, MxFingerAlg.ERROR);
         }
     }
 

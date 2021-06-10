@@ -1,4 +1,4 @@
-package com.miaxis.enroll.vo;
+package com.miaxis.judicialcorrection.base.api.vo;
 
 public class FingerprintEntity {
     public  String id;

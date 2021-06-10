@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.hardware.usb.UsbManager;
+import android.util.Base64;
 
 import com.miaxis.judicialcorrection.base.api.ApiResult;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
@@ -77,6 +78,21 @@ public class ReadIdCardManager {
         }
     }
 
+    private void transformFingerprint(byte[] fingerData, IdCard idCard) {
+        byte[] bFingerData0 = new byte[512];
+        System.arraycopy(fingerData, 0, bFingerData0, 0, bFingerData0.length);
+//        idCard.fingerprint0 = Base64.encodeToString(bFingerData0, Base64.NO_WRAP);
+        idCard.fp0=bFingerData0;
+        idCard.fingerprintPosition0 = fingerPositionCovert(bFingerData0[5]);
+        byte[] bFingerData1 = new byte[512];
+        System.arraycopy(fingerData, 512, bFingerData1, 0, bFingerData1.length);
+        idCard.fp1=bFingerData1;
+//            if (!isFingerDataEmpty(bFingerData1)) {
+//        idCard.fingerprint1 = Base64.encodeToString(bFingerData1, Base64.NO_WRAP);
+        idCard.fingerprintPosition1 = fingerPositionCovert(bFingerData1[5]);
+//            }
+    }
+
     public ApiResult<IdCard> read() {
         ApiResult<IdCard> result = new ApiResult<>();
         mSdtApi.SDT_StartFindIDCard();//寻找身份证
@@ -96,7 +112,7 @@ public class ReadIdCardManager {
                 if (ret == 0x90) {
                     IdCard idCard = new IdCard();
                     idCard.idCardMsg = msg;
-                    idCard.fp0=pucFpMsg;
+                    transformFingerprint(pucFpMsg,idCard);
                     //是否需要拆分
 //                    byte[] b=new byte[512];
 //                    System.arraycopy(pucFpMsg,512,b,pucFpMsg.length,b.length-1);
@@ -104,8 +120,8 @@ public class ReadIdCardManager {
                     byte[] bmp = new byte[38862];
                     Bitmap bitmap = GetImage(pucPHMsg, bmp);
                     if (bitmap != null) {
-                      idCard.face = bitmap;
-                      result.code = 0;
+                        idCard.face = bitmap;
+                        result.code = 0;
                     }
                     result.setData(idCard);
                 } else {
@@ -249,4 +265,37 @@ public class ReadIdCardManager {
             "塔吉克", "怒", "乌兹别克", "俄罗斯", "鄂温克", "德昂", "保安", "裕固", "京", "塔塔尔",
             "独龙", "鄂伦春", "赫哲", "门巴", "珞巴", "基诺"
     };
+
+    public static String fingerPositionCovert(byte finger) {
+        switch ((int) finger) {
+            case 11:
+                return "右手拇指";
+            case 12:
+                return "右手食指";
+            case 13:
+                return "右手中指";
+            case 14:
+                return "右手环指";
+            case 15:
+                return "右手小指";
+            case 16:
+                return "左手拇指";
+            case 17:
+                return "左手食指";
+            case 18:
+                return "左手中指";
+            case 19:
+                return "左手环指";
+            case 20:
+                return "左手小指";
+            case 97:
+                return "右手不确定指位";
+            case 98:
+                return "左手不确定指位";
+            case 99:
+                return "其他不确定指位";
+            default:
+                return "其他不确定指位";
+        }
+    }
 }

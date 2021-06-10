@@ -37,10 +37,12 @@ android {
 
             buildConfigField 'String', 'SERVER_URL', '"http://223.4.75.73:8090"'//8083 8090
             buildConfigField 'String', 'TOKEN_URL', '"http://223.4.75.73:9012"'
+            //声纹指纹
+            buildConfigField 'String', 'SERVER_URL2', '"http://223.4.75.78:10137/sqjzsjzx"'
             //类型
-            buildConfigField 'int', 'EQUIPMENT_TYPE', '3'
+            buildConfigField 'int', 'EQUIPMENT_TYPE', '1'
             //人脸存图片的   旋转尺寸 3： 0   1：270  2：
-            buildConfigField 'int', 'ROTATION_SIZE', '0'
+            buildConfigField 'int', 'ROTATION_SIZE', '270'
             //设备
             buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
             //地址
@@ -57,10 +59,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'SERVER_URL', '"http://10.249.0.85:8080"'
             buildConfigField 'String', 'TOKEN_URL', '"http://10.249.0.85:9012"'
+            //声纹指纹
+            buildConfigField 'String', 'SERVER_URL2', '"http://10.249.2.210/sqjzsjzx"'
             //类型
-            buildConfigField 'int', 'EQUIPMENT_TYPE', '3'
+            buildConfigField 'int', 'EQUIPMENT_TYPE', '1'
             //人脸存图片的   旋转尺寸 3： 0   1：270  2：
-            buildConfigField 'int', 'ROTATION_SIZE', '0'
+            buildConfigField 'int', 'ROTATION_SIZE', '270'
             //设备
             buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
             //地址

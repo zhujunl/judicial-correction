@@ -137,8 +137,8 @@
             android:id="@+id/iv_finger"
             android:layout_width="229px"
             android:layout_height="289px"
-            android:visibility="gone"
             android:layout_marginLeft="64px"
+            android:visibility="gone"
             android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="@id/sv_preview"
             app:layout_constraintLeft_toRightOf="@id/sv_preview"
@@ -146,11 +146,13 @@
 
 <!--        android:text="@string/text_tips"-->
         <androidx.appcompat.widget.AppCompatTextView
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="70px"
             android:gravity="center"
             android:textColor="@color/color_text_red"
+            android:text="@string/text_tips"
             android:textSize="36px"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
