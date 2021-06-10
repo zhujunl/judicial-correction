@@ -12,6 +12,7 @@ import com.miaxis.judicialcorrection.base.api.vo.LiveAddressListBean;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.api.vo.SignUpBean;
 import com.miaxis.judicialcorrection.base.api.vo.User;
+import com.miaxis.judicialcorrection.base.api.vo.VocalPrintEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -170,9 +171,9 @@ public interface ApiService {
     LiveData<ApiResult<Object>> changeLiveAddress(@Body() RequestBody body);
     //            @Part() List<MultipartBody.Part > files);
 
-    //指纹
+    //指纹上传
     @POST(BuildConfig.SERVER_URL2 + "/correctFingerprints/add")
-    LiveData<ApiOtherResult<Object>> uploadFingerprint(@Body() RequestBody body);
+    LiveData<ApiResult<Object>> uploadFingerprint(@Body() RequestBody body);
 
 
     //声纹上传
@@ -181,5 +182,9 @@ public interface ApiService {
 
     //获取指纹
     @POST(BuildConfig.SERVER_URL2 + "/correctFingerprints/queryById")
-    LiveData<ApiOtherResult<FingerEntity>> getFinger(@Body() RequestBody body);
+    LiveData<ApiResult<FingerEntity>> getFinger(@Body() RequestBody body);
+
+    //得到声纹
+    @POST(BuildConfig.SERVER_URL2+"/correctVocalprint/queryById")
+    LiveData<ApiResult<VocalPrintEntity>> getVocalPrint(@Body() RequestBody body);
 }

@@ -4,9 +4,9 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.SurfaceHolder;
 import android.view.View;
 
@@ -14,9 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.xhapimanager.XHApiManager;
+import com.bumptech.glide.Glide;
 import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.MXCamera;
@@ -43,7 +45,6 @@ import com.miaxis.utils.FileUtils;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -122,7 +123,6 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
             apimanager.XHSetGpioValue(1, 1);
         }
 
-
         mVerifyPageViewModel.faceRect.observe(this, rectF -> binding.frvFace.setRect(rectF, false));
         mVerifyPageViewModel.name.observe(this, s -> {
             if (mEducationBean != null || mIndividual != null) {
@@ -144,18 +144,7 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
         });
         mVerifyPageViewModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));
         //指纹识别 需要下载图片后进行比对
-//        mVerifyPageViewModel.initFingerDevice(result -> {
-//
-//        });
-//        //显示图片
-//        mVerifyPageViewModel.fingerBitmap.observe(this, bitmap -> {
-//                    Glide.with(VerifyPageFragment.this).load(bitmap).error(R.mipmap.mipmap_error).into(binding.ivFinger);
-//                });
-//        //比对结果
-//        mVerifyPageViewModel.comparisonState.observe(this,result-> {
-//
-//        });
-        /*======================================================*/
+//        fingerInit();
 
         mVerifyPageViewModel.name.setValue(personInfo.getXm());
         mVerifyPageViewModel.idCardNumber.setValue(personInfo.getIdCardNumber());
@@ -177,13 +166,6 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
                 dismissLoading();
-//                FragmentActivity activity = getActivity();
-//                if (activity instanceof VerifyCallback) {
-//                    VerifyCallback callback = (VerifyCallback) activity;
-////                response.getData().entryMethod="2";
-//                    callback.onVerify(ZZResponse.CreateSuccess());
-//                    return;
-//                }
                 //请求成功后拿到图片 解析成bitmap
                 ResponseBody responseBody = response.body();
                 Bitmap bitmap = BitmapFactory.decodeStream(responseBody.byteStream());
@@ -194,7 +176,6 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                 }
                 try {
                     File filePath = FileUtils.createFileParent(getContext());
-//                    byte[] rgb = BitmapUtils.bitmap2RGB(bitmap);
                     mAppExecutors.networkIO().execute(() -> {
                         String fileName = System.currentTimeMillis() + ".jpg";
                         File file = new File(filePath, fileName);
@@ -226,15 +207,9 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                         }
                         mHandler.post(() -> mVerifyPageViewModel.extractFeatureFromRgb(rgbFromFile, bitmap.getWidth(), bitmap.getHeight()));
                     });
-                    //测试
-//                    String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/A/" + System.currentTimeMillis() + ".jpg";
-//                    FaceManager.getInstance().saveRgbTiFile(rgb, bitmap.getWidth(), bitmap.getHeight(), path);
-//                    String path1 = Environment.getExternalStorageDirectory().getAbsolutePath() + "/A/" + System.currentTimeMillis() + ".jpg";
-//                    BitmapUtils.saveBitmap(bitmap,path1);
                 } catch (Exception e) {
                     e.getStackTrace();
                 }
-
             }
 
             @Override
@@ -290,11 +265,47 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                 }
             }
         });
+    }
 
-//        if (BuildConfig.EQUIPMENT_TYPE==3){
-//            xhApi = new XHApiManager();
-//            xhApi.XHSetGpioValue(4, 1);
-//        }
+    /**
+     * 指纹
+     */
+    private void fingerInit() {
+        mVerifyPageViewModel.getFingerPrint(personInfo.getId()).observe(this, fingerEntityResource -> {
+            if (fingerEntityResource.isSuccess()) {
+                if (fingerEntityResource.data == null || fingerEntityResource.data.getFingerprints() == null || fingerEntityResource.data.getFingerprints().length == 0) {
+                    return;
+                }
+                mAppExecutors.networkIO().execute(() -> {
+                    String finger = fingerEntityResource.data.getFingerprints()[0];
+                    byte[] decode = Base64.decode(finger, Base64.NO_WRAP);
+                    mAppExecutors.mainThread().execute(() -> {
+                        mVerifyPageViewModel.fingerprint1.set(decode);
+                        mVerifyPageViewModel.initFingerDevice();
+                    });
+
+                });
+            }
+        });
+        mVerifyPageViewModel.resultState.observe(this, aBoolean -> {
+            //状态
+        });
+        //提示
+        mVerifyPageViewModel.hint.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+
+            }
+        });
+        //显示图片
+        mVerifyPageViewModel.bitmapFinger.observe(this, bitmap -> {
+            Glide.with(VerifyPageFragment.this).load(bitmap).error(R.mipmap.mipmap_error).into(binding.ivFinger);
+        });
+        //比对结果
+        mVerifyPageViewModel.stateLiveData.observe(this, result -> {
+
+        });
+
     }
 
     /**
@@ -444,5 +455,4 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
             apimanager.XHSetGpioValue(1, 0);
         }
     }
-
 }

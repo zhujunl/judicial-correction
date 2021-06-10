@@ -95,6 +95,12 @@ public abstract class BaseBindingActivity<V extends ViewDataBinding> extends App
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        dismissLoading();
+    }
+
     private ProgressDialog progressDialog;
 
     protected void showLoading() {

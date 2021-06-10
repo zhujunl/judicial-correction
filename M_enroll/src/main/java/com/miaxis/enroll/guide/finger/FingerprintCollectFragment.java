@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.alibaba.android.arouter.utils.TextUtils;
 import com.miaxis.enroll.R;
 import com.miaxis.enroll.databinding.FragmentFingerprintCollectBinding;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
@@ -61,8 +62,11 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFing
         mFingerprintCollectModel.filePath = FileUtils.createFileParent(getContext());
         if (mIdCard!=null){
             mFingerprintCollectModel.fingerprint1.set(mIdCard.fp0);
+            mFingerprintCollectModel.fingerprint2.set(mIdCard.fp1);
         }
-        mFingerprintCollectModel.initFingerDevice(result -> {
+        mFingerprintCollectModel.initFingerDevice();
+        mFingerprintCollectModel.resultState.observe(this, aBoolean -> {
+            //状态
         });
         //上传对象
         mFingerprintCollectModel.fingerprintLiveData.observe(this, entity -> {
@@ -83,6 +87,16 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFing
                 }
             });
         });
+        if (mIdCard!=null){
+            if (TextUtils.isEmpty(mIdCard.fingerprintPosition0)){
+                mIdCard.fingerprintPosition0="";
+            }
+            if (TextUtils.isEmpty(mIdCard.fingerprintPosition1)){
+                mIdCard.fingerprintPosition1="";
+            }
+            binding.tvHintFingerprint.setText(mIdCard.fingerprintPosition0+"\t\t\t"+mIdCard.fingerprintPosition1);
+        }
+        mFingerprintCollectModel.hint.observe(this, binding.tvHint::setText);
     }
 
     private void showDialog() {
@@ -119,6 +133,5 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFing
     public void onDestroyView() {
         mFingerprintCollectModel.releaseFingerDevice();
         super.onDestroyView();
-
     }
 }

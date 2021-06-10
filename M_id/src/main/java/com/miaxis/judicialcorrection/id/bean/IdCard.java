@@ -17,14 +17,9 @@ public class IdCard {
     public Bitmap face;
 
     public byte[] fp0;
-
     public byte[] fp1;
 
-    public String fingerprint0;
     public  String fingerprintPosition0;
-
-
-    public String fingerprint1;
     public  String fingerprintPosition1;
     public IdCard() {
     }
@@ -34,6 +29,7 @@ public class IdCard {
         return "IdCard{" +
                 "idCardMsg=" + idCardMsg +
                 ", face=" + face +
+                 "指纹一"+fingerprintPosition0+",指纹二"+fingerprintPosition1+""+
                 '}';
     }
 }

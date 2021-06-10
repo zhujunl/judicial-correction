@@ -34,7 +34,6 @@ public class VoicePrintModel extends ViewModel {
 
     public MutableLiveData<VoiceEntity> observableFile = new MutableLiveData<>();
 
-
     private  AppExecutors  mAppExecutors;
 
     @Inject
@@ -49,9 +48,7 @@ public class VoicePrintModel extends ViewModel {
         return voicePrintRepo.uploadVoicePrint(id, base64Str);
     }
 
-
     final RecordManager mRecordManager = RecordManager.getInstance();
-
 
     public void init() {
         mRecordManager.init(BaseApplication.application, BuildConfig.DEBUG);
@@ -96,11 +93,11 @@ public class VoicePrintModel extends ViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        if (isRunning()) {
-            stop();
-        }
         if (mRecordManager != null) {
             mRecordManager.setRecordResultListener(null);
+        }
+        if (isRunning()) {
+            stop();
         }
     }
 
@@ -115,8 +112,7 @@ public class VoicePrintModel extends ViewModel {
     }
 
     /**
-     * 是否空闲
-     * @return
+     *
      */
     public  boolean isIdle() {
         RecordHelper.RecordState state = RecordManager.getInstance().getState();

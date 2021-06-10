@@ -49,7 +49,7 @@ public class VoicePrintCollectFragment extends BaseBindingFragment<FragmentVoice
     @Inject
     AppHints mAppHints;
 
-    private   VoicePrintModel model;
+    private  VoicePrintModel model;
 
 
     @Override
@@ -119,7 +119,6 @@ public class VoicePrintCollectFragment extends BaseBindingFragment<FragmentVoice
             }
         });
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

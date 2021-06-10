@@ -3,9 +3,9 @@ package com.miaxis.enroll.guide.voice;
 import androidx.lifecycle.LiveData;
 
 import com.google.gson.Gson;
-import com.miaxis.judicialcorrection.base.api.ApiOtherResult;
 import com.miaxis.judicialcorrection.base.api.ApiResult;
 import com.miaxis.judicialcorrection.base.api.ApiService;
+import com.miaxis.judicialcorrection.base.api.vo.VocalPrintEntity;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.utils.MD5Utils;
 import com.miaxis.judicialcorrection.base.utils.ResourceConvertUtils;
@@ -39,10 +39,31 @@ public class VoicePrintRepo {
         map.put("id",id);
         map.put("sign",s);
         map.put("appkey",ApiService.appkey);
-        map.put("fingerprints",new String[]{base64Str});
+        map.put("vocalprint",new String[]{base64Str});
         String toJson = gson.toJson(map);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
         LiveData<ApiResult<Object>> apiResultLiveData = apiService.uploadVoicePrint(body);
-        return ResourceConvertUtils.convertToResource(apiResultLiveData);
+        return ResourceConvertUtils.convertToResourceFV(apiResultLiveData);
     }
+
+    /**
+     * 得到声纹
+     * @param id
+     * @return
+     */
+    public LiveData<Resource<VocalPrintEntity>> getVocalPrint(String id) {
+        Map<String,Object> map=new HashMap<>();
+        String sign=ApiService.appkey+ApiService.appsecret;
+        String s = MD5Utils.md5(sign);
+        map.put("id",id);
+        map.put("sign",s);
+        map.put("appkey",ApiService.appkey);
+        String toJson = gson.toJson(map);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
+        LiveData<ApiResult<VocalPrintEntity>> apiResultLiveData = apiService.getVocalPrint(body);
+        return ResourceConvertUtils.convertToResourceFV(apiResultLiveData);
+    }
+
+
+
 }

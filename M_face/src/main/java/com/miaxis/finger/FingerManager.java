@@ -38,7 +38,9 @@ public class FingerManager {
 
         void releaseDevice();
 
-        void comparison(byte[] b);
+        void comparison(byte[] b,byte[] b2);
+
+        void comparison(byte[] b,byte[] b2,byte[] b3);
     }
 
     public interface OnFingerStatusListener {
@@ -81,9 +83,22 @@ public class FingerManager {
             fingerStrategy.readFinger();
         }
     }
-    public void redFingerComparison(byte[] bytes){
+    public void redFingerComparison(byte[] bytes,byte[] bytes2){
         if (fingerStrategy != null) {
-            fingerStrategy.comparison(bytes);
+            fingerStrategy.comparison(bytes,bytes2);
+        }
+    }
+
+
+    /**
+     *
+     * @param bytes 证件指纹1
+     * @param bytes2 证件指纹1
+     * @param bytes2 下载的证件指纹
+     */
+    public void redFingerComparison(byte[] bytes,byte[] bytes2,byte[] bytes3){
+        if (fingerStrategy != null) {
+            fingerStrategy.comparison(bytes,bytes2,bytes3);
         }
     }
 

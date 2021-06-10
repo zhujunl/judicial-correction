@@ -33,6 +33,22 @@ public class ApiResult<T>{
         return null == msg ? "UnKnow Error!" : msg;
     }
 
+    //指纹声纹
+    public String message;
+
+    public T result;
+
+    public final String errorMessage() {
+        return null == message ? "UnKnow Error!" : message;
+    }
+
+
+    public final boolean isSuccessful200() {
+        return code == 200;
+    }
+
+
+
     @Override
     public String toString() {
         return "ApiResult{" +

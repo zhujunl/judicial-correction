@@ -3,22 +3,23 @@ package com.miaxis.enroll.guide.finger;
 import android.graphics.Bitmap;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Base64;
 
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.miaxis.enroll.vo.FingerprintEntity;
 import com.miaxis.finger.FingerManager;
 import com.miaxis.judicialcorrection.base.api.vo.FingerEntity;
+import com.miaxis.judicialcorrection.base.api.vo.FingerprintEntity;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
+import com.miaxis.judicialcorrection.base.repo.FingerprintRepo;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
-import com.miaxis.utils.BitmapUtils;
-import com.miaxis.utils.FileUtils;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -29,24 +30,28 @@ import timber.log.Timber;
 @HiltViewModel
 public class FingerprintCollectModel extends ViewModel {
 
-
+    //发送指纹数据
     public MutableLiveData<FingerprintEntity> fingerprintLiveData = new MutableLiveData<>();
     public File filePath;
     private AppExecutors mAppExecutors;
     private FingerprintRepo mFingerprintRepo;
+    //如果指纹为空直接读取上传
+    //指纹1
     public ObservableField<byte[]> fingerprint1 = new ObservableField<>();
+    //指纹2
+    public ObservableField<byte[]> fingerprint2 = new ObservableField<>();
+    //提示
+    public MutableLiveData<String> hint = new MutableLiveData<>();
+    //指纹初始化结果
+    public MutableLiveData<Boolean> resultState = new MutableLiveData<>();
 
     @Inject
-    public FingerprintCollectModel(FingerprintRepo fingerprintRepo, AppExecutors mAppExecutors, AppDatabase appDatabase) {
+    public FingerprintCollectModel(FingerprintRepo fingerprintRepo, AppExecutors mAppExecutors) {
         this.mAppExecutors = mAppExecutors;
         this.mFingerprintRepo = fingerprintRepo;
     }
 
-
-    private OnFingerInitListener mOnFingerInitListener;
-
-    public void initFingerDevice(OnFingerInitListener onFingerInitListener) {
-        this.mOnFingerInitListener = onFingerInitListener;
+    public void initFingerDevice() {
         mAppExecutors.networkIO().execute(() -> {
             FingerManager.getInstance().initDevice(fingerStatusListener);
         });
@@ -61,32 +66,40 @@ public class FingerprintCollectModel extends ViewModel {
         public void onFingerRead(byte[] feature, Bitmap image) {
             Timber.e("FingerRead:" + (feature == null) + "   " + (image == null));
             setFingerReadFile(feature, image);
+            hint.postValue("采集结束");
         }
 
         @Override
         public void onFingerReadComparison(byte[] feature, Bitmap image, int state) {
             Timber.e("FingerRead:" + (feature == null) + "   " + (image == null) + "===结果" + state);
-            setFingerReadFile(feature, image);
+            if (state == 0) {
+                hint.postValue("指纹比对成功！");
+//                setFingerReadFile(feature, image);
+            } else {
+                hint.postValue("指纹比对失败！");
+                SystemClock.sleep(1000);
+                try {
+                    readFinger(getFingerToByte(), getFingerToByte2());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
+
         private void setFingerReadFile(byte[] feature, Bitmap image) {
             Timber.e("FingerRead:" + (feature == null) + "   " + (image == null));
             if (image != null) {
-                String fileName = "fingerprint.jpg";
-                File file = new File(filePath, fileName);
-                boolean frameImage = getFrameImage(image, file.getAbsolutePath());
-                if (frameImage) {
-                    String base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
-                    String[] strings = new String[]{base64Path};
-                    FingerprintEntity fingerprintEntity = new FingerprintEntity();
-                    fingerprintEntity.fingerprints = strings;
-                    fingerprintLiveData.postValue(fingerprintEntity);
-                    FingerManager.getInstance().releaseDevice();
-                    FingerManager.getInstance().setFingerListener(null);
-                }
+                String base64Str = Base64.encodeToString(feature, Base64.NO_WRAP);
+                String[] strings = new String[]{base64Str};
+                FingerprintEntity fingerprintEntity = new FingerprintEntity();
+                fingerprintEntity.fingerprints = strings;
+                fingerprintLiveData.postValue(fingerprintEntity);
+                FingerManager.getInstance().releaseDevice();
+                FingerManager.getInstance().setFingerListener(null);
             } else {
-                SystemClock.sleep(100);
+                SystemClock.sleep(1000);
                 try {
-                    readFinger(getFingerToByte());
+                    readFinger(getFingerToByte(), getFingerToByte2());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -94,68 +107,74 @@ public class FingerprintCollectModel extends ViewModel {
         }
     };
 
+    /**
+     *判断byte[] 是否相等 做非空判断
+     * @return 返回对应的byte[]
+     */
     private byte[] getFingerToByte() {
-        byte[] decode = null;
-        for (byte b : Objects.requireNonNull(fingerprint1.get())) {
-            if (b != 0x0) {
-                Timber.v("不为 %s", b);
-                decode = fingerprint1.get();
-                break;
-            }
+        if (fingerprint1.get() == null) {
+            return null;
         }
-        return decode;
+        boolean equals = Arrays.equals(fingerprint1.get(), new byte[512]);
+        return equals ? null : fingerprint1.get();
+    }
+
+    private byte[] getFingerToByte2() {
+        if (fingerprint2.get() == null) {
+            return null;
+        }
+        boolean equals = Arrays.equals(fingerprint2.get(), new byte[512]);
+        return equals ? null : fingerprint2.get();
+
     }
 
     private final FingerManager.OnFingerStatusListener fingerStatusListener = result -> {
         Timber.e("FingerStatus:" + result);
-        if (this.mOnFingerInitListener != null) {
-            this.mOnFingerInitListener.onInit(result);
-        }
+        resultState.postValue(result);
+
         if (result) {
             byte[] decode = getFingerToByte();
-            result = readFinger(decode);
+            byte[] decode2 = getFingerToByte2();
+            result = readFinger(decode, decode2);
             if (!result) {
-                result = readFinger(decode);
+                result = readFinger(decode, decode2);
             }
         }
         if (!result) {
-            Timber.e("指纹初始化失败");
+            hint.postValue("指纹初始化失败！");
             FingerManager.getInstance().release();
         }
     };
 
-    private boolean readFinger(byte[] bytes) {
+    private boolean readFinger(byte[] bytes, byte[] bytes2) {
         String device = FingerManager.getInstance().deviceInfo();
         Timber.e("device:" + device);
         if (TextUtils.isEmpty(device)) {
-            //fingerHint.set("未找到指纹设备");
-            Timber.e("未找到指纹设备");
+            hint.postValue("未找到指纹设备");
             return false;
         } else {
-            Timber.e("请在指纹采集仪上按压指纹");
-            //fingerHint.set("请在指纹采集仪上按压指纹");
+            hint.postValue("请在指纹采集仪上按压指纹");
             FingerManager.getInstance().setFingerListener(fingerReadListener);
-            mAppExecutors.networkIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    if (bytes == null) {
-                        FingerManager.getInstance().readFinger();
-                    } else {
-                        FingerManager.getInstance().redFingerComparison(bytes);
-                    }
+            mAppExecutors.networkIO().execute(() -> {
+                if (bytes == null && bytes2 == null) {
+                    FingerManager.getInstance().readFinger();
+                } else {
+                    FingerManager.getInstance().redFingerComparison(bytes, bytes2);
                 }
             });
             return true;
         }
     }
 
-    public interface OnFingerInitListener {
-        void onInit(boolean result);
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        releaseFingerDevice();
+        FingerManager.getInstance().release();
     }
 
     /**
      * 上传指纹
-     *
      */
     public LiveData<Resource<Object>> uploadFingerprint(FingerprintEntity fingerprintEntity) {
         return mFingerprintRepo.uploadFingerprint(fingerprintEntity);
@@ -168,26 +187,4 @@ public class FingerprintCollectModel extends ViewModel {
     public LiveData<Resource<FingerEntity>> getFingerPrint(String id) {
         return mFingerprintRepo.getFingerPrint(id);
     }
-
-
-    public boolean getFrameImage(Bitmap bitmap, String savePath) {
-        try {
-
-            File file = new File(savePath);
-            if (!file.exists()) {
-                File parentFile = file.getParentFile();
-                if (parentFile != null && !parentFile.exists()) {
-                    boolean mkdirs = parentFile.mkdirs();
-                }
-            } else {
-                boolean newFile = file.createNewFile();
-            }
-            return BitmapUtils.saveBitmap(bitmap, savePath);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
 }

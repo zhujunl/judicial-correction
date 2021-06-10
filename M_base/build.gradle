@@ -38,7 +38,7 @@ android {
             buildConfigField 'String', 'SERVER_URL', '"http://223.4.75.73:8090"'//8083 8090
             buildConfigField 'String', 'TOKEN_URL', '"http://223.4.75.73:9012"'
             //声纹指纹
-            buildConfigField 'String', 'SERVER_URL2', '"http://10.249.2.210/sqjzsjzx"'
+            buildConfigField 'String', 'SERVER_URL2', '"http://223.4.75.78:10137/sqjzsjzx"'
             //类型
             buildConfigField 'int', 'EQUIPMENT_TYPE', '3'
             //人脸存图片的   旋转尺寸 3： 0   1：270  2：

@@ -82,9 +82,11 @@ public class ReadIdCardManager {
         byte[] bFingerData0 = new byte[512];
         System.arraycopy(fingerData, 0, bFingerData0, 0, bFingerData0.length);
 //        idCard.fingerprint0 = Base64.encodeToString(bFingerData0, Base64.NO_WRAP);
+        idCard.fp0=bFingerData0;
         idCard.fingerprintPosition0 = fingerPositionCovert(bFingerData0[5]);
         byte[] bFingerData1 = new byte[512];
         System.arraycopy(fingerData, 512, bFingerData1, 0, bFingerData1.length);
+        idCard.fp1=bFingerData1;
 //            if (!isFingerDataEmpty(bFingerData1)) {
 //        idCard.fingerprint1 = Base64.encodeToString(bFingerData1, Base64.NO_WRAP);
         idCard.fingerprintPosition1 = fingerPositionCovert(bFingerData1[5]);
@@ -110,7 +112,6 @@ public class ReadIdCardManager {
                 if (ret == 0x90) {
                     IdCard idCard = new IdCard();
                     idCard.idCardMsg = msg;
-                    idCard.fp0 = pucFpMsg;
                     transformFingerprint(pucFpMsg,idCard);
                     //是否需要拆分
 //                    byte[] b=new byte[512];
