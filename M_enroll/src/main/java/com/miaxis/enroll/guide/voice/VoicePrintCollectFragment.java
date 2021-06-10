@@ -51,7 +51,6 @@ public class VoicePrintCollectFragment extends BaseBindingFragment<FragmentVoice
 
     private  VoicePrintModel model;
 
-
     @Override
     protected int initLayout() {
         return R.layout.fragment_voiceprint_collect;

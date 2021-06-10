@@ -112,6 +112,7 @@ public class FingerStrategy implements FingerManager.FingerStrategy {
 
                         byte[] feature = mxFingerAlg.extractFeature(image.data, image.width, image.height);
                         if (feature != null) {
+                            //比对两个指纹
                             int match = mxFingerAlg.match(b, feature, 3);
                             int m;
                             if (match==MxFingerAlg.SUCCESS){
@@ -153,9 +154,11 @@ public class FingerStrategy implements FingerManager.FingerStrategy {
 
                         byte[] feature = mxFingerAlg.extractFeature(image.data, image.width, image.height);
                         if (feature != null) {
+                            //两个指纹判断
                             int match = mxFingerAlg.match(b, feature, 3);
                             int m;
                             if (match==MxFingerAlg.SUCCESS){
+                                //与下载的指纹判断
                                 int match3= mxFingerAlg.match(b3, feature, 3);
                                 if (match3== MxFingerAlg.SUCCESS){
                                     m = MxFingerAlg.SUCCESS;
