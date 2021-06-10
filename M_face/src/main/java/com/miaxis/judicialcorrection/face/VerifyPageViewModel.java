@@ -27,17 +27,17 @@ public class VerifyPageViewModel extends BaseFaceViewModel {
     private final FingerprintRepo mFingerprintRepo;
 
     public MutableLiveData<String> hint = new MutableLiveData<>();
-
+    //身份证指纹1
     public ObservableField<byte[]> fingerprint1 = new ObservableField<>();
-
+    //身份证指纹2
     public ObservableField<byte[]> fingerprint2 = new ObservableField<>();
     //下载的指纹
     public ObservableField<byte[]> fingerprint3 = new ObservableField<>();
-
+    //指纹初始化结果
     public MutableLiveData<Boolean> resultState = new MutableLiveData<>();
-
+    //指纹bitmap图片
     public MutableLiveData<Bitmap> bitmapFinger = new MutableLiveData<>();
-
+    //比对结果
     public MutableLiveData<Integer> stateLiveData = new MutableLiveData<>();
 
     @Inject
