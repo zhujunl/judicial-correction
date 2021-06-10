@@ -68,7 +68,6 @@ public class FingerStrategy implements FingerManager.FingerStrategy {
                 if (result.isSuccess()) {
                     MxImage image = result.data;
                     if (image != null) {
-                        //int quality = mxFingerAlg.imageQuality(image.data, image.width, image.height);
                         byte[] feature = mxFingerAlg.extractFeature(image.data, image.width, image.height);
                         if (feature != null) {
                             Bitmap bitmap = RawBitmapUtils.raw2Bimap(image.data, image.width, image.height);

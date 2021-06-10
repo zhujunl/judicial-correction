@@ -52,8 +52,7 @@ public class VoicePrintModel extends ViewModel {
 
     public void init() {
         mRecordManager.init(BaseApplication.application, BuildConfig.DEBUG);
-        mRecordManager.changeFormat(RecordConfig.RecordFormat.PCM);
-
+        mRecordManager.changeFormat(RecordConfig.RecordFormat.WAV);
         String path = BaseApplication.application.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
         mRecordManager.changeRecordDir(path);
         initRecordEvent();
