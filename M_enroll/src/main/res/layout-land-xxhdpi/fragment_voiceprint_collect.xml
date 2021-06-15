@@ -73,6 +73,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_hint1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="400px"
@@ -84,12 +85,10 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/tv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="470px"
             android:gravity="center"
             android:text="我愿意接受社区矫正 \n我会遵守法律法规\n 我希望早日回归社会"
             android:textColor="#2850A3"
@@ -97,7 +96,7 @@
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tv_hint1"/>
 
 
         <ImageView
