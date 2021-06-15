@@ -18,11 +18,12 @@ import timber.log.Timber;
 //@HiltAndroidApp
 public class BaseApplication extends Application {
 
-    public   static BaseApplication application;
+    public static BaseApplication application;
+
     @Override
     public void onCreate() {
         super.onCreate();
-        application=this;
+        application = this;
         if (BuildConfig.DEBUG) {
             ARouter.openLog(); // 开启日志
             ARouter.openDebug(); // 使用InstantRun的时候，需要打开该开关，上线之后关闭，否则有安全风险

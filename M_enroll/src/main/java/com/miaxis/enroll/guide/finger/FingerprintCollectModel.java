@@ -20,6 +20,7 @@ import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -44,6 +45,10 @@ public class FingerprintCollectModel extends ViewModel {
     public MutableLiveData<String> hint = new MutableLiveData<>();
     //指纹初始化结果
     public MutableLiveData<Boolean> resultState = new MutableLiveData<>();
+//    //保存3个手指状态
+//    public ObservableField<List<byte[]>> allFinger = new ObservableField<>();
+//    //分数
+//    public ObservableField<Integer> scoreFinger = new ObservableField<>();
 
     @Inject
     public FingerprintCollectModel(FingerprintRepo fingerprintRepo, AppExecutors mAppExecutors) {
@@ -74,7 +79,7 @@ public class FingerprintCollectModel extends ViewModel {
             Timber.e("FingerRead:" + (feature == null) + "   " + (image == null) + "===结果" + state);
             if (state == 0) {
                 hint.postValue("指纹比对成功！");
-//                setFingerReadFile(feature, image);
+                setFingerReadFile(feature, image);
             } else {
                 hint.postValue("指纹比对失败！");
                 SystemClock.sleep(1000);
@@ -153,7 +158,7 @@ public class FingerprintCollectModel extends ViewModel {
             hint.postValue("未找到指纹设备");
             return false;
         } else {
-            hint.postValue("请在指纹采集仪上按压指纹");
+            hint.postValue("请按压手指");
             FingerManager.getInstance().setFingerListener(fingerReadListener);
             mAppExecutors.networkIO().execute(() -> {
                 if (bytes == null && bytes2 == null) {

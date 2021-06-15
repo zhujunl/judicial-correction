@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.xhapimanager.XHApiManager;
@@ -33,6 +32,7 @@ import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.repo.PersonRepo;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
+import com.miaxis.judicialcorrection.base.utils.TTsUtils;
 import com.miaxis.judicialcorrection.base.utils.numbers.HexStringUtils;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
@@ -107,6 +107,9 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
     }
 
     private XHApiManager apimanager;
+    //人脸或者指纹是否通过
+    private boolean isFacePass = false;
+    private boolean isFingerPass = false;
 
     @Override
     protected int initLayout() {
@@ -144,7 +147,7 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
         });
         mVerifyPageViewModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));
         //指纹识别 需要下载图片后进行比对
-//        fingerInit();
+        fingerInit();
 
         mVerifyPageViewModel.name.setValue(personInfo.getXm());
         mVerifyPageViewModel.idCardNumber.setValue(personInfo.getIdCardNumber());
@@ -271,6 +274,7 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
      * 指纹
      */
     private void fingerInit() {
+        TTsUtils.textToSpeechStr("请将人脸置于采集区域或按压手指");
         mVerifyPageViewModel.getFingerPrint(personInfo.getId()).observe(this, fingerEntityResource -> {
             if (fingerEntityResource.isSuccess()) {
                 if (fingerEntityResource.data == null || fingerEntityResource.data.getFingerprints() == null || fingerEntityResource.data.getFingerprints().length == 0) {
@@ -279,11 +283,10 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                 mAppExecutors.networkIO().execute(() -> {
                     String finger = fingerEntityResource.data.getFingerprints()[0];
                     byte[] decode = Base64.decode(finger, Base64.NO_WRAP);
-                    mAppExecutors.mainThread().execute(() -> {
+                    mHandler.post(() -> {
                         mVerifyPageViewModel.fingerprint1.set(decode);
                         mVerifyPageViewModel.initFingerDevice();
                     });
-
                 });
             }
         });
@@ -291,21 +294,20 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
             //状态
         });
         //提示
-        mVerifyPageViewModel.hint.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-
-            }
-        });
+        mVerifyPageViewModel.hint.observe(this, s -> binding.tvHint.setText(s));
         //显示图片
         mVerifyPageViewModel.bitmapFinger.observe(this, bitmap -> {
-            Glide.with(VerifyPageFragment.this).load(bitmap).error(R.mipmap.mipmap_error).into(binding.ivFinger);
+            if (bitmap!=null) {
+                Glide.with(VerifyPageFragment.this).load(bitmap).into(binding.ivFinger);
+            }
         });
         //比对结果
         mVerifyPageViewModel.stateLiveData.observe(this, result -> {
-
+                isFingerPass = true;
+                if (!isFacePass) {
+                    verifyComplete(ZZResponse.CreateSuccess());
+                }
         });
-
     }
 
     /**
@@ -418,7 +420,10 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
     public void onMatchReady(boolean success) {
         mHandler.post(() -> {
             if (success) {
-                verifyComplete(ZZResponse.CreateSuccess());
+                isFacePass = true;
+                if (!isFingerPass) {
+                    verifyComplete(ZZResponse.CreateSuccess());
+                }
             } else {
                 verifyComplete(ZZResponse.CreateFail(-100, "核验失败"));
             }
@@ -454,5 +459,6 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
         if (BuildConfig.EQUIPMENT_TYPE == 3 && apimanager != null) {
             apimanager.XHSetGpioValue(1, 0);
         }
+        TTsUtils.close();
     }
 }

@@ -80,11 +80,11 @@ public class CaptureFuncFragment extends BaseBindingFragment<FragmentCaptureFunc
             navigation(capturePageFragment);
         });
         binding.groupFinger.setOnClickListener(v -> {
-            appHints.toast("暂未开放");
-//            PersonInfo personInfo = viewModel.personInfoLiveData.getValue();
-//            IdCard idcard = viewModel.idCardLiveData.getValue();
-//            FingerprintCollectFragment fragment = new FingerprintCollectFragment(personInfo.getId(),idcard);
-//            navigation(fragment);
+//            appHints.toast("暂未开放");
+            PersonInfo personInfo = viewModel.personInfoLiveData.getValue();
+            IdCard idcard = viewModel.idCardLiveData.getValue();
+            FingerprintCollectFragment fragment = new FingerprintCollectFragment(personInfo.getId(),idcard);
+            navigation(fragment);
 
         });
         binding.groupSound.setOnClickListener(v -> {
@@ -98,6 +98,7 @@ public class CaptureFuncFragment extends BaseBindingFragment<FragmentCaptureFunc
             }
 
         });
+        binding.groupFinger.setBackgroundColor(Color.parseColor("#E75A48"));
         if(BuildConfig.EQUIPMENT_TYPE==1){
             binding.groupSound.setBackgroundColor(Color.parseColor("#16E0DD"));
         }else{

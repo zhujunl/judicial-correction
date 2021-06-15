@@ -13,6 +13,7 @@ import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.api.vo.SignUpBean;
 import com.miaxis.judicialcorrection.base.api.vo.User;
 import com.miaxis.judicialcorrection.base.api.vo.VocalPrintEntity;
+import com.tencent.mmkv.MMKV;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -41,9 +43,9 @@ public interface ApiService {
     //    @GET("/api/aidy-base/atm/enter/login/student/code")
     //    LiveData<ApiResult<User>> login(@Header("tenementCode") String tenementCode, @Query("rfid") String rfid, @Query("sn") String sn);
 
-    public String appkey = "1c7d017e-eebe-40fa-9b17-285e62bcbeb1";
+    String appkey = "1c7d017e-eebe-40fa-9b17-285e62bcbeb1";
 
-    public String appsecret = "B6C943010F95B2205FCA2FC6B7B23715";
+    String appsecret = "B6C943010F95B2205FCA2FC6B7B23715";
 
     @GET("/personInfo/list")
     LiveData<ApiResult<List<User>>> personList(
@@ -172,16 +174,17 @@ public interface ApiService {
     //            @Part() List<MultipartBody.Part > files);
 
     //指纹上传
-    @POST(BuildConfig.SERVER_URL2 + "/correctFingerprints/add")
+    @POST(BuildConfig.SERVER_URL2+"/correctFingerprints/add")
     LiveData<ApiResult<Object>> uploadFingerprint(@Body() RequestBody body);
 
 
     //声纹上传
-    @POST(BuildConfig.SERVER_URL2 + "/correctVocalprint/add")
+    @POST(BuildConfig.SERVER_URL2+"/correctVocalprint/add")
     LiveData<ApiResult<Object>> uploadVoicePrint(@Body() RequestBody body);
 
+
     //获取指纹
-    @POST(BuildConfig.SERVER_URL2 + "/correctFingerprints/queryById")
+    @POST(BuildConfig.SERVER_URL2+ "/correctFingerprints/queryById")
     LiveData<ApiResult<FingerEntity>> getFinger(@Body() RequestBody body);
 
     //得到声纹

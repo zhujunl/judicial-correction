@@ -40,7 +40,7 @@ public class FingerManager {
 
         void comparison(byte[] b,byte[] b2);
 
-        void comparison(byte[] b,byte[] b2,byte[] b3);
+        void comparison(byte[] b);
     }
 
     public interface OnFingerStatusListener {
@@ -96,9 +96,9 @@ public class FingerManager {
      * @param bytes2 证件指纹1
      * @param bytes2 下载的证件指纹
      */
-    public void redFingerComparison(byte[] bytes,byte[] bytes2,byte[] bytes3){
+    public void redFingerComparison(byte[] bytes){
         if (fingerStrategy != null) {
-            fingerStrategy.comparison(bytes,bytes2,bytes3);
+            fingerStrategy.comparison(bytes);
         }
     }
 

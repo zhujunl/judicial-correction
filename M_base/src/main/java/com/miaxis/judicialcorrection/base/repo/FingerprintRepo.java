@@ -3,6 +3,7 @@ package com.miaxis.judicialcorrection.base.repo;
 import androidx.lifecycle.LiveData;
 
 import com.google.gson.Gson;
+import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.ApiResult;
 import com.miaxis.judicialcorrection.base.api.ApiService;
 import com.miaxis.judicialcorrection.base.api.vo.FingerEntity;
