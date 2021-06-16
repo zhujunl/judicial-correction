@@ -32,6 +32,7 @@ import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.bean.LiveAddressChangeBean;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
+import com.miaxis.judicialcorrection.dialog.HighShotMeterDialog;
 import com.miaxis.judicialcorrection.dialog.PreviewPictureDialog;
 import com.miaxis.judicialcorrection.face.GetFacePageFragment;
 import com.miaxis.judicialcorrection.live.LiveAddressChangeActivity;
@@ -85,7 +86,7 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
 
         binding.btnApplicationScan.setOnClickListener(v -> {
             scanType = 0;
-            openScanning();
+            showPreInfo();
         });
         binding.btnApplicationMaterialsScan.setOnClickListener(v -> {
             scanType = 1;
@@ -406,6 +407,27 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
         }
     }
 
+    //显示高拍仪预览内容
+    private void showPreInfo() {
+        new HighShotMeterDialog(getActivity(), new HighShotMeterDialog.ClickListener() {
+            @Override
+            public void onDetermine(List<String> base64List) {
+
+            }
+
+            @Override
+            public void onTryAgain(AppCompatDialog appCompatDialog) {
+                appCompatDialog.dismiss();
+            }
+
+            @Override
+            public void onTimeOut(AppCompatDialog appCompatDialog) {
+                appCompatDialog.dismiss();
+            }
+        }, new HighShotMeterDialog.Builder()).show();
+
+    }
+
     private void openScanning() {
         ZZResponse<?> init = CameraHelper.getInstance().init();
         if (ZZResponse.isSuccess(init)) {
@@ -453,31 +475,6 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
         }
     }
 
-    private void setPreviewDialog(File file, String base64, String fileName) {
-        mDialog = new PreviewPictureDialog(getContext(), new PreviewPictureDialog.ClickListener() {
-            @Override
-            public void onDetermine() {
-                if (scanType == 0) {
-                    base64LiveChangeApplication = base64;
-                    binding.tvApplicationInfoShow.setText(fileName);
-                } else {
-                    base64LiveChangeData = base64;
-                    binding.tvApplicationInfoShow2.setText(fileName);
-                }
-            }
-
-            @Override
-            public void onTryAgain(AppCompatDialog appCompatDialog) {
-                openScanning();
-            }
-
-            @Override
-            public void onTimeOut(AppCompatDialog appCompatDialog) {
-
-            }
-        }, new PreviewPictureDialog.Builder().setPathFile(file.getAbsolutePath()));
-        mDialog.show();
-    }
 
     private final static Handler mHandler = new Handler();
 

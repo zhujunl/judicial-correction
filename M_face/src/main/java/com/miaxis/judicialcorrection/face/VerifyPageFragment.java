@@ -169,6 +169,14 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
                 dismissLoading();
+                FragmentActivity activity = getActivity();
+                if (activity instanceof VerifyCallback) {
+                    VerifyCallback callback = (VerifyCallback) activity;
+//                response.getData().entryMethod="2";
+                    callback.onVerify(ZZResponse.CreateSuccess());
+                    return;
+                }
+
                 //请求成功后拿到图片 解析成bitmap
                 ResponseBody responseBody = response.body();
                 Bitmap bitmap = BitmapFactory.decodeStream(responseBody.byteStream());
@@ -274,7 +282,7 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
      * 指纹
      */
     private void fingerInit() {
-        TTsUtils.textToSpeechStr("请将人脸置于采集区域或按压手指");
+//        TTsUtils.textToSpeechStr("请将人脸置于采集区域或按压手指");
         mVerifyPageViewModel.getFingerPrint(personInfo.getId()).observe(this, fingerEntityResource -> {
             if (fingerEntityResource.isSuccess()) {
                 if (fingerEntityResource.data == null || fingerEntityResource.data.getFingerprints() == null || fingerEntityResource.data.getFingerprints().length == 0) {

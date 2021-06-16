@@ -10,6 +10,7 @@ import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Size;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -32,6 +34,7 @@ import com.miaxis.finger.FingerManager;
 import com.miaxis.finger.FingerStrategy;
 import com.miaxis.judicialcorrection.BuildConfig;
 import com.miaxis.judicialcorrection.R;
+import com.miaxis.judicialcorrection.base.BaseApplication;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
@@ -43,8 +46,10 @@ import com.miaxis.judicialcorrection.databinding.ActivityMainBinding;
 import com.miaxis.judicialcorrection.databinding.ItemMainFucBinding;
 import com.miaxis.judicialcorrection.db.DbInitMainFuncs;
 import com.miaxis.judicialcorrection.ui.setting.SettingActivity;
+import com.tencent.mmkv.MMKV;
 
 import java.io.File;
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -138,7 +143,11 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
     protected void onResume() {
         super.onResume();
         deleteFile();
+        MMKV mmkv = MMKV.defaultMMKV();
+        BaseApplication.application.setBaseUrlFingerAndFace(mmkv.getString("baseUrl2",
+                com.miaxis.judicialcorrection.base.BuildConfig.SERVER_URL2));
     }
+
 
     /**
      * 如果文件大于10MB则删除
@@ -177,7 +186,8 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             for (int i = 0; i < permissions.length; i++) {

@@ -1,5 +1,7 @@
 package com.miaxis.judicialcorrection.base.api;
 
+import androidx.lifecycle.LiveData;
+
 import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.vo.Education;
 import com.miaxis.judicialcorrection.base.api.vo.FingerEntity;
@@ -13,25 +15,22 @@ import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.api.vo.SignUpBean;
 import com.miaxis.judicialcorrection.base.api.vo.User;
 import com.miaxis.judicialcorrection.base.api.vo.VocalPrintEntity;
-import com.tencent.mmkv.MMKV;
 
 import java.util.List;
 import java.util.Map;
 
-import androidx.lifecycle.LiveData;
-
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 /**
  * ApiService
@@ -46,6 +45,14 @@ public interface ApiService {
     String appkey = "1c7d017e-eebe-40fa-9b17-285e62bcbeb1";
 
     String appsecret = "B6C943010F95B2205FCA2FC6B7B23715";
+    //得到指纹
+    String getFingerUrl = "/sqjzsjzx/correctFingerprints/queryById";
+    //指纹上传
+    String uploadFingerUrl = "/sqjzsjzx/correctFingerprints/add";
+    //得到声纹
+    String getVoice = "/sqjzsjzx/correctVocalprint/queryById";
+    //上传声纹
+    String uploadVoice = "/sqjzsjzx/correctVocalprint/add";
 
     @GET("/personInfo/list")
     LiveData<ApiResult<List<User>>> personList(
@@ -171,23 +178,19 @@ public interface ApiService {
     //社区对象变更采集 文件和参数一起上传 //
     @POST("/placeChange/add")
     LiveData<ApiResult<Object>> changeLiveAddress(@Body() RequestBody body);
-    //            @Part() List<MultipartBody.Part > files);
 
     //指纹上传
-    @POST(BuildConfig.SERVER_URL2+"/correctFingerprints/add")
-    LiveData<ApiResult<Object>> uploadFingerprint(@Body() RequestBody body);
-
-
-    //声纹上传
-    @POST(BuildConfig.SERVER_URL2+"/correctVocalprint/add")
-    LiveData<ApiResult<Object>> uploadVoicePrint(@Body() RequestBody body);
-
+    @POST()
+    LiveData<ApiResult<Object>> uploadFingerprint(@Url String url,@Body() RequestBody body);
 
     //获取指纹
-    @POST(BuildConfig.SERVER_URL2+ "/correctFingerprints/queryById")
-    LiveData<ApiResult<FingerEntity>> getFinger(@Body() RequestBody body);
+    @POST()
+    LiveData<ApiResult<FingerEntity>> getFinger(@Url String url, @Body() RequestBody body);
 
+    //声纹上传
+    @POST()
+    LiveData<ApiResult<Object>> uploadVoicePrint(@Url String url, @Body() RequestBody body);
     //得到声纹
-    @POST(BuildConfig.SERVER_URL2+"/correctVocalprint/queryById")
-    LiveData<ApiResult<VocalPrintEntity>> getVocalPrint(@Body() RequestBody body);
+    @POST()
+    LiveData<ApiResult<VocalPrintEntity>> getVocalPrint(@Url String url,@Body() RequestBody body);
 }

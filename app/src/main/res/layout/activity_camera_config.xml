@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.miaxis.judicialcorrection.ui.setting.CameraConfigModel" />
+            type="com.miaxis.judicialcorrection.ui.setting.ConfigModel" />
     </data>
 
     <LinearLayout
@@ -20,101 +20,408 @@
             layout="@layout/layout_app_title"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="保存" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_close"
+                android:layout_width="276px"
+                android:layout_height="104px"
+                android:layout_marginStart="20px"
+                android:layout_marginTop="27px"
+                android:layout_marginEnd="36px"
+                android:background="@drawable/bg_btn_back_to_home"
+                android:gravity="center"
+                android:text="返回"
+                android:textColor="@color/color_text_btn"
+                android:textSize="48px"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:layout_weight="1" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_save"
+                android:layout_width="276px"
+                android:layout_height="104px"
+                android:layout_marginTop="27px"
+                android:layout_marginEnd="36px"
+                android:background="@drawable/bg_btn_back_to_home"
+                android:gravity="center"
+                android:text="保存"
+                android:textColor="@color/color_text_btn"
+                android:textSize="48px"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
+        </LinearLayout>
+
+        <!--        -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="注意：请仔细配置 配置不成功可能造成调用摄像头旋转、偏移、上传失败、比对失败问题"
-            android:textColor="#FF00" />
-
-        <TextView
-            android:layout_width="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center_vertical"
+            android:text="注意：修改服务器地址保存后，必须退出app清理后台重新进入！"
+            android:textColor="#333" />
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="可见光"
-            android:textColor="#FF00" />
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="版本号："
+                android:textColor="#333" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:background="@drawable/bg_text_input"
+                android:enabled="false"
+                android:text="@={data.version}"
+                android:textSize="19px" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_checkForUpdates"
+                android:layout_width="276px"
+                android:layout_height="104px"
+                android:visibility="gone"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="36px"
+                android:background="@drawable/bg_btn_back_to_home"
+                android:gravity="center"
+                android:text="检测更新"
+                android:textColor="@color/color_text_btn"
+                android:textSize="48px"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
+        </LinearLayout>
+
+
+        <!--        -->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp">
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="可见光CameraId:"
+                android:layout_gravity="center_vertical"
+                android:text="服务器地址："
                 android:textColor="#333" />
 
             <EditText
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:text="@={data.cameraRGBId}"
+                android:layout_weight="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:background="@drawable/bg_text_input"
-                android:inputType="number" />
+                android:text="@={data.baseUrl}"
+                android:textSize="19px" />
+
+
         </LinearLayout>
-
-
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="近红外"
-            android:textColor="#FF00" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp">
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="近红外CameraId:"
+                android:layout_gravity="center_vertical"
+                android:text="服务器Token地址："
                 android:textColor="#333" />
 
             <EditText
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:background="@drawable/bg_text_input"
+                android:text="@={data.baseToken}"
+                android:textSize="19px" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="服务器指纹声纹地址："
+                android:textColor="#333" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:background="@drawable/bg_text_input"
+                android:text="@={data.baseUrlFingerAndFace}"
+                android:textSize="19px" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="产品mac："
+                android:textColor="#333" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:enabled="false"
+                android:background="@drawable/bg_text_input"
+                android:text="@={data.productMac}"
+                android:textSize="19px" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="同步时间戳："
+                android:textColor="#333" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:enabled="false"
+                android:background="@drawable/bg_text_input"
+                android:text="0"
+                android:textSize="19px" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:visibility="@{data.isHide}"
+            android:layout_marginEnd="10dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="可见光"
+                android:textColor="#333" />
+
+            <RadioGroup
+                android:id="@+id/group_1"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="@={data.cameraNIRId}"
-                android:background="@drawable/bg_text_input"
-                android:inputType="number" />
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/cameraId_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0" />
+
+                <RadioButton
+                    android:id="@+id/cameraId_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2" />
+            </RadioGroup>
+            <!--            <EditText-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="40dp"-->
+            <!--                android:background="@drawable/bg_text_input"-->
+            <!--                android:inputType="number"-->
+            <!--                android:text="@={data.cameraRGBId}" />-->
         </LinearLayout>
 
 
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="高拍仪："
-            android:textColor="#FF00" />
+            android:layout_marginStart="10dp"
+            android:visibility="@{data.isHide}"
+            android:layout_marginEnd="10dp">
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="近红外"
+                android:textColor="#333" />
+
+            <RadioGroup
+                android:id="@+id/group_2"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/cameraNir_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0" />
+
+                <RadioButton
+                    android:id="@+id/cameraNir_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2" />
+            </RadioGroup>
+        </LinearLayout>
+
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:visibility="@{data.isHide}"
             android:layout_marginEnd="10dp"
             android:orientation="horizontal">
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="高拍仪CameraId:"
+                android:layout_gravity="center_vertical"
+                android:text="高拍仪:"
+                android:textColor="#333" />
+
+            <RadioGroup
+                android:id="@+id/group_3"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/cameraGpy_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="1" />
+
+            </RadioGroup>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="人脸质量阈值："
                 android:textColor="#333" />
 
             <EditText
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:text="@={data.cameraGPId}"
+                android:layout_weight="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:background="@drawable/bg_text_input"
-                android:inputType="number" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                android:inputType="number"
+                android:text="@={data.faceQuality}"
+                android:textSize="19px" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="人脸比对阈值："
+                android:textColor="#333" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:background="@drawable/bg_text_input"
+                android:inputType="number"
+                android:text="@={data.faceComparison}"
+                android:textSize="19px" />
+
+        </LinearLayout>
+
     </LinearLayout>
 </layout>

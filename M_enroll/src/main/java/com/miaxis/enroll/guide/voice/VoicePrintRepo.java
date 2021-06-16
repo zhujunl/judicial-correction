@@ -10,6 +10,7 @@ import com.miaxis.judicialcorrection.base.api.vo.VocalPrintEntity;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.utils.MD5Utils;
 import com.miaxis.judicialcorrection.base.utils.ResourceConvertUtils;
+import com.tencent.mmkv.MMKV;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +44,9 @@ public class VoicePrintRepo {
         map.put("vocalprint",new String[]{base64Str});
         String toJson = gson.toJson(map);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
-        LiveData<ApiResult<Object>> apiResultLiveData = apiService.uploadVoicePrint(body);
+        //配置地址
+        String url = MMKV.defaultMMKV().getString("baseUrl2", BuildConfig.SERVER_URL2) + ApiService.uploadVoice;
+        LiveData<ApiResult<Object>> apiResultLiveData = apiService.uploadVoicePrint(url,body);
         return ResourceConvertUtils.convertToResourceFV(apiResultLiveData);
     }
 
@@ -61,7 +64,9 @@ public class VoicePrintRepo {
         map.put("appkey",ApiService.appkey);
         String toJson = gson.toJson(map);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
-        LiveData<ApiResult<VocalPrintEntity>> apiResultLiveData = apiService.getVocalPrint(body);
+        //配置地址
+        String url = MMKV.defaultMMKV().getString("baseUrl2", BuildConfig.SERVER_URL2) + ApiService.getVoice;
+        LiveData<ApiResult<VocalPrintEntity>> apiResultLiveData = apiService.getVocalPrint(url,body);
         return ResourceConvertUtils.convertToResourceFV(apiResultLiveData);
     }
 

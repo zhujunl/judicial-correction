@@ -11,6 +11,7 @@ import com.miaxis.judicialcorrection.base.api.vo.FingerprintEntity;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.utils.MD5Utils;
 import com.miaxis.judicialcorrection.base.utils.ResourceConvertUtils;
+import com.tencent.mmkv.MMKV;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,14 +43,15 @@ public class FingerprintRepo {
     private final Gson gson = new Gson();
 
 
-
     public LiveData<Resource<Object>> uploadFingerprint(FingerprintEntity entity) {
-        entity.appkey=ApiService.appkey;
-        String sign=ApiService.appkey+ApiService.appsecret;
-        entity.sign= MD5Utils.md5(sign);
+        entity.appkey = ApiService.appkey;
+        String sign = ApiService.appkey + ApiService.appsecret;
+        entity.sign = MD5Utils.md5(sign);
         String toJson = gson.toJson(entity);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
-        LiveData<ApiResult<Object>> apiResultLiveData = apiService.uploadFingerprint(body);
+        //配置地址
+        String url = MMKV.defaultMMKV().getString("baseUrl2", BuildConfig.SERVER_URL2) + ApiService.uploadFingerUrl;
+        LiveData<ApiResult<Object>> apiResultLiveData = apiService.uploadFingerprint(url,body);
         return ResourceConvertUtils.convertToResourceFV(apiResultLiveData);
     }
 
@@ -57,18 +59,19 @@ public class FingerprintRepo {
      * 得到指纹
      */
     public LiveData<Resource<FingerEntity>> getFingerPrint(String id) {
-        String sign=ApiService.appkey+ApiService.appsecret;
-        String signMd5= MD5Utils.md5(sign);
-        Map<String,String> map=new HashMap<>();
-        map.put("id",id);
-        map.put("sign",signMd5);
-        map.put("appkey",ApiService.appkey);
+        String sign = ApiService.appkey + ApiService.appsecret;
+        String signMd5 = MD5Utils.md5(sign);
+        Map<String, String> map = new HashMap<>();
+        map.put("id", id);
+        map.put("sign", signMd5);
+        map.put("appkey", ApiService.appkey);
         String toJson = gson.toJson(map);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), toJson);
-        LiveData<ApiResult<FingerEntity>> apiResultLiveData = apiService.getFinger(body);
+        //配置地址
+        String url = MMKV.defaultMMKV().getString("baseUrl2", BuildConfig.SERVER_URL2) + ApiService.getFingerUrl;
+        LiveData<ApiResult<FingerEntity>> apiResultLiveData = apiService.getFinger(url, body);
         return ResourceConvertUtils.convertToResourceFV(apiResultLiveData);
     }
-
 
 
 }

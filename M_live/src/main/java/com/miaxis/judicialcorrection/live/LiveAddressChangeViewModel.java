@@ -73,6 +73,10 @@ public class LiveAddressChangeViewModel extends ViewModel {
 
     public ObservableField<Integer> isHideScanning=new ObservableField<>();
 
+    //是否影藏申请书
+    public ObservableField<Integer> isHideApplicationButton=new ObservableField<>();
+    public ObservableField<Integer> isHideApplication=new ObservableField<>();
+
     public final LiveData<Resource<List<JusticeBureau>>> shiListLiveData = Transformations.switchMap(mShengLiveData, new Function<JusticeBureau, LiveData<Resource<List<JusticeBureau>>>>() {
         @Override
         public LiveData<Resource<List<JusticeBureau>>> apply(JusticeBureau input) {
@@ -122,6 +126,9 @@ public class LiveAddressChangeViewModel extends ViewModel {
         liveBean.postValue(bean);
         int vis=(BuildConfig.EQUIPMENT_TYPE==1||BuildConfig.EQUIPMENT_TYPE==3)?View.VISIBLE:View.INVISIBLE;
         isHideScanning.set(vis);
+        //默认
+        isHideApplicationButton.set(View.VISIBLE);
+        isHideApplication.set(View.GONE);
     }
 
     //信息变更

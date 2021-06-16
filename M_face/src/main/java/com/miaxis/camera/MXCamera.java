@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraManager;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.miaxis.judicialcorrection.base.BuildConfig;
@@ -17,6 +18,8 @@ import com.tencent.mmkv.MMKV;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * @author Tank
@@ -63,6 +66,25 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         try {
             this.mCameraId = cameraId;
             this.mCamera = Camera.open(cameraId);
+            //高拍仪判断
+            if (cameraId==CameraConfig.Camera_SM.CameraId){
+                Camera.Parameters params = mCamera.getParameters();
+                List<Camera.Size> pictureSizes = params.getSupportedPictureSizes();
+                int length = pictureSizes.size();
+                int w=0;
+                int h=0;
+                for (int i = 0; i < length; i++) {
+                    if (pictureSizes.get(i).width>w){
+                        w=pictureSizes.get(i).width;
+                        h=pictureSizes.get(i).height;
+                    }
+                }
+                if (w!=0&&h!=0){
+                    width=w;
+                    height=h;
+                }
+            }
+            Timber.e("宽高 %s   %s",width,height);
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
@@ -264,6 +286,33 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
             e.printStackTrace();
             return false;
         }
+    }
+
+    //进度条设置
+    public int setZoom(int zoom) {
+        if (this.mCamera == null) {
+            return -1;
+        }
+        Camera.Parameters parameters = this.mCamera.getParameters();
+        boolean zoomSupported = parameters.isZoomSupported();
+        boolean smoothZoomSupported = parameters.isSmoothZoomSupported();
+        if (zoomSupported) {
+            int maxZoom = parameters.getMaxZoom();
+            if (zoom >= 1 && zoom <= maxZoom) {
+                parameters.setZoom(zoom);
+                this.mCamera.setParameters(parameters);
+                return 0;
+            }
+        }
+        return -2;
+    }
+
+    public int getMaxZoom() {
+        if (this.mCamera == null) {
+            return -1;
+        }
+        Camera.Parameters parameters = this.mCamera.getParameters();
+        return parameters.getMaxZoom();
     }
 
 }

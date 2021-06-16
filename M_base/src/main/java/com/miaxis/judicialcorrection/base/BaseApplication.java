@@ -19,7 +19,7 @@ import timber.log.Timber;
 public class BaseApplication extends Application {
 
     public static BaseApplication application;
-
+    public String baseUrlFingerAndFace="";
     @Override
     public void onCreate() {
         super.onCreate();
@@ -36,5 +36,13 @@ public class BaseApplication extends Application {
         }
         Timber.e("DEBUG:" + BuildConfig.DEBUG);
         ARouter.init(this);
+    }
+
+    public void setBaseUrlFingerAndFace(String baseUrlFingerAndFace) {
+        this.baseUrlFingerAndFace = baseUrlFingerAndFace;
+    }
+
+    public String getBaseUrlFingerAndFace() {
+        return baseUrlFingerAndFace;
     }
 }
