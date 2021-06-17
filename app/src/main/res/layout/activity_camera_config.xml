@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_gravity="center_vertical"
-            android:text="注意：修改服务器地址保存后，必须退出app清理后台重新进入！"
+            android:text="注意：修改地址保存后，必须退出app清理后台重新进入！"
             android:textColor="#333" />
         <LinearLayout
             android:layout_width="match_parent"
@@ -156,7 +156,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="服务器Token地址："
+                android:text="Token地址："
                 android:textColor="#333" />
 
             <EditText
@@ -184,7 +184,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="服务器指纹声纹地址："
+                android:text="前置平台地址："
                 android:textColor="#333" />
 
             <EditText

@@ -36,6 +36,20 @@ public class FileUtils {
         }
     }
 
+    public static File createFileParent(Context context,String childPath) {
+        try {
+           String p=  context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/"+childPath;
+           File path=new File(p);
+            if (!path.exists()) {
+                boolean mkdirs = path.mkdirs();
+            }
+            return path;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * 将图片转换成Base64编码的字符串
      */

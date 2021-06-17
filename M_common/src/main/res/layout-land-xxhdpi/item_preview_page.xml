@@ -3,7 +3,8 @@
 
     <ImageView
         android:id="@+id/img"
-        android:layout_width="200px"
-        android:layout_height="200px"
+        android:layout_width="120px"
+        android:layout_height="120px"
+        android:layout_marginStart="10px"
         android:scaleType="centerCrop" />
 </layout>

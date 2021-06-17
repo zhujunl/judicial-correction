@@ -11,6 +11,8 @@ import org.zz.jni.mxImageTool;
 
 import java.io.File;
 
+import timber.log.Timber;
+
 /**
  * @author Tank
  * @version $
@@ -144,6 +146,7 @@ public class FaceManager {
         int index = -1;
         for (int i = 0; i < this.mFaceInfoExesRgb.length; i++) {
             MXFaceInfoEx face = this.mFaceInfoExesRgb[i];
+            Timber.e("瞳距 %s", face.eyeDistance+"");
             if (face.width > maxWidth) {
                 maxWidth = face.width;
                 index = i;

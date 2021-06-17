@@ -13,8 +13,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@drawable/bg_white_splash_10"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_white_splash_10">
 
         <include
             android:id="@+id/tv_app_title"
@@ -54,11 +54,11 @@
             android:id="@+id/ll_text"
             android:layout_width="match_parent"
             android:layout_height="67px"
-            android:layout_marginTop="27px"
-          android:background="@drawable/bg_text_apply_2"
-            android:gravity="center_vertical"
             android:layout_marginStart="93px"
+            android:layout_marginTop="27px"
             android:layout_marginEnd="93px"
+            android:background="@drawable/bg_text_apply_2"
+            android:gravity="center_vertical"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title">
@@ -137,13 +137,13 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="5px"
             android:text="*"
             android:textColor="#F40707"
             android:textSize="19px"
-            android:layout_marginEnd="5px"
+            app:layout_constraintBottom_toBottomOf="@id/tv_apply_time_title"
             app:layout_constraintRight_toLeftOf="@id/tv_apply_time_title"
             app:layout_constraintTop_toTopOf="@id/tv_apply_time_title"
-            app:layout_constraintBottom_toBottomOf="@id/tv_apply_time_title"
             app:layout_goneMarginStart="132px" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -321,7 +321,7 @@
             android:id="@+id/tv_out_location_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-           android:layout_marginStart="89px"
+            android:layout_marginStart="89px"
             android:text="外出目的地: "
             android:textColor="#393939"
             android:textSize="19px"
@@ -447,13 +447,13 @@
             android:id="@+id/et_detailed"
             android:layout_width="132px"
             android:layout_height="37px"
+            android:layout_marginStart="161px"
             android:background="@drawable/bg_text_input"
             android:gravity="center_vertical"
             android:hint="如门牌号"
             android:paddingStart="10px"
             android:text="@={data.details}"
             android:textColorHint="#999999"
-            android:layout_marginStart="161px"
             android:textSize="12px"
             app:layout_constraintBottom_toBottomOf="@+id/sp_street"
             app:layout_constraintLeft_toRightOf="@id/sp_street"
@@ -474,11 +474,11 @@
             android:id="@+id/et_specific_reasons"
             android:layout_width="363px"
             android:layout_height="72px"
+            android:layout_marginStart="183px"
             android:layout_marginTop="19px"
             android:layout_marginEnd="33px"
             android:background="@drawable/bg_text_input"
             android:paddingStart="10px"
-            android:layout_marginStart="183px"
             android:paddingEnd="10px"
             android:text="@={data.specificReasons}"
             android:textSize="12px"
@@ -525,16 +525,16 @@
             android:layout_width="105px"
             android:layout_height="36px"
             android:layout_gravity="start"
+            android:layout_marginStart="84px"
             android:background="@drawable/bg_text_input"
             android:gravity="center_vertical|start"
             android:hint="请输入"
             android:paddingStart="10px"
             android:text="@={data.relationShip}"
             android:textSize="12px"
-            android:layout_marginStart="84px"
-            app:layout_constraintLeft_toRightOf="@id/et_temporary_guardian"
             app:layout_constraintBottom_toBottomOf="@id/et_specific_reasons"
-            app:layout_constraintTop_toTopOf="@id/et_specific_reasons"/>
+            app:layout_constraintLeft_toRightOf="@id/et_temporary_guardian"
+            app:layout_constraintTop_toTopOf="@id/et_specific_reasons" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
@@ -563,15 +563,15 @@
             android:id="@+id/et_temporary_guardian"
             android:layout_width="105px"
             android:layout_height="36px"
+            android:layout_marginStart="136px"
             android:background="@drawable/bg_text_input"
             android:gravity="center_vertical"
             android:paddingStart="10px"
             android:text="@={data.temporaryGuardian}"
             android:textColorHint="#999999"
-            android:layout_marginStart="136px"
             android:textSize="12px"
-            app:layout_constraintLeft_toRightOf="@id/et_specific_reasons"
             app:layout_constraintBottom_toBottomOf="@+id/et_specific_reasons"
+            app:layout_constraintLeft_toRightOf="@id/et_specific_reasons"
             app:layout_constraintTop_toTopOf="@+id/et_specific_reasons" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -601,6 +601,7 @@
             android:id="@+id/et_contact_number"
             android:layout_width="105px"
             android:layout_height="36px"
+            android:layout_marginStart="115px"
             android:background="@drawable/bg_text_input"
             android:gravity="center_vertical"
             android:inputType="phone"
@@ -609,9 +610,8 @@
             android:text="@={data.contactNumber}"
             android:textColorHint="#999999"
             android:textSize="12px"
-            android:layout_marginStart="115px"
-            app:layout_constraintLeft_toRightOf="@id/et_relationship"
             app:layout_constraintBottom_toBottomOf="@+id/et_temporary_guardian"
+            app:layout_constraintLeft_toRightOf="@id/et_relationship"
             app:layout_constraintTop_toTopOf="@+id/et_temporary_guardian" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -638,86 +638,175 @@
 
 
         <!--请假申请书：-->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_application_scan"
-            android:layout_width="166px"
-            android:layout_height="36px"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_application"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="19px"
-            android:background="@drawable/bg_btn_scan_upload_2"
-            android:gravity="center"
-            android:text="扫描上传"
-            android:visibility="@{data.isHideScanning}"
-            android:textColor="#393939"
-            android:textSize="18px"
+            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginStart="206px"
-            app:layout_constraintTop_toBottomOf="@+id/et_specific_reasons" />
+            app:layout_constraintRight_toLeftOf="@id/cl_material"
+            app:layout_constraintTop_toBottomOf="@+id/et_specific_reasons">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="请假申请书："
-            android:visibility="@{data.isHideScanning}"
-            android:textColor="#393939"
-            android:textSize="19px"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"
-            app:layout_constraintRight_toLeftOf="@id/btn_application_scan"
-            app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_application_scan"
+                android:layout_width="166px"
+                android:layout_height="36px"
+                android:layout_marginStart="206px"
+                android:background="@drawable/bg_btn_scan_upload_2"
+                android:gravity="center"
+                android:text="扫描上传"
+                android:textColor="#393939"
+                android:textSize="18px"
+                android:visibility="@{data.isHideApplicationButton}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_application_info_show"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="@{data.isHideScanning}"
-            android:text="（请将申请书放置扫描区进行扫描）"
-            android:textColor="#999999"
-            android:layout_marginTop="14px"
-            android:textSize="12px"
-            app:layout_constraintRight_toRightOf="@id/btn_application_scan"
-            app:layout_constraintLeft_toLeftOf="@id/btn_application_scan"
-            app:layout_constraintTop_toBottomOf="@id/btn_application_scan"
-            />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="请假申请书："
+                android:textColor="#393939"
+                android:textSize="19px"
+                android:visibility="@{data.isHideApplicationButton}"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"
+                app:layout_constraintRight_toLeftOf="@id/btn_application_scan"
+                app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_application_info_show"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14px"
+                android:text="（请将申请书放置扫描区进行扫描）"
+                android:textColor="#999999"
+                android:textSize="12px"
+                android:visibility="@{data.isHideApplicationButton}"
+                app:layout_constraintLeft_toLeftOf="@id/btn_application_scan"
+                app:layout_constraintRight_toRightOf="@id/btn_application_scan"
+                app:layout_constraintTop_toBottomOf="@id/btn_application_scan" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_leaveApplication_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20px"
+                android:text="居住地变更申请书："
+                android:textColor="#393939"
+                android:textSize="19px"
+                android:visibility="@{data.isHideApplication}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/rv_leaveApplication" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20px"
+                android:layout_marginTop="10px"
+                android:text="(说明:单击：预览，\n长按：删除)"
+                android:textColor="#999999"
+                android:textSize="12px"
+                android:visibility="@{data.isHideApplication}"
+                app:layout_constraintRight_toLeftOf="@id/rv_leaveApplication"
+                app:layout_constraintTop_toBottomOf="@id/tv_leaveApplication_label" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_leaveApplication"
+                android:layout_width="0dp"
+                android:layout_height="80px"
+                android:layout_gravity="end"
+                android:visibility="@{data.isHideApplication}"
+                app:layout_constraintLeft_toRightOf="@id/tv_leaveApplication_label"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!--请假申材料：-->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_application_materials_scan"
-            android:layout_width="166px"
-            android:layout_height="36px"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_material"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="19px"
-            android:background="@drawable/bg_btn_scan_upload_2"
-            android:gravity="center"
-            android:text="扫描上传"
-            android:visibility="@{data.isHideScanning}"
-            android:textColor="#393939"
-            android:textSize="19px"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginStart="969px"
-            app:layout_constraintTop_toBottomOf="@+id/et_specific_reasons" />
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/cl_application"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_specific_reasons">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="请假申请材料："
-            android:visibility="@{data.isHideScanning}"
-            android:textColor="#393939"
-            android:textSize="19px"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_application_materials_scan"
-            app:layout_constraintRight_toLeftOf="@id/btn_application_materials_scan"
-            app:layout_constraintTop_toTopOf="@+id/btn_application_materials_scan" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_application_materials_scan"
+                android:layout_width="166px"
+                android:layout_height="36px"
+                android:layout_marginStart="200px"
+                android:background="@drawable/bg_btn_scan_upload_2"
+                android:gravity="center"
+                android:text="扫描上传"
+                android:textColor="#393939"
+                android:textSize="19px"
+                android:visibility="@{data.isHideMaterialButton}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_application_info_show2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="@{data.isHideScanning}"
-            android:text="（请将申请材料放置扫描区进行扫描）"
-            android:textColor="#999999"
-            android:textSize="12px"
-            android:layout_marginTop="14px"
-            app:layout_constraintLeft_toLeftOf="@+id/btn_application_materials_scan"
-            app:layout_constraintRight_toRightOf="@+id/btn_application_materials_scan"
-            app:layout_constraintTop_toBottomOf="@+id/btn_application_materials_scan" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="请假申请材料："
+                android:textColor="#393939"
+                android:textSize="19px"
+                android:visibility="@{data.isHideMaterialButton}"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_application_materials_scan"
+                app:layout_constraintRight_toLeftOf="@id/btn_application_materials_scan"
+                app:layout_constraintTop_toTopOf="@+id/btn_application_materials_scan" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_application_info_show2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14px"
+                android:text="（请将申请材料放置扫描区进行扫描）"
+                android:textColor="#999999"
+                android:textSize="12px"
+                android:visibility="@{data.isHideMaterialButton}"
+                app:layout_constraintLeft_toLeftOf="@+id/btn_application_materials_scan"
+                app:layout_constraintRight_toRightOf="@+id/btn_application_materials_scan"
+                app:layout_constraintTop_toBottomOf="@+id/btn_application_materials_scan" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_material_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20px"
+                android:text="请假申请材料："
+                android:visibility="@{data.isHideMaterial}"
+                android:textColor="#393939"
+                android:textSize="19px"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/rv_material" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20px"
+                android:layout_marginTop="10px"
+                android:visibility="@{data.isHideMaterial}"
+                android:text="(说明:单击：预览，\n长按：删除)"
+                android:textColor="#999999"
+                android:textSize="12px"
+                app:layout_constraintRight_toLeftOf="@id/rv_material"
+                app:layout_constraintTop_toBottomOf="@id/tv_material_label" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_material"
+                android:layout_width="0dp"
+                android:visibility="@{data.isHideMaterial}"
+                android:layout_height="80px"
+                android:layout_gravity="end"
+                app:layout_constraintLeft_toRightOf="@id/tv_material_label"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="20px"
+                app:layout_constraintRight_toRightOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_submit"
@@ -727,12 +816,12 @@
             android:background="@drawable/bg_btn_back_to_home_green"
             android:gravity="center"
             android:text="提交"
-            app:layout_goneMarginTop="27px"
             android:textColor="#fff"
             android:textSize="19px"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_application_info_show2" />
+            app:layout_constraintTop_toBottomOf="@+id/cl_material"
+            app:layout_goneMarginTop="27px" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

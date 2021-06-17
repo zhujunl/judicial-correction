@@ -1,6 +1,5 @@
 package com.miaxis.judicialcorrection.base.utils;
 
-import android.content.Context;
 import android.speech.tts.TextToSpeech;
 
 import com.miaxis.judicialcorrection.base.BaseApplication;
@@ -9,6 +8,10 @@ import java.util.Locale;
 
 import timber.log.Timber;
 
+/**
+ * 语音提示 tts
+ *  1是否支持语音功能 2.安装谷歌语音apk 在设置中设置语音为谷歌语音
+ */
 public class TTsUtils {
 
     private static TextToSpeech mTTs;
@@ -16,7 +19,7 @@ public class TTsUtils {
     private static boolean isSucceed = false;
 
 
-    public static void init(TextToSpeech.OnInitListener listener) {
+    private static void init(TextToSpeech.OnInitListener listener) {
         //初始化tts监听对象
         mTTs = new TextToSpeech(BaseApplication.application, listener);
     }
@@ -31,8 +34,6 @@ public class TTsUtils {
                         Timber.i("初始化状态 %s", "设置中文");
                         mTTs.setLanguage(Locale.SIMPLIFIED_CHINESE);
                     }
-                }
-                if (isSucceed) {
                     setSpeak(str);
                 }
             });

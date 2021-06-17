@@ -7,13 +7,10 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
-import android.hardware.camera2.CameraManager;
-import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.utils.BitmapUtils;
-import com.tencent.mmkv.MMKV;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -10,30 +10,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.miaxis.camera.CameraConfig;
-import com.miaxis.camera.CameraHelper;
-import com.miaxis.camera.CameraPreviewCallback;
-import com.miaxis.camera.MXCamera;
-import com.miaxis.camera.MXFrame;
+import com.example.m_common.adapter.PreviewPageAdapter;
+import com.example.m_common.dialog.ToViewBigPictureDialog;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.db.po.Place;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.base.utils.TimeUtils;
-import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DatePickDialog;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
-import com.miaxis.judicialcorrection.dialog.PreviewPictureDialog;
+import com.example.m_common.dialog.HighShotMeterDialog;
 import com.miaxis.judicialcorrection.face.bean.VerifyInfo;
 import com.miaxis.judicialcorrection.leave.LeaveRepo;
 import com.miaxis.judicialcorrection.leave.R;
 import com.miaxis.judicialcorrection.leave.SpAdapter;
 import com.miaxis.judicialcorrection.leave.databinding.FragmentLeaveApplyBinding;
-import com.miaxis.utils.FileUtils;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.io.File;
 
 import javax.inject.Inject;
 
@@ -49,7 +44,7 @@ import timber.log.Timber;
  * @updateDes
  */
 @AndroidEntryPoint
-public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBinding> implements CameraPreviewCallback {
+public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBinding> {
 
     private String title = "请假申请";
 
@@ -62,14 +57,7 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
 
     @Inject
     LeaveRepo mLeaveRepo;
-    //申请书
-    private String base64LiveChangeApplication;
-    //申请资料
-    private String base64LiveChangeData;
-    private File mFilePath;
-    //扫描类型
-    private int scanType = 0;
-    private  PreviewPictureDialog mDialog;
+
 
     public LeaveApplyFragment(@NotNull VerifyInfo verifyInfo) {
         this.verifyInfo = verifyInfo;
@@ -86,102 +74,20 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
         binding.tvTitle.setText(String.valueOf(this.title));
         binding.btnBackToHome.setOnClickListener(v -> finish());
         mApplyViewModel.applyTime.set(TimeUtils.getTime());
-        mFilePath = FileUtils.createFileParent(getContext());
+
         binding.btnApplicationScan.setOnClickListener(v -> {
-            scanType = 0;
-            openScanning();
+            showPreInfo(1);
         });
         binding.btnApplicationMaterialsScan.setOnClickListener(v -> {
-            scanType = 1;
-            openScanning();
+            showPreInfo(2);
         });
         binding.btnSubmit.setOnClickListener(v -> {
-            String checkContent = mApplyViewModel.checkContent();
-            if (!TextUtils.isEmpty(checkContent)) {
-                appHintsLazy.get().showError(checkContent);
-            } else {
-                String typeCode="1";
-                try {
-                    int typePosition = binding.spReason.getSelectedItemPosition();
-                    String[] stringArray = getResources().getStringArray(R.array.leavetype_code);
-                    typeCode = stringArray[typePosition];
-                }catch (Exception e){
-                    e.getStackTrace();
-                }
-
-                mLeaveRepo.leaveAdd(
-                        verifyInfo.pid,
-                        TimeUtils.dateToString(mApplyViewModel.applyTime.get()),
-                        "",
-                        base64LiveChangeApplication,
-                        base64LiveChangeData,
-                        typeCode + "",
-                        mApplyViewModel.temporaryGuardian.get() + "",
-                        mApplyViewModel.relationShip.get() + "",
-                        mApplyViewModel.contactNumber.get() + "",
-                        mApplyViewModel.specificReasons.get(),
-                        TimeUtils.dateToString(mApplyViewModel.endTime.get()),
-                        TimeUtils.dateToString(mApplyViewModel.startTime.get()),
-                        mApplyViewModel.days.get(),
-                        "0",
-                        mApplyViewModel.mAgencies.getValue().ID + "",
-                        mApplyViewModel.details.get(),
-                        mApplyViewModel.mProvince.getValue().ID + "",
-                        mApplyViewModel.mDistrict.getValue().ID + "",
-                        mApplyViewModel.mCity.getValue().ID + "",
-                        mApplyViewModel.mAgencies.getValue().VALUE + "",
-                        mApplyViewModel.mProvince.getValue().VALUE + "",
-                        mApplyViewModel.mDistrict.getValue().VALUE + "",
-                        mApplyViewModel.mCity.getValue().VALUE + ""
-
-                ).observe(this, objectResource -> {
-                    switch (objectResource.status) {
-                        case LOADING:
-                            showLoading(title, "正在提交" + title + "信息，请稍后");
-                            break;
-                        case ERROR:
-                            dismissLoading();
-                            appHintsLazy.get().showError("Error:" + objectResource.errorMessage);
-                            break;
-                        case SUCCESS:
-                            dismissLoading();
-                            new DialogResult(getContext(), new DialogResult.ClickListener() {
-                                @Override
-                                public void onBackHome(AppCompatDialog appCompatDialog) {
-                                    appCompatDialog.dismiss();
-                                    finish();
-                                }
-
-                                @Override
-                                public void onTryAgain(AppCompatDialog appCompatDialog) {
-                                    appCompatDialog.dismiss();
-                                }
-
-                                @Override
-                                public void onTimeOut(AppCompatDialog appCompatDialog) {
-                                    appCompatDialog.dismiss();
-                                    finish();
-                                }
-                            }, new DialogResult.Builder(
-                                    true,
-                                    "提交成功",
-                                    "",
-                                    3, false
-                            ).hideAllHideSucceedInfo(true)).show();
-                            break;
-                    }
-                });
-            }
+           submit();
         });
 
         mApplyViewModel.name.set(verifyInfo.name);
         mApplyViewModel.idCardNumber.set(verifyInfo.idCardNumber);
         binding.setData(mApplyViewModel);
-
-        //        binding.tvApplyTime.setOnClickListener(v ->
-        //                new DatePickDialog(getContext(), date -> mApplyViewModel.applyTime.set(date)).show()
-        //        );
-
         binding.tvApplyStartTime.setOnClickListener(v -> {
                     new DatePickDialog(getContext(), date -> {
                         mApplyViewModel.startTime.set(date);
@@ -189,7 +95,6 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
                     }).show();
                 }
         );
-
         binding.tvApplyEndTime.setOnClickListener(v -> {
                     new DatePickDialog(getContext(), date -> {
                         mApplyViewModel.endTime.set(date);
@@ -197,7 +102,6 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
                     }).show();
                 }
         );
-
         // 户籍地
         mApplyViewModel.allProvince.observe(this, places -> {
             Timber.i("allProvince %s", places);
@@ -281,96 +185,175 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
                 mApplyViewModel.mAgencies.postValue(null);
             }
         });
+        initHeightCamera();
     }
 
     @Override
     protected void initData(@NonNull FragmentLeaveApplyBinding binding, @Nullable Bundle savedInstanceState) {
 
-
     }
 
-    private void openScanning() {
-        ZZResponse<?> init = CameraHelper.getInstance().init();
-        if (ZZResponse.isSuccess(init)) {
-            ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().createMXCamera(CameraConfig.Camera_SM);
-            if (ZZResponse.isSuccess(mxCamera)) {
-//                mxCamera.getData().setOrientation(CameraConfig.Camera_SM.previewOrientation);
-                mxCamera.getData().setPreviewCallback(this);
-                mxCamera.getData().start(null);
-                mxCamera.getData().setNextFrameEnable();
-            } else {
-                appHintsLazy.get().showError("扫描失败！");
-            }
+    private  void submit(){
+        String checkContent = mApplyViewModel.checkContent();
+        if (!TextUtils.isEmpty(checkContent)) {
+            appHintsLazy.get().showError(checkContent);
         } else {
-            appHintsLazy.get().showError("扫描设备初始化失败请点击重试！");
+            String typeCode="1";
+            try {
+                int typePosition = binding.spReason.getSelectedItemPosition();
+                String[] stringArray = getResources().getStringArray(R.array.leavetype_code);
+                typeCode = stringArray[typePosition];
+            }catch (Exception e){
+                e.getStackTrace();
+            }
+            //base64高拍仪
+            String[] changeApplication = new String[mAdapterData.getData().size()];
+            for (int i = 0; i < mAdapterData.getData().size(); i++) {
+                changeApplication[i] = mAdapterData.getData().get(i).getBase64();
+            }
+            String[] changeApplication2 = new String[mAdapterDataMaterial.getData().size()];
+            for (int i = 0; i < mAdapterDataMaterial.getData().size(); i++) {
+                changeApplication2[i] = mAdapterDataMaterial.getData().get(i).getBase64();
+            }
+            mLeaveRepo.leaveAdd(
+                    verifyInfo.pid,
+                    TimeUtils.dateToString(mApplyViewModel.applyTime.get()),
+                    "",
+                    changeApplication,
+                    changeApplication2,
+                    typeCode + "",
+                    mApplyViewModel.temporaryGuardian.get() + "",
+                    mApplyViewModel.relationShip.get() + "",
+                    mApplyViewModel.contactNumber.get() + "",
+                    mApplyViewModel.specificReasons.get(),
+                    TimeUtils.dateToString(mApplyViewModel.endTime.get()),
+                    TimeUtils.dateToString(mApplyViewModel.startTime.get()),
+                    mApplyViewModel.days.get(),
+                    "0",
+                    mApplyViewModel.mAgencies.getValue().ID + "",
+                    mApplyViewModel.details.get(),
+                    mApplyViewModel.mProvince.getValue().ID + "",
+                    mApplyViewModel.mDistrict.getValue().ID + "",
+                    mApplyViewModel.mCity.getValue().ID + "",
+                    mApplyViewModel.mAgencies.getValue().VALUE + "",
+                    mApplyViewModel.mProvince.getValue().VALUE + "",
+                    mApplyViewModel.mDistrict.getValue().VALUE + "",
+                    mApplyViewModel.mCity.getValue().VALUE + ""
+
+            ).observe(this, objectResource -> {
+                switch (objectResource.status) {
+                    case LOADING:
+                        showLoading(title, "正在提交" + title + "信息，请稍后");
+                        break;
+                    case ERROR:
+                        dismissLoading();
+                        appHintsLazy.get().showError("Error:" + objectResource.errorMessage);
+                        break;
+                    case SUCCESS:
+                        dismissLoading();
+                        new DialogResult(getContext(), new DialogResult.ClickListener() {
+                            @Override
+                            public void onBackHome(AppCompatDialog appCompatDialog) {
+                                appCompatDialog.dismiss();
+                                finish();
+                            }
+
+                            @Override
+                            public void onTryAgain(AppCompatDialog appCompatDialog) {
+                                appCompatDialog.dismiss();
+                            }
+
+                            @Override
+                            public void onTimeOut(AppCompatDialog appCompatDialog) {
+                                appCompatDialog.dismiss();
+                                finish();
+                            }
+                        }, new DialogResult.Builder(
+                                true,
+                                "提交成功",
+                                "",
+                                3, false
+                        ).hideAllHideSucceedInfo(true)).show();
+                        break;
+                }
+            });
         }
     }
 
-    @Override
-    public void onPreview(MXFrame frame) {
-        if (MXFrame.isNullCamera(frame)) {
+    /*=====================================高拍仪========================================*/
+    private PreviewPageAdapter mAdapterData;
+    private PreviewPageAdapter mAdapterDataMaterial;
+
+    private void initHeightCamera() {
+        mAdapterData = new PreviewPageAdapter();
+        binding.rvLeaveApplication.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        binding.rvLeaveApplication.setAdapter(mAdapterData);
+        mAdapterData.setOnItemClickListener((adapter, view, position) -> {
+            String path = mAdapterData.getData().get(position).getPath();
+            showBigPicture(path);
+        });
+        mAdapterData.setOnItemLongClickListener((adapter, view, position) -> {
+            appHintsLazy.get().showHint("是否要删除此图片", (dialog, which) -> {
+                mAdapterData.getData().remove(position);
+                mAdapterData.notifyDataSetChanged();
+                if(mAdapterData.getData().isEmpty()) {
+                    mApplyViewModel.setControlShowHide(1, true);
+                }
+            });
+            return true;
+        });
+
+        mAdapterDataMaterial = new PreviewPageAdapter();
+        binding.rvMaterial.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        binding.rvMaterial.setAdapter(mAdapterDataMaterial);
+
+        mAdapterDataMaterial.setOnItemClickListener((adapter, view, position) -> {
+            String path = mAdapterDataMaterial.getData().get(position).getPath();
+            showBigPicture(path);
+        });
+        mAdapterDataMaterial.setOnItemLongClickListener((adapter, view, position) -> {
+            appHintsLazy.get().showHint("是否要删除此图片", (dialog, which) -> {
+                mAdapterDataMaterial.getData().remove(position);
+                mAdapterDataMaterial.notifyDataSetChanged();
+                if(mAdapterDataMaterial.getData().isEmpty()) {
+                    mApplyViewModel.setControlShowHide(2, true);
+                }
+            });
+            return true;
+        });
+    }
+
+    //预览
+    private void showBigPicture(String path) {
+        if (getActivity() == null || getActivity().isFinishing()) {
             return;
         }
-        String fileName = "sm" + scanType + ".jpg";
-        File file = new File(mFilePath, fileName);
-        boolean frameImage = frame.camera.saveFrameImage(file.getAbsolutePath());
-        if (frameImage) {
-            String base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
-           mHandler.post(() -> {
-               if (scanType == 0) {
-                   base64LiveChangeApplication = base64Path;
-                   binding.tvApplicationInfoShow.setText(fileName);
-               } else {
-                   base64LiveChangeData = base64Path;
-                   binding.tvApplicationInfoShow2.setText(fileName);
-               }
-           });
-        } else {
-            mHandler.post(() -> appHintsLazy.get().showError("扫描文件保存失败，请点击重试！"));
-        }
-        try {
-            CameraHelper.getInstance().stop();
-            frame.camera.stop();
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-    }
-    private  void setPreviewDialog(File file,String base64,String fileName){
-        mDialog=  new PreviewPictureDialog(getContext(), new PreviewPictureDialog.ClickListener() {
-            @Override
-            public void onDetermine() {
-                if (scanType == 0) {
-                    base64LiveChangeApplication = base64;
-                    binding.tvApplicationInfoShow.setText(fileName);
-                } else {
-                    base64LiveChangeData = base64;
-                    binding.tvApplicationInfoShow2.setText(fileName);
-                }
-            }
-            @Override
-            public void onTryAgain(AppCompatDialog appCompatDialog) {
-                openScanning();
-            }
-            @Override
-            public void onTimeOut(AppCompatDialog appCompatDialog) {
-
-            }
-        },new PreviewPictureDialog.Builder().setPathFile(file.getAbsolutePath()));
-        mDialog.show();
+        new ToViewBigPictureDialog(getActivity(), new ToViewBigPictureDialog.ClickListener() {
+        }, new ToViewBigPictureDialog.Builder().setPathFile(path)).show();
     }
 
+    //显示高拍仪预览内容
+    private void showPreInfo(int type) {
+        if (getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
+        new HighShotMeterDialog(getActivity(), list -> {
+            boolean isNullOrEmpty = (list == null || list.size() == 0);
+            mApplyViewModel.setControlShowHide(type, isNullOrEmpty);
+            if (type == 1&&!isNullOrEmpty) {
+                mAdapterData.setNewInstance(list);
+            }
+            if (type == 2&&!isNullOrEmpty) {
+                mAdapterDataMaterial.setNewInstance(list);
+            }
+        }).show();
+    }
+    /*=====================================end高拍仪========================================*/
     private final static Handler mHandler = new Handler();
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        base64LiveChangeApplication = null;
-        base64LiveChangeData = null;
         mHandler.removeCallbacksAndMessages(null);
-        if (mDialog!=null&&mDialog.isShowing()){
-            mDialog.dismiss();
-        }
     }
-
-
 }

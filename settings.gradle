@@ -8,3 +8,4 @@ include ':M_base'
 include ':app'
 include ':M_live'
 rootProject.name = "司法矫正"
+include ':M_common'

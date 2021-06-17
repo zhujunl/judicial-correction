@@ -1,7 +1,6 @@
 package com.miaxis.enroll.guide.finger;
 
 import android.os.Bundle;
-import android.text.style.TtsSpan;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

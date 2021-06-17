@@ -71,11 +71,14 @@ public class LiveAddressChangeViewModel extends ViewModel {
     MutableLiveData<JusticeBureau> mXianLiveData = new MutableLiveData<>();
     MutableLiveData<JusticeBureau> mJiedaoLiveData = new MutableLiveData<>();
 
-    public ObservableField<Integer> isHideScanning=new ObservableField<>();
 
     //是否影藏申请书
     public ObservableField<Integer> isHideApplicationButton=new ObservableField<>();
     public ObservableField<Integer> isHideApplication=new ObservableField<>();
+
+    //申请资料资料
+    public ObservableField<Integer> isHideMaterialButton=new ObservableField<>();
+    public ObservableField<Integer> isHideMaterial=new ObservableField<>();
 
     public final LiveData<Resource<List<JusticeBureau>>> shiListLiveData = Transformations.switchMap(mShengLiveData, new Function<JusticeBureau, LiveData<Resource<List<JusticeBureau>>>>() {
         @Override
@@ -96,11 +99,6 @@ public class LiveAddressChangeViewModel extends ViewModel {
         }
     });
 
-
-    /**
-     * 今天日期
-     */
-    public MutableLiveData<String> todayLiveData = new MutableLiveData<String>();
 
     public String currentTime(boolean isHaveT) {
         if (isHaveT) {
@@ -124,15 +122,35 @@ public class LiveAddressChangeViewModel extends ViewModel {
         LiveAddressChangeBean bean = new LiveAddressChangeBean();
         bean.sqsj = currentTime(false);
         liveBean.postValue(bean);
-        int vis=(BuildConfig.EQUIPMENT_TYPE==1||BuildConfig.EQUIPMENT_TYPE==3)?View.VISIBLE:View.INVISIBLE;
-        isHideScanning.set(vis);
         //默认
         isHideApplicationButton.set(View.VISIBLE);
         isHideApplication.set(View.GONE);
+
+        isHideMaterialButton.set(View.VISIBLE);
+        isHideMaterial.set(View.GONE);
+    }
+    public  void setControlShowHide(int type,boolean isNullOrEmpty){
+        if (type == 1) {
+            if (isNullOrEmpty) {
+                isHideApplicationButton.set(View.VISIBLE);
+                isHideApplication.set(View.GONE);
+            } else {
+                isHideApplicationButton.set(View.GONE);
+                isHideApplication.set(View.VISIBLE);
+            }
+        } else if (type == 2) {
+            if (isNullOrEmpty) {
+                isHideMaterialButton.set(View.VISIBLE);
+                isHideMaterial.set(View.GONE);
+            } else {
+                isHideMaterialButton.set(View.GONE);
+                isHideMaterial.set(View.VISIBLE);
+            }
+        }
     }
 
     //信息变更
-    public LiveData<Resource<Object>> setLiveAddressChange(String jzdbgsqs,String jzdbgsqcl) {
+    public LiveData<Resource<Object>> setLiveAddressChange(String[] jzdbgsqs,String[] jzdbgsqcl) {
         return mLiveAddressChangeRepo.setLiveAddressChange(liveBean.getValue(),jzdbgsqs,jzdbgsqcl);
     }
 

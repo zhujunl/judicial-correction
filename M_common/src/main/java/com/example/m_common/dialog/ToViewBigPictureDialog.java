@@ -1,14 +1,14 @@
-package com.miaxis.judicialcorrection.dialog;
+package com.example.m_common.dialog;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
-import com.miaxis.judicialcorrection.base.R;
-import com.miaxis.judicialcorrection.base.databinding.DialogToViewBigPictureBinding;
-import com.miaxis.judicialcorrection.dialog.base.BaseDialog;
-import com.miaxis.judicialcorrection.dialog.base.BaseDialogListener;
+import com.example.m_common.R;
+import com.example.m_common.databinding.DialogToViewBigPictureBinding;
+import com.miaxis.judicialcorrection.dialog.base.BaseDialogNoListener;
+import com.miaxis.judicialcorrection.dialog.base.BaseNoListenerDialog;
 
 import java.io.File;
 
@@ -16,7 +16,7 @@ import java.io.File;
 /**
  * 查看大图
  */
-public class ToViewBigPictureDialog extends BaseDialog<DialogToViewBigPictureBinding, ToViewBigPictureDialog.ClickListener> {
+public class ToViewBigPictureDialog extends BaseNoListenerDialog<DialogToViewBigPictureBinding, ToViewBigPictureDialog.ClickListener> {
 
     private final Builder mBuilder;
 
@@ -42,8 +42,7 @@ public class ToViewBigPictureDialog extends BaseDialog<DialogToViewBigPictureBin
         Glide.with(getContext()).load(new File(mBuilder.filePath)).into(binding.img);
     }
 
-    public interface ClickListener extends BaseDialogListener {
-
+    public interface ClickListener extends BaseDialogNoListener {
 
     }
 

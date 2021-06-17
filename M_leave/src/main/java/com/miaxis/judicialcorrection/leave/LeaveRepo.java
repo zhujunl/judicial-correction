@@ -46,8 +46,8 @@ public class LeaveRepo {
     public LiveData<Resource<Object>> leaveAdd(String pid,
                                                String sqsj,
                                                String xjms,
-                                               String qjsqs,
-                                               String qjsqcl,
+                                               String qjsqs[],
+                                               String qjsqcl[],
                                                String wclyType,
                                                String lsjhr,
                                                String gx,
@@ -63,8 +63,8 @@ public class LeaveRepo {
                                                String wcmddszs,
                                                String wcmddszx,
                                                String wcmddszd
-                                               ,
-                                                String wcmddxzName,
+            ,
+                                               String wcmddxzName,
                                                String wcmddszsName,
                                                String wcmddszxName,
                                                String wcmddszdName
@@ -74,30 +74,32 @@ public class LeaveRepo {
         hashMap.put("xjms", xjms);
         hashMap.put("pid", pid);
 
-        if (!TextUtils.isEmpty(qjsqs)){
-            hashMap.put("qjsqs", new String[]{qjsqs});
+        if (qjsqs != null && qjsqs.length != 0) {
+            hashMap.put("qjsqs", qjsqs);
         }
-        if (!TextUtils.isEmpty(qjsqcl)){
-            hashMap.put("qjsqcl", new String[]{qjsqcl});
+        if (qjsqcl != null && qjsqcl.length != 0) {
+            hashMap.put("qjsqcl", qjsqcl);
         }
-
         List<Bean> list = new ArrayList<>();
         Bean bean = new Bean();
         bean.pid = pid;
-        bean.wcmddmx = TextUtils.isEmpty(wcmddmx)?"":wcmddmx;;
+        bean.wcmddmx = TextUtils.isEmpty(wcmddmx) ? "" : wcmddmx;
         bean.wcmddxz = wcmddxz;
         bean.wcmddszs = wcmddszs;
         bean.wcmddszx = wcmddszx;
         bean.wcmddszd = wcmddszd;
-        bean.wcmddxzName = TextUtils.isEmpty(wcmddxzName)?"":wcmddxzName;
-        bean.wcmddszsName = TextUtils.isEmpty(wcmddszsName)?"":wcmddszsName;;
-        bean.wcmddszxName = TextUtils.isEmpty(wcmddszxName)?"":wcmddszxName;;
-        bean.wcmddszdName = TextUtils.isEmpty(wcmddszdName)?"":wcmddszdName;;
+        bean.wcmddxzName = TextUtils.isEmpty(wcmddxzName) ? "" : wcmddxzName;
+        bean.wcmddszsName = TextUtils.isEmpty(wcmddszsName) ? "" : wcmddszsName;
+        ;
+        bean.wcmddszxName = TextUtils.isEmpty(wcmddszxName) ? "" : wcmddszxName;
+        ;
+        bean.wcmddszdName = TextUtils.isEmpty(wcmddszdName) ? "" : wcmddszdName;
+        ;
         list.add(bean);
         hashMap.put("list", list);
 
         hashMap.put("wcly", wclyType);
-        hashMap.put("jtsy",wcly);
+        hashMap.put("jtsy", wcly);
         hashMap.put("jsrq", jsrq);
         hashMap.put("ksqr", ksqr);
         hashMap.put("wcts", wcts);

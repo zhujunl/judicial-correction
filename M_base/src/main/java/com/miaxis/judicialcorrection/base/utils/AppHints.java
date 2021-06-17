@@ -30,8 +30,13 @@ public class AppHints {
         appToastLazy.get().show(msg);
     }
 
+    private AlertDialog dialog;
+    private AlertDialog dialog2;
+    private AlertDialog dialog3;
+    private AlertDialog dialog4;
+
     public void showError(String errMsg) {
-        new AlertDialog.Builder(context)
+        dialog = new AlertDialog.Builder(context)
                 .setTitle("错误")
                 .setMessage(errMsg)
                 .setPositiveButton("好的", (dialog, which) -> {
@@ -42,16 +47,16 @@ public class AppHints {
     }
 
     public void showError(String errMsg, DialogInterface.OnClickListener listener) {
-        new AlertDialog.Builder(context)
+        dialog2 = new AlertDialog.Builder(context)
                 .setTitle("错误")
                 .setMessage(errMsg)
-                .setPositiveButton("好的",listener)
+                .setPositiveButton("好的", listener)
                 .setCancelable(false)
                 .show();
     }
 
     public void showHint(String errMsg) {
-        new AlertDialog.Builder(context)
+        dialog3 = new AlertDialog.Builder(context)
                 .setTitle("注意")
                 .setMessage(errMsg)
                 .setPositiveButton("好的", (dialog, which) -> {
@@ -61,4 +66,31 @@ public class AppHints {
                 .show();
     }
 
+
+    public void showHint(String errMsg, DialogInterface.OnClickListener listener) {
+        dialog4 = new AlertDialog.Builder(context)
+                .setTitle("注意")
+                .setMessage(errMsg)
+                .setPositiveButton("好的", listener)
+                .setNegativeButton("取消", (dialog, which) -> {
+
+                })
+                .setCancelable(false)
+                .show();
+    }
+
+    public void close() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+        if (dialog2 != null && dialog2.isShowing()) {
+            dialog2.dismiss();
+        }
+        if (dialog3 != null && dialog3.isShowing()) {
+            dialog3.dismiss();
+        }
+        if (dialog4 != null && dialog4.isShowing()) {
+            dialog4.dismiss();
+        }
+    }
 }

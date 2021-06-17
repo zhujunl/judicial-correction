@@ -169,13 +169,13 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
                 dismissLoading();
-                FragmentActivity activity = getActivity();
-                if (activity instanceof VerifyCallback) {
-                    VerifyCallback callback = (VerifyCallback) activity;
-//                response.getData().entryMethod="2";
-                    callback.onVerify(ZZResponse.CreateSuccess());
-                    return;
-                }
+//                FragmentActivity activity = getActivity();
+//                if (activity instanceof VerifyCallback) {
+//                    VerifyCallback callback = (VerifyCallback) activity;
+////                response.getData().entryMethod="2";
+//                    callback.onVerify(ZZResponse.CreateSuccess());
+//                    return;
+//                }
 
                 //请求成功后拿到图片 解析成bitmap
                 ResponseBody responseBody = response.body();
@@ -462,6 +462,7 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
 
     @Override
     public void onDestroyView() {
+        appHintsLazy.get().close();
         super.onDestroyView();
         mHandler.removeCallbacksAndMessages(null);
         if (BuildConfig.EQUIPMENT_TYPE == 3 && apimanager != null) {

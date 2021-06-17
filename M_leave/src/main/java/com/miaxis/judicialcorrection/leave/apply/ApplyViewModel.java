@@ -56,13 +56,20 @@ public class ApplyViewModel extends ViewModel {
 
     public ObservableField<String> contactNumber = new ObservableField<>();
 
-    public ObservableField<Integer> isHideScanning=new ObservableField<>();
-
     private final AppDatabase appDatabase;
+
     MutableLiveData<Place> mProvince = new MutableLiveData<>();
     MutableLiveData<Place> mCity = new MutableLiveData<>();
     MutableLiveData<Place> mDistrict = new MutableLiveData<>();
     MutableLiveData<Place> mAgencies = new MutableLiveData<>();
+
+    //是否影藏申请书
+    public ObservableField<Integer> isHideApplicationButton=new ObservableField<>();
+    public ObservableField<Integer> isHideApplication=new ObservableField<>();
+
+    //申请资料资料
+    public ObservableField<Integer> isHideMaterialButton=new ObservableField<>();
+    public ObservableField<Integer> isHideMaterial=new ObservableField<>();
 
     LiveData<List<Place>> allProvince;
     LiveData<List<Place>> allCity = Transformations.switchMap(mProvince, new Function<Place, LiveData<List<Place>>>() {
@@ -99,10 +106,34 @@ public class ApplyViewModel extends ViewModel {
     public ApplyViewModel(AppDatabase appDatabase) {
         this.appDatabase = appDatabase;
         this.allProvince = appDatabase.placeDao().findAllProvince();
-        int vis= (BuildConfig.EQUIPMENT_TYPE==1||BuildConfig.EQUIPMENT_TYPE==3)? View.VISIBLE:View.INVISIBLE;
-        isHideScanning.set(vis);
+        //默认
+        isHideApplicationButton.set(View.VISIBLE);
+        isHideApplication.set(View.GONE);
+
+        isHideMaterialButton.set(View.VISIBLE);
+        isHideMaterial.set(View.GONE);
     }
 
+
+    public  void setControlShowHide(int type,boolean isNullOrEmpty){
+        if (type == 1) {
+            if (isNullOrEmpty) {
+                isHideApplicationButton.set(View.VISIBLE);
+                isHideApplication.set(View.GONE);
+            } else {
+                isHideApplicationButton.set(View.GONE);
+                isHideApplication.set(View.VISIBLE);
+            }
+        } else if (type == 2) {
+            if (isNullOrEmpty) {
+                isHideMaterialButton.set(View.VISIBLE);
+                isHideMaterial.set(View.GONE);
+            } else {
+                isHideMaterialButton.set(View.GONE);
+                isHideMaterial.set(View.VISIBLE);
+            }
+        }
+    }
     public String checkContent() {
         if (TextUtils.isEmpty(applyTime.get())) {
             return "请选择申请时间";
