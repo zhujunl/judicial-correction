@@ -692,7 +692,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20px"
-                android:text="居住地变更申请书："
+                android:text="请假申请书："
                 android:textColor="#393939"
                 android:textSize="19px"
                 android:visibility="@{data.isHideApplication}"

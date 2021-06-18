@@ -770,11 +770,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20px"
-                android:text="居住地变更申请书："
+                android:text="请假申请材料："
                 android:visibility="@{data.isHideMaterial}"
                 android:textColor="#393939"
                 android:textSize="27px"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/rv_material"
                 app:layout_constraintTop_toTopOf="@id/rv_material" />
 
             <androidx.appcompat.widget.AppCompatTextView
