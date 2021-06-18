@@ -50,7 +50,7 @@ public enum CameraConfig {
     //正式  大台式
 //    Camera_RGB(Camera.CameraInfo.CAMERA_FACING_FRONT, 640, 480, 90, 90),
 //    Camera_NIR(Camera.CameraInfo.CAMERA_FACING_BACK, 640, 480, 90, 90),
-//    Camera_SM(2,640, 480, 0, 0);
+//    Camera_SM(2,640, 480, 90, 90);
 
     public int CameraId;
     public int width;
@@ -60,7 +60,6 @@ public enum CameraConfig {
 
     CameraConfig(int cameraId, int width, int height, int previewOrientation, int bufferOrientation) {
         this.CameraId = cameraId;
-        ;
         this.width = width;
         this.height = height;
         this.previewOrientation = previewOrientation;

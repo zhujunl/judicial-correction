@@ -5,9 +5,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.graphics.SurfaceTexture;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
 import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.utils.BitmapUtils;
@@ -197,6 +199,22 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         }
         return -2;
     }
+    public int startTexture(SurfaceTexture holder) {
+        if (this.mCamera == null) {
+            return -1;
+        }
+        try {
+            this.mCamera.setPreviewTexture(holder);
+            this.mCamera.startPreview();
+
+            this.isPreview = true;
+            return 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -2;
+    }
+
 
     public int resume() {
         if (this.mCamera == null) {
@@ -286,22 +304,20 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
     }
 
     //进度条设置
-    public int setZoom(int zoom) {
+    public void setZoom(int zoom) {
         if (this.mCamera == null) {
-            return -1;
+            return;
         }
         Camera.Parameters parameters = this.mCamera.getParameters();
         boolean zoomSupported = parameters.isZoomSupported();
-        boolean smoothZoomSupported = parameters.isSmoothZoomSupported();
+//        boolean smoothZoomSupported = parameters.isSmoothZoomSupported();
         if (zoomSupported) {
             int maxZoom = parameters.getMaxZoom();
             if (zoom >= 1 && zoom <= maxZoom) {
                 parameters.setZoom(zoom);
                 this.mCamera.setParameters(parameters);
-                return 0;
             }
         }
-        return -2;
     }
 
     public int getMaxZoom() {

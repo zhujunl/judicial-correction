@@ -8,8 +8,10 @@ import android.view.View;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
+import com.google.gson.Gson;
 import com.miaxis.judicialcorrection.base.BaseApplication;
 import com.miaxis.judicialcorrection.base.BuildConfig;
+import com.miaxis.judicialcorrection.base.api.vo.EquipmentConfigCameraEntity;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.utils.MacUtils;
 import com.tencent.mmkv.MMKV;
@@ -44,13 +46,14 @@ public class ConfigModel extends ViewModel {
     public ObservableField<String> faceComparison = new ObservableField<>();
     //产品mac
     public ObservableField<String> productMac = new ObservableField<>();
+    //是否影藏camera id选项从
+    public ObservableField<Integer> isHide = new ObservableField<>();
 
-    public ObservableField<Integer> isHide= new ObservableField<>();
     @Inject
     public ConfigModel(AppDatabase appDatabase) {
         String version = getVersionInfo();
         this.version.set(version);
-        String mac=getMacInfo();
+        String mac = getMacInfo();
         this.productMac.set(mac);
         MMKV mmkv = MMKV.defaultMMKV();
         String baseUrl = mmkv.getString("baseUrl", BuildConfig.SERVER_URL);
@@ -63,12 +66,14 @@ public class ConfigModel extends ViewModel {
         this.faceQuality.set(faceQuality);
         String faceComparison = mmkv.getString("faceComparison", String.valueOf(75));
         this.faceComparison.set(faceComparison);
-        if (BuildConfig.EQUIPMENT_TYPE==3){
+        if (BuildConfig.EQUIPMENT_TYPE == 3) {
             isHide.set(View.VISIBLE);
-        }else{
+        } else {
             isHide.set(View.GONE);
         }
     }
+
+
 
     /**
      * 获取版本号
@@ -88,6 +93,7 @@ public class ConfigModel extends ViewModel {
 
     /**
      * 得到mac地址
+     *
      * @return mac地址
      */
     private String getMacInfo() {
@@ -130,6 +136,53 @@ public class ConfigModel extends ViewModel {
         mmkv.putString("faceComparison", faceComparison.get());
     }
 
+    /**
+     * dev 配置摄像头设备类型
+     * @param equipmentType 设备类型  1柜式 3小台式
+     */
+    public EquipmentConfigCameraEntity setCameraInfo(int equipmentType) {
+        MMKV mmkv = MMKV.defaultMMKV();
+        Gson gson = new Gson();
+        EquipmentConfigCameraEntity entity = new EquipmentConfigCameraEntity();
+        if (equipmentType == 3) {
+            entity.cameraRGBId = 1;
+            entity.cameraNIRId = 0;
+            entity.cameraSMId = 2;
+            entity.bufferOrientation = 90;
+            entity.previewOrientation = 90;
+            entity.bufferOrientationSM = 90;
+            entity.previewOrientationSM = 90;
+            entity.savePictureRotationSize = 270;
+        } else {
+            String s = cameraRGBId.get();
+            if (TextUtils.isEmpty(s)) {
+                s = "2";
+            }
+            String s1 = cameraNIRId.get();
+            if (TextUtils.isEmpty(s1)) {
+                s1 = "0";
+            }
+            String s2 = cameraGPId.get();
+            if (TextUtils.isEmpty(s2)) {
+                s2 = "1";
+            }
+            entity.cameraRGBId = Integer.parseInt(s);
+            entity.cameraNIRId = Integer.parseInt(s1);
+            entity.cameraSMId = Integer.parseInt(s2);
+            entity.bufferOrientation = 0;
+            entity.previewOrientation = 0;
+            entity.bufferOrientationSM = 0;
+            entity.previewOrientationSM = 0;
+            entity.savePictureRotationSize = 0;
+        }
+        int fq=TextUtils.isEmpty(faceQuality.get())?30:Integer.parseInt(faceQuality.get());
+        int fc=TextUtils.isEmpty(faceComparison.get())?75:Integer.parseInt(faceComparison.get());
+        entity.faceQuality=fq;
+        entity.faceComparison=fc;
+        String toJson = gson.toJson(entity);
+        mmkv.putString("camera_info", toJson);
+        return entity;
+    }
     @Override
     protected void onCleared() {
         super.onCleared();

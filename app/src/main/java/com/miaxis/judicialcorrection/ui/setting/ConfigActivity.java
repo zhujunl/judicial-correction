@@ -28,7 +28,15 @@ public class ConfigActivity extends BaseBindingActivity<ActivityCameraConfigBind
 
     @Override
     protected void initView(@NonNull @NotNull ActivityCameraConfigBinding binding, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        binding.btnClose.setOnClickListener(v -> finish());
+        //清空时间戳
+        binding.btnClearTime.setOnClickListener(v -> {
 
+        });
+        //更新
+        binding.btnCheckForUpdates.setOnClickListener(v -> {
+
+        });
     }
 
     @Override
@@ -46,8 +54,6 @@ public class ConfigActivity extends BaseBindingActivity<ActivityCameraConfigBind
         } else {
             binding.group2.check(R.id.cameraNir_0);
         }
-        binding.btnClose.setOnClickListener(v -> finish());
-
 
         binding.btnSave.setOnClickListener(v -> {
                     if (binding.group1.getCheckedRadioButtonId() == R.id.cameraId_2) {
@@ -61,6 +67,8 @@ public class ConfigActivity extends BaseBindingActivity<ActivityCameraConfigBind
                         model.cameraNIRId.set("0");
                     }
                     model.save();
+//            EquipmentConfigCameraEntity equipmentConfigCameraEntity = model.setCameraInfo(3);
+//            BaseApplication.application.setCameraConfig(equipmentConfigCameraEntity);
                     showLoading();
                     mHandler.postDelayed(() -> {
                         dismissLoading();

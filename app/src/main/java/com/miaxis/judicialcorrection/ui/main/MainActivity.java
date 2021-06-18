@@ -10,6 +10,7 @@ import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -29,6 +30,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 
+import com.google.gson.Gson;
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.finger.FingerManager;
 import com.miaxis.finger.FingerStrategy;
@@ -36,6 +38,7 @@ import com.miaxis.judicialcorrection.BuildConfig;
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.BaseApplication;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
+import com.miaxis.judicialcorrection.base.api.vo.EquipmentConfigCameraEntity;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
@@ -144,8 +147,17 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
         super.onResume();
         deleteFile();
         MMKV mmkv = MMKV.defaultMMKV();
-        BaseApplication.application.setBaseUrlFingerAndFace(mmkv.getString("baseUrl2",
-                com.miaxis.judicialcorrection.base.BuildConfig.SERVER_URL2));
+            BaseApplication.application.setBaseUrlFingerAndFace(mmkv.getString("baseUrl2",
+                    com.miaxis.judicialcorrection.base.BuildConfig.SERVER_URL2));
+//        //配置全局camera
+//        if (BaseApplication.application.getCameraConfig()==null){
+//            String camera_info = mmkv.getString("camera_info", null);
+//            if (camera_info==null){
+//                return;
+//            }
+//            EquipmentConfigCameraEntity en = new Gson().fromJson(camera_info, EquipmentConfigCameraEntity.class);
+//            BaseApplication.application.setCameraConfig(en);
+//        }
     }
 
 

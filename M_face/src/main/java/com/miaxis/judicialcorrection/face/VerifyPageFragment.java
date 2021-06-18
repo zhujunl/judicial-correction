@@ -154,7 +154,6 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
 
         mVerifyPageViewModel.tempFaceFeature.observe(this, bytes -> {
             if (bytes != null) {
-                //Toast.makeText(getContext(), "提取特征成功", Toast.LENGTH_SHORT).show();
                 startRgbPreview();
             } else {
                 appHintsLazy.get().showError(
@@ -282,7 +281,7 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
      * 指纹
      */
     private void fingerInit() {
-//        TTsUtils.textToSpeechStr("请将人脸置于采集区域或按压手指");
+        TTsUtils.textToSpeechStr("请将人脸置于采集区域或按压手指");
         mVerifyPageViewModel.getFingerPrint(personInfo.getId()).observe(this, fingerEntityResource -> {
             if (fingerEntityResource.isSuccess()) {
                 if (fingerEntityResource.data == null || fingerEntityResource.data.getFingerprints() == null || fingerEntityResource.data.getFingerprints().length == 0) {

@@ -3,6 +3,7 @@ package com.miaxis.judicialcorrection.base;
 import android.app.Application;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.miaxis.judicialcorrection.base.api.vo.EquipmentConfigCameraEntity;
 import com.zlw.main.recorderlib.RecordManager;
 
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +20,8 @@ import timber.log.Timber;
 public class BaseApplication extends Application {
 
     public static BaseApplication application;
-    public String baseUrlFingerAndFace="";
+    private String baseUrlFingerAndFace="";
+//    public EquipmentConfigCameraEntity  cameraConfig;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -45,4 +47,12 @@ public class BaseApplication extends Application {
     public String getBaseUrlFingerAndFace() {
         return baseUrlFingerAndFace;
     }
+
+//    public EquipmentConfigCameraEntity getCameraConfig() {
+//        return cameraConfig;
+//    }
+//
+//    public void setCameraConfig(EquipmentConfigCameraEntity cameraConfig) {
+//        this.cameraConfig = cameraConfig;
+//    }
 }
