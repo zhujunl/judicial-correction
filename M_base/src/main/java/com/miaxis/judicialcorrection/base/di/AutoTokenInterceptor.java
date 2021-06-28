@@ -12,6 +12,7 @@ import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.JAuthInfo;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
 import com.miaxis.judicialcorrection.base.utils.numbers.HexStringUtils;
+import com.tencent.mmkv.MMKV;
 import com.wondersgroup.om.AuthInfo;
 import com.wondersgroup.om.JZAuth;
 import com.wondersgroup.om.ResultListener;
@@ -48,6 +49,7 @@ public class AutoTokenInterceptor implements Interceptor {
     private final Object tokenLock = new Object();
     private Token token = null;
     private final JAuthInfo jAuthInfo = new JAuthInfo();
+    private String baseUrlToken="";
 
     @Inject
     public AutoTokenInterceptor(@ApplicationContext Context context, AppDatabase appDatabase) {
@@ -86,7 +88,8 @@ public class AutoTokenInterceptor implements Interceptor {
             Timber.i("New JAuthInfo B: %s", jAuthInfo);
         });
         jzAuth = JZAuth.getInstance();
-        jzAuth.setGlobalURL(BuildConfig.TOKEN_URL);
+        baseUrlToken  = MMKV.defaultMMKV().getString("baseToken", BuildConfig.TOKEN_URL);
+        jzAuth.setGlobalURL(baseUrlToken);
         jzAuth.initialize(context,"zkja");
         if (BuildConfig.DEBUG) {
             jzAuth.setDebug(true);
@@ -101,6 +104,12 @@ public class AutoTokenInterceptor implements Interceptor {
                     if (!jzAuth.checkAuth()) {
                         registerJzAuth();
                         Timber.i("getToken ，register success !");
+                    }else{
+                        //如果注册过了并且 tokenUrl 不等于默认的 再次执行注册
+                        if (!baseUrlToken.equals(BuildConfig.TOKEN_URL)){
+                            registerJzAuth();
+                            Timber.i("getToken ，register success !");
+                        }
                     }
                     refreshToken();
                     Timber.i("getToken ，NEW  : %s", token);

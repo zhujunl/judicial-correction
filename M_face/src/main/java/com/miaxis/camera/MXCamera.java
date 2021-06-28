@@ -5,18 +5,20 @@ import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.graphics.SurfaceTexture;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
-import android.hardware.camera2.CameraManager;
 import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
 import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.utils.BitmapUtils;
-import com.tencent.mmkv.MMKV;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * @author Tank
@@ -63,6 +65,25 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         try {
             this.mCameraId = cameraId;
             this.mCamera = Camera.open(cameraId);
+            //高拍仪判断
+            if (cameraId==CameraConfig.Camera_SM.CameraId){
+                Camera.Parameters params = mCamera.getParameters();
+                List<Camera.Size> pictureSizes = params.getSupportedPictureSizes();
+                int length = pictureSizes.size();
+                int w=0;
+                int h=0;
+                for (int i = 0; i < length; i++) {
+                    if (pictureSizes.get(i).width>w){
+                        w=pictureSizes.get(i).width;
+                        h=pictureSizes.get(i).height;
+                    }
+                }
+                if (w!=0&&h!=0){
+                    width=w;
+                    height=h;
+                }
+            }
+            Timber.e("宽高 %s   %s",width,height);
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
@@ -178,6 +199,22 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         }
         return -2;
     }
+    public int startTexture(SurfaceTexture holder) {
+        if (this.mCamera == null) {
+            return -1;
+        }
+        try {
+            this.mCamera.setPreviewTexture(holder);
+            this.mCamera.startPreview();
+
+            this.isPreview = true;
+            return 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -2;
+    }
+
 
     public int resume() {
         if (this.mCamera == null) {
@@ -264,6 +301,31 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
             e.printStackTrace();
             return false;
         }
+    }
+
+    //进度条设置
+    public void setZoom(int zoom) {
+        if (this.mCamera == null) {
+            return;
+        }
+        Camera.Parameters parameters = this.mCamera.getParameters();
+        boolean zoomSupported = parameters.isZoomSupported();
+//        boolean smoothZoomSupported = parameters.isSmoothZoomSupported();
+        if (zoomSupported) {
+            int maxZoom = parameters.getMaxZoom();
+            if (zoom >= 1 && zoom <= maxZoom) {
+                parameters.setZoom(zoom);
+                this.mCamera.setParameters(parameters);
+            }
+        }
+    }
+
+    public int getMaxZoom() {
+        if (this.mCamera == null) {
+            return -1;
+        }
+        Camera.Parameters parameters = this.mCamera.getParameters();
+        return parameters.getMaxZoom();
     }
 
 }

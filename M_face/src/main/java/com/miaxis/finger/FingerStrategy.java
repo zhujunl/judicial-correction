@@ -2,6 +2,7 @@ package com.miaxis.finger;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.mx.finger.alg.MxFingerAlg;
 import com.mx.finger.api.msc.MxMscBigFingerApi;
@@ -9,6 +10,8 @@ import com.mx.finger.api.msc.MxMscBigFingerApiFactory;
 import com.mx.finger.common.MxImage;
 import com.mx.finger.common.Result;
 import com.mx.finger.utils.RawBitmapUtils;
+
+import timber.log.Timber;
 
 public class FingerStrategy implements FingerManager.FingerStrategy {
 
@@ -125,7 +128,6 @@ public class FingerStrategy implements FingerManager.FingerStrategy {
                                 }
                             }
                             Bitmap bitmap = RawBitmapUtils.raw2Bimap(image.data, image.width, image.height);
-//                            int quality = mxFingerAlg.imageQuality(image.data, image.width, image.height);
                             if (readListener != null) {
                                 readListener.onFingerReadComparison(feature, bitmap, m);
                                 return;
@@ -143,7 +145,7 @@ public class FingerStrategy implements FingerManager.FingerStrategy {
     }
 
     @Override
-    public void comparison(byte[] b, byte[] b2,byte[] b3) {
+    public void comparison(byte[] b) {
         try {
             if (mxMscBigFingerApi != null && mxFingerAlg != null) {
                 Result<MxImage> result = mxMscBigFingerApi.getFingerImageBig(5000);
@@ -155,32 +157,9 @@ public class FingerStrategy implements FingerManager.FingerStrategy {
                         if (feature != null) {
                             //两个指纹判断
                             int match = mxFingerAlg.match(b, feature, 3);
-                            int m;
-                            if (match==MxFingerAlg.SUCCESS){
-                                //与下载的指纹判断
-                                int match3= mxFingerAlg.match(b3, feature, 3);
-                                if (match3== MxFingerAlg.SUCCESS){
-                                    m = MxFingerAlg.SUCCESS;
-                                }else{
-                                    m = MxFingerAlg.ERROR;
-                                }
-                            }else{
-                                int match2 = mxFingerAlg.match(b2, feature, 3);
-                                if (match2==MxFingerAlg.SUCCESS){
-                                    int match3= mxFingerAlg.match(b3, feature, 3);
-                                    if (match3== MxFingerAlg.SUCCESS){
-                                        m = MxFingerAlg.SUCCESS;
-                                    }else{
-                                        m = MxFingerAlg.ERROR;
-                                    }
-                                }else{
-                                    m = MxFingerAlg.ERROR;
-                                }
-                            }
                             Bitmap bitmap = RawBitmapUtils.raw2Bimap(image.data, image.width, image.height);
-//                            int quality = mxFingerAlg.imageQuality(image.data, image.width, image.height);
                             if (readListener != null) {
-                                readListener.onFingerReadComparison(feature, bitmap, m);
+                                readListener.onFingerReadComparison(feature, bitmap, match);
                                 return;
                             }
                         }

@@ -130,8 +130,6 @@
             app:layout_constraintTop_toTopOf="@+id/tv_apply_time" />
 
 
-
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_apply_time"
             android:layout_width="796px"
@@ -150,15 +148,15 @@
             app:layout_constraintTop_toBottomOf="@id/id_view" />
 
         <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5px"
-        android:text="*"
-        android:textColor="#F40707"
-        android:textSize="27px"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_out_location_title"
-        app:layout_constraintRight_toLeftOf="@+id/tv_out_location_title"
-        app:layout_constraintTop_toTopOf="@+id/tv_out_location_title" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5px"
+            android:text="*"
+            android:textColor="#F40707"
+            android:textSize="27px"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_out_location_title"
+            app:layout_constraintRight_toLeftOf="@+id/tv_out_location_title"
+            app:layout_constraintTop_toTopOf="@+id/tv_out_location_title" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_out_location_title"
@@ -418,84 +416,175 @@
             app:layout_constraintTop_toBottomOf="@+id/ll_unit" />
 
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_application"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="居住地变更申请书："
-            android:visibility="@{vm.isHideScanning}"
-            android:textColor="#393939"
-            android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"
-            app:layout_constraintRight_toLeftOf="@id/btn_application_scan"
-            app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_application_scan"
-            android:layout_width="249px"
-            android:layout_height="68px"
-            android:visibility="@{vm.isHideScanning}"
-            android:layout_marginStart="251px"
             android:layout_marginTop="52px"
-            android:background="@drawable/bg_btn_scan_upload"
-            android:gravity="center"
-            android:text="扫描附件"
-            android:textColor="#393939"
-            android:textSize="26px"
+            app:layout_constraintTop_toBottomOf="@+id/et_change_address_why">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="居住地变更申请书："
+                android:textColor="#393939"
+                android:textSize="27px"
+                android:visibility="@{vm.isHideApplicationButton}"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"
+                app:layout_constraintRight_toLeftOf="@id/btn_application_scan"
+                app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_application_scan"
+                android:layout_width="249px"
+                android:layout_height="68px"
+                android:layout_marginStart="251px"
+                android:background="@drawable/bg_btn_scan_upload"
+                android:gravity="center"
+                android:text="扫描附件"
+                android:textColor="#393939"
+                android:textSize="26px"
+                android:visibility="@{vm.isHideApplicationButton}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_application_info_show"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="（请将变更申请书放置扫描区进行扫描）"
+                android:textColor="#999999"
+                android:textSize="27px"
+                android:visibility="@{vm.isHideApplicationButton}"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"
+                app:layout_constraintLeft_toRightOf="@+id/btn_application_scan"
+                app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_leaveApplication_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20px"
+                android:layout_marginTop="23px"
+                android:text="居住地变更申请书："
+                android:visibility="@{vm.isHideApplication}"
+                android:textColor="#393939"
+                android:textSize="27px"
+                app:layout_constraintRight_toLeftOf="@id/rv_leaveApplication"
+                app:layout_constraintTop_toTopOf="@id/rv_leaveApplication" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20px"
+                android:layout_marginTop="10px"
+                android:visibility="@{vm.isHideApplication}"
+                android:text="(说明:单击：预览，\n长按：删除)"
+                android:textColor="#999999"
+                android:textSize="19px"
+                app:layout_constraintRight_toLeftOf="@id/rv_leaveApplication"
+                app:layout_constraintTop_toBottomOf="@id/tv_leaveApplication_label" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_leaveApplication"
+                android:layout_width="796px"
+                android:visibility="@{vm.isHideApplication}"
+                android:layout_height="120px"
+                android:layout_gravity="end"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="33px"
+                app:layout_constraintRight_toRightOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_material"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_change_address_why" />
+            android:layout_marginTop="36px"
+            app:layout_constraintTop_toBottomOf="@+id/cl_application">
+
+            <!--请假申材料：-->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_application_materials_scan"
+                android:layout_width="249px"
+                android:layout_height="68px"
+                android:visibility="@{vm.isHideMaterialButton}"
+                android:background="@drawable/bg_btn_scan_upload_2"
+                android:gravity="center"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:text="扫描附件"
+                android:layout_marginStart="251px"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="#393939"
+                android:textSize="26px" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="居住地变更申请资料："
+                android:visibility="@{vm.isHideMaterialButton}"
+                android:textColor="#393939"
+                android:textSize="27px"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_application_materials_scan"
+                app:layout_constraintRight_toLeftOf="@id/btn_application_materials_scan"
+                app:layout_constraintTop_toTopOf="@+id/btn_application_materials_scan" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_application_info_show2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="（请将变更申请资料放置扫描区进行扫描）"
+                android:textColor="#999999"
+                android:visibility="@{vm.isHideMaterialButton}"
+                app:layout_constraintTop_toTopOf="@id/btn_application_materials_scan"
+                app:layout_constraintBottom_toBottomOf="@id/btn_application_materials_scan"
+                app:layout_constraintStart_toEndOf="@id/btn_application_materials_scan"
+                android:textSize="27px" />
 
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_application_info_show"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="@{vm.isHideScanning}"
-            android:text="（请将变更申请书放置扫描区进行扫描）"
-            android:textColor="#999999"
-            android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"
-            app:layout_constraintLeft_toRightOf="@+id/btn_application_scan"
-            app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_material_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="居住地变更申请资料："
+                android:visibility="@{vm.isHideMaterial}"
+                android:textColor="#393939"
+                android:textSize="27px"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/rv_material" />
 
-        <!--请假申材料：-->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_application_materials_scan"
-            android:layout_width="249px"
-            android:layout_height="68px"
-            android:layout_marginTop="46px"
-            android:visibility="@{vm.isHideScanning}"
-            android:background="@drawable/bg_btn_scan_upload"
-            android:gravity="center"
-            android:text="扫描附件"
-            android:textColor="#393939"
-            android:textSize="26px"
-            app:layout_constraintLeft_toLeftOf="@+id/btn_application_scan"
-            app:layout_constraintRight_toRightOf="@+id/btn_application_scan"
-            app:layout_constraintTop_toBottomOf="@+id/btn_application_scan" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20px"
+                android:layout_marginTop="10px"
+                android:visibility="@{vm.isHideMaterial}"
+                android:text="(说明:单击：预览，\n长按：删除)"
+                android:textColor="#999999"
+                android:textSize="19px"
+                app:layout_constraintRight_toLeftOf="@id/rv_material"
+                app:layout_constraintTop_toBottomOf="@id/tv_material_label" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="居住地变更申请资料："
-            android:textColor="#393939"
-            android:visibility="@{vm.isHideScanning}"
-            android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_application_materials_scan"
-            app:layout_constraintRight_toLeftOf="@id/btn_application_materials_scan"
-            app:layout_constraintTop_toTopOf="@+id/btn_application_materials_scan" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_material"
+                android:layout_width="0dp"
+                android:visibility="@{vm.isHideMaterial}"
+                android:layout_height="120px"
+                android:layout_gravity="end"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="251px"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="33px"
+                app:layout_constraintRight_toRightOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_application_info_show2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="@{vm.isHideScanning}"
-            android:text="（请将变更申请资料放置扫描区进行扫描）"
-            android:textColor="#999999"
-            android:textSize="27px"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_application_materials_scan"
-            app:layout_constraintLeft_toRightOf="@+id/btn_application_materials_scan"
-            app:layout_constraintTop_toTopOf="@+id/btn_application_materials_scan" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
         <androidx.appcompat.widget.AppCompatButton
@@ -510,7 +599,7 @@
             android:textSize="48px"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_application_materials_scan" />
+            app:layout_constraintTop_toBottomOf="@+id/cl_material" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

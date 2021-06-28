@@ -17,4 +17,6 @@ public class FaceConfig {
 
     public static float thresholdIdCard = 0.73F;
 
+    public static int faceComparison=30;
+
 }

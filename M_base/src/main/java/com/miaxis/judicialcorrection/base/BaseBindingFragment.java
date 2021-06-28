@@ -63,7 +63,9 @@ public abstract class BaseBindingFragment<V extends ViewDataBinding> extends Fra
     }
 
     protected void finish() {
-        getActivity().finish();
+        if(getActivity()!=null) {
+            getActivity().finish();
+        }
     }
 
     protected void showLoading() {

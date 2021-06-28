@@ -61,7 +61,7 @@
             android:layout_marginStart="36px"
             android:background="@drawable/bg_btn_back_to_home"
             android:gravity="center"
-            android:text="摄像头配置"
+            android:text="设置"
             android:textColor="@color/color_text_btn"
             android:textSize="48px"
              app:layout_constraintLeft_toLeftOf="parent"

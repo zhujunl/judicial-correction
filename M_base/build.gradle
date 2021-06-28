@@ -38,19 +38,19 @@ android {
             buildConfigField 'String', 'SERVER_URL', '"http://223.4.75.73:8090"'//8083 8090
             buildConfigField 'String', 'TOKEN_URL', '"http://223.4.75.73:9012"'
             //声纹指纹
-            buildConfigField 'String', 'SERVER_URL2', '"http://223.4.75.78:10137/sqjzsjzx"'
+            buildConfigField 'String', 'SERVER_URL2', '"http://223.4.75.78:10137"'
             //类型
             buildConfigField 'int', 'EQUIPMENT_TYPE', '1'
             //人脸存图片的   旋转尺寸 3： 0   1：270  2：
             buildConfigField 'int', 'ROTATION_SIZE', '270'
             //设备
             buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
-            //地址
-            buildConfigField 'String', 'LOCAL', '"湖州市南浔区南浔镇朝阳路888号司法局"'
-            //联系人
-            buildConfigField 'String', 'CONTACT', '"杨晓俊"'
-            //电话
-            buildConfigField 'String', 'CONTACTINFORMATION', '"13666517977"'
+//            //地址
+//            buildConfigField 'String', 'LOCAL', '"湖州市南浔区南浔镇朝阳路888号司法局"'
+//            //联系人
+//            buildConfigField 'String', 'CONTACT', '"杨晓俊"'
+//            //电话
+//            buildConfigField 'String', 'CONTACTINFORMATION', '"13666517977"'
             //设备类型 1 3台式 2 平板
             buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
         }
@@ -60,19 +60,19 @@ android {
             buildConfigField 'String', 'SERVER_URL', '"http://10.249.0.85:8080"'
             buildConfigField 'String', 'TOKEN_URL', '"http://10.249.0.85:9012"'
             //声纹指纹
-            buildConfigField 'String', 'SERVER_URL2', '"http://10.249.2.210/sqjzsjzx"'
+            buildConfigField 'String', 'SERVER_URL2', '"http://10.249.2.210"'
             //类型
             buildConfigField 'int', 'EQUIPMENT_TYPE', '1'
             //人脸存图片的   旋转尺寸 3： 0   1：270  2：
             buildConfigField 'int', 'ROTATION_SIZE', '270'
             //设备
             buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
-            //地址
-            buildConfigField 'String', 'LOCAL', '"湖州市南浔区南浔镇朝阳路888号司法局"'
-            //联系人
-            buildConfigField 'String', 'CONTACT', '"杨晓俊"'
-            //电话
-            buildConfigField 'String', 'CONTACTINFORMATION', '"13666517977"'
+//            //地址
+//            buildConfigField 'String', 'LOCAL', '"湖州市南浔区南浔镇朝阳路888号司法局"'
+//            //联系人
+//            buildConfigField 'String', 'CONTACT', '"杨晓俊"'
+//            //电话
+//            buildConfigField 'String', 'CONTACTINFORMATION', '"13666517977"'
             //设备类型 1 3台式 2 平板
             buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
         }
@@ -137,4 +137,5 @@ dependencies {
     annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
     api 'com.github.zhaolewei:ZlwAudioRecorder:v1.07'
     api 'com.tencent:mmkv-static:1.1.2'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
 }

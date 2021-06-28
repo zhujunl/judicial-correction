@@ -44,9 +44,9 @@ public class MapConstants {
 
     public static final List<KvSpinnerVo> zzmnKvList = new ArrayList<>();
     static {
-        zzmnKvList.add(new KvSpinnerVo("1", "中共预备党员"));
-        zzmnKvList.add(new KvSpinnerVo("2", "共青团员"));
-        zzmnKvList.add(new KvSpinnerVo("3", "民革党员"));
+        zzmnKvList.add(new KvSpinnerVo("1", "中共党员"));
+//        zzmnKvList.add(new KvSpinnerVo("2", "共青团员"));
+        zzmnKvList.add(new KvSpinnerVo("3", "共青团员"));
         zzmnKvList.add(new KvSpinnerVo("4", "民盟盟员"));
         zzmnKvList.add(new KvSpinnerVo("5", "民建会员"));
         zzmnKvList.add(new KvSpinnerVo("6", "民进会员"));

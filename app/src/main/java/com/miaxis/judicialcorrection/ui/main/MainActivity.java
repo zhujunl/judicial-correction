@@ -33,6 +33,7 @@ import com.miaxis.finger.FingerManager;
 import com.miaxis.finger.FingerStrategy;
 import com.miaxis.judicialcorrection.BuildConfig;
 import com.miaxis.judicialcorrection.R;
+import com.miaxis.judicialcorrection.base.BaseApplication;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
@@ -44,6 +45,7 @@ import com.miaxis.judicialcorrection.databinding.ActivityMainBinding;
 import com.miaxis.judicialcorrection.databinding.ItemMainFucBinding;
 import com.miaxis.judicialcorrection.db.DbInitMainFuncs;
 import com.miaxis.judicialcorrection.ui.setting.SettingActivity;
+import com.tencent.mmkv.MMKV;
 
 import java.io.File;
 import java.util.Objects;
@@ -143,7 +145,20 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
     protected void onResume() {
         super.onResume();
         deleteFile();
+        MMKV mmkv = MMKV.defaultMMKV();
+            BaseApplication.application.setBaseUrlFingerAndFace(mmkv.getString("baseUrl2",
+                    com.miaxis.judicialcorrection.base.BuildConfig.SERVER_URL2));
+//        //配置全局camera
+//        if (BaseApplication.application.getCameraConfig()==null){
+//            String camera_info = mmkv.getString("camera_info", null);
+//            if (camera_info==null){
+//                return;
+//            }
+//            EquipmentConfigCameraEntity en = new Gson().fromJson(camera_info, EquipmentConfigCameraEntity.class);
+//            BaseApplication.application.setCameraConfig(en);
+//        }
     }
+
 
     /**
      * 如果文件大于10MB则删除
@@ -182,7 +197,8 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             for (int i = 0; i < permissions.length; i++) {

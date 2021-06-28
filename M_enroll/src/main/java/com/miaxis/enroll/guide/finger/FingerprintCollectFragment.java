@@ -13,6 +13,7 @@ import com.miaxis.enroll.R;
 import com.miaxis.enroll.databinding.FragmentFingerprintCollectBinding;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
+import com.miaxis.judicialcorrection.base.utils.TTsUtils;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
 import com.miaxis.judicialcorrection.face.callback.NavigationCallback;
 import com.miaxis.judicialcorrection.id.bean.IdCard;
@@ -68,8 +69,10 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFing
         mFingerprintCollectModel.resultState.observe(this, aBoolean -> {
             //状态
         });
+        TTsUtils.textToSpeechStr("请按压手指");
         //上传对象
         mFingerprintCollectModel.fingerprintLiveData.observe(this, entity -> {
+            TTsUtils.textToSpeechStr("采集成功，正在提交");
             entity.id = mPid;
             mFingerprintCollectModel.uploadFingerprint(entity).observe(FingerprintCollectFragment.this, observer -> {
                 switch (observer.status) {
@@ -133,5 +136,6 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFing
     public void onDestroyView() {
         mFingerprintCollectModel.releaseFingerDevice();
         super.onDestroyView();
+        TTsUtils.close();
     }
 }

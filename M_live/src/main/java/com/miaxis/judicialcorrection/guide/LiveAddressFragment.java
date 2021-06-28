@@ -18,29 +18,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-import com.miaxis.camera.CameraConfig;
-import com.miaxis.camera.CameraHelper;
-import com.miaxis.camera.CameraPreviewCallback;
-import com.miaxis.camera.MXCamera;
-import com.miaxis.camera.MXFrame;
+import com.example.m_common.adapter.PreviewPageAdapter;
+import com.example.m_common.dialog.HighShotMeterDialog;
+import com.example.m_common.dialog.ToViewBigPictureDialog;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
+import com.miaxis.judicialcorrection.base.common.Status;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
 import com.miaxis.judicialcorrection.base.db.po.Place;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.bean.LiveAddressChangeBean;
-import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
-import com.miaxis.judicialcorrection.dialog.PreviewPictureDialog;
-import com.miaxis.judicialcorrection.face.GetFacePageFragment;
 import com.miaxis.judicialcorrection.live.LiveAddressChangeActivity;
 import com.miaxis.judicialcorrection.live.LiveAddressChangeViewModel;
 import com.miaxis.judicialcorrection.live.R;
 import com.miaxis.judicialcorrection.live.databinding.FragmentLiveAddressBinding;
-import com.miaxis.utils.FileUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,18 +45,12 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 
 @AndroidEntryPoint
-public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddressBinding> implements CameraPreviewCallback {
+public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddressBinding> {
 
     private static final String TAG = "LiveAddressFragment";
     private LiveAddressChangeViewModel model;
-    //申请书  暂时都只扫描1个文件
-    private String base64LiveChangeApplication;
-    //申请资料
-    private String base64LiveChangeData;
-    private File mFilePath;
-    //扫描类型
-    private int scanType = 0;
-    private PreviewPictureDialog mDialog;
+    @Inject
+    AppHints mAppHints;
 
     @Inject
     AppHints appHints;
@@ -84,12 +73,10 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
         });
 
         binding.btnApplicationScan.setOnClickListener(v -> {
-            scanType = 0;
-            openScanning();
+            showPreInfo(1);
         });
         binding.btnApplicationMaterialsScan.setOnClickListener(v -> {
-            scanType = 1;
-            openScanning();
+            showPreInfo(2);
         });
     }
 
@@ -98,7 +85,7 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
         model = new ViewModelProvider(getActivity()).get(LiveAddressChangeViewModel.class);
         binding.setLifecycleOwner(this);
         binding.setVm(model);
-        mFilePath = FileUtils.createFileParent(getContext());
+        initHeightCamera();
         model.provinceList.observe(this, observer -> {
             setSpView(observer, binding.spProvince);
             int selectedItemPosition = binding.spProvince.getSelectedItemPosition();
@@ -366,8 +353,20 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                     value.njsjzdwName = "";
                 }
             }
-            model.setLiveAddressChange(base64LiveChangeApplication, base64LiveChangeData).observe(this, observer -> {
-                if (observer.isSuccess()) {
+            //base64高拍仪
+            String[] changeApplication = new String[mAdapterData.getData().size()];
+            for (int i = 0; i < mAdapterData.getData().size(); i++) {
+                changeApplication[i] = mAdapterData.getData().get(i).getBase64();
+            }
+            String[] changeApplication2 = new String[mAdapterDataMaterial.getData().size()];
+            for (int i = 0; i < mAdapterDataMaterial.getData().size(); i++) {
+                changeApplication2[i] = mAdapterDataMaterial.getData().get(i).getBase64();
+            }
+            model.setLiveAddressChange(changeApplication, changeApplication2).observe(this, observer -> {
+                if (observer.status == Status.LOADING) {
+                    showLoading();
+                } else if (observer.status == Status.SUCCESS) {
+                    dismissLoading();
                     LiveAddressChangeBean v = model.liveBean.getValue();
                     v.sqsj = model.currentTime(false);
                     DialogResult dialogResult = new DialogResult(getActivity(), new DialogResult.ClickListener() {
@@ -389,106 +388,96 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                     }, new DialogResult.Builder(true, "提交成功", "", 0, true
                     ).hideAllHideSucceedInfo(true));
                     dialogResult.show();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (getActivity() != null && !getActivity().isFinishing()) {
-                                dialogResult.hide();
-                                ((LiveAddressChangeActivity) getActivity()).replaceFragment(new LiveListFragment());
-                            }
+                    mHandler.postDelayed(() -> {
+                        if (getActivity() != null && !getActivity().isFinishing()) {
+                            dialogResult.dismiss();
+                            ((LiveAddressChangeActivity) getActivity()).replaceFragment(new LiveListFragment());
                         }
                     }, 2000);
-                }
-                if (observer.isError()) {
+                } else {
+                    dismissLoading();
                     appHints.showError(observer.errorMessage);
                 }
             });
         }
     }
 
-    private void openScanning() {
-        ZZResponse<?> init = CameraHelper.getInstance().init();
-        if (ZZResponse.isSuccess(init)) {
-            ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().createMXCamera(CameraConfig.Camera_SM);
-            if (ZZResponse.isSuccess(mxCamera)) {
-//                mxCamera.getData().setOrientation(CameraConfig.Camera_SM.previewOrientation);
-                mxCamera.getData().setPreviewCallback(this);
-                mxCamera.getData().start(null);
-                mxCamera.getData().setNextFrameEnable();
-            } else {
-                appHints.showError("扫描失败！");
-            }
-        } else {
-            appHints.showError("扫描设备初始化失败请点击重试！");
-        }
-    }
+    /*=====================================高拍仪========================================*/
+    private PreviewPageAdapter mAdapterData;
+    private PreviewPageAdapter mAdapterDataMaterial;
 
-    @Override
-    public void onPreview(MXFrame frame) {
-        if (MXFrame.isNullCamera(frame)) {
-            return;
-        }
-        String fileName = "sm" + scanType + ".jpg";
-        File file = new File(mFilePath, fileName);
-        boolean frameImage = frame.camera.saveFrameImage(file.getAbsolutePath());
-        if (frameImage) {
-            String base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
-            mHandler.post(() -> {
-                if (scanType == 0) {
-                    base64LiveChangeApplication = base64Path;
-                    binding.tvApplicationInfoShow.setText(fileName);
-                } else {
-                    base64LiveChangeData = base64Path;
-                    binding.tvApplicationInfoShow2.setText(fileName);
+    private void initHeightCamera() {
+        mAdapterData = new PreviewPageAdapter();
+        binding.rvLeaveApplication.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        binding.rvLeaveApplication.setAdapter(mAdapterData);
+        mAdapterData.setOnItemClickListener((adapter, view, position) -> {
+            String path = mAdapterData.getData().get(position).getPath();
+            showBigPicture(path);
+        });
+        mAdapterData.setOnItemLongClickListener((adapter, view, position) -> {
+            mAppHints.showHint("是否要删除此图片", (dialog, which) -> {
+                mAdapterData.getData().remove(position);
+                mAdapterData.notifyDataSetChanged();
+                if(mAdapterData.getData().isEmpty()) {
+                    model.setControlShowHide(1, true);
                 }
             });
-        } else {
-            mHandler.post(() -> appHints.showError("扫描保存文件失败，请点击重试！"));
-        }
-        try {
-            CameraHelper.getInstance().stop();
-            frame.camera.stop();
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-    }
+            return true;
+        });
 
-    private void setPreviewDialog(File file, String base64, String fileName) {
-        mDialog = new PreviewPictureDialog(getContext(), new PreviewPictureDialog.ClickListener() {
-            @Override
-            public void onDetermine() {
-                if (scanType == 0) {
-                    base64LiveChangeApplication = base64;
-                    binding.tvApplicationInfoShow.setText(fileName);
-                } else {
-                    base64LiveChangeData = base64;
-                    binding.tvApplicationInfoShow2.setText(fileName);
+        mAdapterDataMaterial = new PreviewPageAdapter();
+        binding.rvMaterial.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        binding.rvMaterial.setAdapter(mAdapterDataMaterial);
+
+        mAdapterDataMaterial.setOnItemClickListener((adapter, view, position) -> {
+            String path = mAdapterDataMaterial.getData().get(position).getPath();
+            showBigPicture(path);
+        });
+        mAdapterDataMaterial.setOnItemLongClickListener((adapter, view, position) -> {
+            mAppHints.showHint("是否要删除此图片", (dialog, which) -> {
+                mAdapterDataMaterial.getData().remove(position);
+                mAdapterDataMaterial.notifyDataSetChanged();
+                if(mAdapterDataMaterial.getData().isEmpty()) {
+                    model.setControlShowHide(2, true);
                 }
-            }
-
-            @Override
-            public void onTryAgain(AppCompatDialog appCompatDialog) {
-                openScanning();
-            }
-
-            @Override
-            public void onTimeOut(AppCompatDialog appCompatDialog) {
-
-            }
-        }, new PreviewPictureDialog.Builder().setPathFile(file.getAbsolutePath()));
-        mDialog.show();
+            });
+            return true;
+        });
     }
+
+    //预览
+    private void showBigPicture(String path) {
+        if (getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
+        new ToViewBigPictureDialog(getActivity(), new ToViewBigPictureDialog.ClickListener() {
+        }, new ToViewBigPictureDialog.Builder().setPathFile(path)).show();
+    }
+
+    //显示高拍仪预览内容
+    private void showPreInfo(int type) {
+        if (getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
+        new HighShotMeterDialog(getActivity(), list -> {
+            boolean isNullOrEmpty = (list == null || list.size() == 0);
+            model.setControlShowHide(type, isNullOrEmpty);
+            if (type == 1&&!isNullOrEmpty) {
+                mAdapterData.setNewInstance(list);
+            }
+            if (type == 2&&!isNullOrEmpty) {
+                mAdapterDataMaterial.setNewInstance(list);
+            }
+        }).show();
+    }
+    /*=====================================end高拍仪========================================*/
 
     private final static Handler mHandler = new Handler();
 
     @Override
     public void onDestroyView() {
+        mAppHints.close();
         super.onDestroyView();
-        base64LiveChangeApplication = null;
-        base64LiveChangeData = null;
         mHandler.removeCallbacksAndMessages(null);
-        if (mDialog != null && mDialog.isShowing()) {
-            mDialog.dismiss();
-        }
     }
 }

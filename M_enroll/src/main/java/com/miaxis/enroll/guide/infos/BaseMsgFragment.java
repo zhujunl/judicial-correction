@@ -55,6 +55,7 @@ public class BaseMsgFragment extends BaseInfoFragment<FragmentBaseMsgBinding> {
 
     @Inject
     Lazy<AppHints> appHintsLazy;
+
     @Override
     protected void initData(@NonNull FragmentBaseMsgBinding binding, @Nullable Bundle savedInstanceState) {
         EnrollSharedViewModel vm = new ViewModelProvider(getActivity()).get(EnrollSharedViewModel.class);
@@ -80,8 +81,8 @@ public class BaseMsgFragment extends BaseInfoFragment<FragmentBaseMsgBinding> {
         binding.spinnerProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                JusticeBureau  justiceBureau= (JusticeBureau) parent.getSelectedItem();
-                if (justiceBureau!=null) {
+                JusticeBureau justiceBureau = (JusticeBureau) parent.getSelectedItem();
+                if (justiceBureau != null) {
                     vm.checkedJusticeBureau = justiceBureau;
                 }
             }
@@ -105,7 +106,19 @@ public class BaseMsgFragment extends BaseInfoFragment<FragmentBaseMsgBinding> {
                     dismissLoading();
                     SpAdapter spAdapter = new SpAdapter();
                     spAdapter.submitList(resource.data);
+                    int j = -1;
+                    if (vm.checkedJusticeBureau != null && resource.data != null && vm.checkedJusticeBureau.getTeamId() != null) {//&vm.checkedJusticeBureau.getTeamId()
+                        for (int i = 0; i < resource.data.size(); i++) {
+                            if (vm.checkedJusticeBureau.getTeamId().equals(resource.data.get(i).getTeamId())) {
+                                j = i;
+                                break;
+                            }
+                        }
+                    }
                     binding.spinnerProvince.setAdapter(spAdapter);
+                    if (j != -1) {
+                        binding.spinnerProvince.setSelection(j);
+                    }
                     break;
             }
         });
@@ -113,8 +126,7 @@ public class BaseMsgFragment extends BaseInfoFragment<FragmentBaseMsgBinding> {
     }
 
 
-
-//    private void setSpUnitView(List<JusticeBureau> beanList, Spinner spinner) {
+    //    private void setSpUnitView(List<JusticeBureau> beanList, Spinner spinner) {
 //        SpAdapter adapter = new SpAdapter();
 //        adapter.submitList(beanList);
 //        spinner.setAdapter(adapter);

@@ -78,7 +78,4 @@ dependencies {
     implementation project(path: ':M_benefit')
     implementation project(path: ':M_live')
     implementation project(path: ':M_leave')
-
-    implementation project(path: ':M_leave')
-
 }

@@ -179,7 +179,6 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
                 binding.spinnerAgencies.setSelection(checkedPosition);
             }
         });
-
         setHJ();
         initHJ();
     }
@@ -199,7 +198,7 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
         int checkedRadioButtonId = binding.addrGroup.getCheckedRadioButtonId();
         if (checkedRadioButtonId==R.id.addrT) {
             viewModel.addrSame.setValue(true);
-            addr.hjdsfyjzdxt="相同";
+            addr.hjdsfyjzdxt="1";
             addr.hjszsName = getSpName(binding.spinnerProvince);
             addr.hjszdsName = getSpName(binding.spinnerCity);
             addr.hjszxqName = getSpName(binding.spinnerDistrict);
@@ -213,7 +212,7 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             addr.hjszdmx = addr.gdjzdmx;
         }else{
             viewModel.addrSame.setValue(false);
-            addr.hjdsfyjzdxt="不同";
+            addr.hjdsfyjzdxt="0";
             addr.hjszsName = getSpName(binding.spinnerProvince2);
             addr.hjszdsName = getSpName(binding.spinnerCity2);
             addr.hjszxqName = getSpName(binding.spinnerDistrict2);

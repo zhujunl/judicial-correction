@@ -1,19 +1,14 @@
 package com.miaxis.judicialcorrection.base.di;
 
 
-import android.text.TextUtils;
-
 import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.ApiService;
 import com.miaxis.judicialcorrection.base.api.NoAuthApiService;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.base.utils.LiveDataCallAdapterFactory;
 import com.miaxis.judicialcorrection.base.utils.gson.converter.GsonConverterFactory;
+import com.tencent.mmkv.MMKV;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
@@ -22,14 +17,8 @@ import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.components.SingletonComponent;
-import okhttp3.Credentials;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import retrofit2.Retrofit;
-import timber.log.Timber;
 
 /**
  * 基础依赖提供
@@ -65,10 +54,11 @@ public abstract class AppModule {
     @Singleton
     @Provides
     static ApiService provideApiService(@AuthInterceptorOkHttpClient OkHttpClient okHttpClient) {
+        String baseUrl = MMKV.defaultMMKV().getString("baseUrl", BuildConfig.SERVER_URL);
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(new LiveDataCallAdapterFactory())
-                .baseUrl(BuildConfig.SERVER_URL)
+                .baseUrl(baseUrl)
                 .client(okHttpClient)
                 .build()
                 .create(ApiService.class);
@@ -89,10 +79,11 @@ public abstract class AppModule {
     @Singleton
     @Provides
     static NoAuthApiService provideNoAuthApiService(@OtherInterceptorOkHttpClient OkHttpClient okHttpClient) {
+        String baseUrl = MMKV.defaultMMKV().getString("baseUrl", BuildConfig.SERVER_URL);
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(new LiveDataCallAdapterFactory())
-                .baseUrl(BuildConfig.SERVER_URL)
+                .baseUrl(baseUrl)
                 .client(okHttpClient)
                 .build()
                 .create(NoAuthApiService.class);

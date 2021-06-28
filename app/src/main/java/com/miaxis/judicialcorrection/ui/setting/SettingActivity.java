@@ -35,7 +35,6 @@ import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundDiffAdapter;
 import com.miaxis.judicialcorrection.databinding.ActivitySettingBinding;
 import com.miaxis.judicialcorrection.databinding.ItemSettingFuncBinding;
 import com.wondersgroup.om.AuthInfo;
-import com.wondersgroup.om.JZAuth;
 
 import java.util.List;
 import java.util.Objects;
@@ -92,14 +91,9 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
             }
             return false;
         });
-        if (BuildConfig.EQUIPMENT_TYPE==3){
-            binding.btnCameraConfig.setVisibility(View.VISIBLE);
-        }else{
-            binding.btnCameraConfig.setVisibility(View.GONE);
-        }
 
        binding.btnCameraConfig.setOnClickListener(v -> {
-           startActivity(new Intent(this,CameraConfigActivity.class));
+           startActivity(new Intent(this, ConfigActivity.class));
        });
 
 

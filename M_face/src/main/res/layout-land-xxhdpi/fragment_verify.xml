@@ -147,7 +147,6 @@
             android:background="@drawable/bg_white_splash_10"
             android:paddingStart="52px"
             android:paddingEnd="52px"
-            android:visibility="gone"
             android:paddingTop="38px"
             app:layout_constraintTop_toTopOf="@id/sv_preview"
             android:paddingBottom="38px"
@@ -156,13 +155,23 @@
             app:layout_constraintLeft_toRightOf="@id/sv_preview"
             app:srcCompat="@mipmap/mipmap_bg_finger_1" />
 
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="wrap_content"
+            android:textColor="@color/color_text_red"
+            android:textSize="24px"
+            android:layout_marginBottom="10px"
+            tools:text="错误1错误1错误1错误1错误1错误1"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/iv_finger"
+            app:layout_constraintRight_toRightOf="@id/iv_finger"
+            app:layout_constraintBottom_toTopOf="@id/iv_finger"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50px"
             android:gravity="center"
-            android:visibility="gone"
             android:text="@string/text_tips_hand"
             android:textColor="@color/color_text_red"
             android:textSize="30px"

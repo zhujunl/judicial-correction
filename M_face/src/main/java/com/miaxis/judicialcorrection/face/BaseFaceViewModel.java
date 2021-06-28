@@ -6,10 +6,12 @@ import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.CameraHelper;
 import com.miaxis.camera.MXCamera;
 import com.miaxis.camera.MXFrame;
+import com.miaxis.faceid.FaceConfig;
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.face.callback.FaceCallback;
+import com.tencent.mmkv.MMKV;
 
 import javax.inject.Inject;
 
@@ -54,9 +56,16 @@ public class BaseFaceViewModel extends ViewModel {
 
     AppExecutors mAppExecutors;
 
+
     @Inject
     public BaseFaceViewModel(AppExecutors appExecutors) {
         this.mAppExecutors = appExecutors;
+        MMKV mmkv = MMKV.defaultMMKV();
+        String quality = mmkv.getString("faceQuality", "75");
+        String faceCom = mmkv.getString("faceComparison", "30");
+        FaceConfig.threshold = Integer.parseInt(quality);
+        FaceConfig.thresholdIdCard = Integer.parseInt(quality);
+        FaceConfig.faceComparison = Integer.parseInt(faceCom);
     }
 
     public void processRgbFrame(MXFrame frame, FaceCallback captureCallback) {
@@ -106,13 +115,13 @@ public class BaseFaceViewModel extends ViewModel {
                     }
 
                     if (liveDetect == 10000) {//活体
-                        livingBodyCount=0;
+                        livingBodyCount = 0;
                         faceTips.postValue("活体检测完成");
                         int faceQualityRGB = FaceManager.getInstance().getFaceQualityRGB(rgbFrame.buffer, rgbFrame.width, rgbFrame.height);
                         if (faceQualityRGB == 0) {
                             MXFaceInfoEx faceInfoRGB = FaceManager.getInstance().getFaceInfoRGB(0);
                             int quality = faceInfoRGB.quality;
-                            if (quality > 30) {
+                            if (quality > FaceConfig.faceComparison) {
                                 faceTips.postValue("人脸质量检测完成:" + quality);
                                 byte[] feature = new byte[FaceManager.getInstance().getFeatureSize()];
                                 int extractFeatureRgb = FaceManager.getInstance().extractFeatureRgb(rgbFrame.buffer, rgbFrame.width, rgbFrame.height, false, feature);

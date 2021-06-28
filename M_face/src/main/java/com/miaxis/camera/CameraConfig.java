@@ -60,7 +60,6 @@ public enum CameraConfig {
 
     CameraConfig(int cameraId, int width, int height, int previewOrientation, int bufferOrientation) {
         this.CameraId = cameraId;
-        ;
         this.width = width;
         this.height = height;
         this.previewOrientation = previewOrientation;
