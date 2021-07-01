@@ -1,6 +1,7 @@
 package com.miaxis.judicialcorrection.face;
 
 import android.graphics.RectF;
+import android.text.TextUtils;
 
 import com.miaxis.camera.CameraConfig;
 import com.miaxis.camera.CameraHelper;
@@ -63,9 +64,18 @@ public class BaseFaceViewModel extends ViewModel {
         MMKV mmkv = MMKV.defaultMMKV();
         String quality = mmkv.getString("faceQuality", "75");
         String faceCom = mmkv.getString("faceComparison", "30");
-        FaceConfig.threshold = Integer.parseInt(quality);
-        FaceConfig.thresholdIdCard = Integer.parseInt(quality);
-        FaceConfig.faceComparison = Integer.parseInt(faceCom);
+        if (TextUtils.isEmpty(quality)){
+            FaceConfig.threshold = Integer.parseInt(quality)/100;
+            FaceConfig.thresholdIdCard = Integer.parseInt(quality)/100;
+        }else{
+            FaceConfig.threshold = 0.75f;
+            FaceConfig.thresholdIdCard =0.75f;
+        }
+        if (TextUtils.isEmpty(faceCom)){
+            FaceConfig.faceComparison = 30;
+        }else{
+            FaceConfig.faceComparison = Integer.parseInt(faceCom);
+        }
     }
 
     public void processRgbFrame(MXFrame frame, FaceCallback captureCallback) {
