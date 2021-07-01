@@ -64,16 +64,16 @@ public class BaseFaceViewModel extends ViewModel {
         MMKV mmkv = MMKV.defaultMMKV();
         String quality = mmkv.getString("faceQuality", "75");
         String faceCom = mmkv.getString("faceComparison", "30");
-        if (TextUtils.isEmpty(quality)){
-            FaceConfig.threshold = Integer.parseInt(quality)/100;
-            FaceConfig.thresholdIdCard = Integer.parseInt(quality)/100;
-        }else{
+        if (TextUtils.isEmpty(quality)) {
             FaceConfig.threshold = 0.75f;
-            FaceConfig.thresholdIdCard =0.75f;
+            FaceConfig.thresholdIdCard = 0.75f;
+        } else {
+            FaceConfig.threshold = Integer.parseInt(quality) / 100;
+            FaceConfig.thresholdIdCard = Integer.parseInt(quality) / 100;
         }
-        if (TextUtils.isEmpty(faceCom)){
+        if (TextUtils.isEmpty(faceCom)) {
             FaceConfig.faceComparison = 30;
-        }else{
+        } else {
             FaceConfig.faceComparison = Integer.parseInt(faceCom);
         }
     }
