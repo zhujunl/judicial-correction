@@ -40,9 +40,9 @@ android {
             //声纹指纹
             buildConfigField 'String', 'SERVER_URL2', '"http://223.4.75.78:10137"'
             //类型
-            buildConfigField 'int', 'EQUIPMENT_TYPE', '1'
+            buildConfigField 'int', 'EQUIPMENT_TYPE', '3'
             //人脸存图片的   旋转尺寸 3： 0   1：270  2：
-            buildConfigField 'int', 'ROTATION_SIZE', '270'
+            buildConfigField 'int', 'ROTATION_SIZE', '0'
             //设备
             buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
 //            //地址
@@ -62,9 +62,9 @@ android {
             //声纹指纹 '"http://10.249.2.210"'不能使用了  修改
             buildConfigField 'String', 'SERVER_URL2', '"http://10.249.2.210:9000"'
             //类型
-            buildConfigField 'int', 'EQUIPMENT_TYPE', '1'
+            buildConfigField 'int', 'EQUIPMENT_TYPE', '3'
             //人脸存图片的   旋转尺寸 3： 0   1：270  2：
-            buildConfigField 'int', 'ROTATION_SIZE', '270'
+            buildConfigField 'int', 'ROTATION_SIZE', '0'
             //设备
             buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
 //            //地址
