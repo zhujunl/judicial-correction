@@ -15,6 +15,7 @@ import com.miaxis.judicialcorrection.base.api.ApiResult;
 import com.miaxis.judicialcorrection.base.api.ApiService;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.common.Resource;
+import com.miaxis.judicialcorrection.base.databinding.kvsp.KvSpinnerVo;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
 import com.miaxis.judicialcorrection.base.utils.ResourceConvertUtils;
 import com.miaxis.judicialcorrection.id.bean.IdCardMsg;
@@ -56,7 +57,7 @@ public class EnrollRepo {
     @SuppressWarnings("all")
     public LiveData<Resource<PersonInfo>> addPerson(JusticeBureau justiceBureau, IdCardMsg idCard, OtherCardType cardType, Addr addr, OtherInfo otherInfo) {
         String cardTypeJson = gson.toJson(cardType);
-        Map<String, String> mapCardType = new Gson().fromJson(cardTypeJson,Map.class);
+        Map<String, String> mapCardType = new Gson().fromJson(cardTypeJson, Map.class);
         Timber.v("addPerson 地址信息 %s", cardTypeJson);
         String addrJson = gson.toJson(addr);
         Timber.v("addPerson 地址信息 %s", addrJson);
@@ -80,10 +81,17 @@ public class EnrollRepo {
             } else {
                 sex = "0";
             }
+            String mz="02";
+            for (KvSpinnerVo vo : MapConstants.mzList) {
+                if (vo.value.equals(idCard.nation_str)){
+                    mz=vo.key;
+                    break;
+                }
+            }
             map.put("jzjg", justiceBureau.getTeamId());
             map.put("xm", idCard.name.trim());
             map.put("xb", sex);
-            map.put("mz", idCard.nation_str);
+            map.put("mz", mz);
             map.put("sfzh", idCard.id_num);
             Date date = new Date(Integer.parseInt(idCard.birth_year) - 1900, Integer.parseInt(idCard.birth_month) - 1, Integer.parseInt(idCard.birth_day));
             map.put("csrq", simpleDateFormat.format(date));
@@ -111,7 +119,7 @@ public class EnrollRepo {
         Map<String, String> map = new HashMap<>();
         map.put("jtzz", family.job);
         map.put("gx", family.relationship);
-        map.put("xm",family.name);
+        map.put("xm", family.name);
         if (TextUtils.isEmpty(family.phone)) {
             map.put("lxdh", "无");
         } else {
