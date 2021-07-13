@@ -40,17 +40,11 @@ android {
             //声纹指纹
             buildConfigField 'String', 'SERVER_URL2', '"http://223.4.75.78:10137"'
             //类型
-            buildConfigField 'int', 'EQUIPMENT_TYPE', '3'
+            buildConfigField 'int', 'EQUIPMENT_TYPE', '1'
             //人脸存图片的   旋转尺寸 3： 0   1：270  2：
-            buildConfigField 'int', 'ROTATION_SIZE', '0'
+            buildConfigField 'int', 'ROTATION_SIZE', '270'
             //设备
             buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
-//            //地址
-//            buildConfigField 'String', 'LOCAL', '"湖州市南浔区南浔镇朝阳路888号司法局"'
-//            //联系人
-//            buildConfigField 'String', 'CONTACT', '"杨晓俊"'
-//            //电话
-//            buildConfigField 'String', 'CONTACTINFORMATION', '"13666517977"'
             //设备类型 1 3台式 2 平板
             buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
         }
@@ -67,12 +61,6 @@ android {
             buildConfigField 'int', 'ROTATION_SIZE', '0'
             //设备
             buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
-//            //地址
-//            buildConfigField 'String', 'LOCAL', '"湖州市南浔区南浔镇朝阳路888号司法局"'
-//            //联系人
-//            buildConfigField 'String', 'CONTACT', '"杨晓俊"'
-//            //电话
-//            buildConfigField 'String', 'CONTACTINFORMATION', '"13666517977"'
             //设备类型 1 3台式 2 平板
             buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
         }

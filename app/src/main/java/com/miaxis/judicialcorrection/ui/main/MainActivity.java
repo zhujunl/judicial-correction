@@ -111,6 +111,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
             XHApiManager api = new XHApiManager();
             api.XHSetGpioValue(1, 0);
         }
+        FileUtils.createSerialNumberFile();
         //采集页面个人信息
 //        getSupportFragmentManager().beginTransaction().replace(R.id.main,new CaptureBaseInfoFragment()).commitNow();
     }

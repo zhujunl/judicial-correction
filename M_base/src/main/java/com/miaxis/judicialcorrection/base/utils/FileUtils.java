@@ -1,5 +1,6 @@
 package com.miaxis.judicialcorrection.base.utils;
 
+import android.os.Environment;
 import android.text.TextUtils;
 
 import java.io.File;
@@ -37,6 +38,19 @@ public class FileUtils {
         }
         //return size/1048576;
         return size;
+    }
+
+    /**
+     * 创建序列号文件夹
+     * @return
+     */
+    public  static  String  createSerialNumberFile(){
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "sfjz";
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return path;
     }
 
     /**

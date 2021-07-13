@@ -3,6 +3,7 @@ package com.miaxis.judicialcorrection.base.di;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.os.Environment;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -11,6 +12,7 @@ import com.miaxis.judicialcorrection.base.api.vo.Token;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.db.po.JAuthInfo;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
+import com.miaxis.judicialcorrection.base.utils.FileUtils;
 import com.miaxis.judicialcorrection.base.utils.numbers.HexStringUtils;
 import com.tencent.mmkv.MMKV;
 import com.wondersgroup.om.AuthInfo;
@@ -21,7 +23,9 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -49,15 +53,15 @@ public class AutoTokenInterceptor implements Interceptor {
     private final Object tokenLock = new Object();
     private Token token = null;
     private final JAuthInfo jAuthInfo = new JAuthInfo();
-    private String baseUrlToken="";
+    private String baseUrlToken = "";
 
     @Inject
     public AutoTokenInterceptor(@ApplicationContext Context context, AppDatabase appDatabase) {
         appDatabase.tokenAuthInfoDAO().loadAuthInfo().observeForever((JAuthInfo info) -> {
             jAuthInfo.activationCode = info == null ? null : info.activationCode;
-            jAuthInfo.local=info == null ? null : info.local;
-            jAuthInfo.contact=info == null ? null : info.contact;
-            jAuthInfo.contactInformation=info == null ? null : info.contactInformation;
+            jAuthInfo.local = info == null ? null : info.local;
+            jAuthInfo.contact = info == null ? null : info.contact;
+            jAuthInfo.contactInformation = info == null ? null : info.contactInformation;
             Timber.i("New JAuthInfo by A: %s", jAuthInfo);
         });
         appDatabase.justiceBureauDao().loadAll().observeForever((List<JusticeBureau> justiceBureaus) -> {
@@ -88,9 +92,9 @@ public class AutoTokenInterceptor implements Interceptor {
             Timber.i("New JAuthInfo B: %s", jAuthInfo);
         });
         jzAuth = JZAuth.getInstance();
-        baseUrlToken  = MMKV.defaultMMKV().getString("baseToken", BuildConfig.TOKEN_URL);
+        baseUrlToken = MMKV.defaultMMKV().getString("baseToken", BuildConfig.TOKEN_URL);
         jzAuth.setGlobalURL(baseUrlToken);
-        jzAuth.initialize(context,"zkja");
+        jzAuth.initialize(context, "zkja");
         if (BuildConfig.DEBUG) {
             jzAuth.setDebug(true);
         }
@@ -104,9 +108,9 @@ public class AutoTokenInterceptor implements Interceptor {
                     if (!jzAuth.checkAuth()) {
                         registerJzAuth();
                         Timber.i("getToken ，register success !");
-                    }else{
+                    } else {
                         //如果注册过了并且 tokenUrl 不等于默认的 再次执行注册
-                        if (!baseUrlToken.equals(BuildConfig.TOKEN_URL)){
+                        if (!baseUrlToken.equals(BuildConfig.TOKEN_URL)) {
                             registerJzAuth();
                             Timber.i("getToken ，register success !");
                         }
@@ -146,6 +150,39 @@ public class AutoTokenInterceptor implements Interceptor {
         return chain.proceed(request);
     }
 
+    //    a) 产品名称代号:用大写汉语拼音字母 ZZD 表示；
+//    b) 产品类型代号:台式终端用“T”表示，立式终端用“L”表示，移动式终端用“Y”
+//    表示；
+//    c) 企业名称代号:用 3 位大写汉语拼音字母或阿拉伯数字组合表示；
+//    d) 产品型号代号:用 2 位大写汉语拼音字母或阿拉伯数字组合表示；
+//    e) 产品序列号:用 12 位阿拉伯数字表示，其中应包含产品的生产年份(YYYY， 见 GB/T 7408)，星期(Www，见 GB/T 7408)和顺序号(5 位阿拉伯数字)。
+    //示例  ZZD-T-ABC-01-2020W0100001。
+    //序列号因用系统的不符合规则 所有自己设置
+    private String getSerialNumber() {
+        StringBuilder buffer = new StringBuilder();
+        String client = "";
+        if (BuildConfig.EQUIPMENT_TYPE == 1) {
+            client = "L";
+        } else if (BuildConfig.EQUIPMENT_TYPE == 3) {
+            client = "T";
+        } else {
+            client = "Y";
+        }
+        //根据文件夹读取序列号
+        String path = FileUtils.createSerialNumberFile();
+        File file =  new File(path);
+        File[] files = file.listFiles();
+        String name = "";
+        if (files != null && files.length != 0) {
+            name = files[0].getName();
+        }
+        if (TextUtils.isEmpty(name)) {
+            return "";
+        }
+        buffer.append("ZZD-").append(client).append("-")
+                .append("ZZ1-").append("MR-").append(name);
+        return buffer.toString();
+    }
 
     @SuppressLint("HardwareIds")
     void registerJzAuth() throws IOException {
@@ -162,7 +199,7 @@ public class AutoTokenInterceptor implements Interceptor {
         AuthInfo.getInstance().setDishiName(jAuthInfo.dishiName);
         AuthInfo.getInstance().setQuxianId(jAuthInfo.quxianId);
         AuthInfo.getInstance().setQuxianName(jAuthInfo.quxianName);
-        AuthInfo.getInstance().setSerialNumber(Build.SERIAL);
+        AuthInfo.getInstance().setSerialNumber(getSerialNumber());
         String time = HexStringUtils.convertCurrentGMT();
         AuthInfo.getInstance().setTime(time);
 
@@ -172,7 +209,7 @@ public class AutoTokenInterceptor implements Interceptor {
 
         final Exception[] errorR = new Exception[1];
         final String[] resultR = new String[1];
-        Timber.e("clientId:%s",AuthInfo.getInstance().getClientId());
+        Timber.e("clientId:%s", AuthInfo.getInstance().getClientId());
         JZAuth.getInstance().registerDevice(new ResultListener() {
 
             @Override
