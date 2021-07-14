@@ -2,6 +2,7 @@ package com.miaxis.enroll.guide.infos;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,6 +143,16 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             SpAdapter adapter = new SpAdapter();
             adapter.submitList(places);
             binding.spinnerProvince.setAdapter(adapter);
+            //默认设置浙江省
+            Place place=   viewModel.mSelect[0];
+            if (place==null|| TextUtils.isEmpty(place.VALUE)) {
+                for (Place p : places) {
+                    if ("浙江省".equals(p.VALUE)) {
+                        viewModel.mSelect[0] = p;
+                        break;
+                    }
+                }
+            }
             int checkedPosition = getCheckedPosition(places, viewModel.mSelect[0]);
             if (checkedPosition != 0) {
                 binding.spinnerProvince.setSelection(checkedPosition);

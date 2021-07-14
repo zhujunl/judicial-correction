@@ -182,6 +182,7 @@ public class AutoTokenInterceptor implements Interceptor {
         buffer.append("ZZD-").append(client).append("-")
                 .append("ZZ1-").append("MR-").append(name);
         return buffer.toString();
+//        return Build.SERIAL;
     }
 
     @SuppressLint("HardwareIds")
