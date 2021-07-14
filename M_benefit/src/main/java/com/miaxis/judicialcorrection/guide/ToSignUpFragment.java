@@ -11,6 +11,7 @@ import com.miaxis.judicialcorrection.base.api.vo.SignUpContentBean;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.base.utils.AppToast;
+import com.miaxis.judicialcorrection.base.utils.numbers.HexStringUtils;
 import com.miaxis.judicialcorrection.benefit.PublicWelfareActivity;
 import com.miaxis.judicialcorrection.benefit.R;
 import com.miaxis.judicialcorrection.benefit.WelfareViewModel;
@@ -22,6 +23,7 @@ import com.miaxis.judicialcorrection.id.bean.IdCard;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -154,6 +156,20 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
         viewModel.getWelfareInfo(page).observe(this, listResource -> {
             if (listResource.isSuccess()) {
                 if (listResource.data != null && !listResource.data.getList().isEmpty()) {
+                    List<SignUpContentBean> list = listResource.data.getList();
+                    //过滤 当前时间之后的
+                    List<SignUpContentBean> ls = new ArrayList<>();
+                    for (SignUpContentBean bean : list) {
+                        long l = HexStringUtils.convertGMTToLocalLong(bean.getSqfwjssj());
+                        String s=String.valueOf(l);
+                        if (s.length()<13){
+                            l=l*1000;
+                        }
+                        if (l > System.currentTimeMillis()) {
+                            ls.add(bean);
+                        }
+                    }
+                    listResource.data.setList(ls);
                     getHistoryData(listResource);
                 } else {
                     setListDataAdapter(listResource);
@@ -200,24 +216,25 @@ public class ToSignUpFragment extends BaseBindingFragment<FragmentToSignUpBindin
                     historySignUpBeanResource = listResource;
                     setHistoryData(list, listResource);
                 }
-                if (listResource.isError()){
+                if (listResource.isError()) {
                     setListDataAdapter(list);
                 }
             });
         }
     }
+
     //设置历史数据 与原始数据判断 是否有设置操作
     private void setHistoryData(Resource<SignUpBean> list, Resource<HistorySignUpBean> listResource) {
-            if (listResource.data != null && listResource.data.getList() != null && listResource.data.getList().size() != 0) {
-                for (SignUpContentBean bean : list.data.getList()) {
-                    for (HistorySignUpBean.ListBean b : listResource.data.getList()) {
-                        if (b.getPublicActivityVo() != null && bean.getId().equals(b.getPublicActivityVo().getId())) {
-                            bean.setSignUpSucceed(true);
-                            break;
-                        }
+        if (listResource.data != null && listResource.data.getList() != null && listResource.data.getList().size() != 0) {
+            for (SignUpContentBean bean : list.data.getList()) {
+                for (HistorySignUpBean.ListBean b : listResource.data.getList()) {
+                    if (b.getPublicActivityVo() != null && bean.getId().equals(b.getPublicActivityVo().getId())) {
+                        bean.setSignUpSucceed(true);
+                        break;
                     }
                 }
             }
+        }
         setListDataAdapter(list);
     }
 }

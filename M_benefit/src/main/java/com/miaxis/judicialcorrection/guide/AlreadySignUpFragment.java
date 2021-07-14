@@ -1,6 +1,7 @@
 package com.miaxis.judicialcorrection.guide;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +12,7 @@ import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 import com.miaxis.judicialcorrection.adapter.HistorySignUpAdapter;
 import com.miaxis.judicialcorrection.adapter.SignUpAdapter;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
+import com.miaxis.judicialcorrection.benefit.PublicWelfareActivity;
 import com.miaxis.judicialcorrection.benefit.R;
 import com.miaxis.judicialcorrection.benefit.WelfareViewModel;
 import com.miaxis.judicialcorrection.benefit.databinding.FragmentAlreadySignUpBinding;
@@ -55,6 +57,11 @@ public class AlreadySignUpFragment extends BaseBindingFragment<FragmentAlreadySi
         mPid = viewModel.mStrPid.get();
         binding.rvActivityList.setAdapter(mAdapter);
         setData();
+        binding.btnBack.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                ((PublicWelfareActivity) getActivity()).replaceFragment(new ToSignUpFragment());
+            }
+        });
     }
 
 

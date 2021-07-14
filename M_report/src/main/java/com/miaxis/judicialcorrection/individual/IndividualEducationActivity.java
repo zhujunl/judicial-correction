@@ -50,8 +50,6 @@ public class IndividualEducationActivity extends BaseBindingActivity<ActivityRep
     @Inject
     Lazy<AppHints> appHintsLazy;
 
-    private String mListItemId;
-
     private String mPid;
 
     @Override
@@ -86,14 +84,17 @@ public class IndividualEducationActivity extends BaseBindingActivity<ActivityRep
     public void onLogin(PersonInfo personInfo) {
         if (personInfo != null) {
             mPid=personInfo.getId();
-            getList(personInfo.getId(),personInfo);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.layout_root, new VerifyPageFragment(title, personInfo))
+                    .commitNow();
         }
     }
 
     @Override
     public void onVerify(ZZResponse<VerifyInfo> response) {
         if (ZZResponse.isSuccess(response)) {
-            mIndividualEducationRepo.individualAdd(mPid,mListItemId).observe(this, new Observer<Resource<Object>>() {
+            mIndividualEducationRepo.individualAdd(mPid).observe(this, new Observer<Resource<Object>>() {
                 @Override
                 public void onChanged(Resource<Object> objectResource) {
                     switch (objectResource.status) {
@@ -199,7 +200,7 @@ public class IndividualEducationActivity extends BaseBindingActivity<ActivityRep
                         });
                         return;
                     }
-                    mListItemId=temp.getId();
+//                    mListItemId=temp.getId();
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.layout_root, new VerifyPageFragment(title, personInfo,temp))

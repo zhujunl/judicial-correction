@@ -57,7 +57,7 @@ android {
             buildConfigField 'String', 'SERVER_URL2', '"http://10.249.2.210:9000"'
             //类型
             buildConfigField 'int', 'EQUIPMENT_TYPE', '3'
-            //人脸存图片的   旋转尺寸 3： 0   1：270  2：
+            //人脸存图片的   旋转尺寸 3： 0   1：270
             buildConfigField 'int', 'ROTATION_SIZE', '0'
             //设备
             buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'

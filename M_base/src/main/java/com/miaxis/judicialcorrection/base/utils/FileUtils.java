@@ -45,7 +45,7 @@ public class FileUtils {
      * @return
      */
     public  static  String  createSerialNumberFile(){
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "sfjz";
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/sfjz";
         File file = new File(path);
         if (!file.exists()) {
             file.mkdirs();

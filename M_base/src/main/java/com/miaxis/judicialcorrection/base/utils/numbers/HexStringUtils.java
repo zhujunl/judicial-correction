@@ -79,6 +79,22 @@ public class HexStringUtils {
         return df1.format(date1);
     }
 
+
+    public static long convertGMTToLocalLong(String source) {
+        if (source==null){
+            return 0L;
+        }
+        SimpleDateFormat dff = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS",Locale.ENGLISH);//输入的被转化的时间格式
+        Date date1 = null;
+        try {
+            date1 = dff.parse(source);
+            return date1.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+       return 0L;
+    }
+
     public static String DateToString(Date date){
         SimpleDateFormat sdf=new  SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String s =sdf.format(date);

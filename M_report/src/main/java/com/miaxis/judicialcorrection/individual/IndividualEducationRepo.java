@@ -29,7 +29,7 @@ public class IndividualEducationRepo {
         this.apiService = apiService;
     }
 
-    public LiveData<Resource<Object>> individualAdd( String pid,String id) {
+    public LiveData<Resource<Object>> individualAdd( String pid) {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("pid", pid);
 //        hashMap.put("id",id);

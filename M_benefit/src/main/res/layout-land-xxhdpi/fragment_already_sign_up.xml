@@ -22,7 +22,19 @@
             android:layout_marginTop="35px"
             android:layout_height="wrap_content">
 
-
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_back"
+                android:layout_width="236px"
+                android:layout_height="80px"
+                android:layout_gravity="start"
+                android:layout_marginStart="144px"
+                android:background="@drawable/bg_btn_back_to_home_10"
+                android:gravity="center"
+                android:text="返回"
+                android:textColor="@color/color_text_btn"
+                android:textSize="28px"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_app_title" />
 
 
             <androidx.appcompat.widget.AppCompatTextView

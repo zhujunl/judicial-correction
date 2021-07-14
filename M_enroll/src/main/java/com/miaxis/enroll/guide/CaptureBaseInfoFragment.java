@@ -96,6 +96,12 @@ public class CaptureBaseInfoFragment extends BaseBindingFragment<FragmentCapture
         binding.recyclerview.setAdapter(adapter);
         binding.nextBtn.setOnClickListener(v -> nextPage());
         binding.preBtn.setOnClickListener(v -> prePage());
+        binding.btnBack.setOnClickListener(v -> {
+            FragmentActivity activity = getActivity();
+            if (activity instanceof EnrollActivity) {
+                ((EnrollActivity) activity).getNvController().back();
+            }
+        });
         nextPage();
     }
 

@@ -96,6 +96,7 @@ public class PublicWelfareActivity extends BaseBindingActivity<ActivityPublicWel
                 .commitNow();
     }
 
+
     @Override
     public void onVerify(ZZResponse<VerifyInfo> response) {
         if (ZZResponse.isSuccess(response)) {
