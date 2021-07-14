@@ -71,6 +71,8 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
 
     XHApiManager apimanager;
 
+    private File filePath;
+
     @Override
     protected int initLayout() {
         return R.layout.fragment_capture;
@@ -78,6 +80,8 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
 
     @Override
     protected void initView(@NonNull FragmentCaptureBinding view, @Nullable Bundle savedInstanceState) {
+        filePath = FileUtils.createFileParent(getContext());
+
         mGetFaceViewModel = new ViewModelProvider(this).get(GetFaceViewModel.class);
         if (BuildConfig.EQUIPMENT_TYPE == 3) {
             apimanager = new XHApiManager();
@@ -207,10 +211,12 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
         if (success) {
             ZZResponse<MXCamera> mxCameraRgb = CameraHelper.getInstance().find(CameraConfig.Camera_RGB);
             if (ZZResponse.isSuccess(mxCameraRgb)) {
-                File filePath = FileUtils.createFileParent(getContext());
                 String fileName = System.currentTimeMillis() + ".jpg";
                 File file = new File(filePath, fileName);
                 boolean frameImage = mxCameraRgb.getData().saveFrameImage(file.getAbsolutePath());
+                if (!frameImage) {
+                    mxCameraRgb.getData().saveFrameImage(file.getAbsolutePath());
+                }
                 String base64Path = "";
                 if (frameImage) {
                     base64Path = FileUtils.imageToBase64(file.getAbsolutePath());
@@ -220,8 +226,7 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
                     if (frameImage) {
                         setPreviewDialog(file, finalBase64Path, mxCameraRgb);
                     } else {
-                        appHintsLazy.get().showError("Error:图片保存失败",
-                                (dialog, which) -> finish());
+                        mxCameraRgb.getData().setNextFrameEnable();
                     }
                 });
             } else {

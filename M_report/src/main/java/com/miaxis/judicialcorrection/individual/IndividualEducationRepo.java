@@ -5,6 +5,7 @@ import com.miaxis.judicialcorrection.base.api.ApiService;
 import com.miaxis.judicialcorrection.base.api.vo.IndividualEducationBean;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.utils.ResourceConvertUtils;
+import com.miaxis.judicialcorrection.base.utils.numbers.HexStringUtils;
 
 import java.util.HashMap;
 
@@ -32,7 +33,8 @@ public class IndividualEducationRepo {
     public LiveData<Resource<Object>> individualAdd( String pid) {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("pid", pid);
-//        hashMap.put("id",id);
+        String time= HexStringUtils.convertCurrentGMT();
+        hashMap.put("jyxxkssj",time);
         LiveData<ApiResult<Object>> login = apiService.personEducationAdd(hashMap);
         return ResourceConvertUtils.convertToResource(login);
     }

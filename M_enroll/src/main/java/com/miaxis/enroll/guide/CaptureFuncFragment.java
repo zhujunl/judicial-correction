@@ -81,6 +81,10 @@ public class CaptureFuncFragment extends BaseBindingFragment<FragmentCaptureFunc
         });
         binding.groupFinger.setOnClickListener(v -> {
 //            appHints.toast("暂未开放");
+            if (viewModel.personInfoLiveData.getValue() == null) {
+                appHints.toast("请先采集基本信息");
+                return;
+            }
             PersonInfo personInfo = viewModel.personInfoLiveData.getValue();
             IdCard idcard = viewModel.idCardLiveData.getValue();
             FingerprintCollectFragment fragment = new FingerprintCollectFragment(personInfo.getId(),idcard);
@@ -89,6 +93,10 @@ public class CaptureFuncFragment extends BaseBindingFragment<FragmentCaptureFunc
         });
         binding.groupSound.setOnClickListener(v -> {
             if(BuildConfig.EQUIPMENT_TYPE==1) {
+                if (viewModel.personInfoLiveData.getValue() == null) {
+                    appHints.toast("请先采集基本信息");
+                    return;
+                }
                 PersonInfo personInfo = viewModel.personInfoLiveData.getValue();
                 VoicePrintCollectFragment fragment = new VoicePrintCollectFragment(personInfo);
                 navigation(fragment);

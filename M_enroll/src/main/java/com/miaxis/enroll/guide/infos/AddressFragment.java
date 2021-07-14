@@ -42,10 +42,14 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
     }
 
     AddressViewModel viewModel;
-
+    private Boolean[] booleans = new Boolean[4];
 
     @Override
     protected void initView(@NonNull FragmentAddressBinding binding, @Nullable Bundle savedInstanceState) {
+        booleans[0] = false;
+        booleans[1] = false;
+        booleans[2] = false;
+        booleans[3] = false;
         //居住地
         binding.spinnerProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -144,8 +148,8 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             adapter.submitList(places);
             binding.spinnerProvince.setAdapter(adapter);
             //默认设置浙江省
-            Place place=   viewModel.mSelect[0];
-            if (place==null|| TextUtils.isEmpty(place.VALUE)) {
+            Place place = viewModel.mSelect[0];
+            if (place == null || TextUtils.isEmpty(place.VALUE)) {
                 for (Place p : places) {
                     if ("浙江省".equals(p.VALUE)) {
                         viewModel.mSelect[0] = p;
@@ -207,9 +211,9 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
         addr.gdjzd = getSpID(binding.spinnerAgencies);
 
         int checkedRadioButtonId = binding.addrGroup.getCheckedRadioButtonId();
-        if (checkedRadioButtonId==R.id.addrT) {
+        if (checkedRadioButtonId == R.id.addrT) {
             viewModel.addrSame.setValue(true);
-            addr.hjdsfyjzdxt="1";
+            addr.hjdsfyjzdxt = "1";
             addr.hjszsName = getSpName(binding.spinnerProvince);
             addr.hjszdsName = getSpName(binding.spinnerCity);
             addr.hjszxqName = getSpName(binding.spinnerDistrict);
@@ -221,9 +225,9 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             addr.hjszd = getSpID(binding.spinnerAgencies);
 
             addr.hjszdmx = addr.gdjzdmx;
-        }else{
+        } else {
             viewModel.addrSame.setValue(false);
-            addr.hjdsfyjzdxt="0";
+            addr.hjdsfyjzdxt = "0";
             addr.hjszsName = getSpName(binding.spinnerProvince2);
             addr.hjszdsName = getSpName(binding.spinnerCity2);
             addr.hjszxqName = getSpName(binding.spinnerDistrict2);
@@ -260,11 +264,25 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
         updateAddrToSharedViewModel();
     }
 
+    private void addPlace(List<Place> places) {
+        for (Place p : places) {
+            if (!TextUtils.isEmpty(p.VALUE)) {
+                Place place = new Place();
+                place.VALUE = "";
+                place.ID = 0L;
+                places.add(0, place);
+                break;
+            }
+        }
+    }
+
+
     void initHJ() {
         // 户籍地
         viewModel.allProvince2.observe(this, places -> {
             Timber.i("allProvince2 %s", places);
             SpAdapter adapter = new SpAdapter();
+            addPlace(places);
             adapter.submitList(places);
             binding.spinnerProvince2.setAdapter(adapter);
             int checkedPosition = getCheckedPosition(places, viewModel.mSelect2[0]);
@@ -275,6 +293,7 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
         viewModel.allCity2.observe(this, places -> {
             Timber.i("allCity2 %s", places);
             SpAdapter adapter = new SpAdapter();
+            addPlace(places);
             adapter.submitList(places);
             binding.spinnerCity2.setAdapter(adapter);
             int checkedPosition = getCheckedPosition(places, viewModel.mSelect2[1]);
@@ -285,6 +304,7 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
         viewModel.allDistrict2.observe(this, places -> {
             Timber.i("allDistrict2 %s", places);
             SpAdapter adapter = new SpAdapter();
+            addPlace(places);
             adapter.submitList(places);
             binding.spinnerDistrict2.setAdapter(adapter);
             int checkedPosition = getCheckedPosition(places, viewModel.mSelect2[2]);
@@ -295,6 +315,7 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
         viewModel.allAgencies2.observe(this, places -> {
             Timber.i("allAgencies2%s", places);
             SpAdapter adapter = new SpAdapter();
+            addPlace(places);
             adapter.submitList(places);
             binding.spinnerAgencies2.setAdapter(adapter);
             int checkedPosition = getCheckedPosition(places, viewModel.mSelect2[3]);
@@ -310,10 +331,13 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Object item = parent.getAdapter().getItem(position);
-                if (item instanceof Place) {
-                    viewModel.mSelect2[0] = (Place) item;
-                    viewModel.mProvince2.postValue((Place) item);
+                if (booleans[0]) {
+                    if (item instanceof Place) {
+                        viewModel.mSelect2[0] = (Place) item;
+                        viewModel.mProvince2.postValue((Place) item);
+                    }
                 }
+                booleans[0] = true;
             }
 
             @Override
@@ -327,10 +351,13 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Object item = parent.getAdapter().getItem(position);
-                if (item instanceof Place) {
-                    viewModel.mSelect2[1] = (Place) item;
-                    viewModel.mCity2.postValue((Place) item);
+                if (booleans[1]) {
+                    if (item instanceof Place) {
+                        viewModel.mSelect2[1] = (Place) item;
+                        viewModel.mCity2.postValue((Place) item);
+                    }
                 }
+                booleans[1] = true;
             }
 
             @Override
@@ -343,10 +370,13 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Object item = parent.getAdapter().getItem(position);
-                if (item instanceof Place) {
-                    viewModel.mSelect2[2] = (Place) item;
-                    viewModel.mDistrict2.postValue((Place) item);
+                if (booleans[2]) {
+                    if (item instanceof Place) {
+                        viewModel.mSelect2[2] = (Place) item;
+                        viewModel.mDistrict2.postValue((Place) item);
+                    }
                 }
+                booleans[2] = true;
 
             }
 
@@ -360,10 +390,13 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Object item = parent.getAdapter().getItem(position);
-                if (item instanceof Place) {
-                    viewModel.mSelect2[3] = (Place) item;
-                    viewModel.mAgencies2.postValue((Place) item);
+                if (booleans[3]) {
+                    if (item instanceof Place) {
+                        viewModel.mSelect2[3] = (Place) item;
+                        viewModel.mAgencies2.postValue((Place) item);
+                    }
                 }
+                booleans[3] = true;
             }
 
             @Override

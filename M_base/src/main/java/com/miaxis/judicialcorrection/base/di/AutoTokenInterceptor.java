@@ -159,30 +159,33 @@ public class AutoTokenInterceptor implements Interceptor {
     //示例  ZZD-T-ABC-01-2020W0100001。
     //序列号因用系统的不符合规则 所有自己设置
     private String getSerialNumber() {
-        StringBuilder buffer = new StringBuilder();
-        String client = "";
-        if (BuildConfig.EQUIPMENT_TYPE == 1) {
-            client = "L";
-        } else if (BuildConfig.EQUIPMENT_TYPE == 3) {
-            client = "T";
+        if (BuildConfig.VERSION_STATE == 1) {
+            return Build.SERIAL;
         } else {
-            client = "Y";
+            StringBuilder buffer = new StringBuilder();
+            String client = "";
+            if (BuildConfig.EQUIPMENT_TYPE == 1) {
+                client = "L";
+            } else if (BuildConfig.EQUIPMENT_TYPE == 3) {
+                client = "T";
+            } else {
+                client = "Y";
+            }
+            //根据文件夹读取序列号
+            String path = FileUtils.createSerialNumberFile();
+            File file = new File(path);
+            File[] files = file.listFiles();
+            String name = "";
+            if (files != null && files.length != 0) {
+                name = files[0].getName();
+            }
+            if (TextUtils.isEmpty(name)) {
+                return "";
+            }
+            buffer.append("ZZD-").append(client).append("-")
+                    .append("ZZ1-").append("MR-").append(name);
+            return buffer.toString();
         }
-        //根据文件夹读取序列号
-        String path = FileUtils.createSerialNumberFile();
-        File file =  new File(path);
-        File[] files = file.listFiles();
-        String name = "";
-        if (files != null && files.length != 0) {
-            name = files[0].getName();
-        }
-        if (TextUtils.isEmpty(name)) {
-            return "";
-        }
-        buffer.append("ZZD-").append(client).append("-")
-                .append("ZZ1-").append("MR-").append(name);
-        return buffer.toString();
-//        return Build.SERIAL;
     }
 
     @SuppressLint("HardwareIds")

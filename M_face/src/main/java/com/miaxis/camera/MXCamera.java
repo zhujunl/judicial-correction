@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
+import android.os.SystemClock;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -62,28 +63,42 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         if (cameraId >= Camera.getNumberOfCameras()) {
             return -4;
         }
+
         try {
+            //打开几次会出问题Camera.open 会报错问题
             this.mCameraId = cameraId;
-            this.mCamera = Camera.open(cameraId);
-            //高拍仪判断
-            if (cameraId==CameraConfig.Camera_SM.CameraId){
+            for (int i = 0; i < 3; i++) {
+                try {
+                    this.mCamera = Camera.open(cameraId);
+                } catch (Exception e) {
+                    e.getStackTrace();
+                }
+                if (this.mCamera != null) {
+                    break;
+                }
+                SystemClock.sleep(70);
+            }
+            if (this.mCamera == null) {
+                return -1;
+            }
+            if (cameraId == CameraConfig.Camera_SM.CameraId) {
                 Camera.Parameters params = mCamera.getParameters();
                 List<Camera.Size> pictureSizes = params.getSupportedPictureSizes();
                 int length = pictureSizes.size();
-                int w=0;
-                int h=0;
+                int w = 0;
+                int h = 0;
                 for (int i = 0; i < length; i++) {
-                    if (pictureSizes.get(i).width>w){
-                        w=pictureSizes.get(i).width;
-                        h=pictureSizes.get(i).height;
+                    if (pictureSizes.get(i).width > w) {
+                        w = pictureSizes.get(i).width;
+                        h = pictureSizes.get(i).height;
                     }
                 }
-                if (w!=0&&h!=0){
-                    width=w;
-                    height=h;
+                if (w != 0 && h != 0) {
+                    width = w;
+                    height = h;
                 }
             }
-            Timber.e("宽高 %s   %s",width,height);
+            Timber.e("宽高 %s   %s", width, height);
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
@@ -199,6 +214,7 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         }
         return -2;
     }
+
     public int startTexture(SurfaceTexture holder) {
         if (this.mCamera == null) {
             return -1;

@@ -47,6 +47,8 @@ android {
             buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
             //设备类型 1 3台式 2 平板
             buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
+            //版本状态 已经安装过激活的使用老版序列号  没有激活过的使用新版序列号
+            buildConfigField 'int', 'VERSION_STATE', '1'
         }
         release {
             minifyEnabled false
@@ -63,6 +65,8 @@ android {
             buildConfigField 'String', 'CLIENT_NAME', '"MR-990-T"'
             //设备类型 1 3台式 2 平板
             buildConfigField 'String', 'DEVICE_TYPE', '"柜式"'
+            //版本状态
+            buildConfigField 'int', 'VERSION_STATE', '1'
         }
     }
 

@@ -55,10 +55,10 @@ public class BaseMsgFragment extends BaseInfoFragment<FragmentBaseMsgBinding> {
 
     @Inject
     Lazy<AppHints> appHintsLazy;
-
+    EnrollSharedViewModel vm;
     @Override
     protected void initData(@NonNull FragmentBaseMsgBinding binding, @Nullable Bundle savedInstanceState) {
-        EnrollSharedViewModel vm = new ViewModelProvider(getActivity()).get(EnrollSharedViewModel.class);
+         vm = new ViewModelProvider(getActivity()).get(EnrollSharedViewModel.class);
 //        BaseMsgModel model=new ViewModelProvider(this).get(BaseMsgModel.class);
         binding.setLifecycleOwner(this);
         binding.setVm(vm);
@@ -105,7 +105,23 @@ public class BaseMsgFragment extends BaseInfoFragment<FragmentBaseMsgBinding> {
                 case SUCCESS:
                     dismissLoading();
                     SpAdapter spAdapter = new SpAdapter();
+
+                    if (resource.data != null) {
+                        boolean isHave = false;
+                        for (JusticeBureau bean : resource.data) {
+                            if ("请选择".equals(bean.getTeamName())){
+                                isHave = true;
+                                break;
+                            }
+                        }
+                        if (!isHave) {
+                            JusticeBureau justiceBureau = new JusticeBureau();
+                            justiceBureau.setTeamName("请选择");
+                            resource.data.add(0, justiceBureau);
+                        }
+                    }
                     spAdapter.submitList(resource.data);
+
                     int j = -1;
                     if (vm.checkedJusticeBureau != null && resource.data != null && vm.checkedJusticeBureau.getTeamId() != null) {//&vm.checkedJusticeBureau.getTeamId()
                         for (int i = 0; i < resource.data.size(); i++) {
@@ -124,7 +140,18 @@ public class BaseMsgFragment extends BaseInfoFragment<FragmentBaseMsgBinding> {
         });
 
     }
+    @Inject
+    AppHints appHints;
 
+    @Override
+    public boolean checkData() {
+        JusticeBureau justiceBureau = vm.checkedJusticeBureau;
+        if (justiceBureau == null || "请选择".equals(justiceBureau.getTeamName())) {
+            appHints.showHint("请选择司法所");
+        }
+
+        return super.checkData();
+    }
 
     //    private void setSpUnitView(List<JusticeBureau> beanList, Spinner spinner) {
 //        SpAdapter adapter = new SpAdapter();
