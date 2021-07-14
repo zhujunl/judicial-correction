@@ -152,12 +152,8 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
             appHintsLazy.get().showError("Error:人像解析失败,请退出后重新尝试", (dialog, which) -> finish());
             return;
         }
-        String path = FileUtils.createFileParent(getContext()) + "/" + this.personInfo.getIdCardNumber() + ".bmp";
-        File file = new File(path);
-        if (!file.exists()) {
-            boolean save = BitmapUtils.saveBitmap(idCardFace, path);
-        }
-        idCardFace.recycle();
+        String path = FileUtils.createFileParent(getContext()) + "/" + System.currentTimeMillis() + ".bmp";
+        boolean save = BitmapUtils.saveBitmap(idCardFace, path);
         int[] oX = new int[1];
         int[] oY = new int[1];
         byte[] rgbFromFile = FaceManager.getInstance().getRgbFromFile(path, oX, oY);
