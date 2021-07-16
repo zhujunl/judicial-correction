@@ -30,6 +30,8 @@ import com.miaxis.judicialcorrection.leave.databinding.FragmentLeaveApplyBinding
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import dagger.Lazy;
@@ -106,6 +108,7 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
         mApplyViewModel.allProvince.observe(this, places -> {
             Timber.i("allProvince %s", places);
             SpAdapter adapter = new SpAdapter();
+            addPlace(places);
             adapter.submitList(places);
             binding.spProvince.setAdapter(adapter);
         });
@@ -113,18 +116,21 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
         mApplyViewModel.allCity.observe(this, places -> {
             Timber.i("allCity %s", places);
             SpAdapter adapter = new SpAdapter();
+            addPlace(places);
             adapter.submitList(places);
             binding.spCity.setAdapter(adapter);
         });
         mApplyViewModel.allDistrict.observe(this, places -> {
             Timber.i("allDistrict %s", places);
             SpAdapter adapter = new SpAdapter();
+            addPlace(places);
             adapter.submitList(places);
             binding.spDistrict.setAdapter(adapter);
         });
         mApplyViewModel.allAgencies.observe(this, places -> {
             Timber.i("allAgencies%s", places);
             SpAdapter adapter = new SpAdapter();
+            addPlace(places);
             adapter.submitList(places);
             binding.spStreet.setAdapter(adapter);
         });
@@ -191,6 +197,17 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
     @Override
     protected void initData(@NonNull FragmentLeaveApplyBinding binding, @Nullable Bundle savedInstanceState) {
 
+    }
+    private void addPlace(List<Place> places) {
+        for (Place p : places) {
+            if (!TextUtils.isEmpty(p.VALUE)) {
+                Place place = new Place();
+                place.VALUE = "";
+                place.ID = 0L;
+                places.add(0, place);
+                break;
+            }
+        }
     }
 
     private  void submit(){

@@ -95,7 +95,9 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                 list.add(place);
                 model.cityList.setValue(list);
             } else {
-                model.findAllCity(observer.get(selectedItemPosition).ID);
+                if (place.ID!=0L) {
+                    model.findAllCity(observer.get(selectedItemPosition).ID);
+                }
             }
         });
         model.cityList.observe(this, observer -> {
@@ -103,7 +105,9 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                 setSpView(observer, binding.spCity);
                 int selectedItemPosition = binding.spCity.getSelectedItemPosition();
                 Place place = observer.get(selectedItemPosition);
-                model.findAllDistrict(place.ID);
+                if (place.ID!=0L) {
+                    model.findAllDistrict(place.ID);
+                }
             }
         });
         model.smallTown.observe(this, observer -> {
@@ -111,7 +115,9 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                 setSpView(observer, binding.spDistrict);
                 int selectedItemPosition = binding.spDistrict.getSelectedItemPosition();
                 Place place = observer.get(selectedItemPosition);
-                model.getProvince(place.ID);
+                if (place.ID!=0L) {
+                    model.getProvince(place.ID);
+                }
             }
         });
         model.street.observe(this, observer -> {
@@ -249,7 +255,33 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
         model.setSheng(null);
     }
 
+
+    private void addPlace(List<Place> places) {
+        for (Place p : places) {
+            if (!TextUtils.isEmpty(p.VALUE)) {
+                Place place = new Place();
+                place.VALUE = "";
+                place.ID = 0L;
+                places.add(0, place);
+                break;
+            }
+        }
+    }
+
+    private void addJusticeBureau(List<JusticeBureau> justiceBureaus) {
+        for (JusticeBureau p : justiceBureaus) {
+            if (!TextUtils.isEmpty(p.getTeamName())) {
+                JusticeBureau justiceBureau = new JusticeBureau();
+                justiceBureau.setTeamName("");
+                justiceBureau.setTeamId("");
+                justiceBureaus.add(0, justiceBureau);
+                break;
+            }
+        }
+    }
+
     private void setSpView(List<Place> observer, Spinner spinner) {
+        addPlace(observer);
         List<String> list = new ArrayList<>();
         for (Place p : observer) {
             list.add(p.VALUE);
@@ -261,6 +293,7 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
     }
 
     private void setSpUnitView(List<JusticeBureau> beanList, Spinner spinner) {
+        addJusticeBureau(beanList);
         SpAdapter adapter = new SpAdapter();
         adapter.submitList(beanList);
         spinner.setAdapter(adapter);
