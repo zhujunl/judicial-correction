@@ -20,11 +20,7 @@ public class TimeUtils {
     public static boolean isInTime(Date start, Date end) {
         try {
             Date date = new Date();
-            boolean after = date.after(start);
-            if (after) {
-                return date.before(end);
-            }
-            return after;
+            return date.getTime() <= start.getTime();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
