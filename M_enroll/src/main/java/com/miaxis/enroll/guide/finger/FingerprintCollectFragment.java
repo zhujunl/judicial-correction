@@ -63,10 +63,10 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFing
     protected void initData(@NonNull @NotNull FragmentFingerprintCollectBinding binding, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         mFingerprintCollectModel = new ViewModelProvider(this).get(FingerprintCollectModel.class);
         mFingerprintCollectModel.filePath = FileUtils.createFileParent(getContext());
-        if (mIdCard!=null){
-            mFingerprintCollectModel.fingerprint1.set(mIdCard.fp0);
-            mFingerprintCollectModel.fingerprint2.set(mIdCard.fp1);
-        }
+//        if (mIdCard!=null){
+//            mFingerprintCollectModel.fingerprint1.set(mIdCard.fp0);
+//            mFingerprintCollectModel.fingerprint2.set(mIdCard.fp1);
+//        }
         mHandler.postDelayed(() -> mFingerprintCollectModel.initFingerDevice(),1000);
         mFingerprintCollectModel.resultState.observe(this, aBoolean -> {
             //状态
@@ -92,15 +92,15 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFing
                 }
             });
         });
-        if (mIdCard!=null){
-            if (TextUtils.isEmpty(mIdCard.fingerprintPosition0)){
-                mIdCard.fingerprintPosition0="";
-            }
-            if (TextUtils.isEmpty(mIdCard.fingerprintPosition1)){
-                mIdCard.fingerprintPosition1="";
-            }
-            binding.tvHintFingerprint.setText(mIdCard.fingerprintPosition0+"\t\t\t"+mIdCard.fingerprintPosition1);
-        }
+//        if (mIdCard!=null){
+//            if (TextUtils.isEmpty(mIdCard.fingerprintPosition0)){
+//                mIdCard.fingerprintPosition0="";
+//            }
+//            if (TextUtils.isEmpty(mIdCard.fingerprintPosition1)){
+//                mIdCard.fingerprintPosition1="";
+//            }
+//            binding.tvHintFingerprint.setText(mIdCard.fingerprintPosition0+"\t\t\t"+mIdCard.fingerprintPosition1);
+//        }
         mFingerprintCollectModel.hint.observe(this, binding.tvHint::setText);
     }
 
