@@ -61,21 +61,6 @@ public class BaseFaceViewModel extends ViewModel {
     @Inject
     public BaseFaceViewModel(AppExecutors appExecutors) {
         this.mAppExecutors = appExecutors;
-        MMKV mmkv = MMKV.defaultMMKV();
-        String quality = mmkv.getString("faceQuality", "75");
-        String faceCom = mmkv.getString("faceComparison", "30");
-        if (TextUtils.isEmpty(quality)) {
-            FaceConfig.threshold = 0.75f;
-            FaceConfig.thresholdIdCard = 0.75f;
-        } else {
-            FaceConfig.threshold = Integer.parseInt(quality) / 100;
-            FaceConfig.thresholdIdCard = Integer.parseInt(quality) / 100;
-        }
-        if (TextUtils.isEmpty(faceCom)) {
-            FaceConfig.faceComparison = 30;
-        } else {
-            FaceConfig.faceComparison = Integer.parseInt(faceCom);
-        }
     }
 
     public void processRgbFrame(MXFrame frame, FaceCallback captureCallback) {

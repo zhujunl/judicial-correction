@@ -134,6 +134,19 @@ public class ConfigModel extends ViewModel {
         mmkv.putString("baseUrl2", baseUrlFingerAndFace.get());
         mmkv.putString("faceQuality", faceQuality.get());
         mmkv.putString("faceComparison", faceComparison.get());
+
+        //        if (TextUtils.isEmpty(quality)) {
+//            FaceConfig.threshold = 0.75f;
+//            FaceConfig.thresholdIdCard = 0.75f;
+//        } else {
+//            FaceConfig.threshold = Float.parseFloat(quality) * 0.01;
+//            FaceConfig.thresholdIdCard = Float.parseFloat(quality) *0.01;
+//        }
+//        if (TextUtils.isEmpty(faceCom)) {
+//            FaceConfig.faceComparison = 30;
+//        } else {
+//            FaceConfig.faceComparison = Integer.parseInt(faceCom);
+//        }
     }
 
     /**

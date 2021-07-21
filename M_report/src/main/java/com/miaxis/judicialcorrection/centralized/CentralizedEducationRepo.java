@@ -39,6 +39,7 @@ public class CentralizedEducationRepo {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("jzjyId", id);
         hashMap.put("pid", pid);
+        hashMap.put("type","qiandao");
         LiveData<ApiResult<Object>> login = apiService.educationAdd(hashMap);
         return ResourceConvertUtils.convertToResource(login);
     }

@@ -30,27 +30,27 @@ public enum CameraConfig {
 //    Camera_SM(1,640, 480, 0, 0);
 
     //配置
-//    Camera_RGB(MMKV.defaultMMKV().getInt("cameraRGBId", 2),
-//            640,
-//            480,
-//            0,
-//            0),
-//    Camera_NIR(MMKV.defaultMMKV().getInt("cameraNIRId", 0),
-//            640, 480,
-//            0,
-//            0),
-//    Camera_SM(MMKV.defaultMMKV().getInt("cameraGPId", 1),
-//            640,
-//            480,
-//            0,
-//            0);
+    Camera_RGB(MMKV.defaultMMKV().getInt("cameraRGBId", 2),
+            640,
+            480,
+            0,
+            0),
+    Camera_NIR(MMKV.defaultMMKV().getInt("cameraNIRId", 0),
+            640, 480,
+            0,
+            0),
+    Camera_SM(MMKV.defaultMMKV().getInt("cameraGPId", 1),
+            640,
+            480,
+            0,
+            0);
 
     //todo 现场配置 Camera.CameraInfo.CAMERA_FACING_FRONT RGB
     //todo 现场配置 Camera.CameraInfo.CAMERA_FACING_BACK NIR
     //正式  大台式
-    Camera_RGB(Camera.CameraInfo.CAMERA_FACING_FRONT, 640, 480, 90, 90),
-    Camera_NIR(Camera.CameraInfo.CAMERA_FACING_BACK, 640, 480, 90, 90),
-    Camera_SM(2,640, 480, 90, 90);
+//    Camera_RGB(Camera.CameraInfo.CAMERA_FACING_FRONT, 640, 480, 90, 90),
+//    Camera_NIR(Camera.CameraInfo.CAMERA_FACING_BACK, 640, 480, 90, 90),
+//    Camera_SM(2,640, 480, 90, 90);
 
     public int CameraId;
     public int width;

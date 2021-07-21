@@ -70,23 +70,42 @@ public class FingerprintCollectModel extends ViewModel {
         @Override
         public void onFingerRead(byte[] feature, Bitmap image) {
             Timber.e("FingerRead:" + (feature == null) + "   " + (image == null));
-            setFingerReadFile(feature, image);
-            hint.postValue("采集结束");
-        }
-
-        @Override
-        public void onFingerReadComparison(byte[] feature, Bitmap image, int state) {
-            Timber.e("FingerRead:" + (feature == null) + "   " + (image == null) + "===结果" + state);
-            if (state == 0) {
-                hint.postValue("指纹比对成功！");
-                setFingerReadFile(feature, image);
-            } else {
-                hint.postValue("指纹比对失败！");
+            if (image==null) {
                 SystemClock.sleep(1000);
                 try {
                     readFinger(getFingerToByte(), getFingerToByte2());
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            }else{
+                hint.postValue("采集完成！");
+                setFingerReadFile(feature, image);
+            }
+
+        }
+
+        @Override
+        public void onFingerReadComparison(byte[] feature, Bitmap image, int state) {
+            Timber.e("FingerRead:" + (feature == null) + "   " + (image == null) + "===结果" + state);
+            if (image == null) {
+                SystemClock.sleep(1000);
+                try {
+                    readFinger(getFingerToByte(), getFingerToByte2());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                if (state == 0) {
+                    hint.postValue("指纹比对成功！");
+                    setFingerReadFile(feature, image);
+                } else {
+                    hint.postValue("指纹比对失败！");
+                    SystemClock.sleep(1000);
+                    try {
+                        readFinger(getFingerToByte(), getFingerToByte2());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

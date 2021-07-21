@@ -120,7 +120,7 @@ public class FingerStrategy implements FingerManager.FingerStrategy {
                             if (match==MxFingerAlg.SUCCESS){
                                 m = MxFingerAlg.SUCCESS;
                             }else {
-                                int match2 = mxFingerAlg.match(b, feature, 3);
+                                int match2 = mxFingerAlg.match(b2, feature, 3);
                                 if (match2==MxFingerAlg.SUCCESS) {
                                     m = MxFingerAlg.SUCCESS;
                                 } else {

@@ -4,12 +4,15 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.api.vo.Education;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.common.Resource;
+import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.base.utils.TimeUtils;
+import com.miaxis.judicialcorrection.base.utils.numbers.HexStringUtils;
 import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.dialog.DialogResult;
 import com.miaxis.judicialcorrection.face.VerifyPageFragment;
@@ -27,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.Observer;
+
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
@@ -82,59 +86,62 @@ public class CentralizedEducationActivity extends BaseBindingActivity<ActivityRe
     @Override
     public void onLogin(PersonInfo personInfo) {
         if (personInfo != null) {
-            mPid=personInfo.getId();
-            mCentralizedEducationRepo.getEducation(1, 100).observe(this, new Observer<Resource<Education>>() {
-                @Override
-                public void onChanged(Resource<Education> objectResource) {
-                    switch (objectResource.status) {
-                        case LOADING:
-                            showLoading(title, "正在获取" + title + "信息，请稍后");
-                            break;
-                        case ERROR:
-                            dismissLoading();
-                            appHintsLazy.get().showError("Error:" + objectResource.errorMessage);
-                            break;
-                        case SUCCESS:
-                            dismissLoading();
-                            if (objectResource.data == null || objectResource.data.list == null ||
-                                    objectResource.data.list.isEmpty()) {
-                                appHintsLazy.get().showError("无" + title + "数据", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        finish();
-                                    }
-                                });
-                                return;
-                            }
-                            Education.ListBean temp = null;
-                            for (Education.ListBean listBean : objectResource.data.list) {
-                                if (TimeUtils.isInTime(listBean.jyxxkssj, listBean.jyxxjssj)) {
-                                    temp = listBean;
-                                    break;
-                                }
-                            }
-
-                            if (temp == null) {
-                                appHintsLazy.get().showError("当前还没有"+title+"，如需签到，请联系工作人员!", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        finish();
-                                    }
-                                });
-                                return;
-                            }
-                            mTempId=temp.id;
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .replace(R.id.layout_root, new VerifyPageFragment(title, personInfo,temp))
-                                    .commitNow();
-                            break;
-                    }
-                }
-            });
+            mPid = personInfo.getId();
+            getList(personInfo);
         }
+    }
+
+    private void getList(PersonInfo personInfo) {
+        mCentralizedEducationRepo.getEducation(1, 20).observe(this, new Observer<Resource<Education>>() {
+            @Override
+            public void onChanged(Resource<Education> objectResource) {
+                switch (objectResource.status) {
+                    case LOADING:
+                        showLoading(title, "正在获取" + title + "信息，请稍后");
+                        break;
+                    case ERROR:
+                        dismissLoading();
+                        appHintsLazy.get().showError("Error:" + objectResource.errorMessage);
+                        break;
+                    case SUCCESS:
+                        dismissLoading();
+                        if (objectResource.data == null || objectResource.data.list == null ||
+                                objectResource.data.list.isEmpty()) {
+                            appHintsLazy.get().showError("无" + title + "数据", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            });
+                            return;
+                        }
+                        Education.ListBean temp = null;
+                        for (Education.ListBean listBean : objectResource.data.list) {
+                            if (TimeUtils.isInTime(listBean.jyxxkssj, listBean.jyxxjssj)) {
+                                temp = listBean;
+                                break;
+                            }
+                        }
+                        if (temp == null) {
+                            appHintsLazy.get().showError("当前还没有" + title + "，如需签到，请联系工作人员!", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            });
+                            return;
+                        }
+                        mTempId = temp.id;
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.layout_root, new VerifyPageFragment(title, personInfo, temp))
+                                .commitNow();
+                        break;
+                }
+            }
+        });
     }
 
     @Override

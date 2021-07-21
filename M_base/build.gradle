@@ -58,15 +58,15 @@ android {
             //声纹指纹 '"http://10.249.2.210"'不能使用了  修改
             buildConfigField 'String', 'SERVER_URL2', '"http://10.249.2.210:9000"'
             //类型
-            buildConfigField 'int', 'EQUIPMENT_TYPE', '1'
+            buildConfigField 'int', 'EQUIPMENT_TYPE', '3'
             //人脸存图片的   旋转尺寸 3： 0   1：270
-            buildConfigField 'int', 'ROTATION_SIZE', '270'
+            buildConfigField 'int', 'ROTATION_SIZE', '0'
             //设备
-            buildConfigField 'String', 'CLIENT_NAME', '"MR-990-T"'
+            buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
             //设备类型 1 3台式 2 平板
-            buildConfigField 'String', 'DEVICE_TYPE', '"柜式"'
+            buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
             //版本状态
-            buildConfigField 'int', 'VERSION_STATE', '2'
+            buildConfigField 'int', 'VERSION_STATE', '1'
         }
     }
 

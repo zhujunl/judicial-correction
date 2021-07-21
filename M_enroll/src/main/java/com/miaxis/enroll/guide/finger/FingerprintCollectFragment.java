@@ -1,6 +1,7 @@
 package com.miaxis.enroll.guide.finger;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +48,7 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFing
     Lazy<AppHints> appHintsLazy;
 
 
+    private static Handler mHandler=new Handler();
     @Override
     protected int initLayout() {
         return R.layout.fragment_fingerprint_collect;
@@ -65,7 +67,7 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFing
             mFingerprintCollectModel.fingerprint1.set(mIdCard.fp0);
             mFingerprintCollectModel.fingerprint2.set(mIdCard.fp1);
         }
-        mFingerprintCollectModel.initFingerDevice();
+        mHandler.postDelayed(() -> mFingerprintCollectModel.initFingerDevice(),1000);
         mFingerprintCollectModel.resultState.observe(this, aBoolean -> {
             //状态
         });
@@ -135,6 +137,7 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFing
     @Override
     public void onDestroyView() {
         mFingerprintCollectModel.releaseFingerDevice();
+        mHandler.removeCallbacksAndMessages(null);
         super.onDestroyView();
         TTsUtils.close();
     }
