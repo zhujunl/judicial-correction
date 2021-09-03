@@ -9,6 +9,10 @@
             name="imei"
             type="String" />
 
+        <variable
+            name="serialNumber"
+            type="String" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -267,6 +271,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/ll_activation"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recyclerView">
@@ -297,6 +302,36 @@
                 android:hint="首次激活：请输入手机号"
                 android:textSize="20px" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_activation"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="72px"
+                android:textSize="30px"
+                android:textColor="#ff393939"
+                android:text="序列号设置："/>
+
+            <EditText
+                android:layout_width="400px"
+                android:layout_height="72px"
+                android:hint="请输入序列号"
+                android:paddingStart="10dp"
+                android:text="@{serialNumber}"
+                android:textSize="30px"
+                android:inputType="textCapCharacters"
+                android:maxLength="12"
+                android:imeOptions="actionDone"
+                android:background="@drawable/shape_et_bg"
+                android:layout_marginStart="10dp"
+                android:id="@+id/et_serial_number" />
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/tv_clientId"

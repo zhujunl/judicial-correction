@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="600px"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_dialog">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="22px"
+            android:text="@string/app_info"
+            android:textColor="@color/color_text_black"
+            android:textSize="23px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_error"
+            android:layout_width="112px"
+            android:layout_height="112px"
+            android:layout_marginTop="47px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/mipmap_error" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="29px"
+            android:text="@string/dialog_error_1"
+            android:textColor="@color/color_text_black"
+            android:textSize="33px"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_error" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20px"
+            android:gravity="center"
+            android:textColor="@color/color_text_grey"
+            android:textSize="25px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_error"
+            tools:text="@string/dialog_error_3" />
+
+
+        <com.miaxis.judicialcorrection.widget.countdown.CountDownTextView
+            android:id="@+id/cdtv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20px"
+            android:textColor="@color/color_text_red"
+            android:textSize="31px"
+            tools:text="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_message" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_input"
+            android:layout_width="280px"
+            android:layout_height="59px"
+            android:layout_marginTop="28px"
+            android:layout_marginBottom="61px"
+            android:background="@drawable/bg_btn_re_input"
+            android:gravity="center"
+            android:text="@string/dialog_btn_re_input"
+            android:textColor="@color/color_text_white"
+            android:textSize="21px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cdtv_time" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

@@ -294,12 +294,21 @@
                     android:id="@+id/cameraId_0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="@{Integer.parseInt(data.cameraRGBId) == 0}"
                     android:text="0" />
+
+                <RadioButton
+                    android:id="@+id/cameraId_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{Integer.parseInt(data.cameraRGBId) == 1}"
+                    android:text="1" />
 
                 <RadioButton
                     android:id="@+id/cameraId_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="@{Integer.parseInt(data.cameraRGBId) == 2}"
                     android:text="2" />
             </RadioGroup>
             <!--            <EditText-->
@@ -336,12 +345,21 @@
                     android:id="@+id/cameraNir_0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="@{Integer.parseInt(data.cameraNIRId) == 0}"
                     android:text="0" />
+
+                <RadioButton
+                    android:id="@+id/cameraNir_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{Integer.parseInt(data.cameraNIRId) == 1}"
+                    android:text="1" />
 
                 <RadioButton
                     android:id="@+id/cameraNir_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="@{Integer.parseInt(data.cameraNIRId) == 2}"
                     android:text="2" />
             </RadioGroup>
         </LinearLayout>
@@ -370,11 +388,25 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/cameraGpy_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{Integer.parseInt(data.cameraGPId) == 0}"
+                    android:text="0" />
+
+                <RadioButton
                     android:id="@+id/cameraGpy_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
+                    android:checked="@{Integer.parseInt(data.cameraGPId) == 1}"
                     android:text="1" />
+
+                <RadioButton
+                    android:id="@+id/cameraGpy_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{Integer.parseInt(data.cameraGPId) == 2}"
+                    android:text="2" />
 
             </RadioGroup>
 

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/tv_app_title"
+            layout="@layout/layout_app_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="27px"
+            android:gravity="center"
+            android:text="请销假"
+            android:textColor="@color/color_text_title"
+            android:textSize="32px"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_app_title" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back_to_home"
+            android:layout_width="157px"
+            android:layout_height="53px"
+            android:layout_marginTop="23px"
+            android:layout_marginEnd="93px"
+            android:background="@drawable/bg_btn_back_to_home_7"
+            android:gravity="center"
+            android:text="@string/btn_text_back_to_home"
+            android:textColor="@color/color_text_btn"
+            android:textSize="19px"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/tv_apply"
+            android:layout_width="192px"
+            android:layout_height="54px"
+            android:layout_marginLeft="93px"
+            android:layout_marginTop="33px"
+            android:background="@drawable/bg_btn_apply"
+            android:gravity="center"
+            android:text="+ 请假申请"
+            android:textColor="@color/color_text_orange"
+            android:textSize="20px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="93px"
+            android:layout_marginTop="35px"
+            android:layout_marginEnd="93px"
+            android:layout_marginBottom="50px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_apply"
+            tools:background="@color/color_text_grey"
+            tools:itemCount="10"
+            tools:listitem="@layout/layout_title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

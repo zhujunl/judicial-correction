@@ -13,6 +13,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         android:orientation="vertical">
 
         <include
@@ -28,16 +30,18 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_close"
-                android:layout_width="276px"
-                android:layout_height="104px"
-                android:layout_marginStart="20px"
-                android:layout_marginTop="27px"
-                android:layout_marginEnd="36px"
-                android:background="@drawable/bg_btn_back_to_home"
+                android:layout_width="200dp"
+                android:layout_height="80dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/bg_btn_back_to_home_7"
                 android:gravity="center"
                 android:text="返回"
                 android:textColor="@color/color_text_btn"
-                android:textSize="48px"
+                android:textSize="30sp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
 
@@ -49,15 +53,18 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_save"
-                android:layout_width="276px"
-                android:layout_height="104px"
-                android:layout_marginTop="27px"
-                android:layout_marginEnd="36px"
-                android:background="@drawable/bg_btn_back_to_home"
+                android:layout_width="200dp"
+                android:layout_height="80dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/bg_btn_back_to_home_7"
                 android:gravity="center"
                 android:text="保存"
                 android:textColor="@color/color_text_btn"
-                android:textSize="48px"
+                android:textSize="30sp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
         </LinearLayout>
@@ -67,11 +74,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
+            android:textSize="25sp"
             android:layout_gravity="center_vertical"
             android:text="注意：配置保存后，建议退出app清理后台重新进入！"
             android:textColor="#333" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,10 +88,11 @@
 
 
             <TextView
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="版本号："
+                android:textSize="30sp"
                 android:textColor="#333" />
 
             <EditText
@@ -93,6 +101,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_text_input"
                 android:enabled="false"
+                android:textSize="30sp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="@={data.version}" />
@@ -100,17 +109,18 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_checkForUpdates"
-                android:layout_width="276px"
-                android:layout_height="40dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="36px"
-                android:background="@drawable/bg_btn_back_to_home"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_marginStart="40dp"
+                android:background="@drawable/bg_btn_back_to_home_7"
                 android:gravity="center"
                 android:text="检测更新"
                 android:textColor="@color/color_text_btn"
-                android:textSize="30px"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
+                android:textSize="30sp" />
         </LinearLayout>
 
 
@@ -120,15 +130,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp">
 
 
             <TextView
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="服务器地址："
+                android:textSize="30sp"
                 android:textColor="#333" />
 
             <EditText
@@ -137,11 +148,13 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_text_input"
                 android:paddingStart="10dp"
+                android:textSize="30sp"
                 android:paddingEnd="10dp"
                 android:text="@={data.baseUrl}" />
 
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -151,8 +164,9 @@
 
 
             <TextView
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="30sp"
                 android:layout_gravity="center_vertical"
                 android:text="Token地址："
                 android:textColor="#333" />
@@ -161,6 +175,7 @@
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
+                android:textSize="30sp"
                 android:background="@drawable/bg_text_input"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
@@ -178,8 +193,9 @@
 
 
             <TextView
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="30sp"
                 android:layout_gravity="center_vertical"
                 android:text="前置平台地址："
                 android:textColor="#333" />
@@ -187,6 +203,7 @@
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:textSize="30sp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_text_input"
                 android:paddingStart="10dp"
@@ -204,9 +221,10 @@
 
 
             <TextView
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:textSize="30sp"
                 android:text="产品mac："
                 android:textColor="#333" />
 
@@ -214,11 +232,12 @@
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
+                android:textSize="30sp"
                 android:background="@drawable/bg_text_input"
+                android:enabled="false"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="@={data.productMac}" />
-
 
         </LinearLayout>
         <LinearLayout
@@ -230,8 +249,9 @@
 
 
             <TextView
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="30sp"
                 android:layout_gravity="center_vertical"
                 android:text="同步时间戳："
                 android:textColor="#333" />
@@ -245,25 +265,29 @@
                 android:enabled="false"
                 android:background="@drawable/bg_text_input"
                 android:text="0"
-                android:textSize="19px" />
+                android:textSize="30sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_clear_time"
-                android:layout_width="276px"
-                android:layout_height="40dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="36px"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_marginStart="50dp"
                 android:background="@drawable/bg_btn_back_to_home_7"
                 android:gravity="center"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="清空时间戳"
                 android:textColor="@color/color_text_btn"
-                android:textSize="30px" />
+                android:textSize="30sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:visibility="@{data.isHide}"
             android:layout_marginEnd="10dp">
 
@@ -273,12 +297,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="可见光"
+                android:textSize="30sp"
                 android:textColor="#333" />
 
             <RadioGroup
                 android:id="@+id/group_1"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -301,6 +326,7 @@
                     android:layout_height="wrap_content"
                     android:checked="@{Integer.parseInt(data.cameraRGBId) == 2}"
                     android:text="2" />
+
             </RadioGroup>
             <!--            <EditText-->
             <!--                android:layout_width="match_parent"-->
@@ -315,6 +341,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:visibility="@{data.isHide}"
             android:layout_marginEnd="10dp">
 
@@ -323,13 +350,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:textSize="30sp"
                 android:text="近红外"
                 android:textColor="#333" />
 
             <RadioGroup
                 android:id="@+id/group_2"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -360,8 +388,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:visibility="@{data.isHide}"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
+            android:visibility="@{data.isHide}"
             android:orientation="horizontal">
 
 
@@ -369,13 +398,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="高拍仪:"
+                android:textSize="30sp"
+                android:text="高拍仪"
                 android:textColor="#333" />
 
             <RadioGroup
                 android:id="@+id/group_3"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -384,14 +414,12 @@
                     android:layout_height="wrap_content"
                     android:checked="@{Integer.parseInt(data.cameraGPId) == 0}"
                     android:text="0" />
-
                 <RadioButton
                     android:id="@+id/cameraGpy_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="@{Integer.parseInt(data.cameraGPId) == 1}"
                     android:text="1" />
-
                 <RadioButton
                     android:id="@+id/cameraGpy_2"
                     android:layout_width="wrap_content"
@@ -416,16 +444,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="人脸质量阈值："
+                android:textSize="30sp"
                 android:textColor="#333" />
 
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
                 android:background="@drawable/bg_text_input"
                 android:inputType="number"
+                android:paddingStart="10dp"
+                android:textSize="30sp"
+                android:paddingEnd="10dp"
                 android:text="@={data.faceQuality}" />
 
         </LinearLayout>
@@ -438,9 +468,10 @@
             android:layout_marginEnd="10dp">
 
             <TextView
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:textSize="30sp"
                 android:text="人脸比对阈值："
                 android:textColor="#333" />
 
@@ -448,12 +479,14 @@
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
+                android:background="@drawable/bg_text_input"
+                android:textSize="30sp"
+                android:inputType="number"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:background="@drawable/bg_text_input"
-                android:inputType="number"
                 android:text="@={data.faceComparison}" />
 
         </LinearLayout>
+
     </LinearLayout>
 </layout>

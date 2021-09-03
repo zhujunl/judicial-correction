@@ -98,7 +98,7 @@
                     android:gravity="center"
                     android:text="身份证号："
                     android:textColor="#3C3C3C"
-                    android:textSize="19px" />
+                    android:textSize="19dp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_id_card"
@@ -107,15 +107,15 @@
                     android:gravity="center"
                     android:text="@{data.idCardNumber}"
                     android:textColor="#3C3C3C"
-                    android:textSize="19px" />
+                    android:textSize="19sp" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/id_view"
-            android:layout_width="7px"
-            android:layout_height="27px"
-            android:layout_marginTop="25px"
+            android:layout_width="7dp"
+            android:layout_height="27dp"
+            android:layout_marginTop="25dp"
             android:background="#2850A3"
             app:layout_constraintLeft_toLeftOf="@id/ll_text"
             app:layout_constraintTop_toBottomOf="@id/ll_text" />
@@ -123,11 +123,11 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10px"
+            android:layout_marginStart="10dp"
             android:gravity="center"
             android:text="请假申请信息表"
             android:textColor="#393939"
-            android:textSize="20px"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/id_view"
             app:layout_constraintLeft_toRightOf="@id/id_view"
             app:layout_constraintTop_toBottomOf="@id/ll_text"
@@ -137,14 +137,14 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5px"
+            android:layout_marginEnd="5dp"
             android:text="*"
             android:textColor="#F40707"
-            android:textSize="19px"
+            android:textSize="19sp"
             app:layout_constraintBottom_toBottomOf="@id/tv_apply_time_title"
             app:layout_constraintRight_toLeftOf="@id/tv_apply_time_title"
             app:layout_constraintTop_toTopOf="@id/tv_apply_time_title"
-            app:layout_goneMarginStart="132px" />
+            app:layout_goneMarginStart="132dp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_apply_time_title"
@@ -152,7 +152,7 @@
             android:layout_height="wrap_content"
             android:text="申请时间: "
             android:textColor="#393939"
-            android:textSize="19px"
+            android:textSize="19sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_apply_time"
             app:layout_constraintRight_toLeftOf="@id/tv_apply_time"
             app:layout_constraintTop_toTopOf="@id/tv_apply_time" />
@@ -160,19 +160,19 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_apply_time"
-            android:layout_width="128px"
-            android:layout_height="36px"
-            android:layout_marginStart="183px"
-            android:layout_marginTop="19px"
-            android:layout_marginEnd="33px"
+            android:layout_width="128dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="183dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginEnd="33dp"
             android:background="@drawable/bg_text_input"
             android:drawableEnd="@mipmap/mipmap_calendar"
             android:gravity="center_vertical"
-            android:paddingStart="10px"
-            android:paddingEnd="26px"
+            android:paddingStart="10dp"
+            android:paddingEnd="26dp"
             android:text="@{data.applyTime}"
             android:textColor="#393939"
-            android:textSize="12px"
+            android:textSize="12sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/id_view" />
 
@@ -181,10 +181,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5px"
+            android:layout_marginEnd="5dp"
             android:text="*"
             android:textColor="#F40707"
-            android:textSize="19px"
+            android:textSize="19sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_apply_start_time"
             app:layout_constraintRight_toLeftOf="@+id/tv_apply_start_time_title"
             app:layout_constraintTop_toTopOf="@+id/tv_apply_start_time" />
@@ -195,7 +195,7 @@
             android:layout_height="wrap_content"
             android:text="请假开始日期: "
             android:textColor="#393939"
-            android:textSize="19px"
+            android:textSize="19sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_apply_start_time"
             app:layout_constraintRight_toLeftOf="@id/tv_apply_start_time"
             app:layout_constraintTop_toTopOf="@+id/tv_apply_start_time" />
@@ -203,18 +203,18 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_apply_start_time"
-            android:layout_width="128px"
-            android:layout_height="36px"
-            android:layout_marginStart="160px"
-            android:layout_marginTop="19px"
+            android:layout_width="128dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="160dp"
+            android:layout_marginTop="19dp"
             android:background="@drawable/bg_text_input"
             android:drawableEnd="@mipmap/mipmap_calendar"
             android:gravity="center_vertical"
-            android:paddingStart="10px"
-            android:paddingEnd="26px"
+            android:paddingStart="10dp"
+            android:paddingEnd="26dp"
             android:text="@{data.startTime}"
             android:textColor="#393939"
-            android:textSize="12px"
+            android:textSize="12sp"
             app:layout_constraintLeft_toRightOf="@id/tv_apply_time"
             app:layout_constraintTop_toBottomOf="@id/id_view" />
 
@@ -223,10 +223,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5px"
+            android:layout_marginEnd="5dp"
             android:text="*"
             android:textColor="#F40707"
-            android:textSize="19px"
+            android:textSize="19sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_apply_end_time"
             app:layout_constraintRight_toLeftOf="@+id/tv_apply_end_time_title"
             app:layout_constraintTop_toTopOf="@+id/tv_apply_end_time" />
@@ -237,26 +237,26 @@
             android:layout_height="wrap_content"
             android:text="请假结束日期: "
             android:textColor="#393939"
-            android:textSize="19px"
+            android:textSize="19dp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_apply_end_time"
             app:layout_constraintRight_toLeftOf="@id/tv_apply_end_time"
             app:layout_constraintTop_toTopOf="@+id/tv_apply_end_time" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_apply_end_time"
-            android:layout_width="128px"
-            android:layout_height="36px"
-            android:layout_marginStart="154px"
-            android:layout_marginTop="19px"
-            android:layout_marginEnd="33px"
+            android:layout_width="128dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="154dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginEnd="33dp"
             android:background="@drawable/bg_text_input"
             android:drawableEnd="@mipmap/mipmap_calendar"
             android:gravity="center_vertical"
-            android:paddingStart="10px"
-            android:paddingEnd="26px"
+            android:paddingStart="10dp"
+            android:paddingEnd="26dp"
             android:text="@{data.endTime}"
             android:textColor="#393939"
-            android:textSize="12px"
+            android:textSize="12sp"
             app:layout_constraintLeft_toRightOf="@id/tv_apply_start_time"
             app:layout_constraintTop_toBottomOf="@id/id_view" />
 
@@ -265,10 +265,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5px"
+            android:layout_marginEnd="5dp"
             android:text="*"
             android:textColor="#F40707"
-            android:textSize="19px"
+            android:textSize="19sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_out_day_number"
             app:layout_constraintRight_toLeftOf="@+id/tv_out_day_title"
             app:layout_constraintTop_toTopOf="@+id/tv_out_day_number" />
@@ -277,30 +277,30 @@
             android:id="@+id/tv_out_day_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="外出天数: "
+            android:text="外出天数: 外出天数: 外出天数: 外出天数: 外出天数: 外出天数: "
             android:textColor="#393939"
-            android:textSize="19px"
+            android:textSize="19dp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_out_day_number"
             app:layout_constraintRight_toLeftOf="@id/tv_out_day_number"
             app:layout_constraintTop_toTopOf="@+id/tv_out_day_number" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_out_day_number"
-            android:layout_width="194px"
-            android:layout_height="36px"
-            android:layout_marginStart="122px"
-            android:layout_marginTop="19px"
-            android:layout_marginEnd="33px"
+            android:layout_width="194dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="122dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginEnd="33dp"
             android:background="@drawable/bg_text_input"
             android:gravity="center_vertical"
             android:hint="根据请假开始时间和结束时间自动计算"
             android:inputType="number"
-            android:paddingStart="10px"
-            android:paddingEnd="26px"
+            android:paddingStart="10dp"
+            android:paddingEnd="26dp"
             android:text="@{data.days}"
             android:textColor="#393939"
             android:textColorHint="#999999"
-            android:textSize="12px"
+            android:textSize="12sp"
             app:layout_constraintLeft_toRightOf="@id/tv_apply_end_time"
             app:layout_constraintTop_toBottomOf="@id/id_view" />
 
@@ -309,10 +309,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5px"
+            android:layout_marginEnd="5dp"
             android:text="*"
             android:textColor="#F40707"
-            android:textSize="19px"
+            android:textSize="19sp"
             app:layout_constraintBottom_toBottomOf="@+id/sp_province"
             app:layout_constraintRight_toLeftOf="@+id/tv_out_location_title"
             app:layout_constraintTop_toTopOf="@+id/sp_province" />
@@ -321,22 +321,22 @@
             android:id="@+id/tv_out_location_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="89px"
+            android:layout_marginStart="89dp"
             android:text="外出目的地: "
             android:textColor="#393939"
-            android:textSize="19px"
+            android:textSize="19sp"
             app:layout_constraintBottom_toBottomOf="@+id/sp_province"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@+id/sp_province" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sp_street"
-            android:layout_width="96px"
-            android:layout_height="36px"
+            android:layout_width="96dp"
+            android:layout_height="36dp"
             android:layout_gravity="start"
-            android:layout_marginStart="515px"
-            android:layout_marginTop="19px"
-            android:layout_marginEnd="8px"
+            android:layout_marginStart="515dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginEnd="8dp"
             android:autofillHints="选择街道"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_apply_time"
@@ -344,10 +344,10 @@
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sp_district"
-            android:layout_width="96px"
-            android:layout_height="36px"
+            android:layout_width="96dp"
+            android:layout_height="36dp"
             android:layout_gravity="start"
-            android:layout_marginEnd="8px"
+            android:layout_marginEnd="8dp"
             android:autofillHints="选择县区"
             app:layout_constraintBottom_toBottomOf="@id/sp_street"
             app:layout_constraintRight_toLeftOf="@id/sp_street"
@@ -356,10 +356,10 @@
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sp_city"
-            android:layout_width="96px"
-            android:layout_height="36px"
+            android:layout_width="96dp"
+            android:layout_height="36dp"
             android:layout_gravity="start"
-            android:layout_marginEnd="8px"
+            android:layout_marginEnd="8dp"
             android:autofillHints="选择市"
             app:layout_constraintBottom_toBottomOf="@id/sp_district"
             app:layout_constraintRight_toLeftOf="@id/sp_district"
@@ -368,10 +368,10 @@
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sp_province"
-            android:layout_width="96px"
-            android:layout_height="36px"
+            android:layout_width="96dp"
+            android:layout_height="36dp"
             android:layout_gravity="start"
-            android:layout_marginEnd="8px"
+            android:layout_marginEnd="8dp"
             android:autofillHints="选择省份"
             app:layout_constraintBottom_toBottomOf="@id/sp_city"
             app:layout_constraintRight_toLeftOf="@id/sp_city"
@@ -381,17 +381,17 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_reason"
-            android:layout_width="318px"
-            android:layout_height="72px"
+            android:layout_width="318dp"
+            android:layout_height="72dp"
             android:layout_gravity="start"
-            android:layout_marginTop="23px"
-            android:layout_marginEnd="33px"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="33dp"
             android:background="@drawable/bg_text_input"
             android:gravity="center_vertical|start"
             android:hint="请选择"
-            android:paddingStart="10px"
+            android:paddingStart="10dp"
             android:text="@={data.outType}"
-            android:textSize="24px"
+            android:textSize="24sp"
             android:visibility="gone"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sp_street" />
@@ -402,8 +402,8 @@
             android:id="@+id/fl_xz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="159px"
-            android:layout_marginTop="23px"
+            android:layout_marginStart="159dp"
+            android:layout_marginTop="23dp"
             android:background="@drawable/shape_et_bg"
             app:layout_constraintLeft_toRightOf="@id/et_detailed"
             app:layout_constraintTop_toBottomOf="@id/tv_apply_time">
@@ -411,8 +411,8 @@
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/sp_reason"
                 selection="@={data.outType}"
-                android:layout_width="132px"
-                android:layout_height="37px"
+                android:layout_width="132dp"
+                android:layout_height="37dp"
                 android:layout_gravity="start"
                 android:autofillHints="请选择"
                 android:entries="@array/leavetype"
@@ -423,10 +423,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5px"
+            android:layout_marginEnd="5dp"
             android:text="*"
             android:textColor="#F40707"
-            android:textSize="19px"
+            android:textSize="19sp"
             app:layout_constraintBottom_toBottomOf="@+id/fl_xz"
             app:layout_constraintRight_toLeftOf="@id/tv_out_reason_title"
             app:layout_constraintTop_toTopOf="@+id/fl_xz" />
@@ -437,7 +437,7 @@
             android:layout_height="wrap_content"
             android:text="外出理由类型: "
             android:textColor="#393939"
-            android:textSize="20px"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/fl_xz"
             app:layout_constraintRight_toLeftOf="@id/fl_xz"
             app:layout_constraintTop_toTopOf="@+id/fl_xz" />
@@ -445,16 +445,16 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_detailed"
-            android:layout_width="132px"
-            android:layout_height="37px"
-            android:layout_marginStart="161px"
+            android:layout_width="132dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="161dp"
             android:background="@drawable/bg_text_input"
             android:gravity="center_vertical"
             android:hint="如门牌号"
-            android:paddingStart="10px"
+            android:paddingStart="10dp"
             android:text="@={data.details}"
             android:textColorHint="#999999"
-            android:textSize="12px"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/sp_street"
             app:layout_constraintLeft_toRightOf="@id/sp_street"
             app:layout_constraintTop_toTopOf="@+id/sp_street" />
@@ -464,7 +464,7 @@
             android:layout_height="wrap_content"
             android:text="外出目的地明细: "
             android:textColor="#393939"
-            android:textSize="19px"
+            android:textSize="19dp"
             app:layout_constraintBottom_toBottomOf="@+id/et_detailed"
             app:layout_constraintRight_toLeftOf="@id/et_detailed"
             app:layout_constraintTop_toTopOf="@+id/et_detailed" />
@@ -472,26 +472,26 @@
         <!--具体事由-->
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_specific_reasons"
-            android:layout_width="363px"
-            android:layout_height="72px"
-            android:layout_marginStart="183px"
-            android:layout_marginTop="19px"
-            android:layout_marginEnd="33px"
+            android:layout_width="363dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="183dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginEnd="33dp"
             android:background="@drawable/bg_text_input"
-            android:paddingStart="10px"
-            android:paddingEnd="10px"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:text="@={data.specificReasons}"
-            android:textSize="12px"
+            android:textSize="12sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sp_street" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5px"
+            android:layout_marginEnd="5dp"
             android:text="*"
             android:textColor="#F40707"
-            android:textSize="19px"
+            android:textSize="19sp"
             app:layout_constraintBottom_toBottomOf="@+id/et_specific_reasons"
             app:layout_constraintRight_toLeftOf="@+id/tv_out_specific_reasons_title"
             app:layout_constraintTop_toTopOf="@+id/et_specific_reasons" />
@@ -502,7 +502,7 @@
             android:layout_height="wrap_content"
             android:text="具体事由："
             android:textColor="#393939"
-            android:textSize="18px"
+            android:textSize="18dp"
             app:layout_constraintBottom_toBottomOf="@+id/et_specific_reasons"
             app:layout_constraintRight_toLeftOf="@id/et_specific_reasons"
             app:layout_constraintTop_toTopOf="@+id/et_specific_reasons" />
@@ -510,7 +510,7 @@
         <!--关系：-->
         <!--        <androidx.appcompat.widget.AppCompatSpinner-->
         <!--            android:id="@+id/sp_relationship"-->
-        <!--            android:layout_width="318px"-->
+        <!--            android:layout_width="318dp"-->
         <!--            android:layout_height="72px"-->
         <!--            android:layout_gravity="start"-->
         <!--            android:layout_marginTop="23px"-->
@@ -522,16 +522,16 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_relationship"
-            android:layout_width="105px"
-            android:layout_height="36px"
+            android:layout_width="105dp"
+            android:layout_height="36dp"
             android:layout_gravity="start"
-            android:layout_marginStart="84px"
+            android:layout_marginStart="84dp"
             android:background="@drawable/bg_text_input"
             android:gravity="center_vertical|start"
             android:hint="请输入"
-            android:paddingStart="10px"
+            android:paddingStart="10dp"
             android:text="@={data.relationShip}"
-            android:textSize="12px"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/et_specific_reasons"
             app:layout_constraintLeft_toRightOf="@id/et_temporary_guardian"
             app:layout_constraintTop_toTopOf="@id/et_specific_reasons" />
@@ -539,10 +539,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5px"
+            android:layout_marginEnd="5dp"
             android:text="*"
             android:textColor="#F40707"
-            android:textSize="18px"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/et_relationship"
             app:layout_constraintRight_toLeftOf="@+id/tv_relationship_title"
             app:layout_constraintTop_toTopOf="@+id/et_relationship" />
@@ -553,7 +553,7 @@
             android:layout_height="wrap_content"
             android:text="关系："
             android:textColor="#393939"
-            android:textSize="19px"
+            android:textSize="19dp"
             app:layout_constraintBottom_toBottomOf="@+id/et_relationship"
             app:layout_constraintRight_toLeftOf="@id/et_relationship"
             app:layout_constraintTop_toTopOf="@+id/et_relationship" />
@@ -561,15 +561,15 @@
         <!--临时监护人：-->
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_temporary_guardian"
-            android:layout_width="105px"
-            android:layout_height="36px"
-            android:layout_marginStart="136px"
+            android:layout_width="105dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="136dp"
             android:background="@drawable/bg_text_input"
             android:gravity="center_vertical"
-            android:paddingStart="10px"
+            android:paddingStart="10dp"
             android:text="@={data.temporaryGuardian}"
             android:textColorHint="#999999"
-            android:textSize="12px"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/et_specific_reasons"
             app:layout_constraintLeft_toRightOf="@id/et_specific_reasons"
             app:layout_constraintTop_toTopOf="@+id/et_specific_reasons" />
@@ -580,7 +580,7 @@
             android:layout_height="wrap_content"
             android:text="临时监护人："
             android:textColor="#393939"
-            android:textSize="18px"
+            android:textSize="18dp"
             app:layout_constraintBottom_toBottomOf="@+id/et_temporary_guardian"
             app:layout_constraintRight_toLeftOf="@id/et_temporary_guardian"
             app:layout_constraintTop_toTopOf="@+id/et_temporary_guardian" />
@@ -588,10 +588,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5px"
+            android:layout_marginEnd="5dp"
             android:text="*"
             android:textColor="#F40707"
-            android:textSize="27px"
+            android:textSize="27sp"
             app:layout_constraintBottom_toBottomOf="@+id/et_temporary_guardian"
             app:layout_constraintRight_toLeftOf="@+id/tv_temporary_guardian_title"
             app:layout_constraintTop_toTopOf="@+id/et_temporary_guardian" />
@@ -599,17 +599,17 @@
         <!--联系电话：-->
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_contact_number"
-            android:layout_width="105px"
-            android:layout_height="36px"
-            android:layout_marginStart="115px"
+            android:layout_width="105dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="115dp"
             android:background="@drawable/bg_text_input"
             android:gravity="center_vertical"
             android:inputType="phone"
             android:maxLength="11"
-            android:paddingStart="10px"
+            android:paddingStart="10dp"
             android:text="@={data.contactNumber}"
             android:textColorHint="#999999"
-            android:textSize="12px"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/et_temporary_guardian"
             app:layout_constraintLeft_toRightOf="@id/et_relationship"
             app:layout_constraintTop_toTopOf="@+id/et_temporary_guardian" />
@@ -620,7 +620,7 @@
             android:layout_height="wrap_content"
             android:text="联系电话: "
             android:textColor="#393939"
-            android:textSize="19px"
+            android:textSize="19dp"
             app:layout_constraintBottom_toBottomOf="@+id/et_contact_number"
             app:layout_constraintRight_toLeftOf="@id/et_contact_number"
             app:layout_constraintTop_toTopOf="@+id/et_contact_number" />
@@ -628,10 +628,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5px"
+            android:layout_marginEnd="5dp"
             android:text="*"
             android:textColor="#F40707"
-            android:textSize="18px"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/et_contact_number"
             app:layout_constraintRight_toLeftOf="@+id/tv_contact_number_title"
             app:layout_constraintTop_toTopOf="@+id/et_contact_number" />
@@ -642,7 +642,7 @@
             android:id="@+id/cl_application"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="19px"
+            android:layout_marginTop="19dp"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/cl_material"
@@ -650,14 +650,14 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_application_scan"
-                android:layout_width="166px"
-                android:layout_height="36px"
-                android:layout_marginStart="206px"
+                android:layout_width="166dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="206dp"
                 android:background="@drawable/bg_btn_scan_upload_2"
                 android:gravity="center"
                 android:text="扫描上传"
                 android:textColor="#393939"
-                android:textSize="18px"
+                android:textSize="18sp"
                 android:visibility="@{data.isHideApplicationButton}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -667,7 +667,7 @@
                 android:layout_height="wrap_content"
                 android:text="请假申请书："
                 android:textColor="#393939"
-                android:textSize="19px"
+                android:textSize="19dp"
                 android:visibility="@{data.isHideApplicationButton}"
                 app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"
                 app:layout_constraintRight_toLeftOf="@id/btn_application_scan"
@@ -677,10 +677,10 @@
                 android:id="@+id/tv_application_info_show"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14px"
+                android:layout_marginTop="14dp"
                 android:text="（请将申请书放置扫描区进行扫描）"
                 android:textColor="#999999"
-                android:textSize="12px"
+                android:textSize="12sp"
                 android:visibility="@{data.isHideApplicationButton}"
                 app:layout_constraintLeft_toLeftOf="@id/btn_application_scan"
                 app:layout_constraintRight_toRightOf="@id/btn_application_scan"
@@ -691,10 +691,10 @@
                 android:id="@+id/tv_leaveApplication_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20px"
+                android:layout_marginStart="20dp"
                 android:text="请假申请书："
                 android:textColor="#393939"
-                android:textSize="19px"
+                android:textSize="19sp"
                 android:visibility="@{data.isHideApplication}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="@id/rv_leaveApplication" />
@@ -702,11 +702,11 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20px"
-                android:layout_marginTop="10px"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
                 android:text="(说明:单击：预览，\n长按：删除)"
                 android:textColor="#999999"
-                android:textSize="12px"
+                android:textSize="12sp"
                 android:visibility="@{data.isHideApplication}"
                 app:layout_constraintRight_toLeftOf="@id/rv_leaveApplication"
                 app:layout_constraintTop_toBottomOf="@id/tv_leaveApplication_label" />
@@ -714,7 +714,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_leaveApplication"
                 android:layout_width="0dp"
-                android:layout_height="80px"
+                android:layout_height="80dp"
                 android:layout_gravity="end"
                 android:visibility="@{data.isHideApplication}"
                 app:layout_constraintLeft_toRightOf="@id/tv_leaveApplication_label"
@@ -727,7 +727,7 @@
             android:id="@+id/cl_material"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="19px"
+            android:layout_marginTop="19dp"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toRightOf="@id/cl_application"
             app:layout_constraintRight_toRightOf="parent"
@@ -735,14 +735,14 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_application_materials_scan"
-                android:layout_width="166px"
-                android:layout_height="36px"
-                android:layout_marginStart="200px"
+                android:layout_width="166dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="200dp"
                 android:background="@drawable/bg_btn_scan_upload_2"
                 android:gravity="center"
                 android:text="扫描上传"
                 android:textColor="#393939"
-                android:textSize="19px"
+                android:textSize="19sp"
                 android:visibility="@{data.isHideMaterialButton}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -752,7 +752,7 @@
                 android:layout_height="wrap_content"
                 android:text="请假申请材料："
                 android:textColor="#393939"
-                android:textSize="19px"
+                android:textSize="19dp"
                 android:visibility="@{data.isHideMaterialButton}"
                 app:layout_constraintBottom_toBottomOf="@+id/btn_application_materials_scan"
                 app:layout_constraintRight_toLeftOf="@id/btn_application_materials_scan"
@@ -762,10 +762,10 @@
                 android:id="@+id/tv_application_info_show2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14px"
+                android:layout_marginTop="14dp"
                 android:text="（请将申请材料放置扫描区进行扫描）"
                 android:textColor="#999999"
-                android:textSize="12px"
+                android:textSize="12sp"
                 android:visibility="@{data.isHideMaterialButton}"
                 app:layout_constraintLeft_toLeftOf="@+id/btn_application_materials_scan"
                 app:layout_constraintRight_toRightOf="@+id/btn_application_materials_scan"
@@ -775,23 +775,23 @@
                 android:id="@+id/tv_material_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20px"
+                android:layout_marginStart="20dp"
                 android:text="请假申请材料："
                 android:visibility="@{data.isHideMaterial}"
                 android:textColor="#393939"
-                android:textSize="19px"
+                android:textSize="19sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="@id/rv_material" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20px"
-                android:layout_marginTop="10px"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
                 android:visibility="@{data.isHideMaterial}"
                 android:text="(说明:单击：预览，\n长按：删除)"
                 android:textColor="#999999"
-                android:textSize="12px"
+                android:textSize="12sp"
                 app:layout_constraintRight_toLeftOf="@id/rv_material"
                 app:layout_constraintTop_toBottomOf="@id/tv_material_label" />
 
@@ -799,29 +799,29 @@
                 android:id="@+id/rv_material"
                 android:layout_width="0dp"
                 android:visibility="@{data.isHideMaterial}"
-                android:layout_height="80px"
+                android:layout_height="80dp"
                 android:layout_gravity="end"
                 app:layout_constraintLeft_toRightOf="@id/tv_material_label"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginEnd="20px"
+                android:layout_marginEnd="20dp"
                 app:layout_constraintRight_toRightOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_submit"
-            android:layout_width="400px"
-            android:layout_height="61px"
-            android:layout_marginTop="28px"
+            android:layout_width="400dp"
+            android:layout_height="61dp"
+            android:layout_marginTop="28dp"
             android:background="@drawable/bg_btn_back_to_home_green"
             android:gravity="center"
             android:text="提交"
             android:textColor="#fff"
-            android:textSize="19px"
+            android:textSize="19sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cl_material"
-            app:layout_goneMarginTop="27px" />
+            app:layout_goneMarginTop="27dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

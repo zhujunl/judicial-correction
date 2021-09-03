@@ -8,9 +8,11 @@
         <variable
             name="imei"
             type="String" />
+
         <variable
             name="serialNumber"
             type="String" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,11 +33,11 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="52px"
+            android:layout_marginTop="50dp"
             android:gravity="center"
             android:text="设备出厂设置"
             android:textColor="@color/color_text_title"
-            android:textSize="48px"
+            android:textSize="50sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -43,44 +45,43 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_back_to_home"
-            android:layout_width="276px"
-            android:layout_height="80px"
-            android:layout_marginTop="35px"
-            android:layout_marginEnd="144px"
-            android:background="@drawable/bg_btn_back_to_home_10"
+            android:layout_width="200dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="100dp"
+            android:background="@drawable/bg_btn_back_to_home_7"
             android:gravity="center"
             android:text="@string/btn_text_back_to_home"
             android:textColor="@color/color_text_btn"
-            android:textSize="28px"
+            android:textSize="30sp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
 
-
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_camera_config"
-            android:layout_width="276px"
-            android:layout_height="80px"
-            android:layout_marginTop="27px"
-            android:layout_marginStart="144px"
-            android:background="@drawable/bg_btn_back_to_home_10"
+            android:layout_width="200dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="100dp"
+            android:background="@drawable/bg_btn_back_to_home_7"
             android:gravity="center"
             android:text="设置"
             android:textColor="@color/color_text_btn"
-            android:textSize="28px"
+            android:textSize="30sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
+
         <TextView
             android:id="@+id/deviceId"
             android:layout_width="match_parent"
-            android:layout_height="100px"
-            android:layout_marginTop="44px"
-            android:layout_marginStart="144px"
-            android:layout_marginEnd="144px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:padding="10dp"
             android:gravity="center"
             android:background="@drawable/bg_text_apply_2"
             android:text="@{String.format(&quot;设备产品标识：%s&quot;,imei)}"
             android:textColor="#242E42"
-            android:textSize="40px"
+            android:textSize="40sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -89,10 +90,10 @@
 
         <View
             android:id="@+id/flag_addr"
-            android:layout_width="11px"
-            android:layout_height="41px"
-            android:layout_marginStart="149px"
-            android:layout_marginTop="37px"
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="30dp"
             android:background="#2850A3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/deviceId" />
@@ -101,27 +102,27 @@
             android:id="@+id/titleAddr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15px"
+            android:layout_marginStart="15dp"
             android:text="设备绑定单位设置"
             android:textColor="#ff393939"
-            android:textSize="30px"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="@id/flag_addr"
             app:layout_constraintStart_toEndOf="@id/flag_addr"
             app:layout_constraintTop_toTopOf="@id/flag_addr" />
 
 
         <LinearLayout
-            android:layout_width="1000px"
-            android:layout_height="72px"
-            android:layout_marginStart="180px"
-            android:layout_marginTop="41px"
-            android:layout_marginEnd="85px"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="100dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/flag_addr">
 
             <FrameLayout
-                android:layout_width="0dp"
+                android:layout_width="200dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/shape_et_bg"
@@ -133,14 +134,15 @@
                     android:id="@+id/spinnerSheng"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:textSize="30sp"
                     android:entries="@array/sheng"
                     android:gravity="center" />
             </FrameLayout>
 
             <FrameLayout
-                android:layout_width="0dp"
+                android:layout_width="200dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="16px"
+                android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_et_bg"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -151,14 +153,15 @@
                     android:id="@+id/spinnerShi"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:textSize="30sp"
                     android:spinnerMode="dropdown" />
             </FrameLayout>
 
 
             <FrameLayout
-                android:layout_width="0dp"
+                android:layout_width="200dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="16px"
+                android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_et_bg"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -169,14 +172,15 @@
                     android:id="@+id/spinnerXian"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:textSize="30sp"
                     android:spinnerMode="dropdown" />
             </FrameLayout>
 
 
             <FrameLayout
-                android:layout_width="0dp"
+                android:layout_width="200dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="16px"
+                android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_et_bg"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -187,6 +191,7 @@
                     android:id="@+id/spinnerJiedao"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:textSize="30sp"
                     android:spinnerMode="dropdown" />
             </FrameLayout>
 
@@ -195,47 +200,47 @@
 
         <View
             android:id="@+id/flagActive"
-            android:layout_width="11px"
-            android:layout_height="41px"
-            android:layout_marginStart="850px"
-            android:layout_marginTop="37px"
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="850dp"
+            android:layout_marginTop="30dp"
             android:background="#2850A3"
             app:layout_constraintLeft_toRightOf="@id/titleAddr"
             app:layout_constraintTop_toBottomOf="@id/deviceId" />
 
         <TextView
             android:id="@+id/titleActive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15px"
+            android:layout_width="500dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="20dp"
             android:text="授权激活码"
             android:textColor="#ff393939"
-            android:textSize="30px"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="@id/flagActive"
             app:layout_constraintStart_toEndOf="@id/flagActive"
             app:layout_constraintTop_toTopOf="@id/flagActive" />
 
         <EditText
             android:id="@+id/etActiveCode"
-            android:layout_width="500px"
-            android:layout_height="72px"
-            android:layout_marginTop="41px"
+            android:layout_width="500dp"
+            android:layout_height="80dp"
             android:background="@drawable/shape_et_bg"
             android:hint="请输入激活码"
             android:imeOptions="actionDone"
-            android:layout_marginStart="15px"
+            android:layout_marginStart="30dp"
             android:inputType="textCapCharacters"
-            android:paddingStart="32px"
-            android:textSize="30px"
+            android:paddingStart="20dp"
+            android:textSize="30sp"
             app:layout_constraintLeft_toRightOf="@id/flagActive"
             app:layout_constraintTop_toBottomOf="@id/titleActive" />
 
         <View
             android:id="@+id/flag_func"
-            android:layout_width="11px"
-            android:layout_height="41px"
-            android:layout_marginStart="155px"
-            android:layout_marginTop="160px"
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="140dp"
             android:background="#2850A3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/flagActive" />
@@ -244,10 +249,10 @@
             android:id="@+id/titleFunc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15px"
+            android:layout_marginStart="10dp"
             android:text="应用模块权限设置"
             android:textColor="#ff393939"
-            android:textSize="30px"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="@id/flag_func"
             app:layout_constraintStart_toEndOf="@id/flag_func"
             app:layout_constraintTop_toTopOf="@id/flag_func" />
@@ -256,9 +261,9 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="85px"
-            android:layout_marginTop="48px"
-            android:layout_marginEnd="85px"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="100dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -271,77 +276,81 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ll_activation"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="130dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recyclerView">
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/et_lxr"
-                android:layout_width="400px"
-                android:layout_height="72px"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:padding="10dp"
                 android:background="@drawable/shape_et_bg"
                 android:hint="首次激活：请输入联系人"
-                android:textSize="20px" />
+                android:textSize="30sp" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/et_address"
-                android:layout_width="400px"
-                android:layout_height="72px"
-                android:layout_marginStart="20px"
-                android:layout_marginEnd="20px"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:padding="10dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
                 android:background="@drawable/shape_et_bg"
                 android:hint="首次激活：请输入地址"
-                android:textSize="20px" />
+                android:textSize="30sp" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/et_phone"
-                android:layout_width="400px"
-                android:layout_height="72px"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:padding="10dp"
+                android:inputType="number"
                 android:background="@drawable/shape_et_bg"
                 android:hint="首次激活：请输入手机号"
-                android:textSize="20px" />
+                android:textSize="30sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40px"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="130dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_activation"
             android:orientation="horizontal">
-
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15px"
-                android:text="序列号设置："
+                android:layout_height="80dp"
+                android:textSize="30sp"
                 android:textColor="#ff393939"
-                android:textSize="30px" />
+                android:text="序列号设置："/>
 
             <EditText
-                android:layout_width="500px"
-                android:layout_height="72px"
-                android:layout_marginTop="41px"
-                android:background="@drawable/shape_et_bg"
+                android:layout_width="400dp"
+                android:layout_height="80dp"
                 android:hint="请输入序列号"
+                android:paddingStart="10dp"
                 android:text="@{serialNumber}"
-                android:imeOptions="actionDone"
-                android:layout_marginStart="15px"
                 android:inputType="textCapCharacters"
-                android:paddingStart="32px"
-                android:id="@+id/et_serial_number"
-                android:textSize="30px"/>
-        </LinearLayout>
+                android:textSize="30sp"
+                android:maxLength="12"
+                android:imeOptions="actionDone"
+                android:background="@drawable/shape_et_bg"
+                android:layout_marginStart="20dp"
+                android:id="@+id/et_serial_number" />
 
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_clientId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50px"
+            android:textSize="20sp"
+            android:layout_marginBottom="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

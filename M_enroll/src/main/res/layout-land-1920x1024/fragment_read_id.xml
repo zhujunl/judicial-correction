@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_app_background_glass" />
+
+        <include
+            android:id="@+id/tv_app_title"
+            layout="@layout/layout_app_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:textColor="@color/color_text_title"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_app_title"
+            tools:text="@string/page_title_1" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_read_id_card_placeholder"
+            android:layout_width="900dp"
+            android:layout_height="450dp"
+            android:layout_marginTop="50dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/mipmap_read_id_card_placeholder"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back_to_home"
+            android:layout_width="900dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/bg_btn_back_to_home"
+            android:gravity="center"
+            android:text="@string/btn_text_back_to_home"
+            android:textColor="@color/color_text_btn"
+            android:textSize="50sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_read_id_card_placeholder" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

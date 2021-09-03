@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.miaxis.enroll.EnrollSharedViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="100dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="家庭成员及社会关系至少两条或以上"
+            android:textColor="#393939"
+            android:textSize="25sp" />
+
+        <LinearLayout
+            android:layout_below="@id/tv_title"
+            android:id="@+id/ll_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="#2850A3"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="姓名"
+                android:textColor="#fff"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:text="关系"
+                android:textColor="#fff"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2.5"
+                android:gravity="center"
+                android:text="工作单位及家庭地址"
+                android:textColor="#fff"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="联系电话"
+                android:textColor="#fff"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_below="@id/ll_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_fragment_relationship" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/addLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recyclerview"
+            android:text="添加行"
+            android:gravity="center"
+            android:drawablePadding="10dp"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp"
+            android:drawableStart="@drawable/icon_add_line"
+            android:textColor="#fff"
+            android:textSize="30sp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/bg_btn_back_to_home_blue_7"/>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/delete_line"
+            android:layout_below="@id/recyclerview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="删除行"
+            android:visibility="gone"
+            android:gravity="center"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp"
+            android:layout_alignParentEnd="true"
+            android:textColor="#fff"
+            android:textSize="30sp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/bg_btn_back_to_home_blue_7"/>
+    </RelativeLayout>
+</layout>

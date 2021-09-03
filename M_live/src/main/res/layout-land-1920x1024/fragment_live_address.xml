@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.miaxis.judicialcorrection.live.LiveAddressChangeViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/tv_app_title"
+            layout="@layout/layout_app_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:gravity="center"
+            android:text="居住地变更申请"
+            android:textColor="@color/color_text_title"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_app_title" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back_to_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="100dp"
+            android:padding="20dp"
+            android:background="@drawable/bg_btn_back_to_home"
+            android:gravity="center"
+            android:text="@string/btn_text_back_to_home"
+            android:textColor="@color/color_text_btn"
+            android:textSize="30sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
+
+
+        <LinearLayout
+            android:id="@+id/ll_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/bg_text_apply"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="30dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_name_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{`姓名：`+vm.personInfoMutableLiveData.xm}"
+                android:textColor="#3C3C3C"
+                android:textSize="30sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_id_card_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@{`身份证号：`+vm.personInfoMutableLiveData.idCardNumber}"
+                android:textColor="#3C3C3C"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/id_view"
+            android:layout_width="10dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="#2850A3"
+            app:layout_constraintLeft_toLeftOf="@id/ll_text"
+            app:layout_constraintTop_toBottomOf="@id/ll_text" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:gravity="start"
+            android:text="居住地变更申请表"
+            android:textColor="#393939"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@id/id_view"
+            app:layout_constraintLeft_toRightOf="@id/id_view"
+            app:layout_constraintTop_toBottomOf="@id/ll_text"
+            app:layout_constraintTop_toTopOf="@id/id_view" />
+
+        <!--申请时间-->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:id="@+id/tv_apply_time_"
+            android:layout_marginStart="100dp"
+            android:text="*"
+            android:textColor="#F40707"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_apply_time"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_apply_time" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_apply_time_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="申请时间："
+            android:textColor="#393939"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_apply_time"
+            app:layout_constraintLeft_toRightOf="@id/tv_apply_time_"
+            app:layout_constraintTop_toTopOf="@+id/tv_apply_time" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_apply_time"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/bg_text_input"
+            android:drawableEnd="@mipmap/mipmap_calendar"
+            android:gravity="center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="30dp"
+            android:text="@={vm.liveBean.sqsj}"
+            android:textColor="#393939"
+            android:textSize="30sp"
+            app:layout_constraintLeft_toRightOf="@+id/tv_apply_time_title"
+            app:layout_constraintTop_toBottomOf="@id/id_view" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_out_location_title_"
+            android:text="*"
+            android:layout_marginStart="30dp"
+            android:textColor="#F40707"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_apply_time"
+            app:layout_constraintLeft_toRightOf="@+id/tv_apply_time"
+            app:layout_constraintTop_toTopOf="@+id/tv_apply_time" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_out_location_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="拟迁入地："
+            android:textColor="#393939"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_apply_time"
+            app:layout_constraintLeft_toRightOf="@id/tv_out_location_title_"
+            app:layout_constraintTop_toTopOf="@+id/tv_apply_time" />
+
+
+        <FrameLayout
+            android:id="@+id/fl_street"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/shape_et_bg"
+            app:layout_constraintLeft_toRightOf="@+id/fl_district"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_apply_time"
+            app:layout_constraintTop_toTopOf="@+id/tv_apply_time">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/sp_street"
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:autofillHints="选择街道" />
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/fl_district"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/shape_et_bg"
+            app:layout_constraintLeft_toRightOf="@+id/fl_city"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_apply_time"
+            app:layout_constraintTop_toTopOf="@+id/tv_apply_time">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/sp_district"
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:autofillHints="选择县区" />
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/fl_city"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/shape_et_bg"
+            app:layout_constraintLeft_toRightOf="@+id/fl_province"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_apply_time"
+            app:layout_constraintTop_toTopOf="@+id/tv_apply_time">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/sp_city"
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:autofillHints="选择市" />
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/fl_province"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/shape_et_bg"
+            app:layout_constraintBottom_toBottomOf="@id/tv_apply_time"
+            app:layout_constraintLeft_toRightOf="@+id/tv_out_location_title"
+            app:layout_constraintTop_toTopOf="@id/tv_apply_time">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/sp_province"
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:autofillHints="选择省份" />
+        </FrameLayout>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_address_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="迁入地明细："
+            android:textColor="#393939"
+            android:textSize="30sp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintLeft_toRightOf="@+id/fl_street"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_apply_time"
+            app:layout_constraintTop_toTopOf="@+id/tv_apply_time"
+            app:layout_constraintVertical_bias="0.538" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_moveInPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_text_input"
+            android:gravity="center"
+            android:hint="如门牌"
+            android:paddingStart="10dp"
+            android:paddingEnd="20dp"
+            android:text="@={vm.liveBean.qrdmx}"
+            android:textColor="#393939"
+            android:textColorHint="#999999"
+            android:textSize="30sp"
+            app:layout_constraintLeft_toRightOf="@+id/tv_address_info"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_apply_time"
+            app:layout_constraintTop_toTopOf="@+id/tv_apply_time" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_unit_red_dot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="*"
+            android:textColor="#F40707"
+            android:textSize="30sp"
+            android:layout_marginStart="100dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_unit_title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_unit_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_unit_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="拟接收矫正单位："
+            android:textColor="#393939"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_unit"
+            app:layout_constraintLeft_toRightOf="@+id/tv_unit_red_dot"
+            app:layout_constraintTop_toTopOf="@+id/ll_unit" />
+
+
+        <LinearLayout
+            android:id="@+id/ll_unit"
+            android:layout_width="600dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="33dp"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toRightOf="@+id/tv_unit_title"
+            app:layout_constraintTop_toBottomOf="@+id/et_moveInPlace">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerSheng"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:entries="@array/sheng"
+                    android:gravity="center" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerShi"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerXian"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_et_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerJiedao"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_change_address_why"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="变更理由："
+            android:layout_marginStart="10dp"
+            android:textColor="#393939"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_unit"
+            app:layout_constraintLeft_toRightOf="@+id/ll_unit"
+            app:layout_constraintTop_toTopOf="@+id/ll_unit"
+            app:layout_constraintVertical_bias="0.538" />
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_change_address_why"
+            android:layout_width="700dp"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_text_input"
+            android:padding="10dp"
+            android:text="@={vm.liveBean.jzdbgsy}"
+            android:textColorHint="#999999"
+            android:textSize="30sp"
+            app:layout_constraintLeft_toRightOf="@+id/tv_change_address_why"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_unit"
+            app:layout_constraintTop_toTopOf="@+id/ll_unit"/>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_application"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/et_change_address_why">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="居住地变更申请书："
+                android:textColor="#393939"
+                android:textSize="30sp"
+                android:visibility="@{vm.isHideApplicationButton}"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"
+                app:layout_constraintRight_toLeftOf="@id/btn_application_scan"
+                app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_application_scan"
+                android:layout_width="249dp"
+                android:layout_height="68dp"
+                android:layout_marginStart="351dp"
+                android:background="@drawable/bg_btn_scan_upload"
+                android:gravity="center"
+                android:text="扫描附件"
+                android:textColor="#393939"
+                android:textSize="30sp"
+                android:visibility="@{vm.isHideApplicationButton}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_application_info_show"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="（请将变更申请书放置扫描区进行扫描）"
+                android:textColor="#999999"
+                android:textSize="30sp"
+                android:visibility="@{vm.isHideApplicationButton}"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_application_scan"
+                app:layout_constraintLeft_toRightOf="@+id/btn_application_scan"
+                app:layout_constraintTop_toTopOf="@+id/btn_application_scan" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_leaveApplication_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="23dp"
+                android:text="居住地变更申请书："
+                android:visibility="@{vm.isHideApplication}"
+                android:textColor="#393939"
+                android:textSize="30sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/rv_leaveApplication" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="10dp"
+                android:visibility="@{vm.isHideApplication}"
+                android:text="(说明:单击：预览，\n长按：删除)"
+                android:textColor="#999999"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_leaveApplication_label" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_leaveApplication"
+                android:layout_width="796dp"
+                android:visibility="@{vm.isHideApplication}"
+                android:layout_height="120dp"
+                android:layout_gravity="end"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="33dp"
+                app:layout_constraintLeft_toRightOf="@+id/tv_leaveApplication_label" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_material"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="36dp"
+            app:layout_constraintTop_toBottomOf="@+id/cl_application">
+
+            <!--请假申材料：-->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_application_materials_scan"
+                android:layout_width="249dp"
+                android:layout_height="68dp"
+                android:visibility="@{vm.isHideMaterialButton}"
+                android:background="@drawable/bg_btn_scan_upload_2"
+                android:gravity="center"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:text="扫描附件"
+                android:layout_marginStart="351dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="#393939"
+                android:textSize="30sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="居住地变更申请资料："
+                android:visibility="@{vm.isHideMaterialButton}"
+                android:textColor="#393939"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_application_materials_scan"
+                app:layout_constraintRight_toLeftOf="@id/btn_application_materials_scan"
+                app:layout_constraintTop_toTopOf="@+id/btn_application_materials_scan" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_application_info_show2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="（请将变更申请资料放置扫描区进行扫描）"
+                android:textColor="#999999"
+                android:visibility="@{vm.isHideMaterialButton}"
+                app:layout_constraintTop_toTopOf="@id/btn_application_materials_scan"
+                app:layout_constraintBottom_toBottomOf="@id/btn_application_materials_scan"
+                app:layout_constraintStart_toEndOf="@id/btn_application_materials_scan"
+                android:textSize="30sp" />
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_material_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="居住地变更申请资料："
+                android:visibility="@{vm.isHideMaterial}"
+                android:textColor="#393939"
+                android:textSize="30sp"
+                android:layout_marginStart="50dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/rv_material" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="10dp"
+                android:visibility="@{vm.isHideMaterial}"
+                android:text="(说明:单击：预览，\n长按：删除)"
+                android:textColor="#999999"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_material_label" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_material"
+                android:layout_width="0dp"
+                android:visibility="@{vm.isHideMaterial}"
+                android:layout_height="120dp"
+                android:layout_gravity="end"
+                android:layout_marginStart="251dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="33dp"
+                app:layout_constraintLeft_toRightOf="@+id/tv_material_label"  />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_submit"
+            android:layout_width="421dp"
+            android:layout_height="104dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/bg_btn_back_to_home_green"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="#fff"
+            android:textSize="30sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_material" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
