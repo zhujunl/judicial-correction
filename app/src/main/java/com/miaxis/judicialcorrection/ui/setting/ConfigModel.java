@@ -66,11 +66,11 @@ public class ConfigModel extends ViewModel {
         this.faceQuality.set(faceQuality);
         String faceComparison = mmkv.getString("faceComparison", String.valueOf(75));
         this.faceComparison.set(faceComparison);
-        if (BuildConfig.EQUIPMENT_TYPE == 3) {
-            isHide.set(View.VISIBLE);
-        } else {
-            isHide.set(View.GONE);
-        }
+//        if (BuildConfig.EQUIPMENT_TYPE == 3) {
+//            isHide.set(View.VISIBLE);
+//        } else {
+//            isHide.set(View.GONE);
+//        }
     }
 
 

@@ -2,6 +2,7 @@ package com.miaxis.judicialcorrection.ui.setting;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,29 +44,36 @@ public class ConfigActivity extends BaseBindingActivity<ActivityCameraConfigBind
     protected void initData(@NonNull @NotNull ActivityCameraConfigBinding binding, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         model = new ViewModelProvider(this).get(ConfigModel.class);
         binding.setData(model);
+
         model.init();
-        if ("2".equals(model.cameraRGBId.get())) {
-            binding.group1.check(R.id.cameraId_2);
-        } else {
-            binding.group1.check(R.id.cameraId_0);
-        }
-        if ("2".equals(model.cameraNIRId.get())) {
-            binding.group2.check(R.id.cameraNir_2);
-        } else {
-            binding.group2.check(R.id.cameraNir_0);
-        }
+//        if ("2".equals(model.cameraRGBId.get())) {
+//            binding.group1.check(R.id.cameraId_2);
+//        } else {
+//            binding.group1.check(R.id.cameraId_0);
+//        }
+//        if ("2".equals(model.cameraNIRId.get())) {
+//            binding.group2.check(R.id.cameraNir_2);
+//        } else {
+//            binding.group2.check(R.id.cameraNir_0);
+//        }
 
         binding.btnSave.setOnClickListener(v -> {
-                    if (binding.group1.getCheckedRadioButtonId() == R.id.cameraId_2) {
-                        model.cameraRGBId.set("2");
-                    } else {
-                        model.cameraRGBId.set("0");
-                    }
-                    if (binding.group2.getCheckedRadioButtonId() == R.id.cameraNir_2) {
-                        model.cameraNIRId.set("2");
-                    } else {
-                        model.cameraNIRId.set("0");
-                    }
+//                    if (binding.group1.getCheckedRadioButtonId() == R.id.cameraId_2) {
+//                        model.cameraRGBId.set("2");
+//                    } else {
+//                        model.cameraRGBId.set("0");
+//                    }
+//                    if (binding.group2.getCheckedRadioButtonId() == R.id.cameraNir_2) {
+//                        model.cameraNIRId.set("2");
+//                    } else {
+//                        model.cameraNIRId.set("0");
+//                    }
+                    RadioButton radioButton1 = findViewById(binding.group1.getCheckedRadioButtonId());
+                    model.cameraRGBId.set(radioButton1.getText().toString());
+                    RadioButton radioButton2 = findViewById(binding.group2.getCheckedRadioButtonId());
+                    RadioButton radioButton3 = findViewById(binding.group3.getCheckedRadioButtonId());
+                    model.cameraNIRId.set(radioButton2.getText().toString());
+                    model.cameraGPId.set(radioButton3.getText().toString());
                     model.save();
 //            EquipmentConfigCameraEntity equipmentConfigCameraEntity = model.setCameraInfo(3);
 //            BaseApplication.application.setCameraConfig(equipmentConfigCameraEntity);
