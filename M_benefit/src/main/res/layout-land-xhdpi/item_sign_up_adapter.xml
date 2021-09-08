@@ -18,6 +18,9 @@
             android:text="活动主题："
             android:textColor="#333333"
             android:textSize="19px"
+            android:maxEms="50"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textStyle="bold" />
 
 
