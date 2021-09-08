@@ -2,6 +2,8 @@ package com.miaxis.judicialcorrection.base;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,6 +30,12 @@ public abstract class BaseBindingActivity<V extends ViewDataBinding> extends App
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(isScreenChange()) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
         initWindow();
         //ARouter.getInstance().inject(this);
         binding = DataBindingUtil.setContentView(this, initLayout());
@@ -55,6 +63,21 @@ public abstract class BaseBindingActivity<V extends ViewDataBinding> extends App
         }
         return super.onTouchEvent(event);
     }
+
+
+    public boolean isScreenChange() {
+        Configuration mConfiguration = this.getResources().getConfiguration(); //获取设置的配置信息
+        int ori = mConfiguration.orientation ; //获取屏幕方向
+        if(ori == Configuration.ORIENTATION_LANDSCAPE){
+            //横屏
+            return true;
+        }else if(ori == Configuration.ORIENTATION_PORTRAIT) {
+            //竖屏
+            return false;
+        }
+        return false;
+    }
+
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
