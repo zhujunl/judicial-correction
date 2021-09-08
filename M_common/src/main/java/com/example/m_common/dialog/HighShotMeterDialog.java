@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.view.SurfaceHolder;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,11 +50,13 @@ public class HighShotMeterDialog extends BaseNoListenerDialog<DialogHighShotMete
     private PreviewPageAdapter mAdapter;
     private AppExecutors appExecutors;
     private Disposable subscribe;
+    private Context mContext;
 
     public HighShotMeterDialog(@NonNull Context context, ClickListener clickListener) {
         super(context, clickListener);
         setCancelable(false);
         setCanceledOnTouchOutside(false);
+        mContext = context;
     }
 
     @Override
@@ -90,6 +93,10 @@ public class HighShotMeterDialog extends BaseNoListenerDialog<DialogHighShotMete
             }
         });
         binding.btnScreen.setOnClickListener(v -> {
+            if (null != pathList && pathList.size() >= 3) {
+                Toast.makeText(mContext, "最多只能拍摄3张照片",Toast.LENGTH_SHORT).show();
+                return;
+            }
             ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().find(CameraConfig.Camera_SM);
             if (ZZResponse.isSuccess(mxCamera)) {
                 mxCamera.getData().setNextFrameEnable();
