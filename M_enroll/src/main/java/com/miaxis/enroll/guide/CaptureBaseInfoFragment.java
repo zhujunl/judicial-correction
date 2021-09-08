@@ -156,12 +156,12 @@ public class CaptureBaseInfoFragment extends BaseBindingFragment<FragmentCapture
             binding.preBtn.setVisibility(View.VISIBLE);
         }
         if (currentPageIndex==0){
-            binding.nextBtn.setText("下一页");
+            binding.nextBtn.setText("下一步");
         }else {
             if (currentPageIndex == pageCount - 1) {
                 binding.nextBtn.setText("提交");
             }else{
-                binding.nextBtn.setText("下一页");
+                binding.nextBtn.setText("下一步");
             }
         }
     }
