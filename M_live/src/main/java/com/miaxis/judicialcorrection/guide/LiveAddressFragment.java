@@ -101,8 +101,8 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
             }
         });
         model.cityList.observe(this, observer -> {
+            setSpView(observer, binding.spCity);
             if (!observer.isEmpty()) {
-                setSpView(observer, binding.spCity);
                 int selectedItemPosition = binding.spCity.getSelectedItemPosition();
                 Place place = observer.get(selectedItemPosition);
                 if (place.ID!=0L) {
@@ -110,12 +110,11 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                 }
             } else {
                 model.findAllDistrict(0);
-                binding.spCity.setSelection(0);
             }
         });
         model.smallTown.observe(this, observer -> {
+            setSpView(observer, binding.spDistrict);
             if (!observer.isEmpty()) {
-                setSpView(observer, binding.spDistrict);
                 int selectedItemPosition = binding.spDistrict.getSelectedItemPosition();
                 Place place = observer.get(selectedItemPosition);
                 if (place.ID!=0L) {
@@ -123,15 +122,10 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                 }
             } else {
                 model.getProvince(0);
-                binding.spDistrict.setSelection(0);
             }
         });
         model.street.observe(this, observer -> {
-            if (!observer.isEmpty()) {
-                setSpView(observer, binding.spStreet);
-            } else {
-                binding.spStreet.setSelection(0);
-            }
+            setSpView(observer, binding.spStreet);
         });
         model.getProvince();
         binding.spProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -278,20 +272,6 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
         }
     }
 
-    private Place emptyPlace() {
-        Place empty = new Place();
-        empty.VALUE = "";
-        empty.ID = 0L;
-        return empty;
-    }
-
-    private JusticeBureau emptyJusticeBureau() {
-        JusticeBureau justiceBureau = new JusticeBureau();
-        justiceBureau.setTeamName("");
-        justiceBureau.setTeamId("");
-        return justiceBureau;
-    }
-
     private void addJusticeBureau(List<JusticeBureau> justiceBureaus) {
         for (JusticeBureau p : justiceBureaus) {
             if (!TextUtils.isEmpty(p.getTeamName())) {
@@ -305,7 +285,6 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
     }
 
     private void setSpView(List<Place> observer, Spinner spinner) {
-//        observer.add(emptyPlace());
         addPlace(observer);
         List<String> list = new ArrayList<>();
         for (Place p : observer) {
@@ -318,7 +297,6 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
     }
 
     private void setSpUnitView(List<JusticeBureau> beanList, Spinner spinner) {
-//        beanList.add(emptyJusticeBureau());
         addJusticeBureau(beanList);
         SpAdapter adapter = new SpAdapter();
         adapter.submitList(beanList);
@@ -371,8 +349,8 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
             value.qrdszs = model.provinceList.getValue().get(binding.spProvince.getSelectedItemPosition()).ID + "";
             value.qrdszsName = model.provinceList.getValue().get(binding.spProvince.getSelectedItemPosition()).VALUE;
             if (model.provinceList.getValue().get(binding.spProvince.getSelectedItemPosition()).ZXS == 1) {
-                value.qrdszd = model.provinceList.getValue().get(binding.spProvince.getSelectedItemPosition()).ID + "";
-                value.qrdszdName = model.provinceList.getValue().get(binding.spProvince.getSelectedItemPosition()).VALUE;
+//                value.qrdszd = model.provinceList.getValue().get(binding.spProvince.getSelectedItemPosition()).ID + "";
+//                value.qrdszdName = model.provinceList.getValue().get(binding.spProvince.getSelectedItemPosition()).VALUE;
             } else {
                 if (model.cityList.getValue() != null) {
                     value.qrdszd = model.cityList.getValue().get(binding.spCity.getSelectedItemPosition()).ID + "";
