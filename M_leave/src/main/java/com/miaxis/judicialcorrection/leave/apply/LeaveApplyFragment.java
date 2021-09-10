@@ -27,9 +27,11 @@ import com.miaxis.judicialcorrection.leave.LeaveRepo;
 import com.miaxis.judicialcorrection.leave.R;
 import com.miaxis.judicialcorrection.leave.SpAdapter;
 import com.miaxis.judicialcorrection.leave.databinding.FragmentLeaveApplyBinding;
+import com.miaxis.judicialcorrection.leave.list.LeaveListFragment;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -111,6 +113,9 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
             addPlace(places);
             adapter.submitList(places);
             binding.spProvince.setAdapter(adapter);
+            binding.spCity.setAdapter(emptyPlace());
+            binding.spDistrict.setAdapter(emptyPlace());
+            binding.spStreet.setAdapter(emptyPlace());
         });
 
         mApplyViewModel.allCity.observe(this, places -> {
@@ -119,6 +124,8 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
             addPlace(places);
             adapter.submitList(places);
             binding.spCity.setAdapter(adapter);
+            binding.spDistrict.setAdapter(emptyPlace());
+            binding.spStreet.setAdapter(emptyPlace());
         });
         mApplyViewModel.allDistrict.observe(this, places -> {
             Timber.i("allDistrict %s", places);
@@ -126,6 +133,7 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
             addPlace(places);
             adapter.submitList(places);
             binding.spDistrict.setAdapter(adapter);
+            binding.spStreet.setAdapter(emptyPlace());
         });
         mApplyViewModel.allAgencies.observe(this, places -> {
             Timber.i("allAgencies%s", places);
@@ -192,6 +200,17 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
             }
         });
         initHeightCamera();
+    }
+
+    private SpAdapter emptyPlace() {
+        List<Place> places = new ArrayList<>();
+        Place place = new Place();
+        place.VALUE = "";
+        place.ID = 0L;
+        places.add(0, place);
+        SpAdapter adapter = new SpAdapter();
+        adapter.submitList(places);
+        return adapter;
     }
 
     @Override
