@@ -27,12 +27,25 @@ public class TimeUtils {
         }
     }
 
+
     public static float getDays(String startTime, String endTime) {
         try {
             long start = simpleDateFormat.parse(startTime).getTime();
             long end = simpleDateFormat.parse(endTime).getTime();
             if (end - start >= 0) {
-                return (end - start) / 1000F / 60F / 60F / 24F;
+                long time = end - start;
+                long days = time / (1000 * 60 * 60 * 24);
+                long hours = (time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
+                long minutes = (time % (1000 * 60 * 60)) / (1000 * 60);
+                long seconds = (time % (1000 * 60)) / 1000;
+                if (days <= 0 && (hours > 0 || minutes > 0 || seconds > 0)) {
+                    return 1;
+                } else {
+                    if (hours > 0 || minutes > 0 || seconds > 0) {
+                        return days + 1;
+                    }
+                    return days;
+                }
             }
             return 0;
         } catch (Exception e) {

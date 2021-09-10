@@ -236,7 +236,7 @@ public class LeaveListFragment extends BaseBindingFragment<FragmentLeaveListBind
                     this.bind.tvStartTime.setText(TimeUtils.simpleDateFormat.format(item.ksqr));
                     this.bind.tvEndTime.setText(TimeUtils.simpleDateFormat.format(item.jsrq));
                     this.bind.tvStatus.setText(item.sfyxjName);
-                    this.bind.tvCancel.setVisibility("1".equals(item.sfyxj)?View.GONE:View.VISIBLE);
+                    this.bind.tvCancel.setVisibility("1".equals(item.sfyxj)?View.INVISIBLE:View.VISIBLE);
                     this.bind.tvProgress.setText("进度查询");
                 } else {
                     Timber.e("不显示");

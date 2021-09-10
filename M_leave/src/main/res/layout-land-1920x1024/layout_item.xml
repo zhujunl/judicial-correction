@@ -14,7 +14,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="50px">
+        android:layout_height="100dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_number"
@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="@color/color_text_grey_1"
-            android:textSize="16px"
+            android:textSize="25sp"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/tv_name"
@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="@color/color_text_grey_1"
-            android:textSize="16px"
+            android:textSize="25sp"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toRightOf="@+id/tv_number"
             app:layout_constraintRight_toLeftOf="@id/tv_location"
@@ -46,7 +46,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="@color/color_text_grey_1"
-            android:textSize="16px"
+            android:textSize="25sp"
             app:layout_constraintHorizontal_weight="2"
             app:layout_constraintLeft_toRightOf="@+id/tv_name"
             app:layout_constraintRight_toLeftOf="@id/tv_start_time"
@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="@color/color_text_grey_1"
-            android:textSize="16px"
+            android:textSize="25sp"
             app:layout_constraintHorizontal_weight="2"
             app:layout_constraintLeft_toRightOf="@+id/tv_location"
             app:layout_constraintRight_toLeftOf="@id/tv_end_time"
@@ -70,7 +70,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="@color/color_text_grey_1"
-            android:textSize="16px"
+            android:textSize="25sp"
             app:layout_constraintHorizontal_weight="2"
             app:layout_constraintLeft_toRightOf="@+id/tv_start_time"
             app:layout_constraintRight_toLeftOf="@id/tv_status"
@@ -82,7 +82,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="@color/color_text_grey_1"
-            android:textSize="16px"
+            android:textSize="25sp"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toRightOf="@+id/tv_end_time"
             app:layout_constraintRight_toLeftOf="@id/ll_operation"
@@ -104,7 +104,7 @@
                 android:gravity="center"
                 android:text="销假"
                 android:textColor="@color/color_text_orange"
-                android:textSize="16px" />
+                android:textSize="25sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_progress"
@@ -114,7 +114,7 @@
                 android:gravity="center"
                 android:text="进度查询"
                 android:textColor="@color/color_text_blue"
-                android:textSize="16px" />
+                android:textSize="25sp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

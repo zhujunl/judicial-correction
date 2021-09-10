@@ -172,7 +172,7 @@
             android:paddingEnd="26dp"
             android:text="@{data.applyTime}"
             android:textColor="#393939"
-            android:textSize="12sp"
+            android:textSize="20sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/id_view" />
 
@@ -213,7 +213,7 @@
             android:paddingEnd="26dp"
             android:text="@{data.startTime}"
             android:textColor="#393939"
-            android:textSize="12sp"
+            android:textSize="20sp"
             app:layout_constraintLeft_toRightOf="@id/tv_apply_start_time_title"
             app:layout_constraintTop_toBottomOf="@id/id_view" />
 
@@ -254,7 +254,7 @@
             android:paddingEnd="26dp"
             android:text="@{data.endTime}"
             android:textColor="#393939"
-            android:textSize="12sp"
+            android:textSize="20sp"
             app:layout_constraintLeft_toRightOf="@id/tv_apply_end_time_title"
             app:layout_constraintTop_toBottomOf="@id/id_view" />
 
@@ -284,7 +284,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_out_day_number"
-            android:layout_width="194dp"
+            android:layout_width="250dp"
             android:layout_height="50dp"
             android:layout_marginTop="19dp"
             android:layout_marginEnd="33dp"
@@ -297,7 +297,7 @@
             android:text="@{data.days}"
             android:textColor="#393939"
             android:textColorHint="#999999"
-            android:textSize="18sp"
+            android:textSize="20sp"
             app:layout_constraintLeft_toRightOf="@id/tv_out_day_title"
             app:layout_constraintTop_toBottomOf="@id/id_view" />
 
@@ -306,42 +306,47 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
             android:text="*"
+            android:id="@+id/tv_signal"
             android:textColor="#F40707"
             android:textSize="30sp"
+            android:layout_marginStart="90dp"
             app:layout_constraintBottom_toBottomOf="@+id/sp_province"
-            app:layout_constraintRight_toLeftOf="@+id/tv_out_location_title"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@+id/sp_province" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_out_location_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="89dp"
+            android:layout_marginStart="5dp"
             android:text="外出目的地: "
             android:textColor="#393939"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="@+id/sp_province"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/tv_signal"
             app:layout_constraintTop_toTopOf="@+id/sp_province" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sp_street"
-            android:layout_width="160dp"
+            android:layout_width="175dp"
             android:layout_height="50dp"
             android:layout_marginTop="19dp"
+            android:textSize="20sp"
             android:layout_marginEnd="8dp"
             android:autofillHints="选择街道"
+            android:background="@drawable/bg_text_input"
             app:layout_constraintLeft_toRightOf="@+id/sp_district"
             app:layout_constraintTop_toBottomOf="@id/tv_apply_time"
             tools:background="@color/color_text_grey" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sp_district"
-            android:layout_width="160dp"
+            android:layout_width="175dp"
             android:layout_height="50dp"
             android:layout_marginEnd="8dp"
+            android:textSize="20sp"
+            android:background="@drawable/bg_text_input"
             android:autofillHints="选择县区"
             app:layout_constraintBottom_toBottomOf="@id/sp_street"
             app:layout_constraintLeft_toRightOf="@id/sp_city"
@@ -350,10 +355,12 @@
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sp_city"
-            android:layout_width="160dp"
+            android:layout_width="175dp"
             android:layout_height="50dp"
             android:layout_marginEnd="8dp"
             android:autofillHints="选择市"
+            android:textSize="20sp"
+            android:background="@drawable/bg_text_input"
             app:layout_constraintBottom_toBottomOf="@id/sp_district"
             app:layout_constraintLeft_toRightOf="@id/sp_province"
             app:layout_constraintTop_toTopOf="@id/sp_district"
@@ -361,10 +368,12 @@
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sp_province"
-            android:layout_width="160dp"
+            android:layout_width="175dp"
             android:layout_height="50dp"
             android:layout_marginEnd="8dp"
             android:autofillHints="选择省份"
+            android:textSize="20sp"
+            android:background="@drawable/bg_text_input"
             app:layout_constraintBottom_toBottomOf="@id/sp_city"
             app:layout_constraintLeft_toRightOf="@+id/tv_out_location_title"
             app:layout_constraintTop_toTopOf="@id/sp_city"
@@ -373,7 +382,7 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_reason"
-            android:layout_width="318dp"
+            android:layout_width="200dp"
             android:layout_height="72dp"
             android:layout_gravity="start"
             android:layout_marginTop="23dp"
@@ -493,7 +502,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="具体事由："
-            android:layout_marginStart="89dp"
+            android:layout_marginStart="100dp"
             android:textColor="#393939"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="@+id/et_specific_reasons"
