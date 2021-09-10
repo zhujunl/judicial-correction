@@ -141,8 +141,11 @@ public class HighShotMeterDialog extends BaseNoListenerDialog<DialogHighShotMete
         }
         Timber.v("执行dismiss");
         binding.sv.getHolder().removeCallback(callback);
+        CameraHelper.getInstance().free();
         super.dismiss();
     }
+
+
 
     private void showBigPicture(String path) {
         new ToViewBigPictureDialog(getContext(), new ToViewBigPictureDialog.ClickListener() {
