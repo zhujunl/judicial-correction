@@ -326,6 +326,7 @@
                 android:hint="请输入序列号"
                 android:text="@{serialNumber}"
                 android:imeOptions="actionDone"
+                android:maxLength="25"
                 android:layout_marginStart="15px"
                 android:inputType="textCapCharacters"
                 android:paddingStart="32px"

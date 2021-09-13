@@ -317,14 +317,14 @@
                 android:text="序列号设置："/>
 
             <EditText
-                android:layout_width="400px"
+                android:layout_width="500px"
                 android:layout_height="72px"
                 android:hint="请输入序列号"
                 android:paddingStart="10dp"
                 android:text="@{serialNumber}"
                 android:textSize="30px"
                 android:inputType="textCapCharacters"
-                android:maxLength="12"
+                android:maxLength="25"
                 android:imeOptions="actionDone"
                 android:background="@drawable/shape_et_bg"
                 android:layout_marginStart="10dp"

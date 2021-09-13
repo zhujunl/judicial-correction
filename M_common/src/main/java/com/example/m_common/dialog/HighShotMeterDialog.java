@@ -174,6 +174,10 @@ public class HighShotMeterDialog extends BaseNoListenerDialog<DialogHighShotMete
                                 String absolutePath = files.get(0).getAbsolutePath();
                                 String base64Path = FileUtils.imageToBase64(absolutePath);
                                 mHandler.post(() -> {
+                                    if (pathList.size() >= 3) {
+                                        Toast.makeText(mContext, "最多只能拍摄3张照片",Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
                                     Timber.e("获取图片 %s", absolutePath);
                                     PreviewPictureEntity entity = new PreviewPictureEntity();
                                     entity.setBase64(base64Path);

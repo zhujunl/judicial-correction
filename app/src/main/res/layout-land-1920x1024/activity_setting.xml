@@ -328,14 +328,14 @@
                 android:text="序列号设置："/>
 
             <EditText
-                android:layout_width="400dp"
+                android:layout_width="500dp"
                 android:layout_height="80dp"
                 android:hint="请输入序列号"
                 android:paddingStart="10dp"
                 android:text="@{serialNumber}"
                 android:inputType="textCapCharacters"
                 android:textSize="30sp"
-                android:maxLength="12"
+                android:maxLength="25"
                 android:imeOptions="actionDone"
                 android:background="@drawable/shape_et_bg"
                 android:layout_marginStart="20dp"
