@@ -93,7 +93,7 @@ public class LeaveActivity extends BaseBindingActivity<ActivityLeaveBinding> imp
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.layout_root, new LeaveListFragment(verifyInfo))
-                    .commitNow();
+                    .commit();
         } else {
             DialogResult.Builder builder = new DialogResult.Builder();
             builder.success = false;

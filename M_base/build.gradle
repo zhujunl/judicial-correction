@@ -25,7 +25,7 @@ android {
 //        }
     }
 
-    //EQUIPMENT_TYPE 打包时候注意 设备类型 1.竖屏 2横版.平板   3横版.台式
+    //EQUIPMENT_TYPE 打包时候注意 设备类型 1.竖屏 2横版.平板   3横版.台式   4.MR990S
     //配置图片保存旋转尺寸
     //打包需要配置 CameraConfig 因每台摄像头不同
     buildTypes {
@@ -40,9 +40,9 @@ android {
             //声纹指纹
             buildConfigField 'String', 'SERVER_URL2', '"http://223.4.75.78:10137"'
             //类型
-            buildConfigField 'int', 'EQUIPMENT_TYPE', '1'
-            //人脸存图片的   旋转尺寸 3： 0   1：270  2：
-            buildConfigField 'int', 'ROTATION_SIZE', '270'
+            buildConfigField 'int', 'EQUIPMENT_TYPE', '4'
+            //人脸存图片的   旋转尺寸 3： 0   1：270  2：    4:0
+            buildConfigField 'int', 'ROTATION_SIZE', '0'
             //设备
             buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
             //设备类型 1 3台式 2 平板
@@ -58,7 +58,7 @@ android {
             //声纹指纹 '"http://10.249.2.210"'不能使用了  修改
             buildConfigField 'String', 'SERVER_URL2', '"http://10.249.2.210:9000"'
             //类型
-            buildConfigField 'int', 'EQUIPMENT_TYPE', '3'
+            buildConfigField 'int', 'EQUIPMENT_TYPE', '4'
             //人脸存图片的   旋转尺寸 3： 0   1：270
             buildConfigField 'int', 'ROTATION_SIZE', '0'
             //设备

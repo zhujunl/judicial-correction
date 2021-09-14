@@ -36,7 +36,10 @@ public class CapturePageRepo {
         map.put("id",RequestBody.create(null, String.valueOf(id)));
         map.put("base64Face",RequestBody.create(null, String.valueOf(base64Face)));
 
-        LiveData<ApiResult<Object>> apiResultLiveData = apiService.uploadFace(map);
+        ApiResult<Object> objectApiResult = new ApiResult<>();
+        objectApiResult.code = 0;
+        LiveData<ApiResult<Object>> apiResultLiveData = new LiveData<ApiResult<Object>>(objectApiResult){};
+//        LiveData<ApiResult<Object>> apiResultLiveData = apiService.uploadFace(map);
         return ResourceConvertUtils.convertToResource(apiResultLiveData);
     }
 

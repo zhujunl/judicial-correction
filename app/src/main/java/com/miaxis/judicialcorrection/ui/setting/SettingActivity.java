@@ -30,14 +30,23 @@ import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
 import com.miaxis.judicialcorrection.base.db.po.MainFunc;
 import com.miaxis.judicialcorrection.base.repo.JusticeBureauRepo;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
+import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.base.utils.AppToast;
+import com.miaxis.judicialcorrection.base.utils.FileUtils;
 import com.miaxis.judicialcorrection.common.ui.adapter.BaseDataBoundDiffAdapter;
 import com.miaxis.judicialcorrection.databinding.ActivitySettingBinding;
 import com.miaxis.judicialcorrection.databinding.ItemSettingFuncBinding;
+import com.tencent.mmkv.MMKV;
 import com.wondersgroup.om.AuthInfo;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -74,6 +83,8 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
         binding.recyclerView.setAdapter(mainAdapter);
         binding.btnBackToHome.setOnClickListener(v -> finish());
         binding.setImei(Build.SERIAL);
+        binding.setSerialNumber(MMKV.defaultMMKV().getString("serialNumber", getRandomSerialNumber(null)));
+        MMKV.defaultMMKV().putString("serialNumber", binding.getSerialNumber());
         appDatabase.mainFuncDAO().loadFuncAll().observe(this, mainAdapter::submitList);
         appDatabase.tokenAuthInfoDAO().loadAuthInfo().observe(this, (JAuthInfo info) -> {
             if (info != null && info.activationCode != null) {
@@ -87,6 +98,15 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
         binding.etActiveCode.setOnEditorActionListener((TextView v, int actionId, KeyEvent event) -> {
             if (actionId == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
                 syncActiveCode();
+                return true;
+            }
+            return false;
+        });
+
+        binding.etSerialNumber.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
+                String serialNumber = binding.etSerialNumber.getText().toString().trim();
+                MMKV.defaultMMKV().putString("serialNumber", serialNumber);
                 return true;
             }
             return false;
@@ -202,6 +222,38 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
         return 0;
     }
 
+
+    private String getRandomSerialNumber(String serial) {
+        StringBuilder buffer = new StringBuilder();
+        String client = "";
+        if (BuildConfig.EQUIPMENT_TYPE == 1) {
+            client = "L";
+        } else if (BuildConfig.EQUIPMENT_TYPE == 3) {
+            client = "T";
+        } else {
+            client = "Y";
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.setTime(new Date());
+        int week = calendar.get(Calendar.WEEK_OF_YEAR);
+        String strWeek = "";
+        if (week < 10) {
+            strWeek = "0" + week;
+        } else {
+            strWeek = String.valueOf(week);
+        }
+
+        buffer.append("ZZD-").append(client).append("-")
+                .append("ZZ1-").append("MR-").append(calendar.get(Calendar.YEAR))
+                .append("w").append(strWeek);
+        if (TextUtils.isEmpty(serial)) {
+            buffer.append(Math.abs(new Random().nextInt(99999)));
+        } else {
+            buffer.append(serial);
+        }
+        return buffer.toString();
+    }
 
     @Override
     protected void onPause() {

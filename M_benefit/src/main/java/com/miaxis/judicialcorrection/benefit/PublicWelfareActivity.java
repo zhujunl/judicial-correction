@@ -93,7 +93,7 @@ public class PublicWelfareActivity extends BaseBindingActivity<ActivityPublicWel
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.layout_root, fragment)
-                .commitNow();
+                .commit();
     }
 
 

@@ -203,7 +203,9 @@ public class AutoTokenInterceptor implements Interceptor {
         AuthInfo.getInstance().setDishiName(jAuthInfo.dishiName);
         AuthInfo.getInstance().setQuxianId(jAuthInfo.quxianId);
         AuthInfo.getInstance().setQuxianName(jAuthInfo.quxianName);
-        AuthInfo.getInstance().setSerialNumber(getSerialNumber());
+//        AuthInfo.getInstance().setSerialNumber(getSerialNumber());
+//        AuthInfo.getInstance().setSerialNumber("ZZD-L-ZZ1-MR-2021w0350001");
+        AuthInfo.getInstance().setSerialNumber(MMKV.defaultMMKV().getString("serialNumber", ""));
         String time = HexStringUtils.convertCurrentGMT();
         AuthInfo.getInstance().setTime(time);
 
@@ -248,8 +250,15 @@ public class AutoTokenInterceptor implements Interceptor {
             try {
                 JSONObject jsonObject = new JSONObject(resultR[0]);
                 Object result = jsonObject.get("result");
-                if (!Objects.equals("0", result) && !Objects.equals("1", result)) {
-                    throw new IOException("token server register error : " + resultR[0]);
+                //                if (!Objects.equals("0", result) && !Objects.equals("1", result)) {
+//                    throw new IOException("token server register error : " + resultR[0]);
+//                }
+                if (!Objects.equals("0", result)) {
+                    if (Objects.equals("1",result)) {
+                        throw new IOException("该终端已经存在，不能重复注册");
+                    } else {
+                        throw new IOException("token server register error : " + resultR[0]);
+                    }
                 }
             } catch (JSONException e) {
                 throw new IOException("token server register error ! ");

@@ -46,6 +46,11 @@ public class ReadIDCardBindingFragment extends BaseBindingFragment<FragmentReadI
         this.noIdCardEnable = noIdCardEnable;
     }
 
+    public ReadIDCardBindingFragment() {
+        this.title = "";
+        this.noIdCardEnable = true;
+    }
+
     @Override
     protected int initLayout() {
         return R.layout.fragment_read_id_card;

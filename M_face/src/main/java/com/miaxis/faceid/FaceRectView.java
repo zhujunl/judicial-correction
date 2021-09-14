@@ -65,6 +65,9 @@ private boolean mirror=false;
 //           // 偏移量
 //           canvas. drawRect(mRectF,this.mPaint);
 
+            if (BuildConfig.EQUIPMENT_TYPE == 4) {
+                mirror = true;
+            }
 
             int width = getWidth();
             int height = getHeight();
