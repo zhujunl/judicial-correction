@@ -17,6 +17,7 @@ import com.miaxis.judicialcorrection.base.utils.numbers.HexStringUtils;
 import com.tencent.mmkv.MMKV;
 import com.wondersgroup.om.AuthInfo;
 import com.wondersgroup.om.JZAuth;
+import com.wondersgroup.om.JZAuthException;
 import com.wondersgroup.om.ResultListener;
 
 import org.jetbrains.annotations.NotNull;
@@ -209,7 +210,7 @@ public class AutoTokenInterceptor implements Interceptor {
         String time = HexStringUtils.convertCurrentGMT();
         AuthInfo.getInstance().setTime(time);
 
-        AuthInfo.getInstance().setCurrentVersion("1.0.0");
+//        AuthInfo.getInstance().setCurrentVersion("1.0.0");
         AuthInfo.getInstance().setClientName(BuildConfig.CLIENT_NAME);//clientName
         AuthInfo.getInstance().setLoc(jAuthInfo.local);
 
@@ -219,9 +220,9 @@ public class AutoTokenInterceptor implements Interceptor {
         JZAuth.getInstance().registerDevice(new ResultListener() {
 
             @Override
-            public void onError(Exception error) {
+            public void onError(JZAuthException e) {
                 synchronized (authLock) {
-                    errorR[0] = error;
+                    errorR[0] = e;
                     authLock.notify();
                 }
             }
@@ -274,10 +275,11 @@ public class AutoTokenInterceptor implements Interceptor {
         final String[] resultR = new String[1];
         AtomicBoolean atomicBoolean = new AtomicBoolean(false);
         JZAuth.getInstance().getToken(new ResultListener() {
+
             @Override
-            public void onError(Exception error) {
+            public void onError(JZAuthException e) {
                 synchronized (authLock) {
-                    errorR[0] = error;
+                    errorR[0] = e;
                     atomicBoolean.set(true);
                     authLock.notify();
                 }

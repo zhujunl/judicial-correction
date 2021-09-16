@@ -11,19 +11,20 @@ import android.widget.BaseAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.miaxis.enroll.EnrollSharedViewModel;
-import com.miaxis.enroll.R;
-import com.miaxis.enroll.databinding.FragmentAddressBinding;
-import com.miaxis.enroll.utils.CardUtils;
-import com.miaxis.enroll.vo.Addr;
-import com.miaxis.judicialcorrection.base.db.po.Place;
-
-import java.util.List;
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.miaxis.enroll.EnrollSharedViewModel;
+import com.miaxis.enroll.R;
+import com.miaxis.enroll.databinding.FragmentAddressBinding;
+import com.miaxis.enroll.vo.Addr;
+import com.miaxis.judicialcorrection.base.db.po.Place;
+import com.miaxis.judicialcorrection.base.utils.AddressResolutionUtil;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
@@ -44,6 +45,7 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
     AddressViewModel viewModel;
     private Boolean[] booleans = new Boolean[4];
     private Boolean[] firstBooleans = new Boolean[4];
+    private Map<String,String> map;
 
     @Override
     protected void initView(@NonNull FragmentAddressBinding binding, @Nullable Bundle savedInstanceState) {
@@ -61,10 +63,21 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Object item = parent.getAdapter().getItem(position);
-                if (item instanceof Place) {
-                    viewModel.mSelect[0] = (Place) item;
-                    viewModel.mProvince.postValue((Place) item);
+                if (firstBooleans[0]) {
+                    if (item instanceof Place) {
+                        viewModel.mSelect[0] = (Place) item;
+                        viewModel.mProvince.postValue((Place) item);
+                    }
+                } else {
+                    if (null != map) {
+                        String province = map.get("province");
+                        if (null != province && null != viewModel.allProvince.getValue()) {
+                            int checkedPosition = getCheckedPos(viewModel.allProvince.getValue(), province);
+                            binding.spinnerProvince.setSelection(checkedPosition);
+                        }
+                    }
                 }
+                firstBooleans[0] = true;
             }
 
             @Override
@@ -81,6 +94,14 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
                     if (item instanceof Place) {
                         viewModel.mSelect[1] = (Place) item;
                         viewModel.mCity.postValue((Place) item);
+                    }
+                } else {
+                    if (null != map) {
+                        String city = map.get("city");
+                        if (null != city && null != viewModel.allCity.getValue()) {
+                            int checkedPosition = getCheckedPos(viewModel.allCity.getValue(), city);
+                            binding.spinnerCity.setSelection(checkedPosition);
+                        }
                     }
                 }
                 firstBooleans[1]=true;
@@ -100,6 +121,14 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
                     if (item instanceof Place) {
                         viewModel.mSelect[2] = (Place) item;
                         viewModel.mDistrict.postValue((Place) item);
+                    }
+                } else {
+                    if (null != map) {
+                        String county = map.get("county");
+                        if (null != county && null != viewModel.allDistrict.getValue()) {
+                            int checkedPosition = getCheckedPos(viewModel.allDistrict.getValue(), county);
+                            binding.spinnerDistrict.setSelection(checkedPosition);
+                        }
                     }
                 }
                 firstBooleans[2]=true;
@@ -214,6 +243,10 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
         });
         setHJ();
         initHJ();
+        List<Map<String,String>> mapList = AddressResolutionUtil.addressResolution(Objects.requireNonNull(viewModelShard.idCardLiveData.getValue()).idCardMsg.address);
+        if (mapList.size() > 0) {
+            map = mapList.get(0);
+        }
     }
 
     void updateAddrToSharedViewModel() {
@@ -425,6 +458,17 @@ public class AddressFragment extends BaseInfoFragment<FragmentAddressBinding> {
         });
     }
 
+    private int getCheckedPos(List<Place> list, String value) {
+        if (list == null || list.size() == 0) {
+            return 0;
+        }
+        for (int i = 0; i < list.size(); i++) {
+            if (value.equals(list.get(i).VALUE)) {
+                return i;
+            }
+        }
+        return 0;
+    }
 
     private int getCheckedPosition(List<Place> justiceBureaus, Place total) {
         if (justiceBureaus == null || justiceBureaus.size() == 0 || total == null) {
