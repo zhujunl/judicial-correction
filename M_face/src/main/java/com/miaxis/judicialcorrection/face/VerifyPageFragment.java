@@ -120,7 +120,7 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
     protected void initView(@NonNull FragmentVerifyBinding view, @Nullable Bundle savedInstanceState) {
         mVerifyPageViewModel = new ViewModelProvider(this).get(VerifyPageViewModel.class);
         binding.tvTitle.setText(String.valueOf(title));
-//        setEducationType();
+        setEducationType();
         if (BuildConfig.EQUIPMENT_TYPE == 3) {
             apimanager = new XHApiManager();
             apimanager.XHSetGpioValue(1, 1);
@@ -145,136 +145,136 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
                 binding.tvIdCard.setText(s);
             }
         });
-//        mVerifyPageViewModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));
-//        //指纹识别 需要下载图片后进行比对
-//        fingerInit();
-//
-//        mVerifyPageViewModel.name.setValue(personInfo.getXm());
-//        mVerifyPageViewModel.idCardNumber.setValue(personInfo.getIdCardNumber());
-//
-//        mVerifyPageViewModel.tempFaceFeature.observe(this, bytes -> {
-//            if (bytes != null) {
-//                startRgbPreview();
-//            } else {
-//                appHintsLazy.get().showError(
-//                        "Error:提取人像特征失败",
-//                        (dialog, which) -> finish());
-//            }
-//        });
-//
+        mVerifyPageViewModel.faceTips.observe(this, s -> binding.tvFaceTips.setText(s));
+        //指纹识别 需要下载图片后进行比对
+        fingerInit();
+
+        mVerifyPageViewModel.name.setValue(personInfo.getXm());
+        mVerifyPageViewModel.idCardNumber.setValue(personInfo.getIdCardNumber());
+
+        mVerifyPageViewModel.tempFaceFeature.observe(this, bytes -> {
+            if (bytes != null) {
+                startRgbPreview();
+            } else {
+                appHintsLazy.get().showError(
+                        "Error:提取人像特征失败",
+                        (dialog, which) -> finish());
+            }
+        });
+
         binding.btnBackToHome.setOnClickListener(v -> finish());
-//        showLoading(title, "正在请求，请稍后");
-//        mPersonRepo.getFace(personInfo.getId()).enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-//                dismissLoading();
-////                FragmentActivity activity = getActivity();
-////                if (activity instanceof VerifyCallback) {
-////                    VerifyCallback callback = (VerifyCallback) activity;
-//////                response.getData().entryMethod="2";
-////                    callback.onVerify(ZZResponse.CreateSuccess());
-////                    return;
-////                }
-//
-//                //请求成功后拿到图片 解析成bitmap
-//                ResponseBody responseBody = response.body();
-//                Bitmap bitmap = BitmapFactory.decodeStream(responseBody.byteStream());
-//                if (bitmap == null) {
-//                    appHintsLazy.get().showError("Error:人像解析失败",
-//                            (dialog, which) -> finish());
+        showLoading(title, "正在请求，请稍后");
+        mPersonRepo.getFace(personInfo.getId()).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                dismissLoading();
+//                FragmentActivity activity = getActivity();
+//                if (activity instanceof VerifyCallback) {
+//                    VerifyCallback callback = (VerifyCallback) activity;
+////                response.getData().entryMethod="2";
+//                    callback.onVerify(ZZResponse.CreateSuccess());
 //                    return;
 //                }
-//                try {
-//                    File filePath = FileUtils.createFileParent(getContext());
-//                    mAppExecutors.networkIO().execute(() -> {
-//                        String fileName = System.currentTimeMillis() + ".jpg";
-//                        File file = new File(filePath, fileName);
-//                        if (!file.exists()) {
-//                            File parentFile = file.getParentFile();
-//                            if (parentFile != null && !parentFile.exists()) {
-//                                boolean mkdirs = parentFile.mkdirs();
-//                            }
-//                        } else {
-//                            try {
-//                                boolean newFile = file.createNewFile();
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                        boolean save = BitmapUtils.saveBitmap(bitmap, file.getAbsolutePath());
-//                        if (!save) {
-//                            appHintsLazy.get().showError("Error:保存人像失败",
-//                                    (dialog, which) -> finish());
-//                            return;
-//                        }
-//                        int[] oX = new int[1];
-//                        int[] oY = new int[1];
-//                        byte[] rgbFromFile = FaceManager.getInstance().getRgbFromFile(file.getAbsolutePath(), oX, oY);
-//                        if (rgbFromFile == null) {
-//                            appHintsLazy.get().showError("Error:人像数据解析失败",
-//                                    (dialog, which) -> finish());
-//                            return;
-//                        }
-//                        mHandler.post(() -> mVerifyPageViewModel.extractFeatureFromRgb(rgbFromFile, bitmap.getWidth(), bitmap.getHeight()));
-//                    });
-//                } catch (Exception e) {
-//                    e.getStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-//                dismissLoading();
-//                appHintsLazy.get().showError("Error:" + t,
-//                        (dialog, which) -> finish());
-//            }
-//        });
-//        binding.svPreview.getHolder().addCallback(new SurfaceHolder.Callback() {
-//            @Override
-//            public void surfaceCreated(@NonNull SurfaceHolder holder) {
-//                ZZResponse<?> init = CameraHelper.getInstance().init();
-//                if (ZZResponse.isSuccess(init)) {
-//                    ZZResponse<MXCamera> mxCameraRgb = CameraHelper.getInstance().createMXCamera(CameraConfig.Camera_RGB);
-//                    ZZResponse<MXCamera> mxCameraNir = CameraHelper.getInstance().createMXCamera(CameraConfig.Camera_NIR);
-//                    if (ZZResponse.isSuccess(mxCameraRgb) && ZZResponse.isSuccess(mxCameraNir)) {
-//                        mxCameraRgb.getData().setOrientation(CameraConfig.Camera_RGB.previewOrientation);
-//                        mxCameraRgb.getData().setPreviewCallback(frame -> {
-//                            //可见光人脸检测
-//                            mVerifyPageViewModel.processRgbFrame(frame, VerifyPageFragment.this);
-//                        });
-//                        mxCameraRgb.getData().start(holder);
-//
-//                        mxCameraNir.getData().setOrientation(CameraConfig.Camera_NIR.previewOrientation);
-//                        mxCameraNir.getData().setPreviewCallback(frame -> {
-//                            //活体检测
-//                            mVerifyPageViewModel.detectLive(frame, VerifyPageFragment.this);
-//                        });
-//                        mxCameraNir.getData().start(null);
-//                    } else {
-//                        mHandler.post(() -> appHintsLazy.get().showError("Error:打开双目摄像头失败，请联系工作人员",
-//                                (dialog, which) -> {
-//                                    dialog.dismiss();
-//                                    finish();
-//                                }));
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
-//
-//            }
-//
-//            @Override
-//            public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
-//                CameraHelper.getInstance().free();
-//                try {
-//                    holder.removeCallback(this);
-//                } catch (Exception e) {
-//                    e.getStackTrace();
-//                }
-//            }
-//        });
+
+                //请求成功后拿到图片 解析成bitmap
+                ResponseBody responseBody = response.body();
+                Bitmap bitmap = BitmapFactory.decodeStream(responseBody.byteStream());
+                if (bitmap == null) {
+                    appHintsLazy.get().showError("Error:人像解析失败",
+                            (dialog, which) -> finish());
+                    return;
+                }
+                try {
+                    File filePath = FileUtils.createFileParent(getContext());
+                    mAppExecutors.networkIO().execute(() -> {
+                        String fileName = System.currentTimeMillis() + ".jpg";
+                        File file = new File(filePath, fileName);
+                        if (!file.exists()) {
+                            File parentFile = file.getParentFile();
+                            if (parentFile != null && !parentFile.exists()) {
+                                boolean mkdirs = parentFile.mkdirs();
+                            }
+                        } else {
+                            try {
+                                boolean newFile = file.createNewFile();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        boolean save = BitmapUtils.saveBitmap(bitmap, file.getAbsolutePath());
+                        if (!save) {
+                            appHintsLazy.get().showError("Error:保存人像失败",
+                                    (dialog, which) -> finish());
+                            return;
+                        }
+                        int[] oX = new int[1];
+                        int[] oY = new int[1];
+                        byte[] rgbFromFile = FaceManager.getInstance().getRgbFromFile(file.getAbsolutePath(), oX, oY);
+                        if (rgbFromFile == null) {
+                            appHintsLazy.get().showError("Error:人像数据解析失败",
+                                    (dialog, which) -> finish());
+                            return;
+                        }
+                        mHandler.post(() -> mVerifyPageViewModel.extractFeatureFromRgb(rgbFromFile, bitmap.getWidth(), bitmap.getHeight()));
+                    });
+                } catch (Exception e) {
+                    e.getStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                dismissLoading();
+                appHintsLazy.get().showError("Error:" + t,
+                        (dialog, which) -> finish());
+            }
+        });
+        binding.svPreview.getHolder().addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(@NonNull SurfaceHolder holder) {
+                ZZResponse<?> init = CameraHelper.getInstance().init();
+                if (ZZResponse.isSuccess(init)) {
+                    ZZResponse<MXCamera> mxCameraRgb = CameraHelper.getInstance().createMXCamera(CameraConfig.Camera_RGB);
+                    ZZResponse<MXCamera> mxCameraNir = CameraHelper.getInstance().createMXCamera(CameraConfig.Camera_NIR);
+                    if (ZZResponse.isSuccess(mxCameraRgb) && ZZResponse.isSuccess(mxCameraNir)) {
+                        mxCameraRgb.getData().setOrientation(CameraConfig.Camera_RGB.previewOrientation);
+                        mxCameraRgb.getData().setPreviewCallback(frame -> {
+                            //可见光人脸检测
+                            mVerifyPageViewModel.processRgbFrame(frame, VerifyPageFragment.this);
+                        });
+                        mxCameraRgb.getData().start(holder);
+
+                        mxCameraNir.getData().setOrientation(CameraConfig.Camera_NIR.previewOrientation);
+                        mxCameraNir.getData().setPreviewCallback(frame -> {
+                            //活体检测
+                            mVerifyPageViewModel.detectLive(frame, VerifyPageFragment.this);
+                        });
+                        mxCameraNir.getData().start(null);
+                    } else {
+                        mHandler.post(() -> appHintsLazy.get().showError("Error:打开双目摄像头失败，请联系工作人员",
+                                (dialog, which) -> {
+                                    dialog.dismiss();
+                                    finish();
+                                }));
+                    }
+                }
+            }
+
+            @Override
+            public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
+
+            }
+
+            @Override
+            public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
+                CameraHelper.getInstance().free();
+                try {
+                    holder.removeCallback(this);
+                } catch (Exception e) {
+                    e.getStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -310,10 +310,10 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
         });
         //比对结果
         mVerifyPageViewModel.stateLiveData.observe(this, result -> {
-                isFingerPass = true;
-                if (!isFacePass) {
-                    verifyComplete(ZZResponse.CreateSuccess());
-                }
+            isFingerPass = true;
+            if (!isFacePass) {
+                verifyComplete(ZZResponse.CreateSuccess());
+            }
         });
     }
 
@@ -354,8 +354,7 @@ public class VerifyPageFragment extends BaseBindingFragment<FragmentVerifyBindin
     @Override
     public void onResume() {
         super.onResume();
-//        CameraHelper.getInstance().resume();
-        verifyComplete(ZZResponse.CreateSuccess());
+        CameraHelper.getInstance().resume();
     }
 
     public void verifyComplete(ZZResponse<VerifyInfo> response) {

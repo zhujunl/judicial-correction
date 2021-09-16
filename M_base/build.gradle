@@ -25,7 +25,7 @@ android {
 //        }
     }
 
-    //EQUIPMENT_TYPE 打包时候注意 设备类型 1.竖屏 2横版.平板   3横版.台式   4.MR990S
+    //EQUIPMENT_TYPE 打包时候注意 设备类型 1.竖屏 2横版.平板   3横版.台式   4.MR960S
     //配置图片保存旋转尺寸
     //打包需要配置 CameraConfig 因每台摄像头不同
     buildTypes {
@@ -44,7 +44,7 @@ android {
             //人脸存图片的   旋转尺寸 3： 0   1：270  2：    4:0
             buildConfigField 'int', 'ROTATION_SIZE', '0'
             //设备
-            buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
+            buildConfigField 'String', 'CLIENT_NAME', '"MR-960-S"'
             //设备类型 1 3台式 2 平板
             buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
             //版本状态 已经安装过激活的使用老版序列号  没有激活过的使用新版序列号
@@ -62,7 +62,7 @@ android {
             //人脸存图片的   旋转尺寸 3： 0   1：270
             buildConfigField 'int', 'ROTATION_SIZE', '0'
             //设备
-            buildConfigField 'String', 'CLIENT_NAME', '"MR-990-S"'
+            buildConfigField 'String', 'CLIENT_NAME', '"MR-960-S"'
             //设备类型 1 3台式 2 平板
             buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
             //版本状态

@@ -38,8 +38,8 @@ public class CapturePageRepo {
 
         ApiResult<Object> objectApiResult = new ApiResult<>();
         objectApiResult.code = 0;
-        LiveData<ApiResult<Object>> apiResultLiveData = new LiveData<ApiResult<Object>>(objectApiResult){};
-//        LiveData<ApiResult<Object>> apiResultLiveData = apiService.uploadFace(map);
+
+        LiveData<ApiResult<Object>> apiResultLiveData = apiService.uploadFace(map);
         return ResourceConvertUtils.convertToResource(apiResultLiveData);
     }
 
