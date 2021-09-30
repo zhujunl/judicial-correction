@@ -92,7 +92,7 @@ public class InputIdCardBindingFragment extends BaseBindingFragment<FragmentInpu
                         case ERROR:
                             dismissLoading();
                             readIdCardCallback.onLogin(null);
-                            appHintsLazy.get().showError("Error:" + personInfoResource.errorMessage);
+                            appHintsLazy.get().showError(personInfoResource);
                             break;
                         case SUCCESS:
                             dismissLoading();

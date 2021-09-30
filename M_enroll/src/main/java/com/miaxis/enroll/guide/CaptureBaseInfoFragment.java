@@ -177,7 +177,7 @@ public class CaptureBaseInfoFragment extends BaseBindingFragment<FragmentCapture
                     break;
                 case ERROR:
                     dismissLoading();
-                    appHints.showError(personInfoResource.errorMessage);
+                    appHints.showError(personInfoResource);
                     break;
                 case SUCCESS:
                     appHints.toast("添加成功，正在上传简历");

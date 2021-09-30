@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import com.miaxis.judicialcorrection.base.common.Resource;
+
 import javax.inject.Inject;
 
 import dagger.Lazy;
@@ -46,10 +48,30 @@ public class AppHints {
                 .show();
     }
 
+    public void showError(Resource<?> resource) {
+        dialog = new AlertDialog.Builder(context)
+                .setTitle("错误")
+                .setMessage(resource.errorCode + ": " + resource.errorMessage)
+                .setPositiveButton("好的", (dialog, which) -> {
+
+                })
+                .setCancelable(false)
+                .show();
+    }
+
     public void showError(String errMsg, DialogInterface.OnClickListener listener) {
         dialog2 = new AlertDialog.Builder(context)
                 .setTitle("错误")
                 .setMessage(errMsg)
+                .setPositiveButton("好的", listener)
+                .setCancelable(false)
+                .show();
+    }
+
+    public void showError(Resource<?> resource, DialogInterface.OnClickListener listener) {
+        dialog2 = new AlertDialog.Builder(context)
+                .setTitle("错误")
+                .setMessage(resource.errorCode + ": " + resource.errorMessage)
                 .setPositiveButton("好的", listener)
                 .setCancelable(false)
                 .show();

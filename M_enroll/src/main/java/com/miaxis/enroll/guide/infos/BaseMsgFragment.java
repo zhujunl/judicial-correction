@@ -100,7 +100,7 @@ public class BaseMsgFragment extends BaseInfoFragment<FragmentBaseMsgBinding> {
                     break;
                 case ERROR:
                     dismissLoading();
-                    appHintsLazy.get().showError("Error:" + resource.errorMessage);
+                    appHintsLazy.get().showError(resource);
                     break;
                 case SUCCESS:
                     dismissLoading();

@@ -99,7 +99,7 @@ public class ReportActivity extends BaseBindingActivity<ActivityReportBinding> i
                             break;
                         case ERROR:
                             dismissLoading();
-                            appHintsLazy.get().showError("Error:" + objectResource.errorMessage);
+                            appHintsLazy.get().showError(objectResource);
                             break;
                         case SUCCESS:
                             dismissLoading();

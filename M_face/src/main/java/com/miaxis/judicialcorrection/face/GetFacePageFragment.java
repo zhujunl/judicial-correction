@@ -269,7 +269,7 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
                             break;
                         case ERROR:
                             dismissLoading();
-                            appHintsLazy.get().showError(observer.errorMessage,
+                            appHintsLazy.get().showError(observer,
                                     (dialog, which) -> finish());
                             break;
                         case SUCCESS:

@@ -100,7 +100,7 @@ public class LeaveListFragment extends BaseBindingFragment<FragmentLeaveListBind
                         break;
                     case ERROR:
                         dismissLoading();
-                        appHintsLazy.get().showError("Error:" + leaveResource.errorMessage);
+                        appHintsLazy.get().showError(leaveResource);
                         break;
                     case SUCCESS:
                         dismissLoading();

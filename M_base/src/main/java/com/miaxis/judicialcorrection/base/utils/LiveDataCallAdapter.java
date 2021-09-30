@@ -1,5 +1,7 @@
 package com.miaxis.judicialcorrection.base.utils;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
@@ -61,7 +63,11 @@ public class LiveDataCallAdapter<R> implements CallAdapter<ApiResult<R>, LiveDat
                             Timber.w("Http ERROR , Request :[%s] Error :[%s]", call.request().url(), t);
                             ApiResult<R> apiResult = new ApiResult<>();
                             apiResult.code = 500;
-                            apiResult.msg = t.getMessage();
+                            if (TextUtils.isEmpty(t.getMessage())) {
+                                apiResult.msg = t.toString();
+                            } else {
+                                apiResult.msg = t.getMessage();
+                            }
                             postValue(apiResult);
                         }
                     });

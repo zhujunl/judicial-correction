@@ -62,7 +62,7 @@ public class ProgressFragment extends BaseBindingFragment<FragmentProgressBindin
                     break;
                 case ERROR:
                     dismissLoading();
-                    appHintsLazy.get().showError("Error:" + leaveResource.errorMessage);
+                    appHintsLazy.get().showError(leaveResource);
                     break;
                 case SUCCESS:
                     dismissLoading();

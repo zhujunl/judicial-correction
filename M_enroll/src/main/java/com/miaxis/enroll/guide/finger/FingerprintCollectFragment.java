@@ -83,7 +83,7 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFing
                         break;
                     case ERROR:
                         dismissLoading();
-                        appHintsLazy.get().showError(observer.errorMessage);
+                        appHintsLazy.get().showError(observer);
                         break;
                     case SUCCESS:
                         dismissLoading();

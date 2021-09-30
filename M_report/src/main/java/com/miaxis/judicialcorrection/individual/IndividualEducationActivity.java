@@ -103,7 +103,7 @@ public class IndividualEducationActivity extends BaseBindingActivity<ActivityRep
                             break;
                         case ERROR:
                             dismissLoading();
-                            appHintsLazy.get().showError("Error:" + objectResource.errorMessage);
+                            appHintsLazy.get().showError(objectResource);
                             break;
                         case SUCCESS:
                             dismissLoading();
@@ -171,7 +171,7 @@ public class IndividualEducationActivity extends BaseBindingActivity<ActivityRep
                     break;
                 case ERROR:
                     dismissLoading();
-                    appHintsLazy.get().showError("Error:" + observer.errorMessage);
+                    appHintsLazy.get().showError(observer);
                     break;
                 case SUCCESS:
                     dismissLoading();

@@ -79,7 +79,7 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> i
                     break;
                 case ERROR:
                     dismissLoading();
-                    appHintsLazy.get().showError("Error:" + personInfoResource.errorMessage);
+                    appHintsLazy.get().showError(personInfoResource);
                     break;
                 case SUCCESS:
                     dismissLoading();

@@ -283,7 +283,7 @@ public class LeaveApplyFragment extends BaseBindingFragment<FragmentLeaveApplyBi
                         break;
                     case ERROR:
                         dismissLoading();
-                        appHintsLazy.get().showError("Error:" + objectResource.errorMessage);
+                        appHintsLazy.get().showError(objectResource);
                         break;
                     case SUCCESS:
                         dismissLoading();

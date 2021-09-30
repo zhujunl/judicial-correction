@@ -101,7 +101,7 @@ public class CentralizedEducationActivity extends BaseBindingActivity<ActivityRe
                         break;
                     case ERROR:
                         dismissLoading();
-                        appHintsLazy.get().showError("Error:" + objectResource.errorMessage);
+                        appHintsLazy.get().showError(objectResource);
                         break;
                     case SUCCESS:
                         dismissLoading();
@@ -188,7 +188,7 @@ public class CentralizedEducationActivity extends BaseBindingActivity<ActivityRe
                         break;
                     case ERROR:
                         dismissLoading();
-                        appHintsLazy.get().showError("Error:" + objectResource.errorMessage);
+                        appHintsLazy.get().showError(objectResource);
                         break;
                     case SUCCESS:
                         dismissLoading();
