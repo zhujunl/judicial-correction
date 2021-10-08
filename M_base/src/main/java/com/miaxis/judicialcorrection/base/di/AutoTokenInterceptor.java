@@ -95,7 +95,7 @@ public class AutoTokenInterceptor implements Interceptor {
         jzAuth = JZAuth.getInstance();
         baseUrlToken = MMKV.defaultMMKV().getString("baseToken", BuildConfig.TOKEN_URL);
         jzAuth.setGlobalURL(baseUrlToken);
-        jzAuth.initialize(context, "zkja");
+        jzAuth.initialize(context, "zzkj");
         if (BuildConfig.DEBUG) {
             jzAuth.setDebug(true);
         }
