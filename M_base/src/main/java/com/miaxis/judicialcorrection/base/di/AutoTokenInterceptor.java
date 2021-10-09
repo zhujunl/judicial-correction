@@ -95,7 +95,7 @@ public class AutoTokenInterceptor implements Interceptor {
         jzAuth = JZAuth.getInstance();
         baseUrlToken = MMKV.defaultMMKV().getString("baseToken", BuildConfig.TOKEN_URL);
         jzAuth.setGlobalURL(baseUrlToken);
-        jzAuth.initialize(context, "MIAXIS");
+        jzAuth.initialize(context, "zkja");
         if (BuildConfig.DEBUG) {
             jzAuth.setDebug(true);
         }
@@ -109,13 +109,14 @@ public class AutoTokenInterceptor implements Interceptor {
                     if (!jzAuth.checkAuth()) {
                         registerJzAuth();
                         Timber.i("getToken ，register success !");
-                    } else {
-                        //如果注册过了并且 tokenUrl 不等于默认的 再次执行注册
-                        if (!baseUrlToken.equals(BuildConfig.TOKEN_URL)) {
-                            registerJzAuth();
-                            Timber.i("getToken ，register success !");
-                        }
                     }
+//                    else {
+//                        //如果注册过了并且 tokenUrl 不等于默认的 再次执行注册
+//                        if (!baseUrlToken.equals(BuildConfig.TOKEN_URL)) {
+//                            registerJzAuth();
+//                            Timber.i("getToken ，register success !");
+//                        }
+//                    }
                     refreshToken();
                     Timber.i("getToken ，NEW  : %s", token);
                 }
