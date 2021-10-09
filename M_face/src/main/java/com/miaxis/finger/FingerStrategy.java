@@ -47,11 +47,11 @@ public class FingerStrategy implements FingerManager.FingerStrategy {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        try {
+       /* try {
             statusListener.onFingerStatus(false);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
