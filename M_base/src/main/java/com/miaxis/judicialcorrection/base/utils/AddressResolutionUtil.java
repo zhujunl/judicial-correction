@@ -22,17 +22,21 @@ public class AddressResolutionUtil {
         Map<String,String> row;
         while(m.find()){
             row = new LinkedHashMap<>();
-            province = m.group(1);
-            row.put("province", province==null?"":province.trim());
-            city = m.group(2);
-            row.put("city", city==null?"":city.trim());
-            county = m.group(3);
-            row.put("county", county==null?"":county.trim());
-            town = m.group(4);
-            row.put("town", town==null?"":town.trim());
-            village = m.group(5);
-            row.put("village", village==null?"":village.trim());
-            table.add(row);
+            try {
+                province = m.group(1);
+                row.put("province", province == null ? "" : province.trim());
+                city = m.group(2);
+                row.put("city", city == null ? "" : city.trim());
+                county = m.group(3);
+                row.put("county", county == null ? "" : county.trim());
+                town = m.group(4);
+                row.put("town", town == null ? "" : town.trim());
+                village = m.group(5);
+                row.put("village", village == null ? "" : village.trim());
+                table.add(row);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return table;
     }
