@@ -53,7 +53,10 @@ public interface ApiService {
     String getVoice = "/sqjzsjzx/correctVocalprint/queryById";
     //上传声纹
     String uploadVoice = "/sqjzsjzx/correctVocalprint/add";
-
+    //检查版本更新
+    String compareVersions = "/sqjzsjzx/version/apkVersion/compareVersions";
+    //下载应用
+    String downAPK = "/sqjzsjzx/version/apkVersion/downloadTwo";
     @GET("/personInfo/list")
     LiveData<ApiResult<List<User>>> personList(
             @Query("lastModifiedTime") String lastModifiedTime
@@ -193,4 +196,10 @@ public interface ApiService {
     //得到声纹
     @POST()
     LiveData<ApiResult<VocalPrintEntity>> getVocalPrint(@Url String url,@Body() RequestBody body);
+    //检测是否有最新版本
+    @POST()
+    LiveData<ApiResult<ApkVersionResult>> compareVersions(@Url String url, @Body() RequestBody body);
+
+    @GET()
+    Call<ResponseBody> downApk(@Url String url);
 }

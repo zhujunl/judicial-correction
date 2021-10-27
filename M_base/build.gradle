@@ -28,6 +28,7 @@ android {
     //EQUIPMENT_TYPE 打包时候注意 设备类型 1.竖屏 2横版.平板   3横版.台式   4.MR960S
     //配置图片保存旋转尺寸
     //打包需要配置 CameraConfig 因每台摄像头不同
+    //配置类型看DownLoadConfig
     buildTypes {
         debug {
             minifyEnabled false
@@ -131,4 +132,6 @@ dependencies {
     api 'com.github.zhaolewei:ZlwAudioRecorder:v1.07'
     api 'com.tencent:mmkv-static:1.1.2'
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+    api 'com.afollestad.material-dialogs:core:0.9.1.0'
+    api 'com.afollestad.material-dialogs:commons:0.9.1.0'
 }
