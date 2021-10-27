@@ -424,10 +424,15 @@ public class LiveAddressFragment extends BaseBindingFragment<FragmentLiveAddress
                         }
                     }, new DialogResult.Builder(true, "提交成功", "", 0, true
                     ).hideAllHideSucceedInfo(true));
+
                     dialogResult.show();
                     mHandler.postDelayed(() -> {
                         if (getActivity() != null && !getActivity().isFinishing()) {
                             dialogResult.dismiss();
+                            model.isHideApplicationButton.set(View.VISIBLE);
+                            model.isHideApplication.set(View.GONE);
+                            model.isHideMaterialButton.set(View.VISIBLE);
+                            model.isHideMaterial.set(View.GONE);
                             ((LiveAddressChangeActivity) getActivity()).replaceFragment(new LiveListFragment());
                         }
                     }, 2000);
