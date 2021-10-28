@@ -99,7 +99,9 @@ public class FingerprintCollectModel extends ViewModel {
                     hint.postValue("指纹比对成功！");
                     setFingerReadFile(feature, image);
                 } else {
-                    hint.postValue("指纹比对失败！");
+                    if (null != feature) {
+                        hint.postValue("指纹比对失败！");
+                    }
                     SystemClock.sleep(1000);
                     try {
                         readFinger(getFingerToByte(), getFingerToByte2());

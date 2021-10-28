@@ -65,7 +65,9 @@ public class VerifyPageViewModel extends BaseFaceViewModel {
                 stateLiveData.postValue(state);
                 setFingerReadFile(feature, image);
             } else {
-                hint.postValue("指纹比对失败！");
+                if (null != feature && null != image) {
+                    hint.postValue("指纹比对失败！");
+                }
                 SystemClock.sleep(1500);
                 try {
                     readFinger(getFingerToByte());
