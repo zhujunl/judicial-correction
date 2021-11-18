@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.miaxis.enroll.databinding.ActivityEnrollBinding;
 import com.miaxis.enroll.guide.CaptureFuncFragment;
-import com.miaxis.enroll.guide.NvController;
 import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
 import com.miaxis.judicialcorrection.face.callback.NavigationCallback;
@@ -36,7 +35,6 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> i
 
     @Inject
     Lazy<AppHints> appHintsLazy;
-    private NvController nvController;
     private EnrollSharedViewModel viewModel;
 
     @Override
@@ -52,7 +50,6 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> i
     @Override
     protected void initData(@NonNull ActivityEnrollBinding binding, @Nullable Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this).get(EnrollSharedViewModel.class);
-        nvController = new NvController(getSupportFragmentManager(), R.id.container);
         nvController.nvTo(new ReadIDFragment(), false);
         viewModel.errorMsgLiveData.observe(this, s -> appHintsLazy.get().showError("Error:" + s));
         viewModel.idCardLiveData.observe(this, this::onIdCardRead);
@@ -64,9 +61,7 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> i
         }
     }
 
-    public NvController getNvController() {
-        return nvController;
-    }
+
 
     private Bitmap idFaceBitmap;
     public void onIdCardRead(IdCard result) {
@@ -79,7 +74,7 @@ public class EnrollActivity extends BaseBindingActivity<ActivityEnrollBinding> i
                     break;
                 case ERROR:
                     dismissLoading();
-                    appHintsLazy.get().showError(personInfoResource);
+                    appHintsLazy.get().showError("Error:" + personInfoResource.errorMessage);
                     break;
                 case SUCCESS:
                     dismissLoading();

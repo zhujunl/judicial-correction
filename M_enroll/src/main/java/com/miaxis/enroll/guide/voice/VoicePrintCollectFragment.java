@@ -12,8 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.miaxis.enroll.EnrollActivity;
 import com.miaxis.enroll.R;
 import com.miaxis.enroll.databinding.FragmentVoiceprintCollectBinding;
 import com.miaxis.enroll.vo.VoiceEntity;
@@ -82,6 +84,12 @@ public class VoicePrintCollectFragment extends BaseBindingFragment<FragmentVoice
 
     @Override
     protected void initData(@NonNull @NotNull FragmentVoiceprintCollectBinding binding, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        binding.btnBack.setOnClickListener(v -> {
+            FragmentActivity activity = getActivity();
+            if (activity instanceof EnrollActivity) {
+                ((EnrollActivity) activity).getNvController().back();
+            }
+        });
          model = new ViewModelProvider(this).get(VoicePrintModel.class);
 
         String[] permissions = {

@@ -18,6 +18,7 @@ import com.miaxis.camera.MXCamera;
 import com.miaxis.camera.MXFrame;
 import com.miaxis.faceid.FaceConfig;
 import com.miaxis.faceid.FaceManager;
+import com.miaxis.judicialcorrection.base.BaseBindingActivity;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
 import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
@@ -81,7 +82,12 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
     @Override
     protected void initView(@NonNull FragmentCaptureBinding view, @Nullable Bundle savedInstanceState) {
         filePath = FileUtils.createFileParent(getContext());
-
+        binding.btnBack.setOnClickListener(v -> {
+            FragmentActivity activity = getActivity();
+            if (activity instanceof BaseBindingActivity) {
+                ((BaseBindingActivity) activity).getNvController().back();
+            }
+        });
         mGetFaceViewModel = new ViewModelProvider(this).get(GetFaceViewModel.class);
         if (BuildConfig.EQUIPMENT_TYPE == 3) {
             apimanager = new XHApiManager();

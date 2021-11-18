@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
+import com.miaxis.judicialcorrection.base.controller.NvController;
+
 /**
  * @author Tank
  * @date 2021/4/25 3:59 PM
@@ -26,6 +28,7 @@ import androidx.databinding.ViewDataBinding;
 public abstract class BaseBindingActivity<V extends ViewDataBinding> extends AppCompatActivity {
 
     protected V binding;
+    protected NvController nvController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +38,16 @@ public abstract class BaseBindingActivity<V extends ViewDataBinding> extends App
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-
+        nvController = new NvController(getSupportFragmentManager(), R.id.container);
         initWindow();
         //ARouter.getInstance().inject(this);
         binding = DataBindingUtil.setContentView(this, initLayout());
         initView(binding, savedInstanceState);
         initData(binding, savedInstanceState);
     }
-
+    public NvController getNvController() {
+        return nvController;
+    }
     protected void initWindow() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//去掉信息栏
         WindowManager.LayoutParams params = getWindow().getAttributes();

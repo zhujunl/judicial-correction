@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.utils.TextUtils;
+import com.miaxis.enroll.EnrollActivity;
 import com.miaxis.enroll.R;
 import com.miaxis.enroll.databinding.FragmentFingerprintCollectBinding;
 import com.miaxis.judicialcorrection.base.BaseBindingFragment;
@@ -61,6 +62,12 @@ public class FingerprintCollectFragment extends BaseBindingFragment<FragmentFing
 
     @Override
     protected void initData(@NonNull @NotNull FragmentFingerprintCollectBinding binding, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        binding.btnBack.setOnClickListener(v -> {
+            FragmentActivity activity = getActivity();
+            if (activity instanceof EnrollActivity) {
+                ((EnrollActivity) activity).getNvController().back();
+            }
+        });
         mFingerprintCollectModel = new ViewModelProvider(this).get(FingerprintCollectModel.class);
         mFingerprintCollectModel.filePath = FileUtils.createFileParent(getContext());
 //        if (mIdCard!=null){
