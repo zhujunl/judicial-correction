@@ -228,7 +228,7 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
         String client = "";
         if (BuildConfig.EQUIPMENT_TYPE == 1) {
             client = "L";
-        } else if (BuildConfig.EQUIPMENT_TYPE == 3) {
+        } else if (BuildConfig.EQUIPMENT_TYPE == 3 || BuildConfig.EQUIPMENT_TYPE == 4) {
             client = "T";
         } else {
             client = "Y";
@@ -246,9 +246,14 @@ public class SettingActivity extends BaseBindingActivity<ActivitySettingBinding>
 
         buffer.append("ZZD-").append(client).append("-")
                 .append("ZZ1-").append("MR-").append(calendar.get(Calendar.YEAR))
-                .append("w").append(strWeek);
+                .append("W").append(strWeek);
         if (TextUtils.isEmpty(serial)) {
-            buffer.append(Math.abs(new Random().nextInt(99999)));
+            Random r = new Random();
+            StringBuilder rs = new StringBuilder();
+            for (int i = 0; i < 5; i++) {
+                rs.append(r.nextInt(10));
+            }
+            buffer.append(rs.toString());
         } else {
             buffer.append(serial);
         }
