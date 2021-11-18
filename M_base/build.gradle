@@ -95,10 +95,9 @@ dependencies {
     api 'androidx.appcompat:appcompat:1.2.0'
     api 'com.google.android.material:material:1.2.1'
     api 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation files('libs\\JzAuth-1.6.-2.jar')
 
     def lifecycle_version = "2.2.0"
-
+    implementation files('libs\\JzAuth-v1.7.1.jar')
     api "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
     api "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
 
