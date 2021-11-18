@@ -33,40 +33,41 @@ public class CloudModel extends ViewModel {
         String token=MMKV.defaultMMKV().decodeString("cloudtoken");
         Timber.e("CloudModel_token=="+token);
         Timber.e("CloudModel:getreport");
-        return cloudRep.getreport(token,1,1,pid);
+        return cloudRep.getreport(token,1,9999,pid);
     }
 
     public LiveData<Resource<CentralizedBean>> getEducation(){
         String pid= MMKV.defaultMMKV().decodeString("pid");
         String token=MMKV.defaultMMKV().decodeString("cloudtoken");
         Timber.e("CloudModel:getEducation");
-        return cloudRep.getEducation(token,1,1,pid);
+        return cloudRep.getEducation(token,1,9999,pid);
     }
 
     public LiveData<Resource<IndividualBean>> getPersonEducation(){
         String pid= MMKV.defaultMMKV().decodeString("pid");
         String token=MMKV.defaultMMKV().decodeString("cloudtoken");
         Timber.e("CloudModel:getPersonEducation");
-        return cloudRep.getPersonEducation(token,1,1,pid);
+        return cloudRep.getPersonEducation(token,1,9999,pid);
     }
 
     public LiveData<Resource<WelfareBean>> getHistoryActivityInfo(){
         String pid= MMKV.defaultMMKV().decodeString("pid");
         String token=MMKV.defaultMMKV().decodeString("cloudtoken");
         Timber.e("CloudModel:getHistoryActivityInfo");
-        return cloudRep.getHistoryActivityInfo(token,1,1,pid);
+        return cloudRep.getHistoryActivityInfo(token,1,9999,pid);
     }
 
     public LiveData<Resource<AdmonitionBean>> getAdmonition(){
+        String pid= MMKV.defaultMMKV().decodeString("pid");
         Timber.e("CloudModel:getAdmonition");
-        return cloudRep.getAdmonition("Bearer 3a2b4564-499f-4fbc-a865-f8593a92bf6a","6447f4064e5a45f896f8dd60b12a8dd6");
+        return cloudRep.getAdmonition("Bearer 3a2b4564-499f-4fbc-a865-f8593a92bf6a",pid);
     }
 
     public LiveData<Resource<WarningBean>> getWarning(){
         Timber.e("CloudModel:getWarning");
         String pid= MMKV.defaultMMKV().decodeString("pid");
         String token=MMKV.defaultMMKV().decodeString("cloudtoken");
-        return cloudRep.getWarning("Bearer 3a2b4564-499f-4fbc-a865-f8593a92bf6a","db0dea7f6b09425e84f891d41cfc89c3");
+        return cloudRep.getWarning("Bearer 3a2b4564-499f-4fbc-a865-f8593a92bf6a",pid);
     }
 
 

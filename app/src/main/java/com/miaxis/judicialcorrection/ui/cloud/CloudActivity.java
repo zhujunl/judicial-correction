@@ -71,7 +71,6 @@ public class CloudActivity extends BaseBindingActivity<ActivityCloudBinding>  im
             LiveData<TokenResult<TokenBean>> getreport =tokenRep.getToken();
             getreport.observe(this, tokenBeanResource -> {
                 MMKV.defaultMMKV().encode("cloudtoken","Bearer "+tokenBeanResource.getAccess_token());
-                Log.d("CloufToken===", tokenBeanResource.getAccess_token());
                 id = personInfo.getId();
                 MMKV.defaultMMKV().encode("pid",id);
                 replaceFragment(new CloudFragment(personInfo));
