@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.miaxis.judicialcorrection.base.api.vo.bean.AdmonitionBean;
 import com.miaxis.judicialcorrection.base.api.vo.bean.CentralizedBean;
 import com.miaxis.judicialcorrection.base.api.vo.bean.CloudRep;
+import com.miaxis.judicialcorrection.base.api.vo.bean.CloudRep2;
 import com.miaxis.judicialcorrection.base.api.vo.bean.DailyBean;
 import com.miaxis.judicialcorrection.base.api.vo.bean.IndividualBean;
 import com.miaxis.judicialcorrection.base.api.vo.bean.WarningBean;
@@ -21,9 +22,9 @@ import timber.log.Timber;
 @HiltViewModel
 public class CloudModel extends ViewModel {
 
-    private final CloudRep cloudRep;
+    private final CloudRep2 cloudRep;
     @Inject
-    public CloudModel(CloudRep reportRepo) {
+    public CloudModel(CloudRep2 reportRepo) {
         this.cloudRep = reportRepo;
     }
 
@@ -58,14 +59,14 @@ public class CloudModel extends ViewModel {
 
     public LiveData<Resource<AdmonitionBean>> getAdmonition(){
         Timber.e("CloudModel:getAdmonition");
-        return cloudRep.getAdmonition(MMKV.defaultMMKV().decodeString("cloudtoken"),"6447f4064e5a45f896f8dd60b12a8dd6");
+        return cloudRep.getAdmonition("Bearer 3a2b4564-499f-4fbc-a865-f8593a92bf6a","6447f4064e5a45f896f8dd60b12a8dd6");
     }
 
     public LiveData<Resource<WarningBean>> getWarning(){
         Timber.e("CloudModel:getWarning");
         String pid= MMKV.defaultMMKV().decodeString("pid");
         String token=MMKV.defaultMMKV().decodeString("cloudtoken");
-        return cloudRep.getWarning(token,"db0dea7f6b09425e84f891d41cfc89c3");
+        return cloudRep.getWarning("Bearer 3a2b4564-499f-4fbc-a865-f8593a92bf6a","db0dea7f6b09425e84f891d41cfc89c3");
     }
 
 

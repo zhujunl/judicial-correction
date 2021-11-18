@@ -64,8 +64,11 @@ public class CentralizedFragment extends BaseInfoFragment<FragmentCentralizedBin
     protected void initView(@NonNull FragmentCentralizedBinding binding, @Nullable Bundle savedInstanceState) {
         model=new ViewModelProvider(this).get(CloudModel.class);
         model.getEducation().observe(this, CentralizedBean->{
-            if(CentralizedBean.isSuccess()){
+            if(CentralizedBean.isLoading()){showLoading();}
+            else if(CentralizedBean.isSuccess()){
                 myAdpter.setList(CentralizedBean.data.getList());
+            }else if(CentralizedBean.isError()){
+                dismissLoading();
             }
         });
         myAdpter=new MyAdpter(getContext(),list);
@@ -112,6 +115,7 @@ public class CentralizedFragment extends BaseInfoFragment<FragmentCentralizedBin
         }
 
         public void setList(List<CentralizedBean.li> l){
+            dismissLoading();
             list.clear();
             list=l;
             notifyDataSetChanged();

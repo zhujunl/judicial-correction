@@ -38,7 +38,7 @@ public class AdmonitionFragment extends BaseInfoFragment<FragmentAdmonitionBindi
     @SuppressLint("SimpleDateFormat")
     DateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd");
 
-//    {
+    //    {
 //        list.add("1");
 //        list.add("2");
 //        list.add("3");
@@ -63,8 +63,12 @@ public class AdmonitionFragment extends BaseInfoFragment<FragmentAdmonitionBindi
     protected void initView(@NonNull FragmentAdmonitionBinding binding, @Nullable Bundle savedInstanceState) {
         model=new ViewModelProvider(this).get(CloudModel.class);
         model.getAdmonition().observe(this,admonitionBeanResource -> {
-            if(admonitionBeanResource.isSuccess()){
+            if (admonitionBeanResource.isLoading()){
+                showLoading();
+            } else  if(admonitionBeanResource.isSuccess()){
                 myAdpter.setList(admonitionBeanResource.data.getList());
+            }else if(admonitionBeanResource.isError()){
+                dismissLoading();
             }
         });
         myAdpter=new MyAdpter(getContext(),list);
@@ -95,7 +99,7 @@ public class AdmonitionFragment extends BaseInfoFragment<FragmentAdmonitionBindi
         public void onBindViewHolder(@NonNull MyHolder holder, int position) {
             holder.num.setText(String.valueOf(position+1));
             holder.time.setText(dateFormat.format(list.get(position).getSfssqsj()));
-            holder.fact.setText(list.get(position).getJgss());
+            holder.fact.setText("\t"+list.get(position).getJgss());
         }
 
         @Override
@@ -104,6 +108,7 @@ public class AdmonitionFragment extends BaseInfoFragment<FragmentAdmonitionBindi
         }
 
         public void setList(List<AdmonitionBean.Data> l){
+            dismissLoading();
             list.clear();
             list=l;
             notifyDataSetChanged();

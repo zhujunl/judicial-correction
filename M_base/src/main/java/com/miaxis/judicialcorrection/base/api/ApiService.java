@@ -2,7 +2,6 @@ package com.miaxis.judicialcorrection.base.api;
 
 import androidx.lifecycle.LiveData;
 
-import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.vo.Education;
 import com.miaxis.judicialcorrection.base.api.vo.FingerEntity;
 import com.miaxis.judicialcorrection.base.api.vo.HistorySignUpBean;
@@ -15,6 +14,12 @@ import com.miaxis.judicialcorrection.base.api.vo.PersonInfo;
 import com.miaxis.judicialcorrection.base.api.vo.SignUpBean;
 import com.miaxis.judicialcorrection.base.api.vo.User;
 import com.miaxis.judicialcorrection.base.api.vo.VocalPrintEntity;
+import com.miaxis.judicialcorrection.base.api.vo.bean.AdmonitionBean;
+import com.miaxis.judicialcorrection.base.api.vo.bean.CentralizedBean;
+import com.miaxis.judicialcorrection.base.api.vo.bean.DailyBean;
+import com.miaxis.judicialcorrection.base.api.vo.bean.IndividualBean;
+import com.miaxis.judicialcorrection.base.api.vo.bean.WarningBean;
+import com.miaxis.judicialcorrection.base.api.vo.bean.WelfareBean;
 
 import java.util.List;
 import java.util.Map;
@@ -23,8 +28,10 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -57,6 +64,7 @@ public interface ApiService {
     String compareVersions = "/sqjzsjzx/version/apkVersion/compareVersions";
     //下载应用
     String downAPK = "/sqjzsjzx/version/apkVersion/downloadTwo";
+
     @GET("/personInfo/list")
     LiveData<ApiResult<List<User>>> personList(
             @Query("lastModifiedTime") String lastModifiedTime
@@ -106,9 +114,24 @@ public interface ApiService {
     LiveData<ApiResult<Object>> uploadFace(@PartMap Map<String, RequestBody> map);
 
 
+    @GET("/report/list")
+    LiveData<ApiResult<DailyBean>> getreport(
+            @Query("page") int page,
+            @Query("rows") int rows,
+            @Query("pid") String pid
+    );
+
     @POST("/report/add")
     LiveData<ApiResult<Object>> reportAdd(
             @Body() Map<String, String> body
+    );
+
+
+    @GET("/focusEducation/list")
+    LiveData<ApiResult<CentralizedBean>> getEducation(
+            @Query("page") int page,
+            @Query("rows") int rows,
+            @Query("pid") String pid
     );
 
     @GET("/focusEducation/list")
@@ -128,9 +151,15 @@ public interface ApiService {
     );
 
     @GET("/personEducation/list")
-    LiveData<ApiResult<IndividualEducationBean>> getPersonEducation(@Query("pid") String pid,
-                                                                    @Query("page") int page,
-                                                                    @Query("rows") int rows);
+    LiveData<ApiResult<IndividualEducationBean>> getPersonEducation(          @Query("pid") String pid,
+                                                                              @Query("page") int page,
+                                                                              @Query("rows") int rows);
+
+
+    @GET("/personEducation/list")
+    LiveData<ApiResult<IndividualBean>> getPersonEducation2(          @Query("pid") String pid,
+                                                                      @Query("page") int page,
+                                                                      @Query("rows") int rows);
 
     @GET("/leave/list")
     LiveData<ApiResult<Leave>> getLeaveList(
@@ -163,6 +192,17 @@ public interface ApiService {
     @GET("/publicActivity/list")
     LiveData<ApiResult<HistorySignUpBean>> getHistoryActivityInfo(@Query("page") int page,
                                                                   @Query("rows") int rows, @Query("pid") String pid);
+    //历史活动
+    @GET("/publicActivity/list")
+    LiveData<ApiResult<WelfareBean>> getHistoryActivityInfo2(@Query("page") int page,
+                                                             @Query("rows") int rows, @Query("pid") String pid);
+    //训诫
+    @GET("/xj/list")
+    LiveData<ApiResult<AdmonitionBean>> getAdmonition(@Query("pid") String  pid);
+
+    //警告
+    @GET("/warning/list")
+    LiveData<ApiResult<WarningBean>> getWarning(@Query("pid") String  pid);
 
     //参与社区服务
     @POST("/publicActivity/person/add")
@@ -196,10 +236,15 @@ public interface ApiService {
     //得到声纹
     @POST()
     LiveData<ApiResult<VocalPrintEntity>> getVocalPrint(@Url String url,@Body() RequestBody body);
+
+
     //检测是否有最新版本
     @POST()
     LiveData<ApiResult<ApkVersionResult>> compareVersions(@Url String url, @Body() RequestBody body);
 
     @GET()
     Call<ResponseBody> downApk(@Url String url);
+
+
+
 }

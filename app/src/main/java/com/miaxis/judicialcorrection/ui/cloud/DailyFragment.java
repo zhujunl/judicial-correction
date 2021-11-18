@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.miaxis.enroll.guide.infos.BaseInfoFragment;
 import com.miaxis.judicialcorrection.R;
+import com.miaxis.judicialcorrection.base.api.vo.bean.DailyBean;
 import com.miaxis.judicialcorrection.databinding.FragmentDailyBinding;
 
 import java.text.DateFormat;
@@ -33,8 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class DailyFragment extends BaseInfoFragment<FragmentDailyBinding> {
 
     private MyAdpter myAdpter;
-//    private List<DailyBean.Data> list=new ArrayList<>();
-    List<String> list=new ArrayList<>();
+    private List<DailyBean.Data> list=new ArrayList<>();
     private CloudModel viewmodel;
     @SuppressLint("SimpleDateFormat")
     DateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd");
@@ -49,33 +49,16 @@ public class DailyFragment extends BaseInfoFragment<FragmentDailyBinding> {
     @Override
     protected void initView(@NonNull FragmentDailyBinding binding, @Nullable Bundle savedInstanceState) {
         viewmodel=new ViewModelProvider(this).get(CloudModel.class);
-//        viewmodel.getreport().observe(this,dailyBeanResource -> {
-//            if(dailyBeanResource.isSuccess()){
-//                myAdpter.setList(dailyBeanResource.data.getList());
-//            }
-//        });
+        viewmodel.getreport().observe(this,dailyBeanResource -> {
+            if(dailyBeanResource.isLoading()){showLoading();}
+            else if(dailyBeanResource.isSuccess()){
+                myAdpter.setList(dailyBeanResource.data.getList());
+            }else if(dailyBeanResource.isError()){
+                dismissLoading();
+            }
+        });
 
         myAdpter=new MyAdpter(getActivity(),list);
-        {
-            list.add("1");
-            list.add("2");
-            list.add("3");
-            list.add("4");
-            list.add("5");
-            list.add("7");
-            list.add("8");
-            list.add("9");
-            list.add("10");
-            list.add("11");
-            list.add("12");
-            list.add("13");
-            list.add("14");
-            list.add("15");
-            list.add("16");
-            list.add("17");
-            list.add("18");
-            list.add("19");
-        }
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         int width=getActivity().getDisplay().getWidth();
@@ -95,19 +78,13 @@ public class DailyFragment extends BaseInfoFragment<FragmentDailyBinding> {
     private class MyAdpter extends RecyclerView.Adapter<MyAdpter.MyHolder>{
 
         private Context context;
-//        private List<DailyBean.Data> list;
-//
-//        public MyAdpter(Context context, List<DailyBean.Data> list) {
-//            this.context = context;
-//            this.list = list;
-//        }
+        private List<DailyBean.Data> list;
 
-        private List<String> list;
-
-        public MyAdpter(Context context, List<String> list) {
+        public MyAdpter(Context context, List<DailyBean.Data> list) {
             this.context = context;
             this.list = list;
         }
+
 
         @NonNull
         @Override
@@ -120,9 +97,9 @@ public class DailyFragment extends BaseInfoFragment<FragmentDailyBinding> {
         @Override
         public void onBindViewHolder(@NonNull MyHolder holder, int position) {
             holder.id.setText(String.valueOf(position+1));
-//            holder.mode.setText(list.get(position).getBgfsName());
-//            holder.style.setText("按时报告");
-//            holder.time.setText(dateFormat.format(list.get(position).getBgsj()));
+            holder.mode.setText(list.get(position).getBgfsName());
+            holder.style.setText("按时报告");
+            holder.time.setText(dateFormat.format(list.get(position).getBgsj()));
         }
 
         @Override
@@ -130,11 +107,12 @@ public class DailyFragment extends BaseInfoFragment<FragmentDailyBinding> {
             return list.size();
         }
 
-//        public void setList(List<DailyBean.Data> l){
-//            list.clear();
-//            list=l;
-//            notifyDataSetChanged();
-//        }
+        public void setList(List<DailyBean.Data> l){
+            dismissLoading();
+            list.clear();
+            list=l;
+            notifyDataSetChanged();
+        }
 
         class MyHolder extends RecyclerView.ViewHolder{
 

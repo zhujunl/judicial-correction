@@ -41,7 +41,7 @@ public class WelfareFragment extends BaseInfoFragment<FragmentWelfareBinding> {
 
     CloudModel cloudModel;
 
-//    {
+    //    {
 //        list.add("1");
 //        list.add("2");
 //        list.add("3");
@@ -68,8 +68,11 @@ public class WelfareFragment extends BaseInfoFragment<FragmentWelfareBinding> {
         cloudModel.getHistoryActivityInfo().observe(this, new Observer<Resource<WelfareBean>>() {
             @Override
             public void onChanged(Resource<WelfareBean> welfareBeanResource) {
-                if (welfareBeanResource.isSuccess()){
+                if(welfareBeanResource.isLoading()){showLoading();}
+                else if (welfareBeanResource.isSuccess()){
                     myAdpter.setList(welfareBeanResource.data.getList());
+                }else if (welfareBeanResource.isError()){
+                    dismissLoading();
                 }
             }
         });
@@ -113,6 +116,7 @@ public class WelfareFragment extends BaseInfoFragment<FragmentWelfareBinding> {
         }
 
         public void setList(List<WelfareBean.Dat> l){
+            dismissLoading();
             list.clear();
             list=l;
             notifyDataSetChanged();

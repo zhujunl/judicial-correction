@@ -41,7 +41,7 @@ public class WarningFragment extends BaseInfoFragment<FragmentWarningBinding> {
     CloudModel model;
     @SuppressLint("SimpleDateFormat")
     DateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd");
-//
+    //
 //    {
 //        list.add("1");
 //        list.add("2");
@@ -67,10 +67,14 @@ public class WarningFragment extends BaseInfoFragment<FragmentWarningBinding> {
     protected void initView(@NonNull FragmentWarningBinding binding, @Nullable Bundle savedInstanceState) {
         model=new ViewModelProvider(this).get(CloudModel.class);
         model.getWarning().observe(this, warningBeanResource -> {
-            if (warningBeanResource.isSuccess()){
+            if (warningBeanResource.isLoading()){
+                showLoading();
+            } else if (warningBeanResource.isSuccess()){
                 myAdpter.setList(warningBeanResource.data.getList());
-        }
-    });
+            }else if(warningBeanResource.isError()){
+                dismissLoading();
+            }
+        });
         myAdpter=new MyAdpter(getContext(),list);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         int width=getActivity().getDisplay().getWidth();
@@ -98,7 +102,7 @@ public class WarningFragment extends BaseInfoFragment<FragmentWarningBinding> {
         @Override
         public void onBindViewHolder(@NonNull MyHolder holder, int position) {
             holder.num.setText(String.valueOf(position+1));
-            holder.fact.setText(list.get(position).getJgly());
+            holder.fact.setText("\t"+list.get(position).getJgly());
             holder.time.setText(dateFormat.format(list.get(position).getSfssqsj()));
         }
 
@@ -108,6 +112,7 @@ public class WarningFragment extends BaseInfoFragment<FragmentWarningBinding> {
         }
 
         public void setList(List<WarningBean.Data> l){
+            dismissLoading();
             list.clear();
             list=l;
             notifyDataSetChanged();

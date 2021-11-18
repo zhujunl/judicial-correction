@@ -39,7 +39,7 @@ public class IndividualFragment extends BaseInfoFragment<FragmentIndividualBindi
     @SuppressLint("SimpleDateFormat")
     DateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd");
 
-//    {
+    //    {
 //        list.add("1");
 //        list.add("2");
 //        list.add("3");
@@ -64,8 +64,12 @@ public class IndividualFragment extends BaseInfoFragment<FragmentIndividualBindi
     protected void initView(@NonNull FragmentIndividualBinding binding, @Nullable Bundle savedInstanceState) {
         model=new ViewModelProvider(this).get(CloudModel.class);
         model.getPersonEducation().observe(this,reportRepo->{
-            if(reportRepo.isSuccess()){
+            if(reportRepo.isLoading()){
+                showLoading();
+            }else if(reportRepo.isSuccess()){
                 myAdpter.setList(reportRepo.data.getList());
+            }else if(reportRepo.isError()){
+                dismissLoading();
             }
         });
         myAdpter=new MyAdpter(getContext(),list);
@@ -109,6 +113,7 @@ public class IndividualFragment extends BaseInfoFragment<FragmentIndividualBindi
         }
 
         public void setList(List<IndividualBean.Data> l){
+            dismissLoading();
             list.clear();
             list=l;
             notifyDataSetChanged();

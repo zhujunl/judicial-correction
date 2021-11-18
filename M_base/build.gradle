@@ -71,6 +71,9 @@ android {
             buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
             //版本状态
             buildConfigField 'int', 'VERSION_STATE', '1'
+
+            buildConfigField 'String', 'SERVER_URL3', '"http://10.249.0.85:8080"'
+            buildConfigField 'String', 'TOKEN_URL3', '"http://10.249.0.85:9012"'
         }
     }
 
