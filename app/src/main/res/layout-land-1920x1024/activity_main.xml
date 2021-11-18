@@ -40,7 +40,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:spanCount="4"
-            tools:itemCount="7"
+            tools:itemCount="8"
             tools:listitem="@layout/item_main_fuc" />
 
 

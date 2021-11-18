@@ -77,11 +77,13 @@ public class AutoTokenInterceptor implements Interceptor {
                         Timber.i("New JAuthInfo level 1: %s", jb.getTeamName());
                         jAuthInfo.dishiId = jb.getTeamId();
                         jAuthInfo.dishiName = jb.getTeamName();
+                        MMKV.defaultMMKV().encode("JAuthInfolevel1",jb.getTeamName());
                         break;
                     case "TEAM_LEVEL_2":
                         Timber.i("New JAuthInfo level 2: %s", jb.getTeamName());
                         jAuthInfo.quxianId = jb.getTeamId();
                         jAuthInfo.quxianName = jb.getTeamName();
+                        MMKV.defaultMMKV().encode("JAuthInfolevel2",jb.getTeamName());
                         break;
                     case "TEAM_LEVEL_3":
                         Timber.i("New JAuthInfo level 3: %s", jb.getTeamName());

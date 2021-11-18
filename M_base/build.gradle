@@ -50,6 +50,9 @@ android {
             buildConfigField 'String', 'DEVICE_TYPE', '"台式"'
             //版本状态 已经安装过激活的使用老版序列号  没有激活过的使用新版序列号
             buildConfigField 'int', 'VERSION_STATE', '1'
+
+            buildConfigField 'String', 'SERVER_URL3', '"http://223.4.75.78:7257"'//8083 8090
+            buildConfigField 'String', 'TOKEN_URL3', '"http://223.4.75.78:7256"'
         }
         release {
             minifyEnabled false

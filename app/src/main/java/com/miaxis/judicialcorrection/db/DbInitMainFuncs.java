@@ -16,6 +16,7 @@ import com.miaxis.judicialcorrection.leave.LeaveActivity;
 import com.miaxis.judicialcorrection.benefit.PublicWelfareActivity;
 import com.miaxis.judicialcorrection.live.LiveAddressChangeActivity;
 import com.miaxis.judicialcorrection.report.ReportActivity;
+import com.miaxis.judicialcorrection.ui.cloud.CloudActivity;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -75,6 +76,15 @@ public class DbInitMainFuncs extends RoomDatabase.Callback {
             List<Long> longs = appDatabaseLazy.get().mainFuncDAO().insertFuncList(items);
             Timber.i("ids : %s ", longs);
             execSQL(db);
+        });
+    }
+    @Override
+    public void onOpen(@NonNull SupportSQLiteDatabase db) {
+        super.onOpen(db);
+        appExecutors.get().diskIO().execute(()->{
+            MainFunc mainFunc=appDatabaseLazy.get().mainFuncDAO().loadFuncByTitle("云端查询");
+            if(mainFunc==null) appDatabaseLazy.get().mainFuncDAO().insertFunc(new MainFunc("云端查询", R.mipmap.main_cloud, CloudActivity.class.getName(), true));
+
         });
     }
 

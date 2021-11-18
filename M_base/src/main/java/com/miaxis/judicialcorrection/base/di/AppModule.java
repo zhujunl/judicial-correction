@@ -4,6 +4,9 @@ package com.miaxis.judicialcorrection.base.di;
 import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.ApiService;
 import com.miaxis.judicialcorrection.base.api.NoAuthApiService;
+import com.miaxis.judicialcorrection.base.api.vo.bean.CloudService;
+import com.miaxis.judicialcorrection.base.api.vo.bean.LiveTokenCallAdapterFactory;
+import com.miaxis.judicialcorrection.base.api.vo.bean.TokenService;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
 import com.miaxis.judicialcorrection.base.utils.LiveDataCallAdapterFactory;
 import com.miaxis.judicialcorrection.base.utils.gson.converter.GsonConverterFactory;
@@ -87,5 +90,32 @@ public abstract class AppModule {
                 .client(okHttpClient)
                 .build()
                 .create(NoAuthApiService.class);
+    }
+
+
+    @Singleton
+    @Provides
+    static CloudService provideNoAuthApiService2(@OtherInterceptorOkHttpClient OkHttpClient okHttpClient) {
+        String baseUrl = MMKV.defaultMMKV().getString("baseUrl", BuildConfig.SERVER_URL3);
+        return new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(new LiveDataCallAdapterFactory())
+                .baseUrl(baseUrl)
+                .client(okHttpClient)
+                .build()
+                .create(CloudService.class);
+    }
+
+    @Singleton
+    @Provides
+    static TokenService provideNoAuthApiService3(@OtherInterceptorOkHttpClient OkHttpClient okHttpClient) {
+        String baseUrl = MMKV.defaultMMKV().getString("baseUrl", BuildConfig.TOKEN_URL3);
+        return new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(new LiveTokenCallAdapterFactory())
+                .baseUrl(baseUrl)
+                .client(okHttpClient)
+                .build()
+                .create(TokenService.class);
     }
 }

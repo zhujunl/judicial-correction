@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/tv_app_title"
+            layout="@layout/layout_app_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52px"
+            android:gravity="center"
+            android:text="请销假"
+            android:textColor="@color/color_text_title"
+            android:textSize="48px"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_app_title" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back_to_home"
+            android:layout_width="157px"
+            android:layout_height="60px"
+            android:layout_marginTop="45px"
+            android:layout_marginEnd="121px"
+            android:background="@drawable/bg_btn_back_to_home"
+            android:gravity="center"
+            android:text="@string/btn_text_back_to_home"
+            android:textColor="@color/color_text_btn"
+            android:textSize="24px"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
+
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="100px"
+            android:background="@drawable/bg_bar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="44px"
+            android:layout_marginLeft="40px"
+            android:layout_marginRight="40px"
+            app:layout_constraintTop_toBottomOf="@id/tv_title">
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="589px"
+                android:textSize="25px"
+                android:textColor="#000"
+                android:text="姓名：郑晓车"/>
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="0dp"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:textSize="25px"
+                android:textColor="#000"
+                android:text="矫正单位：吴兴区司法局八里店司法所"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_gravity="center"
+            android:layout_width="223px"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:itemCount="6"
+            android:layout_marginTop="38px"
+            android:layout_marginLeft="40px"
+            app:layout_constraintTop_toBottomOf="@id/linear"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+            <FrameLayout
+                android:id="@+id/infoContainer"
+                android:layout_width="1577px"
+                android:layout_height="556px"
+                android:layout_marginTop="42px"
+                android:layout_marginRight="40px"
+                app:layout_constraintTop_toBottomOf="@id/linear"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="25px"-->
+<!--            android:layout_marginLeft="27px"-->
+<!--            android:layout_marginRight="27px"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/linear"-->
+<!--            android:orientation="horizontal">-->
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/recyclerview"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                tools:itemCount="6"/>-->
+<!--&lt;!&ndash;            <androidx.viewpager.widget.ViewPager&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_width="0dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_weight="5"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_height="1dp"/>&ndash;&gt;-->
+<!--            <FrameLayout-->
+<!--                android:id="@+id/infoContainer"-->
+
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="5"-->
+<!--                android:layout_height="match_parent"/>-->
+<!--        </LinearLayout>-->
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

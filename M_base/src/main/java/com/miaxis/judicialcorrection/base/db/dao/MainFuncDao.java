@@ -33,4 +33,7 @@ public interface MainFuncDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertFuncList(List<MainFunc> funcs);
 
+    @Query("SELECT * FROM main_func where title like :title ")
+    MainFunc loadFuncByTitle(String title);
+
 }
