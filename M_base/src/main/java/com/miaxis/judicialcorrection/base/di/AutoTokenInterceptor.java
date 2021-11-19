@@ -109,11 +109,14 @@ public class AutoTokenInterceptor implements Interceptor {
         if (token == null || token.isExpires()) {
             synchronized (tokenLock) {
                 if (token == null || token.isExpires()) {
-                    if (!jzAuth.checkAuth()) {
-                        registerJzAuth();
-                        Timber.i("getToken ，register success !");
-                    } else {
-                        refreshToken();
+                    refreshToken();
+                    if (token == null || token.isExpires()) {
+                        if (!jzAuth.checkAuth()) {
+                            registerJzAuth();
+                            Timber.i("getToken ，register success !");
+                        } else {
+                            refreshToken();
+                        }
                     }
                 }
                 Timber.i("getToken ，isExpires new  : %s", token);
