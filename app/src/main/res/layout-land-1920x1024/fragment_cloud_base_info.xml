@@ -80,7 +80,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_gravity="center"
-            android:layout_width="223px"
+            android:layout_width="280px"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             tools:itemCount="6"
@@ -90,7 +90,7 @@
             app:layout_constraintLeft_toLeftOf="parent"/>
             <FrameLayout
                 android:id="@+id/infoContainer"
-                android:layout_width="1577px"
+                android:layout_width="1500px"
                 android:layout_height="556px"
                 android:layout_marginTop="42px"
                 android:layout_marginRight="40px"

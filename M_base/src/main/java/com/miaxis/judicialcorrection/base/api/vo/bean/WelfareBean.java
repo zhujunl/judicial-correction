@@ -110,14 +110,14 @@ public class WelfareBean {
             private String jiedaoId;
             private String jiedaoName;
             private String personList;
-            private String gyldlx;
+            private String gyldxsName;
 
             public String getSqffxs() {
-                return gyldlx;
+                return gyldxsName;
             }
 
             public void setSqffxs(String sqffxs) {
-                this.gyldlx = sqffxs;
+                this.gyldxsName = sqffxs;
             }
 
             public String getId() {

@@ -39,7 +39,7 @@ public class CloudRep2 {
     }
 
     public LiveData<Resource<IndividualBean>> getPersonEducation(String token, int page, int rows, String pid){
-        LiveData<ApiResult<IndividualBean>> login = apiService.getPersonEducation2(pid, rows,page);
+        LiveData<ApiResult<IndividualBean>> login = apiService.getPersonEducation2(pid, page,rows);
         Timber.tag("getPersonEducation:").e("{token=" + token + ",page=" + page + ",rows=" + rows + ",pid=" + pid+"}");
         return ResourceConvertUtils.convertToResource(login);
     }

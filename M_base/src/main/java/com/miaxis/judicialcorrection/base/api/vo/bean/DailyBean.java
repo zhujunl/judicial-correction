@@ -72,7 +72,7 @@ public class DailyBean {
         private String pid;
         private String pname;
         private Date bgsj;
-        private String bgfsName;
+        private String bgxsName;
         private String bgnr;
         private String jlr;
         private String jlsj;
@@ -110,11 +110,11 @@ public class DailyBean {
         }
 
         public String getBgfsName() {
-            return bgfsName;
+            return bgxsName;
         }
 
         public void setBgfsName(String bgfsName) {
-            this.bgfsName = bgfsName;
+            this.bgxsName = bgfsName;
         }
 
         public String getBgnr() {
@@ -148,7 +148,7 @@ public class DailyBean {
                     ", pid='" + pid + '\'' +
                     ", pname='" + pname + '\'' +
                     ", bgsj='" + bgsj + '\'' +
-                    ", bgfsName='" + bgfsName + '\'' +
+                    ", bgfsName='" + bgxsName + '\'' +
                     ", bgnr='" + bgnr + '\'' +
                     ", jlr='" + jlr + '\'' +
                     ", jlsj='" + jlsj + '\'' +

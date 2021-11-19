@@ -27,6 +27,8 @@ import com.miaxis.judicialcorrection.databinding.FragmentWelfareBinding;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -109,7 +111,20 @@ public class WelfareFragment extends BaseInfoFragment<FragmentWelfareBinding> {
             holder.place.setText(list.get(position).getPublicActivityVo().getSqfwdd());
             holder.duration.setText(list.get(position).getPublicActivityVo().getSqfwsc());
         }
-
+        public void bubbleSort(List<WelfareBean.Dat> list){
+            Collections.sort(list, new Comparator<WelfareBean.Dat>() {
+                @Override
+                public int compare(WelfareBean.Dat o1, WelfareBean.Dat o2) {
+                    if(o2.getPublicActivityVo().getSqfwkssj().getTime()>o1.getPublicActivityVo().getSqfwkssj().getTime()){
+                        return 1;
+                    }else if(o2.getPublicActivityVo().getSqfwkssj().getTime()<o1.getPublicActivityVo().getSqfwkssj().getTime()){
+                        return -1;
+                    }else {
+                        return 0;
+                    }
+                }
+            });
+        }
         @Override
         public int getItemCount() {
             return list.size();
@@ -118,6 +133,7 @@ public class WelfareFragment extends BaseInfoFragment<FragmentWelfareBinding> {
         public void setList(List<WelfareBean.Dat> l){
             dismissLoading();
             list.clear();
+            bubbleSort(l);
             list=l;
             notifyDataSetChanged();
         }

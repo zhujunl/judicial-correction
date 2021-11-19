@@ -14,13 +14,13 @@
 
         <TextView
             android:id="@+id/tv_item_name"
-            android:layout_width="149px"
-            android:layout_height="46px"
+            android:layout_width="268px"
+            android:layout_height="69px"
             android:background="@drawable/bg_item_type"
             android:gravity="center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:textSize="13px"
+            android:textSize="20px"
             tools:text="日常报告" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

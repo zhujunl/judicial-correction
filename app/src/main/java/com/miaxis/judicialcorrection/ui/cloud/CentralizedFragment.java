@@ -25,6 +25,8 @@ import com.miaxis.judicialcorrection.databinding.FragmentCentralizedBinding;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -108,7 +110,20 @@ public class CentralizedFragment extends BaseInfoFragment<FragmentCentralizedBin
             holder.duration.setText(list.get(position).getEducationVo().getJyxxsc());
             holder.evaluate.setText(list.get(position).getPingjia());
         }
-
+        public void bubbleSort(List<CentralizedBean.li> list){
+            Collections.sort(list, new Comparator<CentralizedBean.li>() {
+                @Override
+                public int compare(CentralizedBean.li o1, CentralizedBean.li o2) {
+                    if(o2.getEducationVo().getJzjysj().getTime()>o1.getEducationVo().getJzjysj().getTime()){
+                        return 1;
+                    }else if(o2.getEducationVo().getJzjysj().getTime()<o1.getEducationVo().getJzjysj().getTime()){
+                        return -1;
+                    }else {
+                        return 0;
+                    }
+                }
+            });
+        }
         @Override
         public int getItemCount() {
             return list.size();
@@ -117,6 +132,7 @@ public class CentralizedFragment extends BaseInfoFragment<FragmentCentralizedBin
         public void setList(List<CentralizedBean.li> l){
             dismissLoading();
             list.clear();
+            bubbleSort(l);
             list=l;
             notifyDataSetChanged();
         }
