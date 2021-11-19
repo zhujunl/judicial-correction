@@ -3,6 +3,7 @@ package com.miaxis.judicialcorrection.base.di;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -28,6 +29,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -110,14 +113,6 @@ public class AutoTokenInterceptor implements Interceptor {
             synchronized (tokenLock) {
                 if (token == null || token.isExpires()) {
                     refreshToken();
-                    if (token == null || token.isExpires()) {
-                        if (!jzAuth.checkAuth()) {
-                            registerJzAuth();
-                            Timber.i("getToken ，register success !");
-                        } else {
-                            refreshToken();
-                        }
-                    }
                 }
                 Timber.i("getToken ，isExpires new  : %s", token);
             }
@@ -149,8 +144,13 @@ public class AutoTokenInterceptor implements Interceptor {
     public Response intercept(@NotNull Chain chain) throws IOException {
         Request original = chain.request();
         Request.Builder newBuilder = original.newBuilder();
-        String token = getToken();
-        Timber.v("token : %s", token);
+        String token = "";
+        try {
+            token = getToken();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        Timber.v("token : ==%s", token);
         newBuilder.addHeader("Authorization", token);
         if (Objects.equals("POST", original.method())) {
             RequestBody bodyUnSign = original.body();
@@ -232,7 +232,7 @@ public class AutoTokenInterceptor implements Interceptor {
         }
         Timber.i("3`");
         if (errorR[0] != null) {
-            throw new IOException("注册失败" + errorR[0].getCode() + errorR[0].getMessage());
+            throw new IOException(errorR[0].getCode() + errorR[0].getMessage());
         } else if (resultR[0] != null) {
             //{"desc":"非法参数vendor","result":"999"}
             try {
@@ -248,7 +248,7 @@ public class AutoTokenInterceptor implements Interceptor {
                         throw new IOException("token server register error : " + resultR[0]);
                     }
                 } else {
-                    refreshToken();
+//                    refreshToken();
                 }
             } catch (JSONException e) {
                 throw new IOException("token server register error ! ");
@@ -294,7 +294,13 @@ public class AutoTokenInterceptor implements Interceptor {
             }
         }
         if (errorR[0] != null) {
-            throw new IOException("" + errorR[0].getCode() + errorR[0].getMessage());
+            if (errorR[0].getCode() == 401) {
+                if (!jzAuth.checkAuth()) {
+                    registerJzAuth();
+                }
+            } else {
+                throw new IOException("" + errorR[0].getCode() + errorR[0].getMessage());
+            }
         } else if (resultR[0] != null) {
             token = new Gson().fromJson(resultR[0], Token.class);
             Timber.i("Got new token : %s", token);
