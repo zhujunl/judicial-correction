@@ -55,7 +55,7 @@ public class IndividualBean {
         private String jyxxjssj;
         private String jyxxsc;
         private String jyxxfs;
-        private String jyxxfsName;
+        private String jiaoyuzhutiName;
         private String jyxxzynr;
         private String jlr;
         private String jiaoyudidian;
@@ -125,11 +125,11 @@ public class IndividualBean {
         }
 
         public String getJyxxfsName() {
-            return jyxxfsName;
+            return jiaoyuzhutiName;
         }
 
         public void setJyxxfsName(String jyxxfsName) {
-            this.jyxxfsName = jyxxfsName;
+            this.jiaoyuzhutiName = jyxxfsName;
         }
 
         public String getJyxxzynr() {
@@ -158,7 +158,7 @@ public class IndividualBean {
                     ", jyxxjssj='" + jyxxjssj + '\'' +
                     ", jyxxsc='" + jyxxsc + '\'' +
                     ", jyxxfs='" + jyxxfs + '\'' +
-                    ", jyxxfsName='" + jyxxfsName + '\'' +
+                    ", jyxxfsName='" + jiaoyuzhutiName + '\'' +
                     ", jyxxzynr='" + jyxxzynr + '\'' +
                     ", jlr='" + jlr + '\'' +
                     ", jyxxthdd='" + jiaoyudidian + '\'' +

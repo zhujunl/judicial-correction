@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.miaxis.enroll.guide.infos.BaseInfoFragment;
 import com.miaxis.judicialcorrection.R;
+import com.miaxis.judicialcorrection.base.api.vo.bean.IndividualBean;
 import com.miaxis.judicialcorrection.base.api.vo.bean.WarningBean;
 import com.miaxis.judicialcorrection.databinding.FragmentWarningBinding;
 import com.miaxis.judicialcorrection.report.ReportRepo;
@@ -26,6 +27,8 @@ import com.miaxis.judicialcorrection.report.ReportRepo;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -110,10 +113,24 @@ public class WarningFragment extends BaseInfoFragment<FragmentWarningBinding> {
         public int getItemCount() {
             return list.size();
         }
-
+        public void bubbleSort(List<WarningBean.Data> list){
+            Collections.sort(list, new Comparator<WarningBean.Data>() {
+                @Override
+                public int compare(WarningBean.Data o1, WarningBean.Data o2) {
+                    if(o2.getSfssqsj().getTime()>o1.getSfssqsj().getTime()){
+                        return 1;
+                    }else if(o2.getSfssqsj().getTime()<o1.getSfssqsj().getTime()){
+                        return -1;
+                    }else {
+                        return 0;
+                    }
+                }
+            });
+        }
         public void setList(List<WarningBean.Data> l){
             dismissLoading();
             list.clear();
+            bubbleSort(l);
             list=l;
             notifyDataSetChanged();
         }

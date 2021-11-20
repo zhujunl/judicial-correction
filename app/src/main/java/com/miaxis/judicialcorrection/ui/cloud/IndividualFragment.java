@@ -20,11 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.miaxis.enroll.guide.infos.BaseInfoFragment;
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.api.vo.bean.IndividualBean;
+import com.miaxis.judicialcorrection.base.api.vo.bean.WelfareBean;
 import com.miaxis.judicialcorrection.databinding.FragmentIndividualBinding;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -106,7 +109,20 @@ public class IndividualFragment extends BaseInfoFragment<FragmentIndividualBindi
             holder.talk_place.setText(list.get(position).getJyxxthdd());
             holder.duration.setText(list.get(position).getJyxxsc());
         }
-
+        public void bubbleSort(List<IndividualBean.Data> list){
+            Collections.sort(list, new Comparator<IndividualBean.Data>() {
+                @Override
+                public int compare(IndividualBean.Data o1, IndividualBean.Data o2) {
+                    if(o2.getJyxxkssj().getTime()>o1.getJyxxkssj().getTime()){
+                        return 1;
+                    }else if(o2.getJyxxkssj().getTime()<o1.getJyxxkssj().getTime()){
+                        return -1;
+                    }else {
+                        return 0;
+                    }
+                }
+            });
+        }
         @Override
         public int getItemCount() {
             return list.size();
@@ -115,6 +131,7 @@ public class IndividualFragment extends BaseInfoFragment<FragmentIndividualBindi
         public void setList(List<IndividualBean.Data> l){
             dismissLoading();
             list.clear();
+            bubbleSort(l);
             list=l;
             notifyDataSetChanged();
         }

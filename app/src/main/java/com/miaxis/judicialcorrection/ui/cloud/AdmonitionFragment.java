@@ -20,11 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.miaxis.enroll.guide.infos.BaseInfoFragment;
 import com.miaxis.judicialcorrection.R;
 import com.miaxis.judicialcorrection.base.api.vo.bean.AdmonitionBean;
+import com.miaxis.judicialcorrection.base.api.vo.bean.WarningBean;
 import com.miaxis.judicialcorrection.databinding.FragmentAdmonitionBinding;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -106,10 +109,24 @@ public class AdmonitionFragment extends BaseInfoFragment<FragmentAdmonitionBindi
         public int getItemCount() {
             return list.size();
         }
-
+        public void bubbleSort(List<AdmonitionBean.Data> list){
+            Collections.sort(list, new Comparator<AdmonitionBean.Data>() {
+                @Override
+                public int compare(AdmonitionBean.Data o1, AdmonitionBean.Data o2) {
+                    if(o2.getSfssqsj().getTime()>o1.getSfssqsj().getTime()){
+                        return 1;
+                    }else if(o2.getSfssqsj().getTime()<o1.getSfssqsj().getTime()){
+                        return -1;
+                    }else {
+                        return 0;
+                    }
+                }
+            });
+        }
         public void setList(List<AdmonitionBean.Data> l){
             dismissLoading();
             list.clear();
+            bubbleSort(l);
             list=l;
             notifyDataSetChanged();
         }

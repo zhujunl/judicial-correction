@@ -147,10 +147,10 @@ public class AutoTokenInterceptor implements Interceptor {
         String token = "";
         try {
             token = getToken();
+        Timber.v("token : ==%s", token);
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        Timber.v("token : ==%s", token);
         newBuilder.addHeader("Authorization", token);
         if (Objects.equals("POST", original.method())) {
             RequestBody bodyUnSign = original.body();

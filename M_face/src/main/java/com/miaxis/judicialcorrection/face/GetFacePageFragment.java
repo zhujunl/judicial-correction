@@ -235,31 +235,36 @@ public class GetFacePageFragment extends BaseBindingFragment<FragmentCaptureBind
             }
         } else {
             mHandler.post(() -> {
-                new DialogResult(getActivity(), new DialogResult.ClickListener() {
-                    @Override
-                    public void onBackHome(AppCompatDialog appCompatDialog) {
-                        appCompatDialog.dismiss();
-                        finish();
-                    }
+                try {
+                    new DialogResult(getActivity(), new DialogResult.ClickListener() {
+                        @Override
+                        public void onBackHome(AppCompatDialog appCompatDialog) {
+                            appCompatDialog.dismiss();
+                            finish();
+                        }
 
-                    @Override
-                    public void onTryAgain(AppCompatDialog appCompatDialog) {
-                        appCompatDialog.dismiss();
-                        startRgbPreview();
-                    }
+                        @Override
+                        public void onTryAgain(AppCompatDialog appCompatDialog) {
+                            appCompatDialog.dismiss();
+                            startRgbPreview();
+                        }
 
-                    @Override
-                    public void onTimeOut(AppCompatDialog appCompatDialog) {
-                        appCompatDialog.dismiss();
-                        finish();
-                    }
-                }, new DialogResult.Builder(
-                        false,
-                        "验证失败",
-                        "请点击“重新验证”重新尝试验证，\n" +
-                                "如还是失败，请联系现场工作人员。",
-                        10, true
-                ).hideAllHideSucceedInfo(false).hideButton(false)).show();
+                        @Override
+                        public void onTimeOut(AppCompatDialog appCompatDialog) {
+                            appCompatDialog.dismiss();
+                            finish();
+                        }
+                    }, new DialogResult.Builder(
+                            false,
+                            "验证失败",
+                            "请点击“重新验证”重新尝试验证，\n" +
+                                    "如还是失败，请联系现场工作人员。",
+                            10, true
+                    ).hideAllHideSucceedInfo(false).hideButton(false)).show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
             });
         }
     }
