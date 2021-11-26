@@ -148,7 +148,7 @@ public class AutoTokenInterceptor implements Interceptor {
         try {
             token = getToken();
         Timber.v("token : ==%s", token);
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
         newBuilder.addHeader("Authorization", token);
