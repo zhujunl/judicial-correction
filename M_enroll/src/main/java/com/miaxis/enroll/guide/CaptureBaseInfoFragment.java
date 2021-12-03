@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -94,7 +95,13 @@ public class CaptureBaseInfoFragment extends BaseBindingFragment<FragmentCapture
         adapter = new MyProgressAdapter();
         adapter.submitList(listItems);
         binding.recyclerview.setAdapter(adapter);
-        binding.nextBtn.setOnClickListener(v -> nextPage());
+        binding.nextBtn.setOnClickListener(v -> {
+            if(TextUtils.isEmpty(viewModel.nation)){
+                Toast.makeText(getContext(), "请输入民族", Toast.LENGTH_SHORT).show();
+            }else {
+                nextPage();
+            }
+        });
         binding.preBtn.setOnClickListener(v -> prePage());
         binding.btnBack.setOnClickListener(v -> {
             FragmentActivity activity = getActivity();
@@ -127,6 +134,9 @@ public class CaptureBaseInfoFragment extends BaseBindingFragment<FragmentCapture
         // 控制按钮
         refreshControlBtn();
         // 控制页面
+        if (TextUtils.isEmpty(viewModel.idCardLiveData.getValue().idCardMsg.nation_str)){
+            viewModel.idCardLiveData.getValue().idCardMsg.nation_str= viewModel.nation;
+        }
         try {
             Fragment fragment = listItems.get(currentPageIndex).targetCls.newInstance();
             controller.nvTo(fragment, true);

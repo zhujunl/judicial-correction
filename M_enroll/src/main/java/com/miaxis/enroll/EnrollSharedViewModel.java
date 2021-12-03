@@ -88,6 +88,7 @@ public class EnrollSharedViewModel extends ViewModel {
      */
     public MutableLiveData<OtherInfo> otherInfoLiveData = new MutableLiveData<>();
 
+    public String nation;
 
     /**
      * 简历,list
@@ -151,6 +152,7 @@ public class EnrollSharedViewModel extends ViewModel {
                 Timber.i("ID result %s", result);
                 if (result.isSuccessful()) {
                     //result.getData().idCardMsg.id_num += ("Y" + new Random().nextInt(100));
+                    nation=result.getData().idCardMsg.nation_str;
                     idCardLiveData.postValue(result.getData());
                     break;
                 }

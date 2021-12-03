@@ -25,6 +25,7 @@ import com.miaxis.enroll.guide.CaptureFuncFragment;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.db.po.JusticeBureau;
 import com.miaxis.judicialcorrection.base.utils.AppHints;
+import com.miaxis.judicialcorrection.id.bean.IdCard;
 
 import java.util.List;
 
@@ -62,6 +63,11 @@ public class BaseMsgFragment extends BaseInfoFragment<FragmentBaseMsgBinding> {
 //        BaseMsgModel model=new ViewModelProvider(this).get(BaseMsgModel.class);
         binding.setLifecycleOwner(this);
         binding.setVm(vm);
+        IdCard value = vm.idCardLiveData.getValue();
+        if (value.idCardMsg.nation_str == null || (value.idCardMsg.nation_str.equals("") || TextUtils.isEmpty(value.idCardMsg.nation_str))) {
+            binding.nation.setEnabled(true);
+            binding.nation.addTextChangedListener(new LimitInputTextWatcher(binding.nation,vm));
+        }
 //        model.shiListLiveData.observe(this, listResource -> {
 //            if (listResource.isSuccess()) {
 //                model.setXian(model.xianChecked);
