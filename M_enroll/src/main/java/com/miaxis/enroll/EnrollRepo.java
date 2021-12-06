@@ -81,7 +81,7 @@ public class EnrollRepo {
             } else {
                 sex = "0";
             }
-            String mz="02";
+            String mz="97";
             String nation = idCard.nation_str.replace(" ", "");
             for (KvSpinnerVo vo : MapConstants.mzList) {
                 if (vo.value.contains(nation)){

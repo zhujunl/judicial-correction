@@ -63,11 +63,11 @@ public class BaseMsgFragment extends BaseInfoFragment<FragmentBaseMsgBinding> {
 //        BaseMsgModel model=new ViewModelProvider(this).get(BaseMsgModel.class);
         binding.setLifecycleOwner(this);
         binding.setVm(vm);
-        IdCard value = vm.idCardLiveData.getValue();
-        if (value.idCardMsg.nation_str == null || (value.idCardMsg.nation_str.equals("") || TextUtils.isEmpty(value.idCardMsg.nation_str))) {
-            binding.nation.setEnabled(true);
-            binding.nation.addTextChangedListener(new LimitInputTextWatcher(binding.nation,vm));
-        }
+//        IdCard value = vm.idCardLiveData.getValue();
+//        if (value.idCardMsg.nation_str == null || (value.idCardMsg.nation_str.equals("") || TextUtils.isEmpty(value.idCardMsg.nation_str))) {
+//            binding.nation.setEnabled(true);
+//            binding.nation.addTextChangedListener(new LimitInputTextWatcher(binding.nation,vm));
+//        }
 //        model.shiListLiveData.observe(this, listResource -> {
 //            if (listResource.isSuccess()) {
 //                model.setXian(model.xianChecked);

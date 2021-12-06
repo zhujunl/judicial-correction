@@ -85,6 +85,7 @@ public class MapConstants {
 
     static {
         mzList.add(new KvSpinnerVo("01", "汉族"));
+        mzList.add(new KvSpinnerVo("02","蒙古族"));
         mzList.add(new KvSpinnerVo("03", "回族"));
         mzList.add(new KvSpinnerVo("04", "藏族"));
         mzList.add(new KvSpinnerVo("05", "维吾尔族"));
@@ -139,8 +140,7 @@ public class MapConstants {
         mzList.add(new KvSpinnerVo("54","门巴族"));
         mzList.add(new KvSpinnerVo("55","珞巴族"));
         mzList.add(new KvSpinnerVo("56","基诺族"));
-        mzList.add(new KvSpinnerVo("02","其他"));
-        mzList.add(new KvSpinnerVo("97","裕固族"));
+        mzList.add(new KvSpinnerVo("97","其他"));
         mzList.add(new KvSpinnerVo("98","外国血统中国籍人士"));
 
     }

@@ -9,6 +9,7 @@ import com.miaxis.enroll.EnrollSharedViewModel;
 /**
  * Created by junweiliu on 17/1/6.
  */
+@Deprecated
 public class LimitInputTextWatcher implements TextWatcher {
     /**
      * et
@@ -63,9 +64,7 @@ public class LimitInputTextWatcher implements TextWatcher {
         String inputStr = clearLimitStr(regex, str);
         et.removeTextChangedListener(this);
         // et.setText方法可能会引发键盘变化,所以用editable.replace来显示内容
-        editable.replace(0, editable.length(), inputStr.trim());
-        vm.nation=editable.toString().trim();
-        et.addTextChangedListener(this);
+        editable.replace(0, editable.length(), inputStr.trim());et.addTextChangedListener(this);
     }
 
     /**
