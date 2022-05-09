@@ -19,14 +19,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialogFragment;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.DiffUtil;
-
 import com.android.xhapimanager.XHApiManager;
 import com.miaxis.faceid.FaceManager;
 import com.miaxis.finger.FingerManager;
@@ -52,6 +44,13 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
 import dagger.Lazy;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;

@@ -1,7 +1,6 @@
 package com.miaxis.camera;
 
-import android.hardware.Camera;
-
+import com.miaxis.utils.DeviceUtils;
 import com.tencent.mmkv.MMKV;
 
 /**
@@ -30,16 +29,16 @@ public enum CameraConfig {
 //    Camera_SM(1,640, 480, 0, 0);
 
     //配置
-    Camera_RGB(MMKV.defaultMMKV().getInt("cameraRGBId", 2),
+    Camera_RGB(MMKV.defaultMMKV().getInt("cameraRGBId", "CB005-HZQ2".equals(DeviceUtils.getDeviceModel())?0:2),
             640,
             480,
             0,
             0),
-    Camera_NIR(MMKV.defaultMMKV().getInt("cameraNIRId", 0),
+    Camera_NIR(MMKV.defaultMMKV().getInt("cameraNIRId", "CB005-HZQ2".equals(DeviceUtils.getDeviceModel())?1:0),
             640, 480,
             0,
             0),
-    Camera_SM(MMKV.defaultMMKV().getInt("cameraGPId", 1),
+    Camera_SM(MMKV.defaultMMKV().getInt("cameraGPId", "CB005-HZQ2".equals(DeviceUtils.getDeviceModel())?2:1),
             640,
             480,
             0,

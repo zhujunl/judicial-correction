@@ -2,27 +2,21 @@ package com.miaxis.enroll.guide.voice;
 
 import android.os.Environment;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
-import com.miaxis.camera.CameraConfig;
-import com.miaxis.camera.MXFrame;
 import com.miaxis.enroll.vo.VoiceEntity;
 import com.miaxis.judicialcorrection.base.BaseApplication;
 import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.common.Resource;
 import com.miaxis.judicialcorrection.base.utils.AppExecutors;
-import com.miaxis.judicialcorrection.common.response.ZZResponse;
 import com.miaxis.judicialcorrection.face.utils.FileUtil;
 import com.zlw.main.recorderlib.RecordManager;
 import com.zlw.main.recorderlib.recorder.RecordConfig;
 import com.zlw.main.recorderlib.recorder.RecordHelper;
 
-import java.io.File;
-
 import javax.inject.Inject;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import timber.log.Timber;
 

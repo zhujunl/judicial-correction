@@ -14,6 +14,7 @@ import com.miaxis.judicialcorrection.base.BuildConfig;
 import com.miaxis.judicialcorrection.base.api.vo.EquipmentConfigCameraEntity;
 import com.miaxis.judicialcorrection.base.db.AppDatabase;
 import com.miaxis.judicialcorrection.base.utils.MacUtils;
+import com.miaxis.utils.DeviceUtils;
 import com.tencent.mmkv.MMKV;
 
 import javax.inject.Inject;
@@ -102,13 +103,13 @@ public class ConfigModel extends ViewModel {
 
     public void init() {
         MMKV mmkv = MMKV.defaultMMKV();
-        int cameraRGBId = mmkv.getInt("cameraRGBId", 2);
+        int cameraRGBId = mmkv.getInt("cameraRGBId", "CB005-HZQ2".equals(DeviceUtils.getDeviceModel())?0:2);
         this.cameraRGBId.set(cameraRGBId + "");
 
-        int cameraNIRId = mmkv.getInt("cameraNIRId", 0);
+        int cameraNIRId = mmkv.getInt("cameraNIRId", "CB005-HZQ2".equals(DeviceUtils.getDeviceModel())?1:0);
         this.cameraNIRId.set(cameraNIRId + "");
 
-        int cameraGPId = mmkv.getInt("cameraGPId", 1);
+        int cameraGPId = mmkv.getInt("cameraGPId", "CB005-HZQ2".equals(DeviceUtils.getDeviceModel())?2:1);
         this.cameraGPId.set(cameraGPId + "");
     }
 
@@ -116,17 +117,17 @@ public class ConfigModel extends ViewModel {
         MMKV mmkv = MMKV.defaultMMKV();
         String s = cameraRGBId.get();
         if (TextUtils.isEmpty(s)) {
-            s = "2";
+            s = "CB005-HZQ2".equals(DeviceUtils.getDeviceModel())?"0":"2";
         }
         mmkv.putInt("cameraRGBId", Integer.parseInt(s));
         String s1 = cameraNIRId.get();
         if (TextUtils.isEmpty(s1)) {
-            s1 = "0";
+            s1 = "CB005-HZQ2".equals(DeviceUtils.getDeviceModel())?"1":"0";
         }
         mmkv.putInt("cameraNIRId", Integer.parseInt(s1));
         String s2 = cameraGPId.get();
         if (TextUtils.isEmpty(s2)) {
-            s2 = "1";
+            s2 = "CB005-HZQ2".equals(DeviceUtils.getDeviceModel())?"2":"1";
         }
         mmkv.putInt("cameraGPId", Integer.parseInt(s2));
         mmkv.putString("baseUrl", baseUrl.get());
