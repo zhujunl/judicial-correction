@@ -118,6 +118,90 @@ public class MXCamera implements Camera.AutoFocusCallback, Camera.PreviewCallbac
         return 0;
     }
 
+    protected int openHeightCamera(int cameraId, int width, int height) {
+        if (this.mCamera != null) {
+            stop();
+//            return -2;
+        }
+        if (cameraId >= Camera.getNumberOfCameras()) {
+            return -4;
+        }
+
+        try {
+            //打开几次会出问题Camera.open 会报错问题
+            this.mCameraId = cameraId;
+            for (int i = 0; i < 3; i++) {
+                try {
+                    this.mCamera = Camera.open(cameraId);
+                } catch (Exception e) {
+                    e.getStackTrace();
+                }
+                if (this.mCamera != null) {
+                    break;
+                }
+                SystemClock.sleep(70);
+            }
+            if (this.mCamera == null) {
+                return -1;
+            }
+            if (cameraId == CameraConfig.Camera_SM.CameraId) {
+                Camera.Parameters params = mCamera.getParameters();
+                List<Camera.Size> pictureSizes = params.getSupportedPictureSizes();
+                int length = pictureSizes.size();
+                int w = 0;
+                int h = 0;
+
+//                for (int i = 0; i < length; i++) {
+//                    if(width==pictureSizes.get(i).width&&height==pictureSizes.get(i).height){
+//                        w=pictureSizes.get(i).width;
+//                        h=pictureSizes.get(i).height;
+//                        break;
+//                    }
+//                }
+//                if(w==0&&h==0){
+                for (int i = 0; i < length; i++) {
+                    double preWidth = pictureSizes.get(i).width;
+                    double preHeight = pictureSizes.get(i).height;
+                    if (preHeight != 0 && preHeight / preWidth == 0.75) {
+                        w = pictureSizes.get(i).width;
+                        h = pictureSizes.get(i).height;
+                        break;
+                    }
+                }
+                //}
+                if (w == 0 && h == 0) {
+                    for (int i = 0; i < length; i++) {
+                        if (pictureSizes.get(i).width > w) {
+                            w = pictureSizes.get(i).width;
+                            h = pictureSizes.get(i).height;
+                        }
+                    }
+                }
+                if (w != 0 && h != 0) {
+                    width = w;
+                    height = h;
+                }
+            }
+            Timber.e("宽高 %s   %s", width, height);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+        try {
+            Camera.Parameters parameters = this.mCamera.getParameters();
+            parameters.setPreviewSize(width, height);
+            parameters.setPictureSize(width, height);
+            this.mCamera.setParameters(parameters);
+            this.width = width;
+            this.height = height;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3;
+        }
+        this.buffer = new byte[((this.width * this.height) * ImageFormat.getBitsPerPixel(ImageFormat.NV21)) / 8];
+        return 0;
+    }
+
     public int setOrientation(int orientation) {
         if (this.mCamera == null) {
             return -1;

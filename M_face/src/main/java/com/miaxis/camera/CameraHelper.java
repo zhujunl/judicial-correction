@@ -75,6 +75,36 @@ public class CameraHelper {
         }
     }
 
+    /***
+     * 高拍仪camera
+     * @param cameraConfig
+     * @return
+     */
+    public ZZResponse<MXCamera> createHeightMXCamera(CameraConfig cameraConfig) {
+        if (cameraConfig == null) {
+            return ZZResponse.CreateFail(-90, "config error");
+        }
+        ZZResponse<MXCamera> mxCameraZZResponse = find(cameraConfig.CameraId);
+        if (ZZResponse.isSuccess(mxCameraZZResponse)) {
+            return mxCameraZZResponse;
+        }
+        MXCamera mxCamera = new MXCamera();
+        int init = mxCamera.init();
+        if (init == 0) {
+            int open = mxCamera.openHeightCamera(cameraConfig.CameraId, 2048, 1536);
+            if (open == 0) {
+                addMXCamera(mxCamera);
+                return ZZResponse.CreateSuccess(mxCamera);
+            } else if (open == -2) {
+                return ZZResponse.CreateFail(MXCameraErrorCode.CODE_FAIL_PARAMETERS, MXCameraErrorCode.MSG_FAIL_PARAMETERS);
+            } else {
+                return ZZResponse.CreateFail(MXCameraErrorCode.CODE_FAIL_CAMERA_OPEN, MXCameraErrorCode.MSG_FAIL_CAMERA_OPEN);
+            }
+        } else {
+            return ZZResponse.CreateFail(MXCameraErrorCode.CODE_FAIL_NO_CAMERA, MXCameraErrorCode.MSG_FAIL_NO_CAMERA);
+        }
+    }
+
     public synchronized ZZResponse<MXCamera> find(CameraConfig cameraConfig) {
         if (cameraConfig == null) {
             return ZZResponse.CreateFail(-90, "config error");

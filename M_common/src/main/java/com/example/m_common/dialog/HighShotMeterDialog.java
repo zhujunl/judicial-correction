@@ -199,7 +199,7 @@ public class HighShotMeterDialog extends BaseNoListenerDialog<DialogHighShotMete
         public void surfaceCreated(@NonNull SurfaceHolder holder) {
             ZZResponse<?> init = CameraHelper.getInstance().init();
             if (ZZResponse.isSuccess(init)) {
-                ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().createMXCamera(CameraConfig.Camera_SM);
+                ZZResponse<MXCamera> mxCamera = CameraHelper.getInstance().createHeightMXCamera(CameraConfig.Camera_SM);
                 if (ZZResponse.isSuccess(mxCamera)) {
                     binding.sBar.setMax(mxCamera.getData().getMaxZoom());
                     mxCamera.getData().setPreviewCallback(HighShotMeterDialog.this);
