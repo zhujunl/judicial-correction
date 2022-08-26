@@ -7,13 +7,14 @@
         <variable
             name="data"
             type="com.miaxis.judicialcorrection.base.db.po.MainFunc" />
+        <import type="com.miaxis.judicialcorrection.utils.ResourceIdUtil"/>
     </data>
 
     <TextView
         android:id="@+id/message"
         android:layout_width="240px"
         android:layout_height="126px"
-        android:backgroundResource="@{data.resId}"
+        android:backgroundResource="@{ResourceIdUtil.getResourceId(data.title)}"
         android:gravity="center"
         android:layout_marginStart="23px"
         android:layout_marginBottom="75px"

@@ -16,6 +16,7 @@ import com.miaxis.judicialcorrection.leave.LeaveActivity;
 import com.miaxis.judicialcorrection.benefit.PublicWelfareActivity;
 import com.miaxis.judicialcorrection.live.LiveAddressChangeActivity;
 import com.miaxis.judicialcorrection.report.ReportActivity;
+import com.miaxis.judicialcorrection.ui.Const;
 import com.miaxis.judicialcorrection.ui.cloud.CloudActivity;
 
 import java.io.BufferedReader;
@@ -66,14 +67,14 @@ public class DbInitMainFuncs extends RoomDatabase.Callback {
         super.onCreate(db);
         appExecutors.get().diskIO().execute(() -> {
             List<MainFunc> items = new ArrayList<>();
-            items.add(new MainFunc("首次报到登记", R.mipmap.main_enroll, EnrollActivity.class.getName(), true));
-            items.add(new MainFunc("日常报告", R.mipmap.main_report, ReportActivity.class.getName(), true));
-            items.add(new MainFunc("集中教育", R.mipmap.main_edu_all, CentralizedEducationActivity.class.getName(), true));
-            items.add(new MainFunc("个别教育", R.mipmap.main_edu_one, IndividualEducationActivity.class.getName(), true));
-            items.add(new MainFunc("请销假", R.mipmap.main_atten, LeaveActivity.class.getName(), true));
-            items.add(new MainFunc("公益活动", R.mipmap.main_love, PublicWelfareActivity.class.getName(), true));
-            items.add(new MainFunc("执行地变更", R.mipmap.main_addr, LiveAddressChangeActivity.class.getName(), true));
-            items.add(new MainFunc("云端查询", R.mipmap.main_cloud, CloudActivity.class.getName(), true));
+            items.add(new MainFunc(Const.MAIN_ENROLL, R.mipmap.main_enroll, EnrollActivity.class.getName(), true));
+            items.add(new MainFunc(Const.MAIN_REPORT, R.mipmap.main_report, ReportActivity.class.getName(), true));
+            items.add(new MainFunc(Const.MAIN_EDU_ALL, R.mipmap.main_edu_all, CentralizedEducationActivity.class.getName(), true));
+            items.add(new MainFunc(Const.MAIN_DEU_ONE, R.mipmap.main_edu_one, IndividualEducationActivity.class.getName(), true));
+            items.add(new MainFunc(Const.MAIN_ATTEN, R.mipmap.main_atten, LeaveActivity.class.getName(), true));
+            items.add(new MainFunc(Const.MAIN_LOVE, R.mipmap.main_love, PublicWelfareActivity.class.getName(), true));
+            items.add(new MainFunc(Const.MAIN_ADDR, R.mipmap.main_addr, LiveAddressChangeActivity.class.getName(), true));
+            items.add(new MainFunc(Const.MAIN_CLOUD, R.mipmap.main_cloud, CloudActivity.class.getName(), true));
             List<Long> longs = appDatabaseLazy.get().mainFuncDAO().insertFuncList(items);
             Timber.i("ids : %s ", longs);
             execSQL(db);

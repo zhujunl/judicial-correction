@@ -26,7 +26,7 @@
                 app:layout_constraintLeft_toLeftOf="@id/sv"
                 app:layout_constraintRight_toRightOf="@id/sv" />
 
-            <SurfaceView
+            <com.serenegiant.usb.widget.UVCCameraTextureView
                 android:id="@+id/sv"
                 android:layout_width="565px"
                 android:layout_height="400px"
