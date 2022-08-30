@@ -1,5 +1,8 @@
 package com.miaxis.judicialcorrection.ui;
 
+/***
+ * 注意!!!!!!!!!!!!!,添加新的标题，需要在ResourceIdUtil.java文件中配置对应的图标
+ */
 public class Const {
     public static final String MAIN_ENROLL="首次报到登记";
     public static final String MAIN_REPORT="日常报告";

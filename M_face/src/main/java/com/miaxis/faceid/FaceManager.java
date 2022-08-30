@@ -2,7 +2,10 @@ package com.miaxis.faceid;
 
 import android.content.Context;
 import android.graphics.RectF;
+import android.os.Environment;
 import android.util.Size;
+
+import com.miaxis.judicialcorrection.face.utils.FileUtil;
 
 import org.zz.api.MXErrorCode;
 import org.zz.api.MXFaceAPI;
@@ -21,6 +24,8 @@ import timber.log.Timber;
  * @updateDes
  */
 public class FaceManager {
+    public static final String FACE_MAIN_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "miaxis" + File.separator + "FaceId_ST";
+    private static final String LICENCE_NAME = "st_lic.txt";
 
     private MXFaceAPI mMXFaceAPI;
     private mxImageTool mMxImageTool;
@@ -52,7 +57,13 @@ public class FaceManager {
         this.mMxImageTool = null;
     }
 
+    public  String readLicence() {
+        File lic = new File(FACE_MAIN_PATH, LICENCE_NAME);
+        return FileUtil.readFileToString(lic);
+    }
+
     public int init(Context context) {
+        String licStr=readLicence();
         this.mMXFaceAPI = new MXFaceAPI();
         this.mMxImageTool = new mxImageTool();
         this.mFaceInfoExesRgb = new MXFaceInfoEx[MXFaceInfoEx.iMaxFaceNum];
@@ -65,7 +76,7 @@ public class FaceManager {
         }
         this.mFaceInfoExesTemp = new MXFaceInfoEx[1];
         this.mFaceInfoExesTemp[0] = new MXFaceInfoEx();
-        return this.mMXFaceAPI.mxInitAlg(context, null, null);
+        return this.mMXFaceAPI.mxInitAlg(context, null, licStr);
     }
 
     /**
