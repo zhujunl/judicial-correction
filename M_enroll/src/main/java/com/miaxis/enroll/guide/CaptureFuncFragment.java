@@ -92,7 +92,7 @@ public class CaptureFuncFragment extends BaseBindingFragment<FragmentCaptureFunc
 
         });
         binding.groupSound.setOnClickListener(v -> {
-            if(BuildConfig.EQUIPMENT_TYPE==1) {
+            if(BuildConfig.EQUIPMENT_TYPE==1||BuildConfig.EQUIPMENT_TYPE==4) {
                 if (viewModel.personInfoLiveData.getValue() == null) {
                     appHints.toast("请先采集基本信息");
                     return;
@@ -105,7 +105,7 @@ public class CaptureFuncFragment extends BaseBindingFragment<FragmentCaptureFunc
             }
         });
         binding.groupFinger.setBackgroundColor(Color.parseColor("#E75A48"));
-        if(BuildConfig.EQUIPMENT_TYPE==1){
+        if(BuildConfig.EQUIPMENT_TYPE==1||BuildConfig.EQUIPMENT_TYPE==4){
             binding.groupSound.setBackgroundColor(Color.parseColor("#16E0DD"));
         }else{
             binding.groupSound.setBackgroundColor(Color.parseColor("#C0BFBF"));
