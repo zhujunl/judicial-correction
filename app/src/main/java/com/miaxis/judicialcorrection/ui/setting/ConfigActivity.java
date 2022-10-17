@@ -10,10 +10,6 @@ import android.text.TextUtils;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.miaxis.enroll.guide.download.DownLoadModel;
 import com.miaxis.judicialcorrection.R;
@@ -23,6 +19,8 @@ import com.miaxis.judicialcorrection.base.utils.AppToast;
 import com.miaxis.judicialcorrection.base.utils.DeviceModelUtils;
 import com.miaxis.judicialcorrection.base.utils.FileUtils;
 import com.miaxis.judicialcorrection.databinding.ActivityCameraConfigBinding;
+import com.miaxis.m_facelicense.Dialog.LicenseDialog;
+import com.miaxis.m_facelicense.License.LicenseManager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,6 +28,9 @@ import java.io.File;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -43,6 +44,7 @@ public class ConfigActivity extends BaseBindingActivity<ActivityCameraConfigBind
     AppToast appToast;
 
     private ProgressDialog progressDialog;
+
     @Override
     protected int initLayout() {
         return R.layout.activity_camera_config;
@@ -72,7 +74,7 @@ public class ConfigActivity extends BaseBindingActivity<ActivityCameraConfigBind
                             String apkId = apkVersionResource.getData().getId();
                             String fileLength = apkVersionResource.getData().getFileLength();
                             int max = Integer.parseInt(fileLength.substring(0, fileLength.indexOf(".")));
-                            double per = max * 1.00/100;
+                            double per = max * 1.00 / 100;
                             if (TextUtils.isEmpty(apkId)) {
                                 return;
                             }
@@ -88,7 +90,7 @@ public class ConfigActivity extends BaseBindingActivity<ActivityCameraConfigBind
                                             public void onProgress(int process) {
                                                 runOnUiThread(() -> {
                                                     progressDialog.show();
-                                                    progressDialog.setProgress((int) (process/per));
+                                                    progressDialog.setProgress((int) (process / per));
                                                 });
 
                                             }
@@ -126,20 +128,29 @@ public class ConfigActivity extends BaseBindingActivity<ActivityCameraConfigBind
                 e.printStackTrace();
             }
         });
+
+        binding.btnCheckForLicense.setOnClickListener(v -> {
+            String license = LicenseManager.getInstance().VerifyLicense(this);
+            Toast.makeText(this, license, Toast.LENGTH_SHORT).show();
+            if (!TextUtils.equals(license, "验证通过")) {
+                LicenseDialog licenseDialog = new LicenseDialog(this, false);
+                licenseDialog.show();
+            }
+        });
     }
 
     public void installApkFile(String filePath) {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Uri uri = null;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uri= androidx.core.content.FileProvider.getUriForFile(this,this.getPackageName()+".fileProvider", new File(filePath));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            uri = androidx.core.content.FileProvider.getUriForFile(this, this.getPackageName() + ".fileProvider", new File(filePath));
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         } else {
             uri = Uri.fromFile(new File(filePath));
         }
-        intent.setDataAndType(uri,"application/vnd.android.package-archive");
+        intent.setDataAndType(uri, "application/vnd.android.package-archive");
         startActivity(intent);
     }
 
@@ -159,28 +170,28 @@ public class ConfigActivity extends BaseBindingActivity<ActivityCameraConfigBind
         binding.setData(model);
 
         model.init();
-//        if ("2".equals(model.cameraRGBId.get())) {
-//            binding.group1.check(R.id.cameraId_2);
-//        } else {
-//            binding.group1.check(R.id.cameraId_0);
-//        }
-//        if ("2".equals(model.cameraNIRId.get())) {
-//            binding.group2.check(R.id.cameraNir_2);
-//        } else {
-//            binding.group2.check(R.id.cameraNir_0);
-//        }
+        //        if ("2".equals(model.cameraRGBId.get())) {
+        //            binding.group1.check(R.id.cameraId_2);
+        //        } else {
+        //            binding.group1.check(R.id.cameraId_0);
+        //        }
+        //        if ("2".equals(model.cameraNIRId.get())) {
+        //            binding.group2.check(R.id.cameraNir_2);
+        //        } else {
+        //            binding.group2.check(R.id.cameraNir_0);
+        //        }
 
         binding.btnSave.setOnClickListener(v -> {
-//                    if (binding.group1.getCheckedRadioButtonId() == R.id.cameraId_2) {
-//                        model.cameraRGBId.set("2");
-//                    } else {
-//                        model.cameraRGBId.set("0");
-//                    }
-//                    if (binding.group2.getCheckedRadioButtonId() == R.id.cameraNir_2) {
-//                        model.cameraNIRId.set("2");
-//                    } else {
-//                        model.cameraNIRId.set("0");
-//                    }
+                    //                    if (binding.group1.getCheckedRadioButtonId() == R.id.cameraId_2) {
+                    //                        model.cameraRGBId.set("2");
+                    //                    } else {
+                    //                        model.cameraRGBId.set("0");
+                    //                    }
+                    //                    if (binding.group2.getCheckedRadioButtonId() == R.id.cameraNir_2) {
+                    //                        model.cameraNIRId.set("2");
+                    //                    } else {
+                    //                        model.cameraNIRId.set("0");
+                    //                    }
                     RadioButton radioButton1 = findViewById(binding.group1.getCheckedRadioButtonId());
                     model.cameraRGBId.set(radioButton1.getText().toString());
                     RadioButton radioButton2 = findViewById(binding.group2.getCheckedRadioButtonId());
@@ -188,8 +199,8 @@ public class ConfigActivity extends BaseBindingActivity<ActivityCameraConfigBind
                     model.cameraNIRId.set(radioButton2.getText().toString());
                     model.cameraGPId.set(radioButton3.getText().toString());
                     model.save();
-//            EquipmentConfigCameraEntity equipmentConfigCameraEntity = model.setCameraInfo(3);
-//            BaseApplication.application.setCameraConfig(equipmentConfigCameraEntity);
+                    //            EquipmentConfigCameraEntity equipmentConfigCameraEntity = model.setCameraInfo(3);
+                    //            BaseApplication.application.setCameraConfig(equipmentConfigCameraEntity);
                     showLoading();
                     mHandler.postDelayed(() -> {
                         dismissLoading();

@@ -37,6 +37,8 @@ import com.miaxis.judicialcorrection.databinding.ActivityMainBinding;
 import com.miaxis.judicialcorrection.databinding.ItemMainFucBinding;
 import com.miaxis.judicialcorrection.db.DbInitMainFuncs;
 import com.miaxis.judicialcorrection.ui.setting.SettingActivity;
+import com.miaxis.m_facelicense.Dialog.LicenseDialog;
+import com.miaxis.m_facelicense.License.LicenseManager;
 import com.tencent.mmkv.MMKV;
 
 import java.io.File;
@@ -112,7 +114,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
         }
         FileUtils.createSerialNumberFile();
         //采集页面个人信息
-//        getSupportFragmentManager().beginTransaction().replace(R.id.main,new CaptureBaseInfoFragment()).commitNow();
+        //        getSupportFragmentManager().beginTransaction().replace(R.id.main,new CaptureBaseInfoFragment()).commitNow();
     }
 
 
@@ -146,17 +148,17 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
         super.onResume();
         deleteFile();
         MMKV mmkv = MMKV.defaultMMKV();
-            BaseApplication.application.setBaseUrlFingerAndFace(mmkv.getString("baseUrl2",
-                    com.miaxis.judicialcorrection.base.BuildConfig.SERVER_URL2));
-//        //配置全局camera
-//        if (BaseApplication.application.getCameraConfig()==null){
-//            String camera_info = mmkv.getString("camera_info", null);
-//            if (camera_info==null){
-//                return;
-//            }
-//            EquipmentConfigCameraEntity en = new Gson().fromJson(camera_info, EquipmentConfigCameraEntity.class);
-//            BaseApplication.application.setCameraConfig(en);
-//        }
+        BaseApplication.application.setBaseUrlFingerAndFace(mmkv.getString("baseUrl2",
+                com.miaxis.judicialcorrection.base.BuildConfig.SERVER_URL2));
+        //        //配置全局camera
+        //        if (BaseApplication.application.getCameraConfig()==null){
+        //            String camera_info = mmkv.getString("camera_info", null);
+        //            if (camera_info==null){
+        //                return;
+        //            }
+        //            EquipmentConfigCameraEntity en = new Gson().fromJson(camera_info, EquipmentConfigCameraEntity.class);
+        //            BaseApplication.application.setCameraConfig(en);
+        //        }
     }
 
 
@@ -187,10 +189,14 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
             int init = FaceManager.getInstance().init(MainActivity.this);
             FingerStrategy fingerStrategy = new FingerStrategy(MainActivity.this);
             FingerManager.getInstance().init(fingerStrategy);
+            LicenseManager.getInstance().init();
             runOnUiThread(() -> {
                 dismissLoading();
                 if (init != 0) {
-                    appHintsLazy.get().showError("初始化失败：" + init);
+                    //appHintsLazy.get().showError("初始化失败：" + init);
+                    //startActivity(new Intent(this, LicenseActivity.class));
+                    LicenseDialog licenseDialog = new LicenseDialog(this, true);
+                    licenseDialog.show();
                 }
             });
         });

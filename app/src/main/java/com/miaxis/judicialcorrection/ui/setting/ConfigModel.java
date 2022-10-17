@@ -3,10 +3,6 @@ package com.miaxis.judicialcorrection.ui.setting;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
-import android.view.View;
-
-import androidx.databinding.ObservableField;
-import androidx.lifecycle.ViewModel;
 
 import com.google.gson.Gson;
 import com.miaxis.judicialcorrection.base.BaseApplication;
@@ -17,8 +13,12 @@ import com.miaxis.judicialcorrection.base.utils.MacUtils;
 import com.miaxis.utils.DeviceUtils;
 import com.tencent.mmkv.MMKV;
 
+import org.zz.api.MXFaceAPI;
+
 import javax.inject.Inject;
 
+import androidx.databinding.ObservableField;
+import androidx.lifecycle.ViewModel;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 /**
@@ -49,6 +49,8 @@ public class ConfigModel extends ViewModel {
     public ObservableField<String> productMac = new ObservableField<>();
     //是否影藏camera id选项从
     public ObservableField<Integer> isHide = new ObservableField<>();
+    //版本
+    public ObservableField<String> faceVersion = new ObservableField<>();
 
     @Inject
     public ConfigModel(AppDatabase appDatabase) {
@@ -67,13 +69,14 @@ public class ConfigModel extends ViewModel {
         this.faceQuality.set(faceQuality);
         String faceComparison = mmkv.getString("faceComparison", String.valueOf(75));
         this.faceComparison.set(faceComparison);
-//        if (BuildConfig.EQUIPMENT_TYPE == 3) {
-//            isHide.set(View.VISIBLE);
-//        } else {
-//            isHide.set(View.GONE);
-//        }
+        String algVersion = new MXFaceAPI().mxAlgVersion();
+        this.faceVersion.set(algVersion);
+        //        if (BuildConfig.EQUIPMENT_TYPE == 3) {
+        //            isHide.set(View.VISIBLE);
+        //        } else {
+        //            isHide.set(View.GONE);
+        //        }
     }
-
 
 
     /**
@@ -103,13 +106,13 @@ public class ConfigModel extends ViewModel {
 
     public void init() {
         MMKV mmkv = MMKV.defaultMMKV();
-        int cameraRGBId = mmkv.getInt("cameraRGBId", "CB005-HZQ2".equals(DeviceUtils.getDeviceModel())?0:2);
+        int cameraRGBId = mmkv.getInt("cameraRGBId", "CB005-HZQ2".equals(DeviceUtils.getDeviceModel()) ? 0 : 2);
         this.cameraRGBId.set(cameraRGBId + "");
 
-        int cameraNIRId = mmkv.getInt("cameraNIRId", "CB005-HZQ2".equals(DeviceUtils.getDeviceModel())?1:0);
+        int cameraNIRId = mmkv.getInt("cameraNIRId", "CB005-HZQ2".equals(DeviceUtils.getDeviceModel()) ? 1 : 0);
         this.cameraNIRId.set(cameraNIRId + "");
 
-        int cameraGPId = mmkv.getInt("cameraGPId", "CB005-HZQ2".equals(DeviceUtils.getDeviceModel())?2:1);
+        int cameraGPId = mmkv.getInt("cameraGPId", "CB005-HZQ2".equals(DeviceUtils.getDeviceModel()) ? 2 : 1);
         this.cameraGPId.set(cameraGPId + "");
     }
 
@@ -117,17 +120,17 @@ public class ConfigModel extends ViewModel {
         MMKV mmkv = MMKV.defaultMMKV();
         String s = cameraRGBId.get();
         if (TextUtils.isEmpty(s)) {
-            s = "CB005-HZQ2".equals(DeviceUtils.getDeviceModel())?"0":"2";
+            s = "CB005-HZQ2".equals(DeviceUtils.getDeviceModel()) ? "0" : "2";
         }
         mmkv.putInt("cameraRGBId", Integer.parseInt(s));
         String s1 = cameraNIRId.get();
         if (TextUtils.isEmpty(s1)) {
-            s1 = "CB005-HZQ2".equals(DeviceUtils.getDeviceModel())?"1":"0";
+            s1 = "CB005-HZQ2".equals(DeviceUtils.getDeviceModel()) ? "1" : "0";
         }
         mmkv.putInt("cameraNIRId", Integer.parseInt(s1));
         String s2 = cameraGPId.get();
         if (TextUtils.isEmpty(s2)) {
-            s2 = "CB005-HZQ2".equals(DeviceUtils.getDeviceModel())?"2":"1";
+            s2 = "CB005-HZQ2".equals(DeviceUtils.getDeviceModel()) ? "2" : "1";
         }
         mmkv.putInt("cameraGPId", Integer.parseInt(s2));
         mmkv.putString("baseUrl", baseUrl.get());
@@ -137,21 +140,22 @@ public class ConfigModel extends ViewModel {
         mmkv.putString("faceComparison", faceComparison.get());
 
         //        if (TextUtils.isEmpty(quality)) {
-//            FaceConfig.threshold = 0.75f;
-//            FaceConfig.thresholdIdCard = 0.75f;
-//        } else {
-//            FaceConfig.threshold = Float.parseFloat(quality) * 0.01;
-//            FaceConfig.thresholdIdCard = Float.parseFloat(quality) *0.01;
-//        }
-//        if (TextUtils.isEmpty(faceCom)) {
-//            FaceConfig.faceComparison = 30;
-//        } else {
-//            FaceConfig.faceComparison = Integer.parseInt(faceCom);
-//        }
+        //            FaceConfig.threshold = 0.75f;
+        //            FaceConfig.thresholdIdCard = 0.75f;
+        //        } else {
+        //            FaceConfig.threshold = Float.parseFloat(quality) * 0.01;
+        //            FaceConfig.thresholdIdCard = Float.parseFloat(quality) *0.01;
+        //        }
+        //        if (TextUtils.isEmpty(faceCom)) {
+        //            FaceConfig.faceComparison = 30;
+        //        } else {
+        //            FaceConfig.faceComparison = Integer.parseInt(faceCom);
+        //        }
     }
 
     /**
      * dev 配置摄像头设备类型
+     *
      * @param equipmentType 设备类型  1柜式 3小台式
      */
     public EquipmentConfigCameraEntity setCameraInfo(int equipmentType) {
@@ -189,14 +193,15 @@ public class ConfigModel extends ViewModel {
             entity.previewOrientationSM = 0;
             entity.savePictureRotationSize = 0;
         }
-        int fq=TextUtils.isEmpty(faceQuality.get())?30:Integer.parseInt(faceQuality.get());
-        int fc=TextUtils.isEmpty(faceComparison.get())?75:Integer.parseInt(faceComparison.get());
-        entity.faceQuality=fq;
-        entity.faceComparison=fc;
+        int fq = TextUtils.isEmpty(faceQuality.get()) ? 30 : Integer.parseInt(faceQuality.get());
+        int fc = TextUtils.isEmpty(faceComparison.get()) ? 75 : Integer.parseInt(faceComparison.get());
+        entity.faceQuality = fq;
+        entity.faceComparison = fc;
         String toJson = gson.toJson(entity);
         mmkv.putString("camera_info", toJson);
         return entity;
     }
+
     @Override
     protected void onCleared() {
         super.onCleared();

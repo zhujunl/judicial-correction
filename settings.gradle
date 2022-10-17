@@ -11,3 +11,4 @@ rootProject.name = "司法矫正"
 include ':M_common'
 include ':M_fingerhid'
 include ':libusbcamera'
+include ':M_faceLicense'

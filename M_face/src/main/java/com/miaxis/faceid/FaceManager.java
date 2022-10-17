@@ -57,14 +57,14 @@ public class FaceManager {
         this.mMxImageTool = null;
     }
 
-    public  String readLicence() {
+    public String readLicence() {
         File lic = new File(FACE_MAIN_PATH, LICENCE_NAME);
         return FileUtil.readFileToString(lic);
     }
 
     public int init(Context context) {
-        String licStr=readLicence();
-        this.mMXFaceAPI = new MXFaceAPI();
+        String licStr = readLicence();
+        this.mMXFaceAPI = new MXFaceAPI();//Justouch_FaceAPI_V5.4.8.20210506T2022
         this.mMxImageTool = new mxImageTool();
         this.mFaceInfoExesRgb = new MXFaceInfoEx[MXFaceInfoEx.iMaxFaceNum];
         this.mFaceInfoExesNir = new MXFaceInfoEx[MXFaceInfoEx.iMaxFaceNum];
@@ -92,8 +92,8 @@ public class FaceManager {
         this.mMxImageTool.YUV2RGB(yuv, width, height, pRGBImage);
 
 
-//        byte[] p = new byte[pRGBImage.length];
-//        this.mMxImageTool.ImageFlip(pRGBImage,width,height,1,p);
+        //        byte[] p = new byte[pRGBImage.length];
+        //        this.mMxImageTool.ImageFlip(pRGBImage,width,height,1,p);
 
         return pRGBImage;
     }
@@ -137,7 +137,7 @@ public class FaceManager {
             return -92;
         }
         MXFaceInfoEx maxFaceIndex = getMaxFaceIndex();
-        if (maxFaceIndex==null){
+        if (maxFaceIndex == null) {
             return -91;
         }
         this.mFaceInfoExesTemp[0] = getMaxFaceIndex();
@@ -157,7 +157,7 @@ public class FaceManager {
         int index = -1;
         for (int i = 0; i < this.mFaceInfoExesRgb.length; i++) {
             MXFaceInfoEx face = this.mFaceInfoExesRgb[i];
-            Timber.e("瞳距 %s", face.eyeDistance+"");
+            Timber.e("瞳距 %s", face.eyeDistance + "");
             if (face.width > maxWidth) {
                 maxWidth = face.width;
                 index = i;
@@ -176,7 +176,7 @@ public class FaceManager {
             return -92;
         }
         MXFaceInfoEx maxFaceIndex = getMaxFaceIndex();
-        if (maxFaceIndex==null){
+        if (maxFaceIndex == null) {
             return -91;
         }
         this.mFaceInfoExesTemp[0] = getMaxFaceIndex();
