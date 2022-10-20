@@ -1,21 +1,19 @@
 package com.miaxis.m_facelicense.Dialog;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.miaxis.m_facelicense.License.LicenseManager;
 import com.miaxis.m_facelicense.R;
 import com.miaxis.m_facelicense.bean.UserBean;
-import com.wsm.hidlib.HIDManager;
-import com.wsm.hidlib.callback.HIDDataListener;
-import com.wsm.hidlib.callback.HIDOpenListener;
-import com.wsm.hidlib.constant.ConnectCostant;
-import com.wsm.hidlib.constant.FormatConstant;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -32,11 +30,13 @@ public class LicenseDialog extends AlertDialog {
     Context context;
     boolean exit;
     TextView exiTxt;
+    ScanListener scanListener;
 
-    public LicenseDialog(@NonNull Context context, boolean exit) {
+    public LicenseDialog(@NonNull Context context, boolean exit,ScanListener scanListener) {
         super(context);
         this.context = context;
         this.exit = exit;
+        this.scanListener=scanListener;
     }
 
     @Override
@@ -45,55 +45,6 @@ public class LicenseDialog extends AlertDialog {
         setContentView(R.layout.dialog_license);
         setCancelable(false);
         Log.d(TAG, "onCreat");
-        HIDManager.getInstance().enableLog(true);
-        HIDManager.getInstance().openHID(context, new HIDOpenListener() {
-            @Override
-            public void openSuccess(int i) {
-                Log.d(TAG, " openSuccess");
-            }
-
-            @Override
-            public void openError(int openErrorStatus) {
-                if (openErrorStatus == ConnectCostant.USB_DISCONNECT) {
-                    //USB断开
-                    Log.e(TAG, " 断开USB");
-                }
-                if (openErrorStatus == ConnectCostant.COMMUNICATION_CLOSE) {
-                    //服务销毁
-                    Log.e(TAG, " 服务销毁");
-                }
-            }
-        }, new HIDDataListener() {
-            @Override
-            public void onDataReceived(byte b, String dataMessage) {
-                if (!TextUtils.isEmpty(dataMessage)) {
-                    String result = dataMessage;
-                    Log.d(TAG, result);
-
-                    try {
-                        UserBean userBean = new Gson().fromJson(result, UserBean.class);
-                        Log.d(TAG, userBean.toString());
-                        String license = LicenseManager.getInstance().threadGetLicense(context, userBean.account, userBean.password);
-                        if (TextUtils.isEmpty(license)) {
-                            Log.d(TAG, "授权成功");
-                            dismiss();
-                        } else {
-                            Log.e(TAG, "授权失败");
-                            Toast.makeText(context, license, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onOriginalDataReceived(byte b, byte[] bytes, int length) {
-                Log.d(TAG, "onOriginalDataReceived: " + length);
-            }
-        });
-        HIDManager.getInstance().setFormat(FormatConstant.FORMAT_GBK);
         exiTxt = findViewById(R.id.dialog_exit);
         exiTxt.setOnClickListener(v -> {
             if (exit) {
@@ -104,9 +55,89 @@ public class LicenseDialog extends AlertDialog {
         });
     }
 
+    private StringBuilder sb = new StringBuilder();
+
+    boolean isScaning = false;
+    int len = 0;
+    int oldLen = 0;
+    int counts = 0;
+
+    //二维码扫码
+    @SuppressLint("RestrictedApi")
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int action = event.getAction();
+        if (action == KeyEvent.ACTION_DOWN) {
+            if (event.getKeyCode() == KeyEvent.KEYCODE_SHIFT_LEFT || event.getKeyCode() == KeyEvent.KEYCODE_SHIFT_RIGHT
+                    || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                return super.dispatchKeyEvent(event);
+            } else if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+                return true;
+            }
+            char unicodeChar = (char) event.getUnicodeChar();
+            sb.append(unicodeChar);
+            len++;
+            startScan();
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    private void startScan() {
+        counts++;
+        if (isScaning) {
+            return;
+        }
+        isScaning = true;
+        timerScanCal();
+    }
+
+    private void timerScanCal() {
+        Log.d(TAG, "timerScanCal");
+        oldLen = len;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SystemClock.sleep(500);
+                if (oldLen != len) {
+                    timerScanCal();
+                    return;
+                }
+                isScaning = false;
+                if (sb.length() > 0) {
+                    String str = sb.toString();
+                    Log.d(TAG, "扫码:" + str);
+                    try {
+                        UserBean userBean = new Gson().fromJson(str, UserBean.class);
+                        Log.d(TAG, userBean.toString());
+                        String license = LicenseManager.getInstance().threadGetLicense(context, userBean.account, userBean.password);
+                        if (TextUtils.isEmpty(license)) {
+                            Log.d(TAG, "授权成功");
+                            dismiss();
+                        } else {
+                            Log.e(TAG, "授权失败");
+                            scanListener.ScanResult("授权失败:"+license);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        scanListener.ScanResult("授权失败:"+e.getMessage());
+                    } finally {
+                        counts = 0;
+                        SystemClock.sleep(1000);
+                        sb.setLength(0);
+                    }
+                }
+            }
+        }).start();
+    }
+
+
     @Override
     public void dismiss() {
         super.dismiss();
-        HIDManager.getInstance().closeHID();
+    }
+
+    public interface ScanListener{
+        void ScanResult(String result);
     }
 }

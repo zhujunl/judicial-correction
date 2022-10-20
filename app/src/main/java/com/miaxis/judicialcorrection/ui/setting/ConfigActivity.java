@@ -19,6 +19,7 @@ import com.miaxis.judicialcorrection.base.utils.AppToast;
 import com.miaxis.judicialcorrection.base.utils.DeviceModelUtils;
 import com.miaxis.judicialcorrection.base.utils.FileUtils;
 import com.miaxis.judicialcorrection.databinding.ActivityCameraConfigBinding;
+import com.miaxis.judicialcorrection.ui.main.MainActivity;
 import com.miaxis.m_facelicense.Dialog.LicenseDialog;
 import com.miaxis.m_facelicense.License.LicenseManager;
 
@@ -133,7 +134,7 @@ public class ConfigActivity extends BaseBindingActivity<ActivityCameraConfigBind
             String license = LicenseManager.getInstance().VerifyLicense(this);
             Toast.makeText(this, license, Toast.LENGTH_SHORT).show();
             if (!TextUtils.equals(license, "验证通过")) {
-                LicenseDialog licenseDialog = new LicenseDialog(this, false);
+                LicenseDialog licenseDialog = new LicenseDialog(this, false, result -> runOnUiThread(() -> Toast.makeText(ConfigActivity.this, result, Toast.LENGTH_SHORT).show()));
                 licenseDialog.show();
             }
         });

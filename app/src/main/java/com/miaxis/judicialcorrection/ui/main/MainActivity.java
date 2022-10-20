@@ -194,8 +194,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding> {
                 dismissLoading();
                 if (init != 0) {
                     //appHintsLazy.get().showError("初始化失败：" + init);
-                    //startActivity(new Intent(this, LicenseActivity.class));
-                    LicenseDialog licenseDialog = new LicenseDialog(this, true);
+                    LicenseDialog licenseDialog = new LicenseDialog(this, true, result -> runOnUiThread(() -> Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show()));
                     licenseDialog.show();
                 }
             });
