@@ -55,12 +55,11 @@ public class LicenseDialog extends AlertDialog {
         });
     }
 
-    private StringBuilder sb = new StringBuilder();
+    private StringBuffer sb = new StringBuffer();
 
     boolean isScaning = false;
     int len = 0;
     int oldLen = 0;
-    int counts = 0;
 
     //二维码扫码
     @SuppressLint("RestrictedApi")
@@ -84,7 +83,6 @@ public class LicenseDialog extends AlertDialog {
     }
 
     private void startScan() {
-        counts++;
         if (isScaning) {
             return;
         }
@@ -98,7 +96,7 @@ public class LicenseDialog extends AlertDialog {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                SystemClock.sleep(500);
+                SystemClock.sleep(50);
                 if (oldLen != len) {
                     timerScanCal();
                     return;
@@ -107,8 +105,9 @@ public class LicenseDialog extends AlertDialog {
                 if (sb.length() > 0) {
                     String str = sb.toString();
                     Log.d(TAG, "扫码:" + str);
+                    String[] split = str.split("\\.");
                     try {
-                        UserBean userBean = new Gson().fromJson(str, UserBean.class);
+                        UserBean userBean = new Gson().fromJson(split[0], UserBean.class);
                         Log.d(TAG, userBean.toString());
                         String license = LicenseManager.getInstance().threadGetLicense(context, userBean.account, userBean.password);
                         if (TextUtils.isEmpty(license)) {
@@ -122,7 +121,6 @@ public class LicenseDialog extends AlertDialog {
                         e.printStackTrace();
                         scanListener.ScanResult("授权失败:"+e.getMessage());
                     } finally {
-                        counts = 0;
                         SystemClock.sleep(1000);
                         sb.setLength(0);
                     }

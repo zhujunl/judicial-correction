@@ -12,10 +12,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application>
-        <activity
-            android:name=".LicenseActivity"
-            android:exported="false" />
-        <service android:name="com.wsm.hidlib.service.HIDService" />
+<!--        <activity-->
+<!--            android:name=".LicenseActivity"-->
+<!--            android:exported="false" />-->
+<!--        <service android:name="com.wsm.hidlib.service.HIDService" />-->
     </application>
 
 </manifest>
